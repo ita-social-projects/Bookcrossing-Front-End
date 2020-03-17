@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 [Angular CLI](https://angular.io/guide/setup-local) 
 
 ### Installing
-1. Clone it from git hub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Back-End.git
+1. Clone it from git hub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Front-End.git
 2. *npm install*
 3. *ng serve*
   
