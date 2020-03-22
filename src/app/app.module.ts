@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { LoginComponent } from './shared/components/login/login.component';
 import {FormsModule} from '@angular/forms';
+import { RegistrationComponent } from './shared/components/registration/registration.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,

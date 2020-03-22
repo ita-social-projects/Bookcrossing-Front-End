@@ -17,7 +17,7 @@
           <p class="h4 mb-4">Sign in</p>
 
 
-          <input type="email" required ngModel name="email"  id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+          <input type="email" [email]="true" required ngModel name="email"  id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
 
 
           <input type="password" id="defaultLoginFormPassword" required ngModel name="password"  class="form-control mb-4" placeholder="Password">
@@ -37,11 +37,11 @@
           </div>
 
 
-          <button [disabled]="loginFrom.invalid"  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Sign in</button>
+          <button [disabled]="loginFrom.invalid "  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Sign in</button>
 
 
           <p>Not a member?
-            <a href="">Register</a>
+            <a class="text-primary" (click)="navigateToSingUp()">Register</a>
           </p>
 
 
