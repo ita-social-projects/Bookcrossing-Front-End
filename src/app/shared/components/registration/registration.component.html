@@ -1,0 +1,70 @@
+<div class="container my-5 py-5 z-depth-1">
+
+
+
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+
+
+    <div class="row d-flex justify-content-center">
+
+
+      <div class="col-md-6">
+
+
+        <form class="text-center" #RegistrationFrom="ngForm">
+
+          <p class="h4 mb-4">Sign up</p>
+
+          <div class="form-row mb-4">
+            <div class="col">
+
+              <input type="text" required ngModel name="FirstName" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+            </div>
+            <div class="col">
+
+              <input type="text" required ngModel name="LastName" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
+            </div>
+            <div class="col">
+
+              <input type="text" required ngModel name="MiddleName" id="defaultRegisterFormMiddleName" class="form-control" placeholder="MiddleName">
+            </div>
+          </div>
+
+
+          <input type="email"  required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+
+
+          <input type="password" required ngModel name="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password"
+                 aria-describedby="defaultRegisterFormPasswordHelpBlock">
+<br>
+          <input (change)="comparePasswords(RegistrationFrom.value.password,
+          RegistrationFrom.value.confirmPassword)" type="password" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" class="form-control" placeholder="Confirm Password"
+                 aria-describedby="defaultRegisterFormPasswordHelpBlock">
+
+
+          <button [disabled]="RegistrationFrom.invalid || !comparePasswords(RegistrationFrom.value.password,
+          RegistrationFrom.value.confirmPassword)" class="btn btn-info my-4 btn-block" >Sign up</button>
+
+
+          <p>Already a member?
+            <a class="text-primary" (click)="navigateToSingIn()" >Sign in</a>
+          </p>
+
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+
+
+
+  </section>
+
+
+
+</div>

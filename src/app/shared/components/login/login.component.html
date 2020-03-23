@@ -1,0 +1,64 @@
+<div class="container my-5 py-5 z-depth-1">
+
+
+
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+
+
+    <div class="row d-flex justify-content-center">
+
+
+      <div class="col-md-6">
+
+
+        <form class="text-center" #loginFrom="ngForm">
+
+          <p class="h4 mb-4">Sign in</p>
+
+
+          <input type="email" [email]="true" required ngModel name="email"  id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+
+
+          <input type="password" id="defaultLoginFormPassword" required ngModel name="password"  class="form-control mb-4" placeholder="Password">
+
+          <div class="d-flex justify-content-around">
+            <div>
+
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+              </div>
+            </div>
+            <div>
+
+              <a href="">Forgot password?</a>
+            </div>
+          </div>
+
+
+          <button [disabled]="loginFrom.invalid "  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Sign in</button>
+
+
+          <p>Not a member?
+            <a class="text-primary" (click)="navigateToSingUp()">Register</a>
+          </p>
+
+
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+
+
+
+  </section>
+
+
+
+</div>
