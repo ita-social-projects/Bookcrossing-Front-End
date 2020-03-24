@@ -3,7 +3,7 @@ import {genre} from './genre';
 export class book{
     id:number;
     name:string;
-    UserId:number;
+    userId:number;
     publisher:string;
     available:boolean;
     authors:author[];
