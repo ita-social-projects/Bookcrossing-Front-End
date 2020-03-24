@@ -7,11 +7,15 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { LoginComponent } from './shared/components/login/login.component';
 import {FormsModule} from '@angular/forms';
 import { RegistrationComponent } from './shared/components/registration/registration.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
