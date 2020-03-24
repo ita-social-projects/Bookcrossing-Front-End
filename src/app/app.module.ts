@@ -13,6 +13,8 @@ import { RequestService } from './core/services/request/request.service';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
+import { BooksComponent } from './shared/components/books/books.component';
+
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import {HttpClientModule} from '@angular/common/http';
     RequestsComponent,
     NavbarComponent,
     FooterComponent,
+    BooksComponent
   ],
   imports: [
     BrowserModule,

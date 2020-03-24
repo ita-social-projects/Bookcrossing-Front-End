@@ -4,6 +4,7 @@ import {LoginComponent} from './shared/components/login/login.component';
 import {RegistrationComponent} from './shared/components/registration/registration.component';
 import { BookComponent } from './shared/components/book/book.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
+import { BooksComponent } from './shared/components/books/books.component';
 
 const routes: Routes = [
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   // },
   {path: 'book', component: BookComponent},
   {path: 'requests/:id', component: RequestsComponent}
+  {path :'books',component:BooksComponent}
 ];
 
 @NgModule({
