@@ -14,5 +14,11 @@ export class BooksService {
      return this.http.get<book[]>("https://localhost:44370/api/Books");
    }
 
+   getBookById(id:number):Observable<book>{
+     var url = "https://localhost:44370/api/Books/";
+     var url_ = url.concat(id.toString());
+     return this.http.get<book>(url_)
+   }
+
 
 }
