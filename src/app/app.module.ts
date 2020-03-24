@@ -1,7 +1,5 @@
-
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +11,7 @@ import { RegistrationComponent } from './shared/components/registration/registra
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import {HttpClientModule} from '@angular/common/http';
-
+import { BooksComponent } from './shared/components/books/books.component';
 
 
 @NgModule({
@@ -23,14 +21,14 @@ import {HttpClientModule} from '@angular/common/http';
     RegistrationComponent,
     NavbarComponent,
     FooterComponent,
+    BooksComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
-    MDBBootstrapModule.forRoot()
-    
+    MDBBootstrapModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
