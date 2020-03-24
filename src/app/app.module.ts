@@ -7,6 +7,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { LoginComponent } from './shared/components/login/login.component';
 import {FormsModule} from '@angular/forms';
 import { RegistrationComponent } from './shared/components/registration/registration.component';
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +19,8 @@ import { RegistrationComponent } from './shared/components/registration/registra
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
