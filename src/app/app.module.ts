@@ -12,6 +12,8 @@ import { RequestsComponent } from './shared/components/requests/requests.compone
 import { RequestService } from './core/services/request/request.service';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
