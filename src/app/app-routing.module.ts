@@ -14,7 +14,7 @@ const routes: Routes = [
   //     { path: '', component: AdminDashboardComponent },
   //   ]
   // },
-  {path: 'book/:id', component: BookComponent},
+  {path: 'book', component: BookComponent},
   {path: 'requests/:id', component: RequestsComponent}
 ];
 

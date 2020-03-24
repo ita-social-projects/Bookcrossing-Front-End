@@ -1,4 +1,106 @@
 
-<div>
-    <p>Hello world!</p>
-</div>
+<div class="card card-cascade narrower container mt-2 mb-4">
+
+    <div
+      class="view view-cascade gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+  
+      <div>
+        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
+          <i class="fas fa-th-large mt-0"></i>
+        </button>
+        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
+          <i class="fas fa-columns mt-0"></i>
+        </button>
+      </div>
+  
+      <p class="white-text mx-3">All requests</p>
+  
+      <div>
+        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
+          <i class="fas fa-pencil-alt mt-0"></i>
+        </button>
+        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
+          <i class="far fa-trash-alt mt-0"></i>
+        </button>
+        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
+          <i class="fas fa-info-circle mt-0"></i>
+        </button>
+      </div>
+  
+    </div>
+  
+    <div class="px-4">
+  
+      <div class="table-wrapper">
+
+        <table class="table table-hover mb-0">
+  
+          <thead>
+            <tr>
+              <th>
+              </th>
+              <th class="th-lg">
+                <a>Id
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">Book id
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">User id
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">Owner id
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">Request date
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">Approve
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+              <th class="th-lg">
+                <a href="">Delete
+                  <i class="fas fa-sort ml-1"></i>
+                </a>
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let request of requests">
+              <th scope="row">
+              </th>
+              <td>{{ request.id }}</td>
+              <td>{{ request.bookId }}</td>
+              <td>{{ request.userId }}</td>
+              <td>{{ request.ownerId }}</td>
+              <td>{{ request.requestDate }}</td>
+              <td>
+                <button type="button" class="btn blue-gradient btn-sm m-0 waves-effect" (click)="approveRequest(request.id)">Approve</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-sm peach-gradient" data-toggle="tooltip" data-placement="top"
+                title="Remove item" (click)="deleteRequest(request.id)">X
+              </button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>

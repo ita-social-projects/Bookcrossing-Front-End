@@ -10,7 +10,7 @@ import { RequestService } from 'src/app/core/services/request/request.service';
 export class BookComponent implements OnInit {
 
   constructor(
-    public service: RequestService
+    
     ) { }
 
   // bookInfo: Book;
