@@ -16,7 +16,7 @@ const routes: Routes = [
   //   ]
   // },
   {path: 'book', component: BookComponent},
-  {path: 'requests/:id', component: RequestsComponent}
+  {path: 'requests/:id', component: RequestsComponent},
   {path :'books',component:BooksComponent}
 ];
 
