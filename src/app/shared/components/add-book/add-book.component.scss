@@ -1,0 +1,22 @@
+form {
+    margin: 0% 10%;
+}
+
+.additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;  
+}
+mat-select{
+    text-align: left;
+}
+
+mat-select-trigger{
+    color: #495057;
+}
+
+.authors-list {
+    text-align: left;
+    button {
+        float: right;
+    } 
+}

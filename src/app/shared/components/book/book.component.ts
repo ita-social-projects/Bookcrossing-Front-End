@@ -5,7 +5,7 @@ import { RequestService } from 'src/app/core/services/request/request.service';
 import { BooksService } from 'src/app/core/services/books.service';
 import { ActivatedRoute } from '@angular/router';
 import { bookUrl } from 'src/app/configs/api-endpoint.constants';
-import { book } from "src/app/core/models/book";
+import { IBook } from "src/app/core/models/book";
 
 @Component({
   selector: 'app-book',
@@ -16,7 +16,7 @@ import { book } from "src/app/core/models/book";
 export class BookComponent implements OnInit {
 
     readonly baseUrl = bookUrl;
-    book: book;
+    book: IBook;
     bookId: number;
 
   constructor(
@@ -33,7 +33,7 @@ export class BookComponent implements OnInit {
   )
   .subscribe(data=> this.bookId = +data);
 
-  this.bookService.getBookById(this.bookId).subscribe((value: book) => {
+  this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
     this.book = value;
   });
   }
