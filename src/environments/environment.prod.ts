@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: 'https://bookcrossingbackend-dev-as.azurewebsites.net/api/'
 };
