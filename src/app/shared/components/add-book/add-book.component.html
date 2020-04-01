@@ -1,0 +1,119 @@
+<div>
+  <form
+    [formGroup]="addBookForm"
+    (ngSubmit)="onSubmit()"
+    class="text-center border border-light p-5"
+  >
+    <p class="h4 mb-4">Add new book</p>
+
+    <div class="form-row mb-4">
+      <div class="col">
+        <!-- Book title -->
+        <input
+          formControlName="title"
+          type="text"
+          class="form-control"
+          placeholder="Book title"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <input
+          formControlName="publisher"
+          type="text"
+          class="form-control"
+          placeholder="Publisher"
+          required
+        />
+      </div>
+
+      <!-- Select multiple genres -->
+      <div class="col">
+        <mat-select
+          formControlName="genres"
+          class="form-control"
+          multiple
+          placeholder="Genre"
+          required
+        >
+          <mat-select-trigger>
+            {{
+              addBookForm.get("genres").value
+                ? getGenreById(addBookForm.get("genres").value[0])
+                : ""
+            }}
+            <span
+              *ngIf="addBookForm.get('genres').value?.length > 1"
+              class="additional-selection"
+            >
+              (+{{ addBookForm.get("genres").value.length - 1 }}
+              {{
+                addBookForm.get("genres").value.length === 2
+                  ? "other"
+                  : "others"
+              }})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
+            genre.name
+          }}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+
+      <!-- Authors -->
+      <div  class="mb-4">
+        <div class="input-group" 
+        formGroupName="author">
+          <input
+            formControlName="firstName"
+            type="text"
+            class="form-control"
+            placeholder="Author Firstname"
+          />
+          <input
+            formControlName="middleName"
+            type="text"
+            class="form-control"
+            placeholder="Author Middlename"
+          />
+          <input
+            formControlName="lastName"
+            type="text"
+            class="form-control"
+            placeholder="Author Lastname"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
+              type="button"
+              [disabled]="authorControl.invalid"
+              (click)="onAddAuthor()"
+            >
+              Add Author
+            </button>
+          </div>
+        </div>
+        <div>
+          <ul class="list-group authors-list">
+            <li *ngFor="let author of authors" class="list-group-item">
+              <span>{{ author.firstName + " " +  author.middleName + "  " + author.lastName }}</span>
+              <button class="btn btn-md btn-outline-danger m-0 px-3 py-2 z-depth-0 waves-effect" (click)="onDeleteAuthor(author)">
+                Delete
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    <!-- Add book button -->
+    <button
+      class="btn btn-info "
+      type="submit"
+      [disabled]="(addBookForm.invalid || authors.length === 0)"
+    >
+      Submit
+    </button>
+  </form>
+</div>
