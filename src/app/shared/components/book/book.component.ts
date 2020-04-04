@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { BooksService } from 'src/app/core/services/books.service';
+import { BookService } from 'src/app/core/services/book/book.service';
 import { ActivatedRoute } from '@angular/router';
 import { bookUrl } from 'src/app/configs/api-endpoint.constants';
 import { IBook } from "src/app/core/models/book";
@@ -11,7 +11,7 @@ import { IBook } from "src/app/core/models/book";
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
-  providers: [RequestService, BooksService]
+  providers: [RequestService, BookService]
 })
 export class BookComponent implements OnInit {
 
@@ -22,7 +22,7 @@ export class BookComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private bookService:BooksService,
+    private bookService:BookService,
     private requestService:RequestService
     ) {}
   

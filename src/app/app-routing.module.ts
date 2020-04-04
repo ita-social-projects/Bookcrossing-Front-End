@@ -5,6 +5,7 @@ import {RegistrationComponent} from './shared/components/registration/registrati
 import { BookComponent } from './shared/components/book/book.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
 import { BooksComponent } from './shared/components/books/books.component';
+import { AddBookComponent } from './shared/components/add-book/add-book.component';
 
 const routes: Routes = [
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   //   ]
   // },
   {path: 'book/:id', component: BookComponent},
+  {path: "book", component: AddBookComponent},
   {path: 'requests/:id', component: RequestsComponent},
   {path :'books',component:BooksComponent}
 ];

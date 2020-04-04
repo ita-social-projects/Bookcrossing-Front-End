@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { IGenre } from 'src/app/core/interfaces/genre';
+import { IGenre } from 'src/app/core/models/genre';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IBook } from 'src/app/core/interfaces/book';
-import { IAuthor } from 'src/app/core/interfaces/author';
-import { BooksService } from 'src/app/core/services/books.service';
+import { IBook } from 'src/app/core/models/book';
+import { IAuthor } from 'src/app/core/models/author';
+import { BookService } from 'src/app/core/services/book/book.service';
 
 @Component({
   selector: 'app-add-book',
@@ -11,7 +11,7 @@ import { BooksService } from 'src/app/core/services/books.service';
   styleUrls: ['./add-book.component.scss']
 })
 export class AddBookComponent implements OnInit {
-  constructor(private bookService: BooksService) {}
+  constructor(private bookService: BookService) {}
   addBookForm: FormGroup;
   authorControl: FormGroup;
 

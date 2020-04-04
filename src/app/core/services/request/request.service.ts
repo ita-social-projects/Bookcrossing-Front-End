@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import { requestUrl } from "src/app/configs/api-endpoint.constants";
-import { Request } from 'src/app/core/models/request/request';
+import { IRequest } from 'src/app/core/models/request';
 
 @Injectable()
 export class RequestService {
@@ -12,21 +12,21 @@ export class RequestService {
   readonly baseUrl = requestUrl;
 
   requestBook(bookId: number) {
-    this.http.post<Request>(this.baseUrl + `/${bookId}`, {
+    this.http.post<IRequest>(this.baseUrl + `/${bookId}`, {
       bookId: bookId,
     });
   }
 
   getAllRequestesByBookId(bookId: number) {
-    return this.http.get<Request[]>(this.baseUrl + `/${bookId}`);
+    return this.http.get<IRequest[]>(this.baseUrl + `/${bookId}`);
   }
 
   deleteRequest(requestId: number) {
-    return this.http.delete<Request>(this.baseUrl + `/${requestId}`);
+    return this.http.delete<IRequest>(this.baseUrl + `/${requestId}`);
   }
 
   approveRequest(requestId: number) {
-    return this.http.put<Request>(this.baseUrl + `/${requestId}`, {
+    return this.http.put<IRequest>(this.baseUrl + `/${requestId}`, {
       requestId: requestId,
     });
   }

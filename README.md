@@ -1,6 +1,6 @@
 # BookCrossing-Front-End
 Platform for book crossing between company employees
-[Website](https://localhost:44370/)  
+[Website](https://bookcrossing.tech/)  
   
 ## Git Flow  
 We are using simpliest github flow to organize our work:  

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Request } from 'src/app/core/models/request/request'
+import { IRequest } from 'src/app/core/models/request'
 import { ActivatedRoute } from "@angular/router";
 import { HttpClient} from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { RequestService } from 'src/app/core/services/request/request.service'
 export class RequestsComponent implements OnInit {
   
   bookId: number;
-  requests: Request[];
+  requests: IRequest[];
   
   constructor(
     private route: ActivatedRoute,
@@ -28,19 +28,19 @@ export class RequestsComponent implements OnInit {
   )
   .subscribe(data=> this.bookId = +data);
 
-    this.requestService.getAllRequestesByBookId(this.bookId).subscribe((value: Request[]) => {
+    this.requestService.getAllRequestesByBookId(this.bookId).subscribe((value: IRequest[]) => {
       this.requests = value;
     });
   }
 
   approveRequest(requestId: number) {
-    this.requestService.approveRequest(requestId).subscribe((value: Request) => {
+    this.requestService.approveRequest(requestId).subscribe((value: IRequest) => {
       this.requests[requestId] = value;
     });;
   }
 
   deleteRequest(requestId: number) {
-    this.requestService.deleteRequest(requestId).subscribe((value: Request) => {
+    this.requestService.deleteRequest(requestId).subscribe((value: IRequest) => {
       this.requests[requestId] = value;
     });;
   }

@@ -8,17 +8,11 @@
         <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
           <i class="fas fa-th-large mt-0"></i>
         </button>
-        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-          <i class="fas fa-columns mt-0"></i>
-        </button>
       </div>
   
       <p class="white-text mx-3">All requests</p>
   
       <div>
-        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-          <i class="fas fa-pencil-alt mt-0"></i>
-        </button>
         <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
           <i class="far fa-trash-alt mt-0"></i>
         </button>
@@ -50,12 +44,12 @@
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">User id
+                <a href="">Owner
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Owner id
+                <a href="">Who requested?
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
@@ -82,10 +76,10 @@
               <th scope="row">
               </th>
               <td>{{ request.id }}</td>
-              <td>{{ request.bookId }}</td>
-              <td>{{ request.userId }}</td>
-              <td>{{ request.ownerId }}</td>
-              <td>{{ request.requestDate }}</td>
+              <td><a [routerLink]="['/book/bookId']">{{ request.book.name }}</a></td>
+              <td>{{ request.owner.firstName + " " + request.owner.lastName}}</td>
+              <td>{{ request.user.firstName + " " + request.user.lastName }}</td>
+              <td>{{ request.requestDate  | date:'short'}}</td>
               <td>
                 <button type="button" class="btn blue-gradient btn-sm m-0 waves-effect" (click)="approveRequest(request.id)">Approve</button>
               </td>
