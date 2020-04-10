@@ -1,0 +1,41 @@
+<section class="backdrop">
+
+    <form class="form-popup border border-light pt-3 pb-3 pr-5 pl-5" [formGroup]="form" (ngSubmit)="submit()">
+        <h3 class="text-center py-4">
+            <strong>{{title}}</strong>
+        </h3>
+
+        <div class="form">
+            <div class="col mb-3" *ngIf="!isNewAuthor">
+                <label for="AuthorFormId">ID</label>
+                <input type="text" id="AuthorFormId" class="form-control" formControlName="id" name="id">
+            </div>
+
+            <div class="col mb-3">
+                <label for="AuthorFormFirstname">First name</label>
+                <input type="text" id="AuthorFormFirstname" class="form-control" formControlName="firstName"
+                    name="firstName">
+            </div>
+
+            <div class="col mb-3">
+                <label for="AuthorFormLastname">Last name</label>
+                <input type="text" id="AuthorFormLastname" class="form-control" formControlName="lastName"
+                    name="lastName"></div>
+
+            <div class="col">
+                <label for="AuthorFormMiddlename">Middle name</label>
+                <input type="text" id="AuthorFormMiddlename" class="form-control" formControlName="middleName"
+                    name="middleName"></div>
+        </div>
+        <div class="d-flex">
+            <div class="col">
+                <button class="btn btn-md btn-outline-primary my-4 px-3 py-2 z-depth-0 waves-effect"
+                    type="submit">Submit</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-md btn-outline-danger my-4 px-3 py-2 z-depth-0 waves-effect" type="button"
+                    (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</section>

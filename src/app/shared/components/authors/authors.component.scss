@@ -1,0 +1,41 @@
+.active-head {
+   color: #A9A9A9;
+   text-decoration: underline;
+}
+
+card [class*=card-header-]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
+    border-radius: 3px;
+    margin-top: -20px;
+    padding: 15px;
+}
+card .card-body {
+    padding: .9375rem 20px;
+    position: relative;
+}
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.table thead th {
+    font-size: .95rem;
+    font-weight: 500;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    vertical-align: bottom;
+    border-bottom: 2px solid rgba(0,0,0,.06);
+}
+.table tbody td {
+    font-size: 1rem;
+}
+
+@media (max-width: 800px) {
+    .list-unstyled .button-label {
+      display: none;
+    }
+    .list-unstyled .button-label {
+        display: none;
+    }
+    .action{
+        width:auto;
+    }
+  }
