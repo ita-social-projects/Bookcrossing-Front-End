@@ -1,0 +1,54 @@
+<app-mapbox></app-mapbox>
+<div>
+  <form
+    [formGroup]="addLocationForm"
+    (ngSubmit)="onSubmit()"
+    class="text-center border border-light p-5"
+  >
+    <p class="h4 mb-4">Add location</p>
+
+    <div class="form-row mb-4">
+      <div class="col">
+        <!-- City input-->
+        <input
+          formControlName="city"
+          type="text"
+          class="form-control"
+          placeholder="City"
+          required
+        />
+      </div>
+
+      <!-- Street input -->
+      <div class="col">
+        <input
+          formControlName="street"
+          type="text"
+          class="form-control"
+          placeholder="Street"
+          required
+        />
+      </div>
+
+      <!-- Office name input -->
+      <div class="col">
+        <input
+          formControlName="officeName"
+          type="text"
+          class="form-control"
+          placeholder="Building"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Add location button -->
+    <button
+      class="btn btn-info"
+      type="submit"
+      [disabled]="addLocationForm.invalid"
+    >
+      Submit
+    </button>
+  </form>
+</div>

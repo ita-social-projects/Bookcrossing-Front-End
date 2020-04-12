@@ -16,6 +16,9 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { BooksComponent } from './shared/components/books/books.component';
 import { AddBookComponent } from './shared/components/add-book/add-book.component';
+import { AddLocationComponent } from './shared/components/add-location/add-location.component';
+import { LocationService } from './core/services/location/location.service';
+import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
 import { AuthorsComponent } from './shared/components/authors/authors.component';
 import { AuthorFormComponent } from './shared/components/author-form/author-form.component';
 import { ReportsComponent } from './shared/components/reports/reports.component';
@@ -33,6 +36,8 @@ import { RefDirective } from './shared/directives/ref.derictive';
     NavbarComponent,
     FooterComponent,
     BooksComponent,
+    AddLocationComponent,
+    MapboxComponent,
     AuthorsComponent,
     AuthorFormComponent,
     ReportsComponent,
@@ -50,7 +55,8 @@ import { RefDirective } from './shared/directives/ref.derictive';
     MatSelectModule
   ],
   providers: [
-    BookService
+    BookService,
+    LocationService
   ],  
   entryComponents: [AuthorFormComponent],
   bootstrap: [AppComponent]
