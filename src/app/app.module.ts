@@ -22,6 +22,14 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { BooksComponent } from './shared/components/books/books.component';
 import { AddBookComponent } from './shared/components/add-book/add-book.component';
 import { LanguageService } from './core/services/language/language.service';
+import { AddLocationComponent } from './shared/components/add-location/add-location.component';
+import { LocationService } from './core/services/location/location.service';
+import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
+import { AuthorsComponent } from './shared/components/authors/authors.component';
+import { AuthorFormComponent } from './shared/components/author-form/author-form.component';
+import { ReportsComponent } from './shared/components/reports/reports.component';
+import { FilterPipe } from './shared/pipes/filter.pipe';
+import { RefDirective } from './shared/directives/ref.derictive';
 
 @NgModule({
   declarations: [
@@ -33,7 +41,14 @@ import { LanguageService } from './core/services/language/language.service';
     RequestsComponent,
     NavbarComponent,
     FooterComponent,
-    BooksComponent
+    BooksComponent,
+    AddLocationComponent,
+    MapboxComponent,
+    AuthorsComponent,
+    AuthorFormComponent,
+    ReportsComponent,
+    FilterPipe,
+    RefDirective
   ],
   imports: [
     BrowserModule,
@@ -57,8 +72,10 @@ import { LanguageService } from './core/services/language/language.service';
   providers: [
     BookService,
     LanguageService,
-    CookieService
+    CookieService,
+    LocationService
   ],
+  entryComponents: [AuthorFormComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

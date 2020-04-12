@@ -3,4 +3,4 @@ export interface IAuthor {
     firstName: string;
     lastName: string;
     middleName?: string;
-  }  
+  } 

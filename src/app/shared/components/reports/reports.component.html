@@ -1,0 +1,32 @@
+<section class="card-body grey lighten-3 p-0 mt-2  border border-light rounded mb-0">
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Author Id</th>
+                    <th>Reported By</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Resolved By</th>
+                    <th>Resolve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let report of reports">
+                    <th scope="row">{{report.id}}</th>
+                    <td>{{report.reportedId}}</td>
+                    <td>{{report.reportedBy}}</td>
+                    <td>{{report.reason}}</td>
+                    <td>{{report.date}}</td>
+                    <td>{{report.resolvedBy}}</td>
+                    <td>
+                        <ng-container *ngIf="!(report.resolvedBy > 0)">
+                            <button class="btn btn-outline-success btn-md btn-md px-3 my-0" (click)=resolve(report.id)> <i class="fas fa-check-circle"></i></button>
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
