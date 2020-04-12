@@ -1,7 +1,8 @@
 {
     "common": {
         "language": "Змінити мову",
-        "id": "Номер"
+        "id": "Номер",
+        "routes": "Всі маршрути"
     },
     "components": {
         "requests": {

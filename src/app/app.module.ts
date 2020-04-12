@@ -30,6 +30,7 @@ import { AuthorFormComponent } from './shared/components/author-form/author-form
 import { ReportsComponent } from './shared/components/reports/reports.component';
 import { FilterPipe } from './shared/pipes/filter.pipe';
 import { RefDirective } from './shared/directives/ref.derictive';
+import { DemoComponent } from './shared/components/demo/demo.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RefDirective } from './shared/directives/ref.derictive';
     AuthorFormComponent,
     ReportsComponent,
     FilterPipe,
-    RefDirective
+    RefDirective,
+    DemoComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,8 @@
 {
     "common": {
         "language": "Change language",
-        "id": "Id"
+        "id": "Id",
+        "routes": "All routes"
     },
     "components": {
         "requests": {
