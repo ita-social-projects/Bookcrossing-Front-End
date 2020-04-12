@@ -28,8 +28,15 @@
 
 
     </div>
-
-
+    {{ 'TitleRoma' | translate }}
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>language</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item *ngFor="let lang of languages" [innerText]="languageService.langToString(lang)"
+              (click)="changeLang(lang)"></button>
+    </mat-menu>
+    
   </div>
 
 </nav>
