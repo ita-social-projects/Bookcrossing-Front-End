@@ -1,0 +1,29 @@
+{
+    "common": {
+        "language": "Змінити мову",
+        "id": "Номер",
+        "routes": "Всі маршрути"
+    },
+    "components": {
+        "requests": {
+            "requests": "Всі реквести",
+            "bookname": "Назва книги",
+            "requestdate": "Дата реквесту",
+            "approve" : "Схвалити",
+            "delete" : "Видалити",
+            "userwhorequested" : "Хто кинув реквест?"
+          },
+          "book": {
+            "name": "Назва книги",
+            "authors": "Автори",
+            "genres": "Жанри",
+            "publisher": "Видавець",
+            "availability" : "Доступність",
+            "available" : "Доступна",
+            "notAvailable" : "Зайнята",
+            "request": "Зареквестити",
+            "reviews": "Відгуки на книгу"
+          }
+
+    }
+}

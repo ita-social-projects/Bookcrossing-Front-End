@@ -10,7 +10,7 @@
         </button>
       </div>
   
-      <p class="white-text mx-3">All requests</p>
+      <p class="white-text mx-3">{{ 'components.requests.requests' | translate }}</p>
   
       <div>
         <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
@@ -34,37 +34,32 @@
               <th>
               </th>
               <th class="th-lg">
-                <a>Id
+                <a>{{ 'common.id' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Book id
+                <a href="">{{ 'components.requests.bookname' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Owner
+                <a href="">{{ 'components.requests.userwhorequested' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Who requested?
+                <a href="">{{ 'components.requests.requestdate' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Request date
+                <a href="">{{ 'components.requests.approve' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
               <th class="th-lg">
-                <a href="">Approve
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
-              </th>
-              <th class="th-lg">
-                <a href="">Delete
+                <a href="">{{ 'components.requests.delete' | translate }}
                   <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
@@ -77,7 +72,6 @@
               </th>
               <td>{{ request.id }}</td>
               <td><a [routerLink]="['/book/bookId']">{{ request.book.name }}</a></td>
-              <td>{{ request.owner.firstName + " " + request.owner.lastName}}</td>
               <td>{{ request.user.firstName + " " + request.user.lastName }}</td>
               <td>{{ request.requestDate  | date:'short'}}</td>
               <td>

@@ -1,0 +1,29 @@
+{
+    "common": {
+        "language": "Change language",
+        "id": "Id",
+        "routes": "All routes"
+    },
+    "components": {
+        "requests": {
+            "requests": "All requests",
+            "bookname": "Book name",
+            "requestdate": "Request date",
+            "approve" : "Approve",
+            "delete" : "Delete",
+            "userwhorequested" : "Who requested?"
+          },
+          "book": {
+            "name": "Book name",
+            "authors": "Authors",
+            "genres": "Genres",
+            "publisher": "Publisher",
+            "availability" : "Availability",
+            "available" : "Available",
+            "notAvailable" : "Not Available",
+            "request": "Request",
+            "reviews": "Book Reviews"
+          }
+
+    }
+}

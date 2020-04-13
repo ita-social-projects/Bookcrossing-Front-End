@@ -9,7 +9,7 @@
   
             <div class="carousel-inner text-center text-md-left" role="listbox">
               <div class="carousel-item active">
-                <img src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w"
+                <img src="https://img.labirint.ru/rcimg/2b2ee6f0361d60828fbf00293f581abd/960x540/comments_pic/1932/origin_0_017e82a45d4c7138d12776dd5006251f.jpg?1565173279"
                   alt="First slide" class="img-fluid">
               </div>
             </div>
@@ -21,26 +21,30 @@
   
           <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-grey-text mb-1 ml-xl-0 ml-4">{{ book.name }}</h2>
           <div *ngIf="book.available; then thenBlock else elseBlock"></div>
-          <ng-template #thenBlock><span class="badge badge-success product mb-4 ml-2">Available</span></ng-template>
-          <ng-template #elseBlock><span class="badge badge-danger product mb-4 ml-xl-0 ml-4">Not available</span></ng-template>
+          <ng-template #thenBlock><span class="badge badge-success product mb-4 ml-2">{{ 'components.book.available' | translate }}</span></ng-template>
+          <ng-template #elseBlock><span class="badge badge-danger product mb-4 ml-xl-0 ml-4">{{ 'components.book.notAvailable' | translate }}</span></ng-template>
   
           <div class="font-weight-normal">
             
             <p class="ml-xl-0 ml-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente nesciunt atque nemo neque ut officiis nostrum incidunt maiores, magni optio et sunt suscipit iusto nisi totam quis, nobis mollitia necessitatibus.</p>
   
             <p class="ml-xl-0 ml-4">
-              <strong>Authors: </strong><span *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</span></p>
+              <strong>{{ 'components.book.authors' | translate }}: </strong><span *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}}</span></p>
             <p class="ml-xl-0 ml-4">
-              <strong>Genres: </strong><span *ngFor="let genre of book.genres">{{ genre.name }}</span></p>
+              <strong>{{ 'components.book.genres' | translate }}: </strong><span *ngFor="let genre of book.genres">{{ genre.name }}</span></p>
             <p class="ml-xl-0 ml-4">
-              <strong>Publisher: </strong> {{ book.publisher }} </p>
+              <strong>{{ 'components.book.publisher' | translate }}: </strong> {{ book.publisher }} </p>
             <p class="ml-xl-0 ml-4">
-              <strong>Availability: </strong> {{ book.available }}</p>
+            
+              <strong>{{ 'components.book.availability' | translate }}: </strong> <span *ngIf="book.available; then thenBlock else elseBlock">
+                <ng-template #thenBlock><span class="badge badge-success product mb-4 ml-2">{{ 'components.book.available' | translate }}</span></ng-template>
+                <ng-template #elseBlock><span class="badge badge-danger product mb-4 ml-xl-0 ml-4">{{ 'components.book.notAvailable' | translate }}</span></ng-template>
+              </span></p>
             
               <div class="row">
                 <div class="col-md-2 text-center text-md-left text-md-right">
                   <button class="btn purple-gradient btn-rounded">
-                    <i class="mr-2" aria-hidden="true"></i> Request</button>
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button>
                 </div>
               </div>
   
@@ -57,7 +61,7 @@
 
     <section class="dark-grey-text mb-5">
   
-      <h3 class="font-weight-bold text-center mb-5">Book Reviews</h3>
+      <h3 class="font-weight-bold text-center mb-5">{{ 'components.book.reviews' | translate }}</h3>
       
       <div class="media mb-3">
         <img class="card-img-100 rounded-circle z-depth-1-half d-flex mr-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (8).jpg" alt="Generic placeholder image">

@@ -1,0 +1,42 @@
+<table class="table container">
+    <thead class="black white-text">
+      <tr>
+        <th scope="col">Route</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a [routerLink]="['/login']">/login</a></td>
+        <td>Login in our site</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/registration']">/registration</a></td>
+        <td>Registration in our site</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/book/1']">/book:/bookId</a></td>
+        <td>Single page for a book</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/requests/1']">/requests:/bookId</a></td>
+        <td>All requests for book</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/book']">/book</a></td>
+        <td>Add new book</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/books']">/books</a></td>
+        <td>List of all books</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/add-location']">/add-location</a></td>
+        <td>Add new location</td>
+      </tr>
+      <tr>
+        <td><a [routerLink]="['/authors']">/authors</a></td>
+        <td>Add new author</td>
+      </tr>
+    </tbody>
+  </table>
