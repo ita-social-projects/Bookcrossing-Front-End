@@ -28,14 +28,19 @@
 
 
     </div>
-
     <button mat-button [matMenuTriggerFor]="menu">
       {{'common.language' | translate}}
-      <mat-icon>g_translate</mat-icon>
+      <mat-icon>translate</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item *ngFor="let lang of languages" [innerText]="languageService.langToString(lang)"
-              (click)="changeLang(lang)"></button>
+      <button (click)="changeLang(languages[0])" mat-menu-item>
+        <span class="flag-icon flag-icon-gb"></span>
+        <span>{{'common.languages.gb'|translate}}</span>
+      </button>
+      <button (click)="changeLang(languages[1])" mat-menu-item>
+        <span class="flag-icon flag-icon-ua"></span>
+        <span>{{'common.languages.ua'|translate}}</span>
+      </button>
     </mat-menu>
     
   </div>

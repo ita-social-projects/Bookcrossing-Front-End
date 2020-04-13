@@ -1,9 +1,11 @@
+import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
+import {MatSortModule} from '@angular/material/sort';
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AppComponent } from './app.component';
@@ -22,6 +24,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { BooksComponent } from './shared/components/books/books.component';
 import { AddBookComponent } from './shared/components/add-book/add-book.component';
 import { LanguageService } from './core/services/language/language.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { AddLocationComponent } from './shared/components/add-location/add-location.component';
 import { LocationService } from './core/services/location/location.service';
 import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
@@ -64,6 +67,8 @@ import {ErrorInterceptor} from './shared/validators/error.interceptor';
     HttpClientModule,
     MatMenuModule,
     MatIconModule,
+    MatSortModule,
+    NgxPaginationModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -90,6 +95,7 @@ import {ErrorInterceptor} from './shared/validators/error.interceptor';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
 export function httpTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http , assetsUrl + 'i18n/', '.json');
 }

@@ -1,73 +1,47 @@
 
 <div class="card card-cascade narrower container mt-2 mb-4">
 
-    <div
-      class="view view-cascade gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
-  
-      <div>
-        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-          <i class="fas fa-th-large mt-0"></i>
-        </button>
-      </div>
-  
-      <p class="white-text mx-3">{{ 'components.requests.requests' | translate }}</p>
-  
-      <div>
-        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-          <i class="far fa-trash-alt mt-0"></i>
-        </button>
-        <button type="button" class="btn btn-outline-white btn-rounded btn-sm px-2">
-          <i class="fas fa-info-circle mt-0"></i>
-        </button>
-      </div>
-  
-    </div>
+  <div class="card-header white d-flex justify-content-between align-items-center py-3">
+    <p class="h5-responsive font-weight-bold mb-0">{{'components.requests.requests' | translate}}</p>
+  </div>
   
     <div class="px-4">
   
-      <div class="table-wrapper">
 
-        <table class="table table-hover mb-0">
+        <table class="table table-hover" matSort (matSortChange)="sortData($event)">
   
           <thead>
             <tr>
               <th>
               </th>
-              <th class="th-lg">
+              <th mat-sort-header="id" class="th-lg">
                 <a>{{ 'common.id' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
                 </a>
               </th>
-              <th class="th-lg">
-                <a href="">{{ 'components.requests.bookname' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
+              <th mat-sort-header="book" class="th-lg">
+                {{ 'components.requests.bookname' | translate }}
+                
+              </th>
+              <th mat-sort-header="user" class="th-lg">
+               {{ 'components.requests.userwhorequested' | translate }}
+                
+              </th>
+              <th mat-sort-header="requestdate" class="th-lg">
+                {{ 'components.requests.requestdate' | translate }}
+                
               </th>
               <th class="th-lg">
-                <a href="">{{ 'components.requests.userwhorequested' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
+              {{ 'components.requests.approve' | translate }}
               </th>
               <th class="th-lg">
-                <a href="">{{ 'components.requests.requestdate' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
-              </th>
-              <th class="th-lg">
-                <a href="">{{ 'components.requests.approve' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
-              </th>
-              <th class="th-lg">
-                <a href="">{{ 'components.requests.delete' | translate }}
-                  <i class="fas fa-sort ml-1"></i>
-                </a>
+                {{ 'components.requests.delete' | translate }}
+                
               </th>
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let request of requests">
+            <tr *ngFor="let request of sortedData | paginate:{itemsPerPage: 10, currentPage:p}">
               <th scope="row">
               </th>
               <td>{{ request.id }}</td>
@@ -75,20 +49,23 @@
               <td>{{ request.user.firstName + " " + request.user.lastName }}</td>
               <td>{{ request.requestDate  | date:'short'}}</td>
               <td>
-                <button type="button" class="btn blue-gradient btn-sm m-0 waves-effect" (click)="approveRequest(request.id)">Approve</button>
+                <button type="button" class="btn blue-gradient btn-sm waves-effect" (click)="approveRequest(request.id)">{{ 'components.requests.approve' | translate }}</button>
               </td>
               <td>
-                <button type="button" class="btn btn-sm peach-gradient" data-toggle="tooltip" data-placement="top"
-                title="Remove item" (click)="deleteRequest(request.id)">X
-              </button>
+                <button type="button" class="btn btn-sm peach-gradient waves-effect" (click)="deleteRequest(request.id)">X</button>
               </td>
             </tr>
           </tbody>
 
         </table>
-
-      </div>
-
+        <div id="pagination">
+          <pagination-controls autoHide="true"
+          previousLabel="Previous"
+          nextLabel="Next"
+          screenReaderPageLabel="page" 
+          (pageChange)="p=$event"></pagination-controls>
+        </div>  
+        
     </div>
 
   </div>
