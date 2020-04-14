@@ -36,6 +36,7 @@ export class RequestsComponent implements OnInit {
       this.sortedData = this.requests.slice();
     });
   }
+  
   sortData(sort: Sort) {
     const data = this.requests.slice();
     if (!sort.active || sort.direction === '') {
@@ -54,7 +55,6 @@ export class RequestsComponent implements OnInit {
       }
     });
   }
-
   approveRequest(requestId: number) {
     this.requestService.approveRequest(requestId).subscribe((value: IRequest) => {
       this.requests[requestId] = value;

@@ -19,15 +19,15 @@
                 </a>
               </th>
               <th mat-sort-header="book" class="th-lg">
-                {{ 'components.requests.bookname' | translate }}
+                {{ 'components.requests.book-name' | translate }}
                 
               </th>
               <th mat-sort-header="user" class="th-lg">
-               {{ 'components.requests.userwhorequested' | translate }}
+               {{ 'components.requests.user-who-requested' | translate }}
                 
               </th>
               <th mat-sort-header="requestdate" class="th-lg">
-                {{ 'components.requests.requestdate' | translate }}
+                {{ 'components.requests.request-date' | translate }}
                 
               </th>
               <th class="th-lg">
@@ -60,8 +60,8 @@
         </table>
         <div id="pagination">
           <pagination-controls autoHide="true"
-          previousLabel="Previous"
-          nextLabel="Next"
+          previousLabel="{{'components.requests.previous'|translate}}"
+          nextLabel="{{'components.requests.next'|translate}}"
           screenReaderPageLabel="page" 
           (pageChange)="p=$event"></pagination-controls>
         </div>  

@@ -38,5 +38,9 @@ export class BookComponent implements OnInit {
   });
   }
   
+  requestBook() {
+    this.requestService.requestBook(this.bookId);
+  }
+  
 
 }

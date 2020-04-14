@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-
 import { map } from 'rxjs/operators';
-
 import {loginUrl} from '../../../configs/api-endpoint.constants';
-
-
+import {userUrl} from '../../../configs/api-endpoint.constants';
 import { IUser } from '../../models/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   readonly baseUrl = loginUrl;
+  readonly passwordUrl = userUrl;
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
 
@@ -43,5 +41,20 @@ export class AuthenticationService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+  }
+  
+  resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
+    return this.http.put(`${this.passwordUrl}/password/`, {
+      Password,
+      PasswordConfirmation,
+      Email,
+      ConfirmationNumber
+    });
+  }
+
+  forgotPassword(email) {
+    return this.http.post(`${this.passwordUrl}/password/`, {
+     email
+    });
   }
 }

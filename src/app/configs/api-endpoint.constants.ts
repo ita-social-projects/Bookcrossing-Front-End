@@ -8,4 +8,5 @@ export const bookUrl = baseUrl + "books/";
 export const authorUrl = baseUrl + "authors";
 export const locationUrl = baseUrl + 'location';
 export const loginUrl = baseUrl + 'login';
+export const userUrl = baseUrl + 'users';
 
