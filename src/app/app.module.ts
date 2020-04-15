@@ -44,7 +44,8 @@ import {RefDirective} from './shared/directives/ref.derictive';
 import {AdminComponent} from './shared/components/admin/admin.component';
 import {JwtInterceptor} from './shared/validators/jwt.interceptor';
 import {ErrorInterceptor} from './shared/validators/error.interceptor';
-
+import { ViewLocationComponent } from './shared/components/view-location/view-location.component';
+import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -68,8 +69,9 @@ import {ErrorInterceptor} from './shared/validators/error.interceptor';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     AdminComponent,
-    DemoComponent
-
+    DemoComponent,
+    ViewLocationComponent,
+    ContentFilterPipe
   ],
   imports: [
     BrowserModule,

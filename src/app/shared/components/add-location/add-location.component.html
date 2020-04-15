@@ -1,11 +1,21 @@
-<app-mapbox></app-mapbox>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <app-mapbox></app-mapbox>
+    </div>
+    <div class="col">
+      <app-view-location [isAdmin]="true" (editEvent)="onEditClick($event)"></app-view-location>
+    </div>
+  </div>
+</div>
 <div>
   <form
     [formGroup]="addLocationForm"
     (ngSubmit)="onSubmit()"
     class="text-center border border-light p-5"
   >
-    <p class="h4 mb-4">Add location</p>
+    <p class="h4 mb-4" *ngIf="!isEdited">Add location</p>
+    <p class="h4 mb-4" *ngIf="isEdited">Edit location</p>
 
     <div class="form-row mb-4">
       <div class="col">
@@ -50,5 +60,12 @@
     >
       Submit
     </button>
+    <button *ngIf="isEdited" 
+    class="btn btn-danger"
+    type="submit"
+    (click)="onEditCancel()"
+  >
+    Cancel
+  </button>
   </form>
 </div>
