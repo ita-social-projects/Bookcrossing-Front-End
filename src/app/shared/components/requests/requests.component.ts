@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { IRequest } from 'src/app/core/models/request'
-import { Sort } from '@angular/material/sort';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { switchMap } from 'rxjs/operators';
 import { NotificationService } from "../../../core/services/notification/notification.service";
 import {TranslateService} from "@ngx-translate/core";
-import { NgxPaginationModule } from 'ngx-pagination';
+import { PaginationParameters } from 'src/app/core/models/paginationParameters';
 import { RequestService } from 'src/app/core/services/request/request.service'
 
 @Component({
@@ -16,16 +15,18 @@ import { RequestService } from 'src/app/core/services/request/request.service'
 })
 export class RequestsComponent implements OnInit {
   
-  p: number = 1;
   bookId: number;
   requests: IRequest[];
-  sortedData: IRequest[];
+  queryParams : PaginationParameters = new PaginationParameters();
+  searchText : string;
+  totalSize : number;  
   
   constructor(
     private translate: TranslateService,
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private requestService: RequestService,
+    private router : Router,
   ) {}
 
   ngOnInit() {
@@ -34,54 +35,85 @@ export class RequestsComponent implements OnInit {
       switchMap(params => params.getAll('id'))
   )
   .subscribe(data=> this.bookId = +data);
-
-    this.requestService.getAllRequestesByBookId(this.bookId).subscribe((value: IRequest[]) => {
-      this.requests = value;
-      this.sortedData = this.requests.slice();
-    });
+  this.route.queryParams.subscribe((params : Params) => {
+    this.mapParams(params);      
+    this.searchText = params.searchQuery;
+    this.getAllRequestsByBookId(this.bookId, this.queryParams);
+  })
   }
-  
-  sortData(sort: Sort) {
-    const data = this.requests.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'id': return compare(a.id, b.id, isAsc);
-        case 'book': return compare(a.book.name, a.book.name, isAsc);
-        case 'user': return compare(a.user.firstName, a.user.firstName, isAsc);
-        case 'date': return compare(a.requestDate.toDateString(), b.requestDate.toDateString(), isAsc);
-        default: return 0;
+  getAllRequestsByBookId(bookId: number, params : PaginationParameters) : void {      
+    this.requestService.getAllRequestesByBookId(bookId, params)
+    .subscribe( {
+      next: pageData => {
+      this.requests = pageData.page;
+      if(pageData.totalCount){
+        this.totalSize = pageData.totalCount;
       }
-    });
-  }
+    },
+    error: error => this.notificationService.warn(this.translate
+      .instant("Something went wrong!"))
+   });   
+  };
+
   approveRequest(requestId: number) {
-    this.requestService.approveRequest(requestId).subscribe((value: IRequest) => {
-      this.requests[requestId] = value;
-      this.notificationService.success(this.translate
-        .instant("Request successfully approved"));
+    this.requestService.approveRequest(requestId).subscribe((value: boolean) => {
+      if(value){
+        this.notificationService.success(this.translate
+          .instant("Request successfully approved"))
+      }
+
       }, err => {
         this.notificationService.warn(this.translate
-          .instant("Something went wrong!"));
+          .instant("Something went wrong!"))
       })
   }
 
   deleteRequest(requestId: number) {
-    this.requestService.deleteRequest(requestId).subscribe((value: IRequest) => {
-      this.requests[requestId] = value;
-      this.notificationService.success(this.translate
-        .instant("Request successfully deleted"));
+    this.requestService.deleteRequest(requestId).subscribe((value: boolean) => {
+      if(value) {
+        this.notificationService.success(this.translate
+          .instant("Request successfully deleted"))
+      }
       }, err => {
         this.notificationService.warn(this.translate
           .instant("Something went wrong!"));
       })
   }
+  search() : void{
+    if(this.queryParams.searchQuery == this.searchText){
+      return;
+    }
+    this.queryParams.page = 1;
+    this.queryParams.firstRequest = true;
+    this.queryParams.searchQuery = this.searchText;
+    this.changeUrl(this.queryParams);
+  }
+  changeSort(selectedHeader : string){  
+    this.queryParams.orderByField = selectedHeader; 
+    this.queryParams.searchField = selectedHeader;
+    this.queryParams.orderByAscending = !this.queryParams.orderByAscending;
+    this.changeUrl(this.queryParams);
+  }
+  pageChanged(currentPage : number) : void{      
+      this.queryParams.page = currentPage; 
+      this.queryParams.firstRequest = false; 
+      this.changeUrl(this.queryParams);
+  }
+  private changeUrl(params : PaginationParameters)  : void{
+    this.router.navigate(['.'], 
+      {
+        relativeTo: this.route, 
+        queryParams: params,
+        queryParamsHandling: 'merge',
+      });
+  }  
+  private mapParams(params: Params, defaultPage : number = 1, defultPageSize : number = 5, defaultSearchField : string = "id", ) {
+    this.queryParams.page = params.page ? +params.page : defaultPage;
+    this.queryParams.searchQuery = params.searchQuery ? params.searchQuery : null;    
+    this.queryParams.pageSize = params.pageSize ? +params.pageSize : defultPageSize;
+    this.queryParams.searchField = params.searchField ? params.searchField : defaultSearchField;
+    this.queryParams.orderByAscending = params.orderByAscending ? params.orderByAscending : true;
+    this.queryParams.orderByField = params.orderByField ? params.orderByField : defaultSearchField;
+  } 
 
-}
-function compare(a: number | string | Date, b: number | string | Date, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

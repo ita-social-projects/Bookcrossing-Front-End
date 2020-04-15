@@ -30,3 +30,4 @@ export class PaginationService {
     return this.http.get<IPage<T>>(getUrl, { params });
   }
 }
+

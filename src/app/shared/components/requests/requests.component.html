@@ -3,30 +3,43 @@
 
   <div class="card-header white d-flex justify-content-between align-items-center py-3">
     <p class="h5-responsive font-weight-bold mb-0">{{'components.requests.requests' | translate}}</p>
+    <div class="col">
+      <div class="input-group">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search"
+          [(ngModel)]="searchText" (keyup.enter)="search()">
+        <div class="input-group-append">
+          <button class="input-group-text btn-light" (click)="search()">
+            <i class="fas fa-search text-grey" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   
     <div class="px-4">
   
 
-        <table class="table table-hover" matSort (matSortChange)="sortData($event)">
+        <table class="table table-hover" matSort >
   
           <thead>
             <tr>
               <th>
               </th>
-              <th mat-sort-header="id" class="th-lg">
+              <th mat-sort-header="id" (click)="changeSort('Id')"
+              [ngClass]="{'active-header': queryParams.orderByField == 'Id'}">
                 <a>{{ 'common.id' | translate }}
                 </a>
               </th>
-              <th mat-sort-header="book" class="th-lg">
+              <th>
                 {{ 'components.requests.book-name' | translate }}
                 
               </th>
-              <th mat-sort-header="user" class="th-lg">
+              <th>
                {{ 'components.requests.user-who-requested' | translate }}
                 
               </th>
-              <th mat-sort-header="requestdate" class="th-lg">
+              <th mat-sort-header="requestdate" (click)="changeSort('RequestDate')"
+              [ngClass]="{'active-header': queryParams.orderByField == 'RequestDate'}">
                 {{ 'components.requests.request-date' | translate }}
                 
               </th>
@@ -41,7 +54,7 @@
           </thead>
 
           <tbody>
-            <tr *ngFor="let request of sortedData | paginate:{itemsPerPage: 10, currentPage:p}">
+            <tr *ngFor="let request of requests">
               <th scope="row">
               </th>
               <td>{{ request.id }}</td>
@@ -58,13 +71,9 @@
           </tbody>
 
         </table>
-        <div id="pagination">
-          <pagination-controls autoHide="true"
-          previousLabel="{{'components.requests.previous'|translate}}"
-          nextLabel="{{'components.requests.next'|translate}}"
-          screenReaderPageLabel="page" 
-          (pageChange)="p=$event"></pagination-controls>
-        </div>  
+        <app-pagination *ngIf="requests && requests.length > 0" [arraySize]="totalSize"
+          [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+        </app-pagination>
         
     </div>
 

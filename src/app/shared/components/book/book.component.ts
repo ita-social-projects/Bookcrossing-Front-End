@@ -47,7 +47,7 @@ export class BookComponent implements OnInit {
     this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
       this.request = value;
       this.notificationService.success(this.translate
-        .instant("Request successfully approved"));
+        .instant("Book succesfully requested"));
       }, err => {
         this.notificationService.warn(this.translate
           .instant("Something went wrong!"));
