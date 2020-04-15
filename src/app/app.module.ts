@@ -24,6 +24,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { BooksComponent } from './shared/components/books/books.component';
 import { AddBookComponent } from './shared/components/add-book/add-book.component';
+import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import {MatCardModule} from '@angular/material/card';
 import { LanguageService } from './core/services/language/language.service';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -65,6 +66,7 @@ import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
     ReportsComponent,
     FilterPipe,
     RefDirective,
+    PaginationComponent,
     DemoComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,

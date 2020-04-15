@@ -1,7 +1,3 @@
-.active-head {
-   color: #A9A9A9;
-   text-decoration: underline;
-}
 
 card [class*=card-header-]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
     border-radius: 3px;
@@ -27,7 +23,9 @@ card .card-body {
 .table tbody td {
     font-size: 1rem;
 }
-
+.active-header{
+    background-color: #eceff1;
+ }
 @media (max-width: 800px) {
     .list-unstyled .button-label {
       display: none;
@@ -38,4 +36,7 @@ card .card-body {
     .action{
         width:auto;
     }
+  }
+table {
+    width: 100%;
   }

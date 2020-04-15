@@ -12,7 +12,6 @@ export class AuthorFormComponent implements OnInit {
 @Output() onAction : EventEmitter<IAuthor> = new EventEmitter<IAuthor>()
 @Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
 @Input() author : IAuthor
-@Input() isNewAuthor : boolean = true;
 form: FormGroup
 title : string = "Add Author";
 
@@ -40,14 +39,11 @@ title : string = "Add Author";
 
   submit(): void {
     const newAuthor: IAuthor = {
+      id: this.form.get('id').value,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
       middleName: this.form.get('middleName').value
     };
-    if(!this.isNewAuthor){
-      newAuthor.id = this.form.get('id').value;
-    }  
-
     this.onAction.emit(newAuthor);
     this.cancel();
   };
