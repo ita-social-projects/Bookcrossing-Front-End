@@ -6,6 +6,9 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { ActivatedRoute } from '@angular/router';
 import { bookUrl } from 'src/app/configs/api-endpoint.constants';
 import { IBook } from "src/app/core/models/book";
+import { NotificationService } from "../../../core/services/notification/notification.service";
+import {TranslateService} from "@ngx-translate/core";
+import { IRequest } from 'src/app/core/models/request';
 
 @Component({
   selector: 'app-book',
@@ -18,10 +21,12 @@ export class BookComponent implements OnInit {
     readonly baseUrl = bookUrl;
     book: IBook;
     bookId: number;
+    request: IRequest;
 
   constructor(
+    private translate: TranslateService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
-    private http: HttpClient,
     private bookService:BookService,
     private requestService:RequestService
     ) {}
@@ -39,7 +44,14 @@ export class BookComponent implements OnInit {
   }
   
   requestBook() {
-    this.requestService.requestBook(this.bookId);
+    this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
+      this.request = value;
+      this.notificationService.success(this.translate
+        .instant("Request successfully approved"));
+      }, err => {
+        this.notificationService.warn(this.translate
+          .instant("Something went wrong!"));
+      });
   }
   
 

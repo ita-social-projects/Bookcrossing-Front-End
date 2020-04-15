@@ -12,7 +12,7 @@ export class RequestService {
   readonly baseUrl = requestUrl;
 
   requestBook(bookId: number) {
-    this.http.post<IRequest>(this.baseUrl + `/${bookId}`, {
+    return this.http.post<IRequest>(this.baseUrl + `/${bookId}`, {
       bookId: bookId,
     });
   }

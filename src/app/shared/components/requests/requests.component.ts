@@ -3,6 +3,8 @@ import { IRequest } from 'src/app/core/models/request'
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from "@angular/router";
 import { switchMap } from 'rxjs/operators';
+import { NotificationService } from "../../../core/services/notification/notification.service";
+import {TranslateService} from "@ngx-translate/core";
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RequestService } from 'src/app/core/services/request/request.service'
 
@@ -20,6 +22,8 @@ export class RequestsComponent implements OnInit {
   sortedData: IRequest[];
   
   constructor(
+    private translate: TranslateService,
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private requestService: RequestService,
   ) {}
@@ -58,13 +62,23 @@ export class RequestsComponent implements OnInit {
   approveRequest(requestId: number) {
     this.requestService.approveRequest(requestId).subscribe((value: IRequest) => {
       this.requests[requestId] = value;
-    });;
+      this.notificationService.success(this.translate
+        .instant("Request successfully approved"));
+      }, err => {
+        this.notificationService.warn(this.translate
+          .instant("Something went wrong!"));
+      })
   }
 
   deleteRequest(requestId: number) {
     this.requestService.deleteRequest(requestId).subscribe((value: IRequest) => {
       this.requests[requestId] = value;
-    });;
+      this.notificationService.success(this.translate
+        .instant("Request successfully deleted"));
+      }, err => {
+        this.notificationService.warn(this.translate
+          .instant("Something went wrong!"));
+      })
   }
 
 }

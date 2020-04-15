@@ -49,10 +49,10 @@
               <td>{{ request.user.firstName + " " + request.user.lastName }}</td>
               <td>{{ request.requestDate  | date:'short'}}</td>
               <td>
-                <button type="button" class="btn blue-gradient btn-sm waves-effect" (click)="approveRequest(request.id)">{{ 'components.requests.approve' | translate }}</button>
+                <button type="button" class="btn btn-outline-success btn-sm waves-effect" (click)="approveRequest(request.id)">{{ 'components.requests.approve' | translate }}</button>
               </td>
               <td>
-                <button type="button" class="btn btn-sm peach-gradient waves-effect" (click)="deleteRequest(request.id)">X</button>
+                <button type="button" class="btn btn-sm btn-outline-danger waves-effect" (click)="deleteRequest(request.id)">X</button>
               </td>
             </tr>
           </tbody>
