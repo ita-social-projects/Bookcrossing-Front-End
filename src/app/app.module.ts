@@ -51,6 +51,7 @@ import { ErrorInterceptor } from './shared/validators/error.interceptor';
 import { MatButtonModule  } from '@angular/material/button';
 import { ViewLocationComponent } from './shared/components/view-location/view-location.component';
 import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
+import { GenreService } from './core/services/genre/genre';
 
 @NgModule({
   declarations: [
@@ -122,7 +123,8 @@ import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
     NotificationService,
     CookieService,
     JwtHelperService,
-    LocationService
+    LocationService,
+    GenreService
 
   ],
   entryComponents: [AuthorFormComponent],

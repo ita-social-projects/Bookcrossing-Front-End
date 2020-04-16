@@ -62,27 +62,45 @@
       </div>
     </div>
 
-      <!-- Authors -->
-      <div  class="mb-4">
-        <div class="input-group" 
-        formGroupName="author">
+    <!-- Authors -->
+    <!-- Select Existing  -->
+    <div class="row">
+      <div class="col mb-4">
+        <app-authors (selectRow)="addAuthor($event)" [isAdmin]="false"></app-authors>
+      </div>
+      <!-- Add new Author form -->
+      <div class="col mb-4">
+        <!-- <div class="col-2 mb-4"> -->
+          <div class="container my-5">
+            <button *ngIf="!addNewAuthor" (click)="addNewAuthor=true"
+              class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
+            >
+              Add new author
+            </button>
+          </div>
+        <!-- </div> -->
+        <div
+          *ngIf="addNewAuthor"
+          class="input-group container my-5"
+          [formGroup]="authorControl"
+        >
           <input
             formControlName="firstName"
             type="text"
             class="form-control"
-            placeholder="Author Firstname"
+            placeholder="Firstname"
           />
           <input
             formControlName="middleName"
             type="text"
             class="form-control"
-            placeholder="Author Middlename"
+            placeholder="Middlename"
           />
           <input
             formControlName="lastName"
             type="text"
             class="form-control"
-            placeholder="Author Lastname"
+            placeholder="Lastname"
           />
           <div class="input-group-append">
             <button
@@ -91,27 +109,37 @@
               [disabled]="authorControl.invalid"
               (click)="onAddAuthor()"
             >
-              Add Author
+              Add author
             </button>
           </div>
         </div>
         <div>
           <ul class="list-group authors-list">
             <li *ngFor="let author of authors" class="list-group-item">
-              <span>{{ author.firstName + " " +  author.middleName + "  " + author.lastName }}</span>
-              <button class="btn btn-md btn-outline-danger m-0 px-3 py-2 z-depth-0 waves-effect" (click)="onDeleteAuthor(author)">
+              <span>{{
+                author.firstName +
+                  " " +
+                  author.middleName +
+                  "  " +
+                  author.lastName
+              }}</span>
+              <button
+                class="btn btn-md btn-outline-danger m-0 px-3 py-2 z-depth-0 waves-effect"
+                (click)="onDeleteAuthor(author)"
+              >
                 Delete
               </button>
             </li>
           </ul>
         </div>
       </div>
+    </div>
 
     <!-- Add book button -->
     <button
-      class="btn btn-info "
+      class="btn btn-info"
       type="submit"
-      [disabled]="(addBookForm.invalid || authors.length === 0)"
+      [disabled]="addBookForm.invalid|| authors.length === 0"
     >
       Submit
     </button>

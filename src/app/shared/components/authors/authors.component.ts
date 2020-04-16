@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ComponentFactoryResolver, Output, EventEmitter, Input } from '@angular/core';
 import { IAuthor } from "src/app/core/models/author";
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {AuthorService} from "src/app/core/services/author/authors.service";
@@ -15,6 +15,8 @@ export class AuthorsComponent implements OnInit {
 
   @ViewChild(RefDirective, {static: false}) refDir : RefDirective
 
+  @Output() selectRow = new EventEmitter<IAuthor>();
+  @Input() isAdmin: boolean = true;
   authors : IAuthor[];
   queryParams : PaginationParameters = new PaginationParameters();
   searchText : string;
@@ -101,4 +103,8 @@ export class AuthorsComponent implements OnInit {
     error: error => console.error(error)
    });   
   };
+
+  onSelectRow(author){
+    this.selectRow.emit(author);
+  }
 }

@@ -9,6 +9,7 @@ import { LocationService } from 'src/app/core/services/location/location.service
 })
 export class ViewLocationComponent implements OnInit {
   @Output() editEvent = new EventEmitter<ILocation>();
+  @Input() isAdmin: boolean;
 
   locations: ILocation[] = [];
   searchField: string = '';
@@ -23,8 +24,6 @@ export class ViewLocationComponent implements OnInit {
       }
     });
   }
-
-  @Input() isAdmin: boolean;
 
   ngOnInit(): void {
     this.getLocation();
@@ -54,7 +53,6 @@ export class ViewLocationComponent implements OnInit {
   }
 
   onEditLocation(location: ILocation, index: number) {
-    // this.locations[index] = location;
     this.editEvent.emit(location);
   }
 }
