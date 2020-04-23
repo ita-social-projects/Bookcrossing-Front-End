@@ -2,7 +2,7 @@
 
   <div class="container">
 
-    <a class="navbar-brand md-tabs nav-justified py-0"><i class="fas white-text fa-book"> Bookcrossing</i></a>
+    <a class="navbar-brand md-tabs nav-justified py-0" routerLink=""><i class="fas white-text fa-book"> Bookcrossing</i></a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
             aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,6 +16,9 @@
       <ul class="navbar-nav mr-auto text-uppercase">
 
         <!--add new links here  -->
+          <li class="nav-item">
+            <a class="nav-link" routerLink="">{{'common.home' | translate}}</a>
+          </li>
           <li class="nav-item">
              <a class="nav-link" routerLink="demo">{{'common.routes' | translate}}</a>
           </li>

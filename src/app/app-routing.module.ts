@@ -13,9 +13,12 @@ import { AddLocationComponent } from './shared/components/add-location/add-locat
 import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
 import { ForgotPasswordComponent } from './shared/components/password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './shared/components/password/reset-password/reset-password.component';
+import {HomeComponent} from './shared/components/home/home.component';
+import {RulesComponent} from "./shared/components/rules/rules.component";
 
 
 
+// @ts-ignore
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
@@ -33,6 +36,8 @@ const routes: Routes = [
   {path :'books',component:BooksComponent},
   {path: 'add-location', component: AddLocationComponent },
   {path: 'authors',component:AuthorsComponent},
+  {path: '', component: HomeComponent},
+  {path: 'rules', component: RulesComponent},
   {path: 'demo',component:DemoComponent},
   { path: 'password', children:
     [
