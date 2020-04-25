@@ -54,6 +54,7 @@ import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
 import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
+import { GenreComponent } from './shared/components/genre/genre.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { RulesComponent } from './shared/components/rules/rules.component';
     ViewLocationComponent,
     ContentFilterPipe,
     HomeComponent,
-    RulesComponent
+    RulesComponent,
+    GenreComponent
   ],
   imports: [
     BrowserModule,
