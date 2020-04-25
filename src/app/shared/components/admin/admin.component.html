@@ -1,1 +1,22 @@
-<p>admin works!</p>
+<div class="sidebar-fixed pt-5">
+    <div class="d-flex justify-content-center">
+        <img src="https://lh3.googleusercontent.com/proxy/C0piNkXxXbU2nBoSl5jWBuEjYWIc4_Lh9Dxx3dcvY1aNRw8e6lDQaADhDFLd5mM-vsj3-za747xa-fprQIx2jS7yLGPXg8QfPk1O8m9l"
+            class="logo-header" alt="company's logo">
+    </div>
+    <div class="list-group list-group-flush">
+        <div class="list-group-item active waves-effect" (click)="showTableManagement = !showTableManagement">
+            <i class="fa fa-pie-chart mr-3"></i>Table Management
+        </div>
+        <div *ngIf="showTableManagement">
+            <a routerLink="authors" class="list-group-item list-group-item-action waves-effect">
+                <i class="fas fa-table mr-3"></i>Authors</a>
+            <a routerLink="." class="list-group-item list-group-item-action waves-effect">
+                <i class="fas fa-table mr-3"></i>Not implemented</a>
+            <a routerLink="." class="list-group-item list-group-item-action waves-effect">
+                <i class="fas fa-table mr-3"></i>Not implemented</a>
+        </div>
+    </div>
+</div>
+<div class="admin-container">
+    <router-outlet></router-outlet>
+</div>

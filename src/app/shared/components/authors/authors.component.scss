@@ -1,12 +1,17 @@
 
-card [class*=card-header-]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
-    border-radius: 3px;
-    margin-top: -20px;
-    padding: 15px;
-}
-card .card-body {
-    padding: .9375rem 20px;
-    position: relative;
+// card [class*=card-header-]:not(.card-header-icon):not(.card-header-text):not(.card-header-image) {
+//     border-radius: 3px;
+//     margin-top: -20px;
+//     padding: 15px;
+// }
+// card .card-body {
+//     padding: .9375rem 20px;
+//     position: relative;
+// }
+
+
+:host{
+    background-color: black;
 }
 .table {
     width: 100%;

@@ -23,17 +23,32 @@ export class AuthorsComponent implements OnInit {
   totalSize : number;  
   isReportTableToggled : boolean = false;
 
-  constructor(private routeActive : ActivatedRoute,private router : Router, private authorService: AuthorService, private resolver: ComponentFactoryResolver) { }
+  constructor(
+    private routeActive : ActivatedRoute,
+    private router : Router, 
+    private authorService: AuthorService, 
+    private resolver: ComponentFactoryResolver
+    ) { }
 
 
   ngOnInit() {
+    this.onAuthorEditted();
     this.routeActive.queryParams.subscribe((params : Params) => {
-      this.mapParams(params);      
+      this.mapParams(params,1,10,"lastname");      
       this.searchText = params.searchQuery;
       this.getAuthors(this.queryParams);
     })
   }; 
 
+  private onAuthorEditted() {
+    this.authorService.authorEdited$.subscribe((author) => {
+      let editedAuthor = this.authors.find((x) => x.id === author.id);
+      if (editedAuthor) {
+        const index = this.authors.indexOf(editedAuthor);
+        this.authors[index] = author;
+      }
+    });
+  }
   //Pagination/URL
   search() : void{
     if(this.queryParams.searchQuery == this.searchText){
@@ -58,18 +73,17 @@ export class AuthorsComponent implements OnInit {
   private changeUrl(params : PaginationParameters)  : void{
     this.router.navigate(['.'], 
       {
-        relativeTo: this.routeActive, 
-        queryParams: params,
-        queryParamsHandling: 'merge',
+        relativeTo: this.routeActive,
+        queryParams: params
       });
   }  
-  private mapParams(params: Params, defaultPage : number = 1, defultPageSize : number = 10, defaultSearchField : string = "lastName", ) {
-    this.queryParams.page = params.page ? +params.page : defaultPage;
-    this.queryParams.searchQuery = params.searchQuery ? params.searchQuery : null;    
+  private mapParams(params: Params, defaultPage : number = 1, defultPageSize : number = 10, defaultField? : string ) {
+    this.queryParams.page = params.page ? +params.page : defaultPage;   
     this.queryParams.pageSize = params.pageSize ? +params.pageSize : defultPageSize;
-    this.queryParams.searchField = params.searchField ? params.searchField : defaultSearchField;
+    this.queryParams.searchQuery = params.searchQuery ? params.searchQuery : null; 
+    this.queryParams.searchField = params.searchField ? params.searchField : defaultField;
     this.queryParams.orderByAscending = params.orderByAscending ? params.orderByAscending : true;
-    this.queryParams.orderByField = params.orderByField ? params.orderByField : defaultSearchField;
+    this.queryParams.orderByField = params.orderByField ? params.orderByField : defaultField;
   } 
 
   //Form
@@ -79,28 +93,21 @@ export class AuthorsComponent implements OnInit {
     instance.title = "Edit Author";
     instance.author = author;
     instance.onCancel.subscribe(()=> this.refDir.containerRef.clear());
-    instance.onAction.subscribe(author => this.editAuthor(author,index));
   };
 
-  //CRUD
-  editAuthor(author: IAuthor, index : number): void {
-    this.authorService.updateAuthor(author).subscribe({
-      next: () => {
-        this.authors[index] = author;
-      },
-      error: error => console.error(error)
-    });
-  };
+  //Get
   getAuthors(params : PaginationParameters) : void {      
     this.authorService.getAuthorsPage(params)
     .subscribe( {
       next: pageData => {
       this.authors = pageData.page;
       if(pageData.totalCount){
-        this.totalSize = pageData.totalCount;
+        this.totalSize = pageData.totalCount;        
       }
     },
-    error: error => console.error(error)
+    error: error => {
+      alert("An error has occured, please try again");
+    }
    });   
   };
 

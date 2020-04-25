@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { IAuthor } from "src/app/core/models/author";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AuthorService } from 'src/app/core/services/author/authors.service';
 
 @Component({
   selector: 'app-author-form',
@@ -9,13 +10,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class AuthorFormComponent implements OnInit {
 
-@Output() onAction : EventEmitter<IAuthor> = new EventEmitter<IAuthor>()
 @Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
 @Input() author : IAuthor
 form: FormGroup
 title : string = "Add Author";
 
-  constructor() { }
+  constructor(private authorService: AuthorService,) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -44,11 +44,24 @@ title : string = "Add Author";
       lastName: this.form.get('lastName').value,
       middleName: this.form.get('middleName').value
     };
-    this.onAction.emit(newAuthor);
-    this.cancel();
+    this.updateAuthor(newAuthor);
   };
 
   cancel(): void {
     this.onCancel.emit();
+    this.form.reset();
+  }
+
+  updateAuthor(author: IAuthor){
+    this.authorService.updateAuthor(author).subscribe(
+      (data: IAuthor) => {
+        alert("Changes accepted");
+        this.authorService.editAuthor(author);
+        this.cancel();
+      },
+      (error) => {
+        alert(error.message);
+      },      
+    )
   }
 }

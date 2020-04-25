@@ -9,6 +9,7 @@ import {BooksComponent} from './shared/components/books/books.component';
 import {AuthorsComponent} from './shared/components/authors/authors.component';
 import {AddBookComponent} from './shared/components/add-book/add-book.component';
 import { DemoComponent } from './shared/components/demo/demo.component';
+import {AdminComponent} from './shared/components/admin/admin.component';
 import { AddLocationComponent } from './shared/components/add-location/add-location.component';
 import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
 import { ForgotPasswordComponent } from './shared/components/password/forgot-password/forgot-password.component';
@@ -27,15 +28,18 @@ const routes: Routes = [
   //     { path: '', component: AdminDashboardComponent },
   //   ]
   // },
+  {path: 'admin',component:AdminComponent,children:
+  [
+    {path: 'authors',component: AuthorsComponent}
+  ]
+  },
 
   {path: 'book/:id', component: BookComponent},
   {path: 'book', component: AddBookComponent},
   {path: 'requests/:id', component: RequestsComponent},
   {path: 'books', component: BooksComponent},
-  {path: 'authors', component: AuthorsComponent},
   {path :'books',component:BooksComponent},
   {path: 'add-location', component: AddLocationComponent },
-  {path: 'authors',component:AuthorsComponent},
   {path: '', component: HomeComponent},
   {path: 'rules', component: RulesComponent},
   {path: 'demo',component:DemoComponent},
