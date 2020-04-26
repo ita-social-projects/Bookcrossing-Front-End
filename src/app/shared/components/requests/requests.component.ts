@@ -4,8 +4,11 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { switchMap } from 'rxjs/operators';
 import { NotificationService } from "../../../core/services/notification/notification.service";
 import {TranslateService} from "@ngx-translate/core";
-import { PaginationParameters } from 'src/app/core/models/paginationParameters';
+import { PaginationParameters } from 'src/app/core/models/Pagination/paginationParameters';
 import { RequestService } from 'src/app/core/services/request/request.service'
+import { PaginationService } from 'src/app/core/services/pagination/pagination.service';
+import { FilterParameters } from 'src/app/core/models/Pagination/FilterParameters';
+import { SortParameters } from 'src/app/core/models/Pagination/SortParameters';
 
 @Component({
   selector: 'app-requests',
@@ -19,6 +22,7 @@ export class RequestsComponent implements OnInit {
   requests: IRequest[];
   queryParams : PaginationParameters = new PaginationParameters();
   searchText : string;
+  searchField :string = "id";
   totalSize : number;  
   
   constructor(
@@ -26,6 +30,7 @@ export class RequestsComponent implements OnInit {
     private notificationService: NotificationService,
     private route: ActivatedRoute,
     private requestService: RequestService,
+    private paginationService : PaginationService,
     private router : Router,
   ) {}
 
@@ -36,8 +41,8 @@ export class RequestsComponent implements OnInit {
   )
   .subscribe(data=> this.bookId = +data);
   this.route.queryParams.subscribe((params : Params) => {
-    this.mapParams(params);      
-    this.searchText = params.searchQuery;
+    this.queryParams = this.paginationService.mapToPaginationParams(params)
+    this.searchText = this.queryParams?.filters[0]?.value;
     this.getAllRequestsByBookId(this.bookId, this.queryParams);
   })
   }
@@ -80,18 +85,15 @@ export class RequestsComponent implements OnInit {
       })
   }
   search() : void{
-    if(this.queryParams.searchQuery == this.searchText){
-      return;
-    }
+    if(this.queryParams?.filters[0]?.value == this.searchText){
+      return
+    }  
     this.queryParams.page = 1;
-    this.queryParams.firstRequest = true;
-    this.queryParams.searchQuery = this.searchText;
+    this.queryParams.filters[0] = <FilterParameters> {propertyName:this.searchField, value: this.searchText}
     this.changeUrl(this.queryParams);
   }
   changeSort(selectedHeader : string){  
-    this.queryParams.orderByField = selectedHeader; 
-    this.queryParams.searchField = selectedHeader;
-    this.queryParams.orderByAscending = !this.queryParams.orderByAscending;
+    this.queryParams.sort = <SortParameters> {orderByField:selectedHeader, orderByAscending: !this.queryParams.sort.orderByAscending}
     this.changeUrl(this.queryParams);
   }
   pageChanged(currentPage : number) : void{      
@@ -103,17 +105,8 @@ export class RequestsComponent implements OnInit {
     this.router.navigate(['.'], 
       {
         relativeTo: this.route, 
-        queryParams: params,
+        queryParams: this.paginationService.mapToParams(params),
         queryParamsHandling: 'merge',
       });
   }  
-  private mapParams(params: Params, defaultPage : number = 1, defultPageSize : number = 5, defaultSearchField : string = "id", ) {
-    this.queryParams.page = params.page ? +params.page : defaultPage;
-    this.queryParams.searchQuery = params.searchQuery ? params.searchQuery : null;    
-    this.queryParams.pageSize = params.pageSize ? +params.pageSize : defultPageSize;
-    this.queryParams.searchField = params.searchField ? params.searchField : defaultSearchField;
-    this.queryParams.orderByAscending = params.orderByAscending ? params.orderByAscending : true;
-    this.queryParams.orderByField = params.orderByField ? params.orderByField : defaultSearchField;
-  } 
-
 }

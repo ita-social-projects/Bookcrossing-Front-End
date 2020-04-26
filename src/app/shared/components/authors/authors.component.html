@@ -53,23 +53,22 @@
 
               <thead>
                 <tr>
-                  <th scope="col" (click)="changeSort('id')"
-                    [ngClass]="{'active-header': queryParams.orderByField == 'id'}">
+
+                  
+                  
+                  <th scope="col" (click)="changeSort('id')"[ngClass]="{'active-header': queryParams.sort.orderByField == 'id'}">
                       # 
                     <i class="fas fa-sort pl-1"></i>
                   </th>
-                  <th scope="col" (click)="changeSort('firstName')"
-                    [ngClass]="{'active-header': queryParams.orderByField == 'firstName'}">
+                  <th scope="col" (click)="changeSort('firstName')"[ngClass]="{'active-header': queryParams.sort.orderByField == 'firstName'}">
                       First Name 
                     <i class="fas fa-sort pl-1"></i>
                   </th>
-                  <th scope="col" (click)="changeSort('lastName')"
-                    [ngClass]="{'active-header': queryParams.orderByField == 'lastName'}">
+                  <th scope="col" (click)="changeSort('lastName')"[ngClass]="{'active-header': queryParams.sort.orderByField == 'lastName'}">
                       Last Name 
                     <i class="fas fa-sort pl-1"></i>
                   </th>
-                  <th scope="col" (click)="changeSort('middlename')"
-                    [ngClass]="{'active-header': queryParams.orderByField == 'middlename'}">
+                  <th scope="col" (click)="changeSort('middlename')"[ngClass]="{'active-header': queryParams.sort.orderByField == 'middlename'}">
                       Middle Name
                     <i class="fas fa-sort pl-1"></i>
                   </th>

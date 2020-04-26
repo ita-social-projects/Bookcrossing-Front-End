@@ -26,7 +26,7 @@
               <th>
               </th>
               <th mat-sort-header="id" (click)="changeSort('Id')"
-              [ngClass]="{'active-header': queryParams.orderByField == 'Id'}">
+              [ngClass]="{'active-header': queryParams.sort.orderByField == 'Id'}">
                 <a>{{ 'common.id' | translate }}
                 </a>
               </th>
@@ -39,7 +39,7 @@
                 
               </th>
               <th mat-sort-header="requestdate" (click)="changeSort('RequestDate')"
-              [ngClass]="{'active-header': queryParams.orderByField == 'RequestDate'}">
+              [ngClass]="{'active-header': queryParams.sort.orderByField == 'RequestDate'}">
                 {{ 'components.requests.request-date' | translate }}
                 
               </th>
