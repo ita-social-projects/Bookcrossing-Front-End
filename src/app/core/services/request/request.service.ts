@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import { requestUrl } from "src/app/configs/api-endpoint.constants";
 import { IRequest } from 'src/app/core/models/request';
-import { PaginationParameters } from 'src/app/core/models/paginationParameters';
+import { PaginationParameters } from 'src/app/core/models/Pagination/paginationParameters';
 import { PaginationService } from '../pagination/pagination.service';
 import { IPage } from '../../models/page';
 

@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { IAuthor } from 'src/app/core/models/author'
 import { authorUrl } from "src/app/configs/api-endpoint.constants";
 import { IPage } from '../../models/page';
-import { PaginationParameters } from 'src/app/core/models/paginationParameters';
+import { PaginationParameters } from 'src/app/core/models/Pagination/paginationParameters';
 import { PaginationService } from '../pagination/pagination.service';
 
 @Injectable({
