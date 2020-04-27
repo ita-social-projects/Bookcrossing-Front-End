@@ -16,6 +16,7 @@ import { ForgotPasswordComponent } from './shared/components/password/forgot-pas
 import { ResetPasswordComponent } from './shared/components/password/reset-password/reset-password.component';
 import {HomeComponent} from './shared/components/home/home.component';
 import {RulesComponent} from "./shared/components/rules/rules.component";
+import {GenreComponent} from './shared/components/genre/genre.component';
 
 
 
@@ -43,6 +44,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'rules', component: RulesComponent},
   {path: 'demo',component:DemoComponent},
+  {path: 'genres', component: GenreComponent},
   { path: 'password', children:
     [
       { path: 'forgot', component: ForgotPasswordComponent },
