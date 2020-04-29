@@ -15,6 +15,10 @@ export class BookService {
     return this.http.get<IBook[]>(this.apiUrl);
   }
 
+  getRegisteredBooks(): Observable<IBook[]> {
+    return this.http.get<IBook[]>(this.apiUrl + 'registered');
+  }
+
   getBookById(id: number): Observable<IBook> {
     return this.http.get<IBook>(this.apiUrl + id);
   }

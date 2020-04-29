@@ -55,6 +55,7 @@ import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { GenreComponent } from './shared/components/genre/genre.component';
+import { RegisteredBookComponent } from './shared/components/registered-book/registered-book.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { GenreComponent } from './shared/components/genre/genre.component';
     ContentFilterPipe,
     HomeComponent,
     RulesComponent,
-    GenreComponent
+    GenreComponent,
+    RegisteredBookComponent
   ],
   imports: [
     BrowserModule,

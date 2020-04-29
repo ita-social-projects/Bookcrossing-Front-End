@@ -1,4 +1,3 @@
-
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {LoginComponent} from './shared/components/login/login.component';
@@ -15,8 +14,9 @@ import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
 import { ForgotPasswordComponent } from './shared/components/password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './shared/components/password/reset-password/reset-password.component';
 import {HomeComponent} from './shared/components/home/home.component';
-import {RulesComponent} from "./shared/components/rules/rules.component";
+import {RulesComponent} from './shared/components/rules/rules.component';
 import {GenreComponent} from './shared/components/genre/genre.component';
+import {RegisteredBookComponent} from './shared/components/registered-book/registered-book.component';
 
 
 
@@ -29,9 +29,9 @@ const routes: Routes = [
   //     { path: '', component: AdminDashboardComponent },
   //   ]
   // },
-  {path: 'admin',component:AdminComponent,children:
+  {path: 'admin', component: AdminComponent, children:
   [
-    {path: 'authors',component: AuthorsComponent}
+    {path: 'authors', component: AuthorsComponent}
   ]
   },
 
@@ -39,12 +39,12 @@ const routes: Routes = [
   {path: 'book', component: AddBookComponent},
   {path: 'requests/:id', component: RequestsComponent},
   {path: 'books', component: BooksComponent},
-  {path :'books',component:BooksComponent},
   {path: 'add-location', component: AddLocationComponent },
   {path: '', component: HomeComponent},
   {path: 'rules', component: RulesComponent},
-  {path: 'demo',component:DemoComponent},
+  {path: 'demo', component: DemoComponent},
   {path: 'genres', component: GenreComponent},
+  {path: 'books/registered', component: RegisteredBookComponent},
   { path: 'password', children:
     [
       { path: 'forgot', component: ForgotPasswordComponent },

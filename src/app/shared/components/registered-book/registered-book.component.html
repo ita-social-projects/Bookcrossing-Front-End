@@ -1,0 +1,26 @@
+<div class="card flex-row flex-wrap" *ngFor="let book of books ">
+  <div class="card-header border-0">
+    <img src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w" width="100" alt="">
+  </div>
+  <div class="card-block px-2">
+    <h4 class="card-title">{{book.name}}</h4>
+    <p class="card-text">By
+      <a [href]="author.id" *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}} </a>
+      <br>
+      <strong>Description</strong>
+      Lorem ipsum dolor sit amet, consectetur
+      adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua.
+      Ut enim ad minim veniam, quis nostrud exercitation
+
+
+    </p>
+    <a href="#" class="btn btn-primary">Request</a>
+
+
+  </div>
+  <div class="w-100"></div>
+  <div class="card-footer w-100 text-muted">
+    Categories : <a *ngFor="let genre of book.genres">{{genre.name}} ,</a>
+  </div>
+</div>
