@@ -1,5 +1,6 @@
-import {Role} from './role';
 import {IRoomLocation} from './roomLocation';
+import { IRole } from './role';
+import { Role } from './role.enum';
 
 export interface IUser {
   id: number;
@@ -7,7 +8,7 @@ export interface IUser {
   middleName: string;
   lastName: string;
   email: string;
-  Role: Role;
-  userLocacion: IRoomLocation;
+  role: IRole;
+  userLocation: IRoomLocation[];
   token?: string;
 }

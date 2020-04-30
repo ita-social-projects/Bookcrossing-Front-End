@@ -1,3 +1,4 @@
+import { IRoomLocation } from './roomLocation';
 import { IAuthor } from "src/app/core/models/author";
 import { IGenre } from "src/app/core/models/genre";
 export interface IBook {

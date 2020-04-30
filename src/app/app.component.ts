@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {NavbarComponent} from './shared/components/navbar/navbar.component';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../app/core/services/authentication/authentication.service';
-import {Role} from '../app/core/models/role';
+import {Role} from './core/models/role.enum';
 import {IUser} from '../app/core/models/user';
 import { TranslateService } from "@ngx-translate/core";
 import {LanguageService} from "./core/services/language/language.service";

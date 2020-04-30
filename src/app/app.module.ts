@@ -1,3 +1,6 @@
+import { UserService } from './core/services/user/user.service';
+import { RequestService } from 'src/app/core/services/request/request.service';
+import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -55,6 +58,8 @@ import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { GenreComponent } from './shared/components/genre/genre.component';
+import { DialogService } from './core/services/dialog/dialog.service';
+import { LanguagesComponent } from './shared/components/languages/languages.component';
 import { AvatarModule } from 'ngx-avatar';
 import { SearchBarComponent } from './shared/components/search-bar/search-bar.component';
 import { ProfileAvatarComponent } from './shared/components/profile-avatar/profile-avatar.component';
@@ -88,6 +93,8 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     HomeComponent,
     RulesComponent,
     GenreComponent,
+    ConfirmDialogComponent,
+    LanguagesComponent,
     SearchBarComponent,
     ProfileAvatarComponent
   ],
@@ -131,12 +138,15 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     BookService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    RequestService,
     LanguageService,
     NotificationService,
     CookieService,
     JwtHelperService,
     LocationService,
-    GenreService
+    GenreService, 
+    DialogService,
+    UserService
 
   ],
   entryComponents: [AuthorFormComponent],

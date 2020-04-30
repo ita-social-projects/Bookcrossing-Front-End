@@ -1,80 +1,70 @@
+<div class="container my-5">
 
-<div class="card card-cascade narrower container mt-2 mb-4">
+  <div class="card card-list">
+    <div class="card-header white d-flex align-items-center py-3">
 
-  <div class="card-header white d-flex justify-content-between align-items-center py-3">
-    <p class="h5-responsive font-weight-bold mb-0">{{'components.requests.requests' | translate}}</p>
-    <div class="col">
-      <div class="input-group">
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search"
-          [(ngModel)]="searchText" (keyup.enter)="search()">
-        <div class="input-group-append">
-          <button class="input-group-text btn-light" (click)="search()">
-            <i class="fas fa-search text-grey" aria-hidden="true"></i>
-          </button>
+
+        <div class="form-inline pr-3">
+          <ng-template [ngIf]="selectedGenres && selectedGenres.length > 0">
+            <i class="fas red-text fa-times pr-2" (click)="resetCategories()"></i>
+          </ng-template>
+          <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoryOpened($event)" class="form-control select-dropdown"
+            multiple placeholder="Categories">
+            <mat-option *ngFor="let genre of genres" [value]="genre.name">{{ genre.name}}</mat-option>
+          </mat-select>
+        </div>
+
+        <div class="form-inline pr-3">
+          <ng-template [ngIf]="selectedLocation">
+            <i class="fas red-text fa-times pr-2" (click)="resetLocation()"></i>
+          </ng-template>
+          <mat-select [(ngModel)]="selectedLocation" (openedChange)="onLocationOpened($event)" class="form-control select-dropdown"
+            placeholder="Locations">
+            <mat-option *ngFor="let location of locations" [value]="location.id">{{location.city}}
+              {{location.officeName}}, {{location.street}}</mat-option>
+          </mat-select>
+        </div>
+        <div class="form-check ml-auto p-2">
+          <input type="checkbox" class="form-check-input" id="showAvailableOnly" [checked]="queryParams.showAvailable"
+            disabled>
+          <label class="form-check-label" for="showAvailableOnly">Available Only</label>
+        </div>
+    </div>
+  </div>
+  
+  <div class="card m-3" *ngFor="let request of requests">
+    <div class="row no-gutters">
+      <div class="col-auto">
+        <img class="rounded"
+          src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w"
+          height="200" width="200" alt="rf">
+      </div>
+      <div class="col m-2">
+        <div class="card-block px-2">
+          <h4 class="card-title"><strong>{{request.book.name}}</strong></h4>
+          <p class="card-text"> Authors : <a [href]="author.id" *ngFor="let author of request.book.authors; let i = index">
+              <ng-template [ngIf]="i!=0"> , </ng-template>{{author.firstName}} {{author.lastName}}
+            </a>
+            <br>
+            <ng-template [ngIf]="request.book.genres.length==1" [ngIfElse]="manyGenres">Category </ng-template>
+            <ng-template #manyGenres>Categories : </ng-template>
+
+            <a [href]="genre.id" *ngFor="let genre of request.book.genres">{{genre.name}} </a>
+            <br>
+            Location : {{request.owner.userLocation[0].location.city + " " + request.owner.userLocation[0].location.officeName}}
+            <br>
+
+            Status : 
+              <font color="red">Requested</font>
+              <br>
+              <a role="button" class="btn btn-primary" (click)="cancelRequest(request.id)">Cancel request</a>
+          </p>
+
         </div>
       </div>
     </div>
   </div>
-  
-    <div class="px-4">
-  
-
-        <table class="table table-hover" matSort >
-  
-          <thead>
-            <tr>
-              <th>
-              </th>
-              <th mat-sort-header="id" (click)="changeSort('Id')"
-              [ngClass]="{'active-header': queryParams.sort.orderByField == 'Id'}">
-                <a>{{ 'common.id' | translate }}
-                </a>
-              </th>
-              <th>
-                {{ 'components.requests.book-name' | translate }}
-                
-              </th>
-              <th>
-               {{ 'components.requests.user-who-requested' | translate }}
-                
-              </th>
-              <th mat-sort-header="requestdate" (click)="changeSort('RequestDate')"
-              [ngClass]="{'active-header': queryParams.sort.orderByField == 'RequestDate'}">
-                {{ 'components.requests.request-date' | translate }}
-                
-              </th>
-              <th class="th-lg">
-              {{ 'components.requests.approve' | translate }}
-              </th>
-              <th class="th-lg">
-                {{ 'components.requests.delete' | translate }}
-                
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let request of requests">
-              <th scope="row">
-              </th>
-              <td>{{ request.id }}</td>
-              <td><a [routerLink]="['/book/bookId']">{{ request.book.name }}</a></td>
-              <td>{{ request.user.firstName + " " + request.user.lastName }}</td>
-              <td>{{ request.requestDate  | date:'short'}}</td>
-              <td>
-                <button type="button" class="btn btn-outline-success btn-sm waves-effect" (click)="approveRequest(request.id)">{{ 'components.requests.approve' | translate }}</button>
-              </td>
-              <td>
-                <button type="button" class="btn btn-sm btn-outline-danger waves-effect" (click)="deleteRequest(request.id)">X</button>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-        <app-pagination *ngIf="requests && requests.length > 0" [arraySize]="totalSize"
-          [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
-        </app-pagination>
-        
-    </div>
-
-  </div>
+  <app-pagination *ngIf="requests && requests.length > 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
+    [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+  </app-pagination>
+</div>

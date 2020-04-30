@@ -1,0 +1,7 @@
+<h2 mat-dialog-title >{{data.message}}</h2>
+<mat-dialog-actions>
+    <ng-container layout-align="center">
+        <button mat-button id="yes-button" class="btn blue-gradient" [mat-dialog-close]="true">Yes</button>
+<button mat-button id="no-button" class="btn blue-gradient" [mat-dialog-close]="false">No</button>
+    </ng-container>
+</mat-dialog-actions>
