@@ -1,90 +1,124 @@
-import { Component, OnInit } from '@angular/core';
-import { IGenre } from 'src/app/core/models/genre';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { IBook } from 'src/app/core/models/book';
-import { IAuthor } from 'src/app/core/models/author';
-import { BookService } from 'src/app/core/services/book/book.service';
-import { GenreService } from 'src/app/core/services/genre/genre';
+import { Component, OnInit } from "@angular/core";
+import { IGenre } from "src/app/core/models/genre";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { IBook } from "src/app/core/models/book";
+import { IAuthor } from "src/app/core/models/author";
+import { BookService } from "src/app/core/services/book/book.service";
+import { GenreService } from "src/app/core/services/genre/genre";
+import { AuthorService } from "src/app/core/services/author/authors.service";
+import { SubscriptionLike } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-book',
-  templateUrl: './add-book.component.html',
-  styleUrls: ['./add-book.component.scss'],
+  selector: "app-add-book",
+  templateUrl: "./add-book.component.html",
+  styleUrls: ["./add-book.component.scss"],
 })
 export class AddBookComponent implements OnInit {
   constructor(
     private bookService: BookService,
-    private genreService: GenreService
+    private genreService: GenreService,
+    private authorService: AuthorService,
+    private router: Router
   ) {}
+
   addBookForm: FormGroup;
-  authorControl: FormGroup;
-  addNewAuthor: boolean = false;
 
   userId: number = 1;
-
   genres: IGenre[] = [];
-
+  selectedAuthors: IAuthor[] = [];
   authors: IAuthor[] = [];
+  selectedFile = null;
+  authorsSubscription: SubscriptionLike;
 
   ngOnInit(): void {
     this.buildForm();
     this.getAllGenres();
+    this.authorsSubscription = this.addBookForm.get("author").valueChanges.subscribe((input) => {
+      this.filterAuthors(input);
+    });
+  }
+
+  filterAuthors(input: string) {
+    if (input?.length <= 2) {
+      this.authors = [];
+    }
+    if (input?.length === 2) {
+      this.authorService.getFilteredAuthors(input).subscribe(
+        (data) => {
+          this.authors = data;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
   }
 
   buildForm() {
-    this.authorControl = new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      middleName: new FormControl(null, Validators.required),
-    });
-
     this.addBookForm = new FormGroup({
       title: new FormControl(null, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
+      author: new FormControl(null),
+      description: new FormControl(null)
     });
   }
 
   onSubmit() {
-    let genres: IGenre[] = [];
-    for (let i = 0; i < this.addBookForm.get('genres').value.length; i++) {
-      const id = this.addBookForm.get('genres').value[i];
-      genres.push({ id: id, name: this.getGenreById(id) });
+    // parse selected genres
+    const selectedGenres: IGenre[] = [];
+    for (let i = 0; i < this.addBookForm.get("genres").value?.length; i++) {
+      const id = this.addBookForm.get("genres").value[i];
+      selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
-    const book: IBook = {
-      name: this.addBookForm.get('title').value,
-      authors: this.authors,
-      genres: genres,
-      publisher: this.addBookForm.get('publisher').value,
+
+    const newAuthor: string = this.addBookForm.get("author").value;
+    if(newAuthor){
+      console.log("new Author")
+      this.addNewAuthor(newAuthor);
+    }
+
+
+    let book: IBook = {
+      name: this.addBookForm.get("title").value,
+      authors: this.selectedAuthors,
+      genres: selectedGenres,
+      publisher: this.addBookForm.get("publisher").value,
+      description: this.addBookForm.get("description").value,
       available: true,
       userId: this.userId,
     };
+
+
+    if (this.selectedFile) {
+      book.img = this.selectedFile;
+    }
+
     this.bookService.postBook(book).subscribe(
       (data: IBook) => {
-        alert('Successfully added');
+        alert("Successfully added");
+        this.goToPage('books');
       },
       (error) => {
-        alert(error);
         console.log(error);
       }
     );
 
-    this.authors = [];
+    // this.goToPage('books');
+    this.selectedAuthors = [];
     this.addBookForm.reset();
-  }
 
-  onAddAuthor() {
-    const author: IAuthor = {
-      firstName: this.authorControl.get('firstName').value,
-      lastName: this.authorControl.get('lastName').value,
-      middleName: this.authorControl.get('middleName').value,
-    };
+    // after submmit subscription stops work 
+    this.authorsSubscription.unsubscribe();
+    this.authorsSubscription = this.addBookForm.get("author").valueChanges.subscribe((input) => {
+      this.filterAuthors(input);
+    });
 
-    this.addAuthor(author);
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id == id)?.name : '';
+    return this.genres ? this.genres.find((genre) => genre.id == id)?.name : "";
   }
 
   getAllGenres() {
@@ -99,14 +133,14 @@ export class AddBookComponent implements OnInit {
   }
 
   onDeleteAuthor(author: IAuthor) {
-    const index = this.authors.indexOf(author);
+    const index = this.selectedAuthors.indexOf(author);
     if (index > -1) {
-      this.authors.splice(index, 1);
+      this.selectedAuthors.splice(index, 1);
     }
   }
 
   addAuthor(author) {
-    const index = this.authors.findIndex((elem) => {
+    const index = this.selectedAuthors.findIndex((elem) => {
       return (
         elem.firstName.toLowerCase() === author.firstName.toLowerCase() &&
         elem.middleName.toLowerCase() === author.middleName.toLowerCase() &&
@@ -114,7 +148,52 @@ export class AddBookComponent implements OnInit {
       );
     });
     if (index < 0) {
-      this.authors.push(author);
+      this.selectedAuthors.push(author);
     }
+  }
+
+  addNewAuthor(newAuthor: string) {
+    const author = this.parseAuthorString(newAuthor);
+    this.addAuthor(author);
+  }
+
+  onFileSelected(event) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  // parses string and returns IAuthor object
+  parseAuthorString(input: string): IAuthor {
+    console.log(input);
+    input = input.trim();
+    const words = input.split(/\s+/g);
+    const firstName = words[0];
+    let lastName = null;
+    let middleName = null;
+
+    // if input string contains > 3 words - second is middleName
+    if (words.length > 2) {
+      middleName = words[1];
+      lastName = words[2];
+    } else {
+      lastName = words[1];
+    }
+    const author: IAuthor = {
+      firstName: firstName,
+      lastName: lastName,
+      middleName: middleName,
+    };
+    console.log(author);
+    return author;
+  }
+
+  onAuthorSelect(event) {
+    console.log(event);
+    this.addBookForm.get("author").setValue("");
+    this.addAuthor(event.option.value);
+  }
+
+  // redirecting method
+  goToPage(pageName:string){
+    this.router.navigate([`${pageName}`]);
   }
 }

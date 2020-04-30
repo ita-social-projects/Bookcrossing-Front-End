@@ -36,4 +36,8 @@ export class AuthorService {
   updateAuthor(author: IAuthor) {
     return this.http.put<IAuthor>(authorUrl, author);
   }
+
+  getFilteredAuthors(filter: string) {
+    return this.http.get<IAuthor[]>(authorUrl + `/${filter}`);
+  }
 }

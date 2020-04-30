@@ -2,47 +2,44 @@
 
   <div class="container">
 
-    <a class="navbar-brand md-tabs nav-justified py-0" routerLink=""><i class="fas white-text fa-book"> Bookcrossing</i></a>
+    <a class="navbar-brand md-tabs nav-justified py-0" routerLink=""><i class="fas white-text fa-book"></i> Bookcrossing</a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-            aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-
+    
     <div class="collapse navbar-collapse" id="basicExampleNav">
-
 
       <ul class="navbar-nav mr-auto text-uppercase">
 
         <!--add new links here  -->
-          <li class="nav-item">
-            <a class="nav-link" routerLink="">{{'common.home' | translate}}</a>
-          </li>
-          <li class="nav-item">
-             <a class="nav-link" routerLink="demo">{{'common.routes' | translate}}</a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">{{'common.home' | translate}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="demo">{{'common.routes' | translate}}</a>
+        </li>
+        <ng-template #login>
+          <div class="collapse navbar-collapse " id="basicExampleNav">
 
+            <ul class="navbar-nav ml-auto text-uppercase">
+            <li class="nav-item">
+              <a class="nav-link" routerLink="login">login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="registration">registration</a>
+            </li>
+          </ul>
+          </div>
+        </ng-template>
       </ul>
-
-
-
-
+      <ng-template [ngIf]="isAuthorized" [ngIfElse]="login">
+        <app-search-bar> </app-search-bar>
+        <app-profile-avatar></app-profile-avatar>
+      </ng-template>
     </div>
-    <button class="btn blue-gradient" mat-button [matMenuTriggerFor]="menu">
-      {{'common.language' | translate}}
-      <mat-icon>translate</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button (click)="changeLang(languages[0])" mat-menu-item>
-        <span class="flag-icon flag-icon-gb"></span>
-        <span>{{'common.languages.gb'|translate}}</span>
-      </button>
-      <button (click)="changeLang(languages[1])" mat-menu-item>
-        <span class="flag-icon flag-icon-ua"></span>
-        <span>{{'common.languages.ua'|translate}}</span>
-      </button>
-    </mat-menu>
     
   </div>
 

@@ -1,0 +1,12 @@
+<div class="form-inline ml-auto pr-3">
+    <div class="md-form my-0 ">
+      
+      <ng-template [ngIf]="searchTerm?.length > 0">
+        <i class="fas red-text fa-times pr-2" (click)="resertSearch()" aria-hidden="true"></i>
+      </ng-template>          
+      <input class="form-control text-white" type="text" placeholder="Search" aria-label="Search"
+      [(ngModel)]="searchTerm" (keyup.enter)="navigateToBooks(searchTerm)">
+      <i class="fas fa-search text-white ml-3" aria-hidden="true" (click)="navigateToBooks(searchTerm)"></i>
+    </div>
+
+  </div>

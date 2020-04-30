@@ -12,11 +12,15 @@ export class AuthenticationService {
   readonly passwordUrl = userUrl;
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
-
+  private userLoggedInSubject: BehaviorSubject<Boolean>;
+  public userLoggedIn: Observable<Boolean>;
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+    this.userLoggedInSubject = new BehaviorSubject<Boolean>(!!JSON.parse(localStorage.getItem('currentUser'))?.token);
+    this.userLoggedIn = this.userLoggedInSubject.asObservable();
   }
+  
 
   public get currentUserValue(): IUser {
     return this.currentUserSubject.value;
@@ -31,16 +35,17 @@ export class AuthenticationService {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
+          this.userLoggedInSubject.next(true);
         }
 
         return user;
       }));
   }
-
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+    this.currentUserSubject.next(null);    
+    this.userLoggedInSubject.next(false);
   }
   
   resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {

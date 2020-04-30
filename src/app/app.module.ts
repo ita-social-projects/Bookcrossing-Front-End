@@ -1,3 +1,6 @@
+import { UserService } from './core/services/user/user.service';
+import { RequestService } from 'src/app/core/services/request/request.service';
+import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -54,8 +57,14 @@ import { ContentFilterPipe } from './shared/pipes/content-filter.pipe';
 import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { GenreComponent } from './shared/components/genre/genre.component';
 import { RegisteredBookComponent } from './shared/components/registered-book/registered-book.component';
+import { DialogService } from './core/services/dialog/dialog.service';
+import { LanguagesComponent } from './shared/components/languages/languages.component';
+import { AvatarModule } from 'ngx-avatar';
+import { SearchBarComponent } from './shared/components/search-bar/search-bar.component';
+import { ProfileAvatarComponent } from './shared/components/profile-avatar/profile-avatar.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +95,12 @@ import { RegisteredBookComponent } from './shared/components/registered-book/reg
     HomeComponent,
     RulesComponent,
     GenreComponent,
-    RegisteredBookComponent
+    RegisteredBookComponent,
+    ConfirmDialogComponent,
+    LanguagesComponent,
+    SearchBarComponent,
+    ProfileAvatarComponent
+
   ],
   imports: [
     BrowserModule,
@@ -103,6 +117,7 @@ import { RegisteredBookComponent } from './shared/components/registered-book/reg
     MatIconModule,
     MatSortModule,
     NgxPaginationModule,
+    AvatarModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -115,6 +130,7 @@ import { RegisteredBookComponent } from './shared/components/registered-book/reg
     MDBBootstrapModule.forRoot(),
     BrowserAnimationsModule,
     MatSelectModule,
+    MatAutocompleteModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -127,12 +143,15 @@ import { RegisteredBookComponent } from './shared/components/registered-book/reg
     BookService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    RequestService,
     LanguageService,
     NotificationService,
     CookieService,
     JwtHelperService,
     LocationService,
-    GenreService
+    GenreService, 
+    DialogService,
+    UserService
 
   ],
   entryComponents: [AuthorFormComponent],

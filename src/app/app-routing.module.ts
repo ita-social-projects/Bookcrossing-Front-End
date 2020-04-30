@@ -24,12 +24,8 @@ import {RegisteredBookComponent} from './shared/components/registered-book/regis
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  // { path: 'admin', children:
-  //   [
-  //     { path: '', component: AdminDashboardComponent },
-  //   ]
-  // },
-  {path: 'admin', component: AdminComponent, children:
+
+  {path: 'admin',component:AdminComponent,children:
   [
     {path: 'authors', component: AuthorsComponent}
   ]
@@ -37,7 +33,7 @@ const routes: Routes = [
 
   {path: 'book/:id', component: BookComponent},
   {path: 'book', component: AddBookComponent},
-  {path: 'requests/:id', component: RequestsComponent},
+  {path: 'requests', component: RequestsComponent},
   {path: 'books', component: BooksComponent},
   {path: 'add-location', component: AddLocationComponent },
   {path: '', component: HomeComponent},

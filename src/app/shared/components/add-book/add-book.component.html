@@ -1,136 +1,217 @@
 <div>
   <form
     [formGroup]="addBookForm"
+    #ngForm="ngForm"
     (ngSubmit)="onSubmit()"
     class="text-center border border-light p-5"
   >
-    <p class="h4 mb-4">Add new book</p>
-
-    <div class="form-row mb-4">
-      <div class="col">
-        <!-- Book title -->
-        <input
-          formControlName="title"
-          type="text"
-          class="form-control"
-          placeholder="Book title"
-          required
-        />
-      </div>
-
-      <div class="col">
-        <input
-          formControlName="publisher"
-          type="text"
-          class="form-control"
-          placeholder="Publisher"
-          required
-        />
-      </div>
-
-      <!-- Select multiple genres -->
-      <div class="col">
-        <mat-select
-          formControlName="genres"
-          class="form-control"
-          multiple
-          placeholder="Genre"
-          required
-        >
-          <mat-select-trigger>
-            {{
-              addBookForm.get("genres").value
-                ? getGenreById(addBookForm.get("genres").value[0])
-                : ""
-            }}
-            <span
-              *ngIf="addBookForm.get('genres').value?.length > 1"
-              class="additional-selection"
-            >
-              (+{{ addBookForm.get("genres").value.length - 1 }}
-              {{
-                addBookForm.get("genres").value.length === 2
-                  ? "other"
-                  : "others"
-              }})
-            </span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
-            genre.name
-          }}</mat-option>
-        </mat-select>
-      </div>
-    </div>
-
-    <!-- Authors -->
-    <!-- Select Existing  -->
-    <div class="row">
-      <div class="col mb-4">
-        <app-authors (selectRow)="addAuthor($event)"></app-authors>
-      </div>
-      <!-- Add new Author form -->
-      <div class="col mb-4">
-        <!-- <div class="col-2 mb-4"> -->
-          <div class="container my-5">
-            <button *ngIf="!addNewAuthor" (click)="addNewAuthor=true"
-              class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
-            >
-              Add new author
-            </button>
-          </div>
-        <!-- </div> -->
-        <div
-          *ngIf="addNewAuthor"
-          class="input-group container my-5"
-          [formGroup]="authorControl"
-        >
+    <p class="h3 mb-4 title">Register book</p>
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Book title:*</p>
+        </div>
+        <div class="col-4">
+          <!-- Book title -->
           <input
-            formControlName="firstName"
+            formControlName="title"
             type="text"
             class="form-control"
-            placeholder="Firstname"
+            placeholder="Color of magic"
+            required
+            [ngClass]="{
+              'is-invalid':
+                addBookForm.controls.title.invalid &&
+                addBookForm.controls.title.touched
+            }"
           />
-          <input
-            formControlName="middleName"
-            type="text"
-            class="form-control"
-            placeholder="Middlename"
-          />
-          <input
-            formControlName="lastName"
-            type="text"
-            class="form-control"
-            placeholder="Lastname"
-          />
-          <div class="input-group-append">
-            <button
-              class="btn btn-md btn-outline-default m-0 px-3 py-2 z-depth-0 waves-effect"
-              type="button"
-              [disabled]="authorControl.invalid"
-              (click)="onAddAuthor()"
-            >
-              Add author
-            </button>
+          <div
+            class="invalid-feedback"
+            [ngClass]="{
+              'is-invalid':
+                addBookForm.controls.title.invalid &&
+                addBookForm.controls.title.touched
+            }"
+          >
+            Please enter book title.
           </div>
         </div>
-        <div>
-          <ul class="list-group authors-list">
-            <li *ngFor="let author of authors" class="list-group-item">
-              <span>{{
-                author.firstName +
-                  " " +
-                  author.middleName +
-                  "  " +
-                  author.lastName
-              }}</span>
-              <button
-                class="btn btn-md btn-outline-danger m-0 px-3 py-2 z-depth-0 waves-effect"
-                (click)="onDeleteAuthor(author)"
+      </div>
+
+      <!-- Author -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Author:*</p>
+        </div>
+        <div class="col-4">
+          <input
+            formControlName="author"
+            #authorSearch
+            type="text"
+            class="form-control"
+            placeholder="Terry Pratchett"
+            [matAutocomplete]="auto"
+            [ngClass]="{
+              'is-invalid':
+                addBookForm.controls.author.touched &&
+                !selectedAuthors.length &&
+                !addBookForm.controls.author.value
+              
+            }"
+          />
+          <div class="invalid-feedback">
+            Please select author.
+          </div>
+          <div *ngIf="addBookForm.controls.author.value" 
+          class="new-author-warning"
+          >
+            Entered author is saved as 'not confirmed'
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <ul class="list-group authors-list list-group-horizontal-sm">
+              <li
+                *ngFor="let author of selectedAuthors"
+                class="list-group-item"
               >
-                Delete
-              </button>
-            </li>
-          </ul>
+                <span>{{
+                  author.firstName +
+                    " " +
+                    author.middleName +
+                    "  " +
+                    author.lastName
+                }}</span>
+                <span
+                  ><i class="fas fa-ban" (click)="onDeleteAuthor(author)"></i>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="onAuthorSelect($event); authorSearch.value = ''"
+      >
+        <mat-option
+          *ngFor="
+            let author of authors
+              | contentFilter
+                : authorSearch.value
+                : ['firstName', 'lastName', 'middleName']
+          "
+          [value]="author"
+        >
+          {{
+            author.firstName + " " + author.middleName + " " + author.lastName
+          }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <!-- Category -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Category:*</p>
+        </div>
+        <!-- Select multiple genres -->
+        <div class="col-4">
+          <mat-select
+            formControlName="genres"
+            class="form-control"
+            multiple
+            placeholder="Select"
+            required
+            [ngClass]="{
+              'is-invalid':
+                addBookForm.controls.genres.invalid &&
+                addBookForm.controls.genres.touched
+            }"
+          >
+            <mat-select-trigger>
+              {{
+                addBookForm.get("genres").value
+                  ? getGenreById(addBookForm.get("genres").value[0])
+                  : ""
+              }}
+              <span
+                *ngIf="addBookForm.get('genres').value?.length > 1"
+                class="additional-selection"
+              >
+                (+{{ addBookForm.get("genres").value.length - 1 }}
+                {{
+                  addBookForm.get("genres").value.length === 2
+                    ? "other"
+                    : "others"
+                }})
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
+              genre.name
+            }}</mat-option>
+          </mat-select>
+          <div
+            class="invalid-feedback"
+            [ngClass]="{
+              'is-invalid':
+                addBookForm.controls.genres.invalid &&
+                addBookForm.controls.genres.touched
+            }"
+          >
+            Please select genre.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Publishing house:</p>
+        </div>
+        <div class="col-4">
+          <input
+            formControlName="publisher"
+            type="text"
+            class="form-control"
+            placeholder="Machaon"
+          />
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Notice:</p>
+        </div>
+        <div class="col-4">
+          <textarea
+            formControlName="description"
+            type="text"
+            class="form-control"
+            placeholder=""
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <button type="button" class="btn btn-info" (click)="fileInput.click()">
+          Add image
+        </button>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="h5 input-label">Image:</p>
+        </div>
+        <div class="file-upload-wrapper">
+          <input
+            #fileInput
+            style="display: none;"
+            type="file"
+            accept="image/png, image/jpeg"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+        <div class="col-4" *ngIf="selectedFile">
+          <p class="h5 input-label">{{ selectedFile.name }}</p>
         </div>
       </div>
     </div>
@@ -139,9 +220,16 @@
     <button
       class="btn btn-info"
       type="submit"
-      [disabled]="addBookForm.invalid|| authors.length === 0"
+      name="submit"
+      [disabled]="
+        addBookForm.invalid ||
+        (selectedAuthors.length === 0 && !addBookForm.controls.author.value)
+      "
     >
       Submit
+    </button>
+    <button class="btn" (click)="goToPage('books')">
+      Cancel
     </button>
   </form>
 </div>

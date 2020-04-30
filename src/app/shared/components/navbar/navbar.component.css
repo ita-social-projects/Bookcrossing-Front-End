@@ -1,0 +1,6 @@
+.md-form input::placeholder {
+    color: white;
+  }
+.md-form input::-webkit-search-cancel-button{
+    color: red;
+}
