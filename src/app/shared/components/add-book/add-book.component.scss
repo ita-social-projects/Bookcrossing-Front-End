@@ -1,3 +1,5 @@
+$color-danger: red;
+
 form {
     margin: 0% 10%;
 }
@@ -15,8 +17,33 @@ mat-select-trigger{
 }
 
 .authors-list {
+    list-style-type:none;
     text-align: left;
-    button {
-        float: right;
-    } 
+li{
+    padding: 1%;
+    span{
+        margin-left: 2px;
+        margin-right: 5px;
+    }
+    i{
+        color: lighten($color-danger, 20%);
+    }
+    i:hover{
+        color: $color-danger;
+    }
+}
+
+}
+
+
+.title{
+    text-align: left;
+}
+
+.input-label{
+    text-align: left;
+}
+
+.new-author-warning{
+    font-size: 0.8em;
 }

@@ -5,8 +5,10 @@ export interface IBook {
   id?: number;
   name: string;
   userId: number;
-  publisher: string;
+  publisher?: string;
   available: boolean;
   authors: IAuthor[];
   genres: IGenre[];
+  description?: string;
+  img?: File;
 }
