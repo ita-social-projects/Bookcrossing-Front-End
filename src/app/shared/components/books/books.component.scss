@@ -5,3 +5,19 @@
 .select-dropdown{
   min-width: 10rem;
 }
+.clear-icon, .search-icon{
+  display: inline-block;
+  fill: currentColor;
+  position: relative;
+}
+.clear-icon{
+    color: #80868b;
+    margin-left: 2px;
+    margin-right: 7px;
+    height: 24px;
+    line-height: 24px;
+    width: 24px;
+}
+.hidden{
+  visibility: hidden;
+}
