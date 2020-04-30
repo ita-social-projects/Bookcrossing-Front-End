@@ -59,6 +59,7 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { GenreComponent } from './shared/components/genre/genre.component';
+import { RegisteredBookComponent } from './shared/components/registered-book/registered-book.component';
 import { DialogService } from './core/services/dialog/dialog.service';
 import { LanguagesComponent } from './shared/components/languages/languages.component';
 import { AvatarModule } from 'ngx-avatar';
@@ -94,10 +95,12 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     HomeComponent,
     RulesComponent,
     GenreComponent,
+    RegisteredBookComponent,
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
     ProfileAvatarComponent
+
   ],
   imports: [
     BrowserModule,

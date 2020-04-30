@@ -28,6 +28,10 @@ export class BookService {
     return this.pagination.getPageBooks<IBook>(bookUrl,bookParams);
   }
 
+  getRegisteredBooks(): Observable<IBook[]> {
+    return this.http.get<IBook[]>(this.apiUrl + 'registered');
+  }
+
   getBookById(id: number): Observable<IBook> {
     return this.http.get<IBook>(this.apiUrl + id);
   }
@@ -35,6 +39,7 @@ export class BookService {
   postBook(book: IBook) {
     return this.http.post<IBook>(this.apiUrl, book);
   }
+
   putBook(bookId: number, book: IBook) {
     return this.http.put<IBook>(this.apiUrl + bookId, {
       Id: bookId,
