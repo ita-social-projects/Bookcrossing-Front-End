@@ -1,26 +1,38 @@
-<div class="card flex-row flex-wrap" *ngFor="let book of books ">
-  <div class="card-header border-0">
-    <img src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w" width="100" alt="">
-  </div>
-  <div class="card-block px-2">
-    <h4 class="card-title">{{book.name}}</h4>
-    <p class="card-text">By
-      <a [href]="author.id" *ngFor="let author of book.authors">{{author.firstName}} {{author.lastName}} </a>
-      <br>
-      <strong>Description</strong>
-      Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit, sed do eiusmod tempor
-      incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation
+<div class="card m-3" *ngFor="let book of books">
+  <div class="row no-gutters">
+    <div class="col-auto">
+      <img class="rounded"
+           src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w"
+           height="200" width="200" alt="rf">
+    </div>
+    <div class="col m-2">
+      <div class="card-block px-2">
+        <h4 class="card-title"><strong>{{book.name}}</strong></h4>
+        <p class="card-text"> Authors : <a [href]="author.id" *ngFor="let author of book.authors; let i = index">
+          <ng-template [ngIf]="i!=0"> , </ng-template>{{author.firstName}} {{author.lastName}}
+        </a>
+          <br>
+          <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category </ng-template>
+          <ng-template #manyGenres>Categories : </ng-template>
+
+          <a [href]="genre.id" *ngFor="let genre of book.genres">{{genre.name}} </a>
+          <br>
+          Location : Not implemented yet
+          <br>
+
+          Status : <ng-template [ngIf]="book.available" [ngIfElse]="notAvailable">
+            <font color="green">Available</font>
+            <br>
+            <a role="button" class="btn btn-primary" *ngIf="book.available" (click)="makeRequest(book.id)">Request</a>
+          </ng-template>
+          <ng-template #notAvailable>
+            <font color="red">Requested</font>
+          </ng-template>
 
 
-    </p>
-    <a href="#" class="btn btn-primary">Request</a>
+        </p>
 
-
-  </div>
-  <div class="w-100"></div>
-  <div class="card-footer w-100 text-muted">
-    Categories : <a *ngFor="let genre of book.genres">{{genre.name}} ,</a>
+      </div>
+    </div>
   </div>
 </div>

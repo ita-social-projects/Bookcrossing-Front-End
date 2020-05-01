@@ -16,6 +16,8 @@ export class RegisteredBookComponent implements OnInit {
     this.bookService.getRegisteredBooks().subscribe(books_=>{
       this.books = books_;
     });
-
+  }
+  makeRequest(bookId: number): void {
+    alert(bookId);
   }
 }
