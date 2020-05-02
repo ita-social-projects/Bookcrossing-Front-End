@@ -5,3 +5,11 @@
       padding: 0px;
       margin: 0px;
 }
+
+@media (max-width: 990px){
+  .avatar{
+      position: relative;
+      padding-top:3px;
+      right: 2px;
+  }
+}

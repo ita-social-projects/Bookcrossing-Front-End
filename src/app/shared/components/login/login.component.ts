@@ -13,9 +13,11 @@ import {first} from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
+  Isinvalid = false;
   submitted = false;
   returnUrl: string;
   error = '';
+  password: string;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
@@ -40,18 +42,17 @@ export class LoginComponent implements OnInit {
 
 
   singIn(loginFrom) {
-
     this.authenticationService.login(loginFrom.value)
       .pipe(first())
       .subscribe(
         data => {
-          console.log('log from res')
-          console.log(data)
           this.router.navigate(['/books']);
         },
         error => {
+          this.Isinvalid = true;
           this.error = error;
           this.loading = false;
+          this.password = '';
         });
   }
 }

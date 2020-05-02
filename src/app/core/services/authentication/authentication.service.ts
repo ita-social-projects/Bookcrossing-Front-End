@@ -1,53 +1,60 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable, EventEmitter, Output} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {loginUrl} from '../../../configs/api-endpoint.constants';
 import {userUrl} from '../../../configs/api-endpoint.constants';
-import { IUser } from '../../models/user';
+import {IUser} from '../../models/user';
 
-@Injectable({ providedIn: 'root' })
+
+@Injectable({providedIn: 'root'})
 export class AuthenticationService {
+  loginEvent = new EventEmitter();
+  logoutEvent = new EventEmitter();
   readonly baseUrl = loginUrl;
   readonly passwordUrl = userUrl;
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
-  private userLoggedInSubject: BehaviorSubject<Boolean>;
-  public userLoggedIn: Observable<Boolean>;
+
+  getLoginEmitter() {
+    return this.loginEvent;
+  }
+
+  getLogoutEmitter() {
+    return this.logoutEvent;
+  }
+
   constructor(private http: HttpClient) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
-    this.userLoggedInSubject = new BehaviorSubject<Boolean>(!!JSON.parse(localStorage.getItem('currentUser'))?.token);
-    this.userLoggedIn = this.userLoggedInSubject.asObservable();
   }
-  
 
   public get currentUserValue(): IUser {
     return this.currentUserSubject.value;
   }
 
   login(form) {
-    console.log('auth service')
     return this.http.post<any>(this.baseUrl, form)
       .pipe(map(user => {
-        // login successful if there's a jwt token in the response
         if (user && user.token) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem('RememberMe', form.RememberMe);
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
-          this.userLoggedInSubject.next(true);
+          this.loginEvent.emit();
         }
 
         return user;
       }));
   }
+
   logout() {
-    // remove user from local storage to log user out
+    localStorage.removeItem('RememberMe');
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);    
-    this.userLoggedInSubject.next(false);
+    this.currentUserSubject.next(null);
+    this.logoutEvent.emit();
   }
-  
+
+
   resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
     return this.http.put(`${this.passwordUrl}/password/`, {
       Password,
@@ -59,7 +66,7 @@ export class AuthenticationService {
 
   forgotPassword(email) {
     return this.http.post(`${this.passwordUrl}/password/`, {
-     email
+      email
     });
   }
 }

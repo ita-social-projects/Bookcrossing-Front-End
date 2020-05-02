@@ -65,6 +65,8 @@ import { LanguagesComponent } from './shared/components/languages/languages.comp
 import { AvatarModule } from 'ngx-avatar';
 import { SearchBarComponent } from './shared/components/search-bar/search-bar.component';
 import { ProfileAvatarComponent } from './shared/components/profile-avatar/profile-avatar.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { BookFilterBarComponent } from './shared/components/book-filter-bar/book-filter-bar.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +83,7 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     MapboxComponent,
     AuthorsComponent,
     AuthorFormComponent,
+    BookFilterBarComponent,
     ReportsComponent,
     FilterPipe,
     RefDirective,
@@ -99,7 +102,8 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
-    ProfileAvatarComponent
+    ProfileAvatarComponent,
+    BookFilterBarComponent
 
   ],
   imports: [
@@ -108,6 +112,7 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
     HttpClientModule,
     MatSnackBarModule,
     MatMenuModule,
+    MatTooltipModule,
     JwtModule,
     MatDialogModule,
     MatButtonModule,

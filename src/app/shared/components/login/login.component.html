@@ -14,19 +14,21 @@
 
         <form class="text-center" #loginFrom="ngForm">
 
-          <p class="h4 mb-4">Sign in</p>
+          <p class="h4 mb-4">Log in</p>
 
 
           <input type="email" [email]="true" required ngModel name="Email"  id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
 
 
-          <input type="password" id="defaultLoginFormPassword" required ngModel name="Password"  class="form-control mb-4" placeholder="Password">
+          <input type="password" id="defaultLoginFormPassword" required  [(ngModel)]='password' name="Password"  class="form-control mb-4" placeholder="Password">
 
+
+          <p *ngIf="Isinvalid" class="text-danger"> Specified username and/or password are incorrect. Please try again.</p>
           <div class="d-flex justify-content-around">
             <div>
 
               <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                <input type="checkbox" ngModel name="RememberMe" class="custom-control-input" id="defaultLoginFormRemember">
                 <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
               </div>
             </div>
@@ -37,7 +39,7 @@
           </div>
 
 
-          <button [disabled]="loginFrom.invalid "  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Sign in</button>
+          <button [disabled]="loginFrom.invalid "  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Log in</button>
 
 
           <p>Not a member?

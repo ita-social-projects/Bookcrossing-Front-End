@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 import {NavbarComponent} from './shared/components/navbar/navbar.component';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../app/core/services/authentication/authentication.service';
 import {Role} from './core/models/role.enum';
 import {IUser} from '../app/core/models/user';
-import { TranslateService } from "@ngx-translate/core";
-import {LanguageService} from "./core/services/language/language.service";
+import {TranslateService} from '@ngx-translate/core';
+import {LanguageService} from './core/services/language/language.service';
 
 
 @Component({
@@ -28,16 +28,24 @@ export class AppComponent {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
+  @HostListener('window:beforeunload') onBeforeUnload() {
+    const s = localStorage.getItem('RememberMe');
+    if (s === '') {
+      this.authenticationService.logout();
+    }
+
+  }
+
   ngOnInit(): void {
     const lang: string = this.languageService.setIfNotExists();
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
   }
+
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
   }
-
 
 
 }

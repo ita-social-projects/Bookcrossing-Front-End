@@ -35,12 +35,11 @@
           </div>
         </ng-template>
       </ul>
-      <ng-template [ngIf]="isAuthorized" [ngIfElse]="login">
+      <ng-template [ngIf]="isLoggedIn" [ngIfElse]="login">
         <app-search-bar> </app-search-bar>
         <app-profile-avatar></app-profile-avatar>
       </ng-template>
     </div>
-    
   </div>
 
 </nav>

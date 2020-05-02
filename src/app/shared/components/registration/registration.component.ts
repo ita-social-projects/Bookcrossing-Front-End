@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {RegistraionService} from '../../../core/services/registration/registraion.service';
 
 @Component({
   selector: 'app-registration',
@@ -8,7 +9,10 @@ import {Router} from '@angular/router';
 })
 export class RegistrationComponent implements OnInit {
 
-  constructor(private router: Router) {
+  validemail;
+
+  constructor(private router: Router,
+              private regservice: RegistraionService) {
   }
 
   navigateToSingIn() {
@@ -19,6 +23,21 @@ export class RegistrationComponent implements OnInit {
     return a === b;
   }
 
+
+  async checkEmail(email) {
+
+    this.validemail = ! await this.regservice.checkEmail(email);
+    console.log(this.validemail);
+
+  }
+
+  SingUp(form) {
+    this.regservice.registration(form.value).subscribe(d => {
+      if (d === true) {
+        this.navigateToSingIn();
+      }
+    });
+  }
 
   ngOnInit(): void {
   }

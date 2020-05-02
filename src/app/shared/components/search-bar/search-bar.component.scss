@@ -9,6 +9,7 @@
 }
 .search-bar{
   border-radius: 16px;
+  width: 234px;
 }
 .search-field{
   background: none;
@@ -25,9 +26,9 @@
   fill: currentColor;
   position: relative;
 }
-
 .clear-icon{
     color: #80868b;
+    
     margin-right: 2px;
     height: 20px;
     line-height: 20px;
@@ -45,4 +46,10 @@
 }
 .hidden{
   visibility: hidden;
+}
+@media (max-width: 990px){
+  .search-bar{
+      position: relative;
+      right: 12px;
+  }
 }

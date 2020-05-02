@@ -20,6 +20,7 @@
             <div class="col">
 
               <input type="text" required ngModel name="FirstName" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+
             </div>
             <div class="col">
 
@@ -32,19 +33,23 @@
           </div>
 
 
-          <input type="email"  required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+          <input type="email"  #emailRef='ngModel' (change)="checkEmail(RegistrationFrom.value.email)"  required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
+          <p *ngIf="!validemail && emailRef.dirty  ">email is exist </p>
 
-
-          <input type="password" required ngModel name="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password"
+          <input  #pass1Ref='ngModel' type="password" required ngModel name="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password"
                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
 <br>
           <input (change)="comparePasswords(RegistrationFrom.value.password,
-          RegistrationFrom.value.confirmPassword)" type="password" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" class="form-control" placeholder="Confirm Password"
+          RegistrationFrom.value.confirmPassword)"  #pass2Ref='ngModel' type="password" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" class="form-control" placeholder="Confirm Password"
                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
+<p *ngIf="pass1Ref.dirty && pass2Ref.dirty && !(comparePasswords(RegistrationFrom.value.password,
+          RegistrationFrom.value.confirmPassword))">Password mismatch</p>
+
+          <button [disabled]="((RegistrationFrom.invalid) || !(comparePasswords(RegistrationFrom.value.password,
+          RegistrationFrom.value.confirmPassword)) || !validemail ) " (click)="SingUp(RegistrationFrom)" class="btn btn-info my-4 btn-block" >Sign up</button>
 
 
-          <button [disabled]="RegistrationFrom.invalid || !comparePasswords(RegistrationFrom.value.password,
-          RegistrationFrom.value.confirmPassword)" class="btn btn-info my-4 btn-block" >Sign up</button>
+
 
 
           <p>Already a member?

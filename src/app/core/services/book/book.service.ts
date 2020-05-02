@@ -8,10 +8,8 @@ import { bookStatus } from '../../models/bookStatus.enum';
 import { RequestService } from '../request/request.service';
 import { IRequest } from '../../models/request';
 import {PaginationService} from "../pagination/pagination.service";
-import {PaginationParameters} from "../../../core/models/Pagination/paginationParameters";
 import {IPage} from "../../models/page";
-import {IAuthor} from "../../models/author";
-import { BookParameters } from '../../models/Pagination/bookParameters';
+import { BookQueryParams } from '../../models/bookQueryParams';
 
 @Injectable()
 export class BookService {
@@ -24,8 +22,8 @@ export class BookService {
     private requestService:RequestService
     ) {}
 
-  getBooksPage(bookParams : BookParameters): Observable<IPage<IBook>> {
-    return this.pagination.getPageBooks<IBook>(bookUrl,bookParams);
+  getBooksPage(bookParams : BookQueryParams): Observable<IPage<IBook>> {
+    return this.pagination.getBookPage<IBook>(bookUrl,bookParams);
   }
 
   getRegisteredBooks(): Observable<IBook[]> {
