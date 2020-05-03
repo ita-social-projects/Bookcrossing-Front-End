@@ -1,6 +1,8 @@
+import { IBookPost } from './../../../core/models/bookPost';
 import { UserService } from './../../../core/services/user/user.service';
 import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { switchMap, first, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { BookService } from 'src/app/core/services/book/book.service';
@@ -14,6 +16,7 @@ import { bookStatus } from 'src/app/core/models/bookStatus.enum';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { IUser } from 'src/app/core/models/user';
+import { pipe } from 'rxjs';
 
 @Component({
   selector: 'app-book',
@@ -26,8 +29,7 @@ export class BookComponent implements OnInit {
     readonly baseUrl = bookUrl;
     book: IBook;
     bookId: number;
-    userId: number;
-    request: IRequest;
+    isRequester: boolean;
     requestId: number;
     bookStatus: bookStatus;
     status: string;
@@ -42,7 +44,8 @@ export class BookComponent implements OnInit {
     private bookService:BookService,
     private requestService:RequestService,
     private dialogService: DialogService,
-    private userService: UserService
+    private userService: UserService,
+    private authentication: AuthenticationService
     ) {}
   
   ngOnInit() {
@@ -54,45 +57,72 @@ export class BookComponent implements OnInit {
 
   this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
     this.book = value;
-    this.status = this.getStatus(value);
-    this.getCurrentOwner(this.book.userId);
-    this.getFirstOwner();
+    this.getOwners(this.book.userId);
+    this.getStatus(value);
     this.getUserWhoRequested();
   });
 }
-getCurrentOwner(userId: number){
+
+isAuthenticated(){
+  return this.authentication.isAuthenticated();
+}
+
+getOwners(userId: number){
   this.userService.getUserById(userId)
   .subscribe((value: IUser) => {
     this.currentOwner = value;
-    });
-}
-getFirstOwner(){
-  var requestQuery = new RequestQueryParams();
-          requestQuery.last = false;
-          requestQuery.first = true;
-          this.requestService.getRequestForBook(this.bookId, requestQuery).subscribe((value: IRequest) => {
+    let query = new RequestQueryParams();
+    query.first = true;
+    query.last = false;
+          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.firstOwner = value.owner;
+            }, err => {
+              this.firstOwner = value;
             });
+            if(this.firstOwner === undefined){
+              this.firstOwner = value;
+            }   
+    });
 }
 
 getUserWhoRequested(){
-  var requestQuery = new RequestQueryParams();
-          requestQuery.last = true;
-          requestQuery.first = false;
-          this.requestService.getRequestForBook(this.bookId, requestQuery).subscribe((value: IRequest) => {
-            this.userWhoRequested = value.user;
+  let query = new RequestQueryParams();
+  query.first = false;
+  query.last = true;
+          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
+            if(this.bookStatus !== bookStatus.available)
+              this.userWhoRequested = value.user;
+                if(this.isAuthenticated()){
+                  this.authentication.getUserId().subscribe((value : number) => {
+                    if(value === this.userWhoRequested.id)
+                    this.isRequester = true
+                  },
+                  err => {
+                    this.isRequester = false
+                  });
+                }
             });
 }
-  getStatus(book: IBook): string{
-    this.bookStatus = this.bookService.getStatus(book);
-    if(this.bookStatus == bookStatus.available){
-      return "Available";
+  getStatus(book : IBook){
+    if(book.available){
+      this.bookStatus = bookStatus.available
+      this.status = "Available"
     }
-    else if(this.bookStatus == bookStatus.reading){
-      return "Reeding";
-    }
-    else if(this.bookStatus == bookStatus.requested){
-      return "Requested";
+    else{
+      let query = new RequestQueryParams();
+      query.first = false;
+      query.last = true;    
+      this.requestService.getRequestForBook(book.id, query)
+     .subscribe((value: IRequest) => {
+         if(value.receiveDate){
+           this.bookStatus = bookStatus.reading
+           this.status = "Reeding"
+         }
+         else{
+           this.bookStatus = bookStatus.requested
+           this.status = "Requested"
+         }
+       }, error => {})
     }
   }
 
@@ -104,11 +134,24 @@ getUserWhoRequested(){
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          this.book.available = true;
-          this.bookService.putBook(this.bookId, this.book).subscribe(() => {
+          console.log(this.book)
+          let book: IBookPost = {
+            id: this.book.id,
+            name: this.book.name,
+            userId: this.book.userId,
+            publisher: this.book.publisher,
+            available: true,
+            notice: this.book.notice,
+            authors: this.book.authors,
+            genres: this.book.genres,
+            image: null
+          };
+          this.bookService.putBook(this.bookId, book).subscribe(() => {
+            this.notificationService.success(this.translate
+              .instant("Your Book`s status changed to available."), "X");
           }, err => {
             this.notificationService.warn(this.translate
-              .instant("Something went wrong!"));
+              .instant("Something went wrong!"), "X");
           });
         }
       });
@@ -122,19 +165,19 @@ getUserWhoRequested(){
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          var requestQuery = new RequestQueryParams();
-          requestQuery.last = true;
-          requestQuery.first = false;
-          this.requestService.getRequestForBook(this.bookId, requestQuery).subscribe((value: IRequest) => {
+          let query = new RequestQueryParams();
+          query.first = false;
+          query.last = true;
+          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.requestService.deleteRequest(value.id).subscribe((value: boolean) => {
               let canceled = value;
               if(canceled){
                 this.notificationService.success(this.translate
-                  .instant("Request is cancelled."));
+                  .instant("Request is cancelled."), "X");
               }
               }, err => {
                 this.notificationService.warn(this.translate
-                  .instant("Something went wrong!"));
+                  .instant("Something went wrong!"), "X");
               });
             });
         }
@@ -149,19 +192,15 @@ getUserWhoRequested(){
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          var requestQuery = new RequestQueryParams();
-          requestQuery.last = true;
-          requestQuery.first = false;
-          this.requestService.getRequestForBook(this.bookId, requestQuery).subscribe((value: IRequest) => {
+          var query = new RequestQueryParams();
+          query.last = true;
+          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.requestService.approveReceive(value.id).subscribe((value: boolean) => {
-              let received = value;
-              if(received){
                 this.notificationService.success(this.translate
-                  .instant("Request is cancelled."));
-              }
+                  .instant("Book’s owner has been changed."), "X");
               }, err => {
                 this.notificationService.warn(this.translate
-                  .instant("Something went wrong!"));
+                  .instant("Something went wrong!"), "X");
               });
             });
         }
@@ -178,12 +217,11 @@ getUserWhoRequested(){
       .subscribe(async res => {
         if (res) {
           this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
-            this.request = value;
             this.notificationService.success(this.translate
-              .instant("Book is successfully requested. Please contact with current owner to receive a book"));
+              .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
             }, err => {
               this.notificationService.warn(this.translate
-                .instant("Something went wrong!"));
+                .instant("Something went wrong!"), "X");
             });
         }
       });

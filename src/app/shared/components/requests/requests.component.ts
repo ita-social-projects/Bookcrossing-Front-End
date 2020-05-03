@@ -50,7 +50,7 @@ export class RequestsComponent implements OnInit {
       }
     },
     error: error => this.notificationService.warn(this.translate
-      .instant("An error has occured, please try again!"))
+      .instant("You haven`t made any requests yet!"), "X")
    });   
   };
 
@@ -64,13 +64,11 @@ export class RequestsComponent implements OnInit {
         if (res) {
           this.requestService.deleteRequest(requestId).subscribe((value: boolean) => {
             let canceled = value;
-            if(canceled){
               this.notificationService.success(this.translate
-                .instant("Request is cancelled."));
-            }
+                .instant("Request is cancelled."), "X");
             }, err => {
               this.notificationService.warn(this.translate
-                .instant("Something went wrong!"));
+                .instant("Something went wrong!"), "X");
             });
         }
       });

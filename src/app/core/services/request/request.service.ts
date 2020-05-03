@@ -23,17 +23,16 @@ export class RequestService {
     });
   }
 
-  getRequestForBook(bookId: number, param?: RequestQueryParams) :Observable<IRequest>{
+  getRequestForBook(bookId: number, param?: RequestQueryParams): Observable<IRequest>{
     var params = new HttpParams();
-    if(param.first){
+    if(param.first === true){
       params = new HttpParams()
     .set("first", "true");
     }
-    else if(param.last){
+    else if(param.last === true){
       params = new HttpParams()
-    .set("first", "true");
+    .set("last", "true");
     }
-    
     return this.http.get<IRequest>(this.baseUrl + `/${bookId}`, { params } );
   }
 

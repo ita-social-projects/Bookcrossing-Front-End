@@ -1,10 +1,11 @@
 import {Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import {loginUrl} from '../../../configs/api-endpoint.constants';
 import {userUrl} from '../../../configs/api-endpoint.constants';
 import {IUser} from '../../models/user';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,7 +13,7 @@ export class AuthenticationService {
   loginEvent = new EventEmitter();
   logoutEvent = new EventEmitter();
   readonly baseUrl = loginUrl;
-  readonly passwordUrl = userUrl;
+  readonly userUrl = userUrl;
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
 
@@ -24,7 +25,8 @@ export class AuthenticationService {
     return this.logoutEvent;
   }
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private jwtHelper: JwtHelperService) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -56,7 +58,7 @@ export class AuthenticationService {
 
 
   resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
-    return this.http.put(`${this.passwordUrl}/password/`, {
+    return this.http.put(`${this.userUrl}/password/`, {
       Password,
       PasswordConfirmation,
       Email,
@@ -65,8 +67,30 @@ export class AuthenticationService {
   }
 
   forgotPassword(email) {
-    return this.http.post(`${this.passwordUrl}/password/`, {
+    return this.http.post(`${this.userUrl}/password/`, {
       email
     });
+  }
+  isAuthenticated() {
+    const token: string = localStorage.getItem("currentUser");
+    return token && !this.jwtHelper.isTokenExpired(token);
+  }
+
+ getUserId() {
+    return this.http.get(`${this.userUrl}/id/`)
+  }
+
+  isAdmin() {
+    const token: string = localStorage.getItem("currentUser");
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      const role = this.jwtHelper.decodeToken(token)[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+      ];
+      if (role === "Admin") {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 }

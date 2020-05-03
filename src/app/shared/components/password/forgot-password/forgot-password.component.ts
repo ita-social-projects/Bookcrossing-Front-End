@@ -27,10 +27,10 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmit() {
     this.authService.forgotPassword(this.forgotPasswordForm.value.Email).subscribe(() => {
       this.notificationService.success(this.translate
-        .instant("components.password.forgot-success"));
+        .instant("components.password.forgot-success"), "X");
     }, err => {
       this.notificationService.warn(this.translate
-        .instant("components.password.forgot-error"));
+        .instant("components.password.forgot-error"), "X");
     });
   }
 

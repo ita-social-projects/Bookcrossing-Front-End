@@ -1,7 +1,7 @@
 import { IRoomLocation } from './roomLocation';
 import { IAuthor } from "src/app/core/models/author";
 import { IGenre } from "src/app/core/models/genre";
-export interface IBook {
+export interface IBookPost {
   id?: number;
   name: string;
   userId: number;
@@ -9,6 +9,6 @@ export interface IBook {
   available: boolean;
   authors: IAuthor[];
   genres: IGenre[];
-  imagePath?: string;
+  image?: File;
   notice?: string;
 }

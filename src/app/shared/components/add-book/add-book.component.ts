@@ -8,6 +8,7 @@ import { GenreService } from "src/app/core/services/genre/genre";
 import { AuthorService } from "src/app/core/services/author/authors.service";
 import { SubscriptionLike } from 'rxjs';
 import { Router } from '@angular/router';
+import { IBookPost } from 'src/app/core/models/bookPost';
 
 @Component({
   selector: "app-add-book",
@@ -80,19 +81,19 @@ export class AddBookComponent implements OnInit {
     }
 
 
-    let book: IBook = {
+    let book: IBookPost = {
       name: this.addBookForm.get("title").value,
       authors: this.selectedAuthors,
       genres: selectedGenres,
       publisher: this.addBookForm.get("publisher").value,
-      description: this.addBookForm.get("description").value,
+      notice: this.addBookForm.get("description").value,
       available: true,
       userId: this.userId,
     };
 
 
     if (this.selectedFile) {
-      book.img = this.selectedFile;
+      book.image = this.selectedFile;
     }
 
     this.bookService.postBook(book).subscribe(
