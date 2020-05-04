@@ -32,7 +32,6 @@ export class BookComponent implements OnInit {
     isRequester: boolean;
     requestId: number;
     bookStatus: bookStatus;
-    status: string;
     currentOwner: IUser;
     userWhoRequested: IUser;
     firstOwner: IUser;
@@ -106,7 +105,6 @@ getUserWhoRequested(){
   getStatus(book : IBook){
     if(book.available){
       this.bookStatus = bookStatus.available
-      this.status = "Available"
     }
     else{
       let query = new RequestQueryParams();
@@ -116,11 +114,9 @@ getUserWhoRequested(){
      .subscribe((value: IRequest) => {
          if(value.receiveDate){
            this.bookStatus = bookStatus.reading
-           this.status = "Reeding"
          }
          else{
            this.bookStatus = bookStatus.requested
-           this.status = "Requested"
          }
        }, error => {})
     }

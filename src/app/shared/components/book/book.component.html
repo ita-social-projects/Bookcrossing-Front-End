@@ -63,9 +63,9 @@
             <div class="ml-xl-0 ml-4">
               <strong>Status: </strong>
               <span [ngSwitch]="bookStatus">
-                <ng-template ngSwitchCase="1"><span class="badge badge-success product mb-4 ml-2">{{ status }}</span></ng-template>
-                <ng-template ngSwitchCase="2"><span class="badge badge-info product mb-4 ml-2">{{ status }}</span></ng-template>
-                <ng-template ngSwitchCase="3"><span class="badge badge-info product mb-4 ml-2">{{ status }}</span></ng-template>
+                <ng-template ngSwitchCase="1"><span class="badge badge-success product mb-4 ml-2">Available</span></ng-template>
+                <ng-template ngSwitchCase="2"><span class="badge badge-info product mb-4 ml-2">Requested</span></ng-template>
+                <ng-template ngSwitchCase="3"><span class="badge badge-info product mb-4 ml-2">Reeding</span></ng-template>
               </span>
             </div>
             <p class="ml-xl-0 ml-4"><strong>Notice: </strong> {{ book?.notice }} </p>

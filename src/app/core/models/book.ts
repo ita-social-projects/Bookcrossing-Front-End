@@ -11,4 +11,5 @@ export interface IBook {
   genres: IGenre[];
   imagePath?: string;
   notice?: string;
+  locations: IRoomLocation[];
 }
