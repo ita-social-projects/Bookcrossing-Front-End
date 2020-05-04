@@ -1,19 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { IBook } from 'src/app/core/models/book';
-import { BookService } from 'src/app/core/services/book/book.service';
+import {IBook} from '../../../core/models/book';
+import {BookQueryParams} from '../../../core/models/bookQueryParams';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {BookService} from '../../../core/services/book/book.service';
+import {SearchBarService} from '../../../core/services/searchBar/searchBar.service';
 import {IUser} from '../../../core/models/user';
-import {BookQueryParams} from "../../../core/models/bookQueryParams";
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {SearchBarService} from "../../../core/services/searchBar/searchBar.service";
-
 
 @Component({
-  selector: 'app-registered-book',
-  templateUrl: './registered-book.component.html',
-  styleUrls: ['./registered-book.component.scss']
+  selector: 'app-current-owned-books',
+  templateUrl: './current-owned-books.component.html',
+  styleUrls: ['./current-owned-books.component.scss']
 })
 
-export class RegisteredBookComponent implements OnInit, OnDestroy {
+export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
 
   books: IBook[];
   user: IUser;
@@ -83,7 +82,7 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
 
   //get
   getBooks(params: BookQueryParams): void {
-    this.bookService.getRegisteredBooks(params)
+    this.bookService.getCurrentOwnedBooks(params)
       .subscribe({
         next: pageData => {
           this.books = pageData.page;
