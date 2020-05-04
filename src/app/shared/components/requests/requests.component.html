@@ -16,7 +16,7 @@
       </div>
       <div class="col m-2">
         <div class="card-block px-2">
-          <h4 class="card-title"><strong>{{request.book.name}}</strong></h4>
+          <a [routerLink]="['/book/', request.book.id]"><h4 class="card-title"><strong>{{request.book.name}}</strong></h4></a>
           <p class="card-text"> Authors : <a [href]="author.id" *ngFor="let author of request.book.authors; let i = index">
               <ng-template [ngIf]="i!=0"> , </ng-template>{{author.firstName}} {{author.lastName}}
             </a>
@@ -30,7 +30,7 @@
             <br>
 
             Status : 
-              <font color="red">Requested</font>
+              <span class="badge badge-info product ml-2">Requested</span>
               <br>
               <a role="button" class="btn btn-primary" (click)="cancelRequest(request.id)">Cancel request</a>
           </p>
