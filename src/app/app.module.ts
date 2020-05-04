@@ -67,6 +67,7 @@ import { SearchBarComponent } from './shared/components/search-bar/search-bar.co
 import { ProfileAvatarComponent } from './shared/components/profile-avatar/profile-avatar.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { BookFilterBarComponent } from './shared/components/book-filter-bar/book-filter-bar.component';
+import { CurrentOwnedBooksComponent } from './shared/components/current-owned-books/current-owned-books.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { BookFilterBarComponent } from './shared/components/book-filter-bar/book
     LanguagesComponent,
     SearchBarComponent,
     ProfileAvatarComponent,
-    BookFilterBarComponent
+    BookFilterBarComponent,
+    CurrentOwnedBooksComponent
 
   ],
   imports: [
