@@ -13,7 +13,8 @@
                 <strong>SoftServe</strong>
               </h5>
               <button mat-stroked-button class="home-button" routerLink="rules">{{'components.home.rules' | translate}}</button>
-              <button mat-stroked-button class="home-button" routerLink="book">{{'components.home.register' | translate}}</button>
+              <button *ngIf="isAuthenticated()" mat-stroked-button class="home-button" routerLink="book" >{{'components.home.register' | translate}}</button>
+              <button *ngIf="!isAuthenticated()" mat-stroked-button class="home-button" routerLink="login" >{{'components.home.register' | translate}}</button>
             </div>
           </div>
         </div>
