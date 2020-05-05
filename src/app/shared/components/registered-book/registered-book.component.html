@@ -38,7 +38,7 @@
             <span [ngSwitch]="bookStatus[key]">
               <ng-template ngSwitchCase="1"><span class="badge badge-success product ml-2">Available</span>
                 <br>
-                <a role="button" class="btn btn-primary" *ngIf="isAuthenticated() && book.userId != userId" (click)="requestBook(book.id)">Request</a></ng-template>
+                <a role="button" class="btn btn-primary" [hidden]="!isAuthenticated()" (click)="requestBook(book.id)">Request</a></ng-template>
               <ng-template ngSwitchCase="2"><span class="badge badge-info product ml-2">Requested</span></ng-template>
               <ng-template ngSwitchCase="3"><span class="badge badge-info product ml-2">Reeding</span></ng-template>
             </span>

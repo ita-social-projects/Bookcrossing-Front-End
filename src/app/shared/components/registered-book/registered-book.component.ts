@@ -53,11 +53,6 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
     return this.authentication.isAuthenticated();
   }
 
-  getUserId() {
-    return this.authentication.getUserId()
-      .subscribe((res: number) => this.userId = res);
-  }
-
   getStatus(book: IBook, index: number) {
     if (book.available) {
       this.bookStatus[index] = bookStatus.available;
