@@ -10,9 +10,9 @@ import { bookStatus } from 'src/app/core/models/bookStatus.enum';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { IRequest } from 'src/app/core/models/request';
 import {IUser} from '../../../core/models/user';
-import {BookQueryParams} from "../../../core/models/bookQueryParams";
-import {ActivatedRoute, Params, Router} from "@angular/router";
-import {SearchBarService} from "../../../core/services/searchBar/searchBar.service";
+import {BookQueryParams} from '../../../core/models/bookQueryParams';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {SearchBarService} from '../../../core/services/searchBar/searchBar.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -24,82 +24,86 @@ import { environment } from 'src/environments/environment';
 export class RegisteredBookComponent implements OnInit, OnDestroy {
 
   books: IBook[];
+  userId: number;
   totalSize: number;
-  user: IUser;
-  bookStatus: bookStatus[] = [1,1,1,1,1]
+  bookStatus: bookStatus[] = [1, 1, 1, 1, 1];
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
   apiUrl: string = environment.apiUrl;
 
   constructor(private bookService: BookService,
-    private routeActive: ActivatedRoute,
-    private router: Router,
-    private authentication: AuthenticationService,
-    private dialogService: DialogService,
-    private translate: TranslateService,
-    private searchBarService: SearchBarService,
-    private notificationService: NotificationService,
-    private requestService: RequestService) { }
+              private routeActive: ActivatedRoute,
+              private router: Router,
+              private authentication: AuthenticationService,
+              private dialogService: DialogService,
+              private translate: TranslateService,
+              private searchBarService: SearchBarService,
+              private notificationService: NotificationService,
+              private requestService: RequestService) { }
 
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5);
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     return this.authentication.isAuthenticated();
   }
-  getStatus(book : IBook, index: number){
-    if(book.available){
-      this.bookStatus[index] = bookStatus.available
-    }
-    else{
-      let query = new RequestQueryParams();
+
+  getUserId() {
+    return this.authentication.getUserId()
+      .subscribe((res: number) => this.userId = res);
+  }
+
+  getStatus(book: IBook, index: number) {
+    if (book.available) {
+      this.bookStatus[index] = bookStatus.available;
+    } else {
+      const query = new RequestQueryParams();
       query.first = false;
-      query.last = true;    
+      query.last = true;
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
-         if(value.receiveDate){
-           this.bookStatus[index] = bookStatus.reading
+         if (value.receiveDate) {
+           this.bookStatus[index] = bookStatus.reading;
+         } else {
+           this.bookStatus[index] = bookStatus.requested;
          }
-         else{
-           this.bookStatus[index] = bookStatus.requested
-         }
-       }, error => {})
+       }, error => {});
     }
   }
   async requestBook(bookId: number) {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get("Do you want to request this book? Current owner will be notified about your request.").toPromise()
+        await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
         if (res) {
           this.requestService.requestBook(bookId).subscribe((value: IRequest) => {
             this.notificationService.success(this.translate
-              .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
+              .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
             }, err => {
               this.notificationService.warn(this.translate
-                .instant("Something went wrong!"), "X");
+                .instant('Something went wrong!'), 'X');
             });
         }
       });
     }
 
   onFilterChange(filterChanged: boolean) {
-    this.queryParams.genres = this.selectedGenres
+    this.queryParams.genres = this.selectedGenres;
     if (filterChanged) {
-      this.resetPageIndex()
+      this.resetPageIndex();
       this.changeUrl();
     }
   }
   private populateDataFromQuery() {
     if (this.queryParams.searchTerm) {
-      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
+      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
     if (typeof this.queryParams.showAvailable === 'undefined') {
       this.queryParams.showAvailable = true;
@@ -108,15 +112,14 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
       let genres: number[];
       if (Array.isArray(this.queryParams.genres)) {
         genres = this.queryParams.genres.map(v => +v);
-      }
-      else {
+      } else {
         genres = [+this.queryParams.genres];
       }
       this.selectedGenres =  genres;
     }
   }
 
-  //Navigation
+  // Navigation
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
@@ -135,7 +138,7 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
   }
 
 
-  //get
+  // get
   getBooks(params: BookQueryParams): void {
     this.bookService.getRegisteredBooks(params)
       .subscribe({
