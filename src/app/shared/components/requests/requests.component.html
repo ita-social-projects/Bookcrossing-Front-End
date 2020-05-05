@@ -10,9 +10,15 @@
   <div class="card m-3" *ngFor="let request of requests">
     <div class="row no-gutters">
       <div class="col-auto">
-        <img class="rounded"
-          src="https://static1.squarespace.com/static/582caad246c3c4568a7e562e/582cef45bebafbcbcdd6ba24/58497122e6f2e14dcf3ae40c/1562091847195/booktitle.jpg?format=1500w"
-          height="200" width="200" alt="rf">
+        <div *ngIf="request?.book?.imagePath; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+          <img src="{{apiUrl}}/{{request.book.imagePath}}" class="rounded float-left" height="200" width="200" alt="rf">
+        </ng-template>
+        <ng-template #elseBlock>
+          <img
+            src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
+            class="rounded float-left" height="200" width="200" alt="rf">
+        </ng-template>
       </div>
       <div class="col m-2">
         <div class="card-block px-2">

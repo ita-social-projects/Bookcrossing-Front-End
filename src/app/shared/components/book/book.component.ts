@@ -17,6 +17,7 @@ import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { IUser } from 'src/app/core/models/user';
 import { pipe } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-book',
@@ -35,6 +36,7 @@ export class BookComponent implements OnInit {
     currentOwner: IUser;
     userWhoRequested: IUser;
     firstOwner: IUser;
+    imagePath: string;
 
   constructor(
     private translate: TranslateService,
@@ -59,6 +61,7 @@ export class BookComponent implements OnInit {
     this.getOwners(this.book.userId);
     this.getStatus(value);
     this.getUserWhoRequested();
+    this.imagePath = environment.apiUrl +'/' + this.book.imagePath;
   });
 }
 

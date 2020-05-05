@@ -7,6 +7,7 @@ import { RequestService } from 'src/app/core/services/request/request.service'
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { BookQueryParams } from 'src/app/core/models/bookQueryParams';
 import { SearchBarService } from 'src/app/core/services/searchBar/searchBar.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-requests',
@@ -21,6 +22,7 @@ export class RequestsComponent implements OnInit {
 
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
+  apiUrl: string = environment.apiUrl;
   
   constructor(
     private translate: TranslateService,

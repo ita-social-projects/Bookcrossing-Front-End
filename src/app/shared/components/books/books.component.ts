@@ -16,6 +16,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { IRequest } from 'src/app/core/models/request';
 import { bookStatus } from 'src/app/core/models/bookStatus.enum';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-books',
@@ -28,7 +29,7 @@ export class BooksComponent implements OnInit,OnDestroy {
   totalSize: number;
   bookStatus: bookStatus[] = [1,1,1,1,1]
   queryParams: BookQueryParams = new BookQueryParams;
-
+  apiUrl: string = environment.apiUrl;
   selectedGenres: number[];
 
 

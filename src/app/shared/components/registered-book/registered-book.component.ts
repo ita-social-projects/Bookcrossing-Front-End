@@ -13,7 +13,7 @@ import {IUser} from '../../../core/models/user';
 import {BookQueryParams} from "../../../core/models/bookQueryParams";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {SearchBarService} from "../../../core/services/searchBar/searchBar.service";
-
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-registered-book',
@@ -29,6 +29,8 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
   bookStatus: bookStatus[] = [1,1,1,1,1]
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
+  apiUrl: string = environment.apiUrl;
+
   constructor(private bookService: BookService,
     private routeActive: ActivatedRoute,
     private router: Router,

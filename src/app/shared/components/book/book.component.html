@@ -10,7 +10,7 @@
                 <div class="mask flex-center waves-effect waves-light">
                   <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
                   <ng-template #thenBlock>
-                    <img src="https://bookcrossingbackend-dev-as.azurewebsites.net/{{book.imagePath}}"
+                    <img src="{{imagePath}}"
                     class="rounded float-left img-fluid">
                   </ng-template>
                   <ng-template #elseBlock>
