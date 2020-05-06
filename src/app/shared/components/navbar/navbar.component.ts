@@ -35,4 +35,3 @@ export class NavbarComponent implements OnInit {
     this.translate.use(this.languageService.langToString(lang));
   }
 }
-
