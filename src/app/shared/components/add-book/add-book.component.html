@@ -5,11 +5,11 @@
     (ngSubmit)="onSubmit()"
     class="text-center border border-light p-5"
   >
-    <p class="h3 mb-4 title">Register book</p>
+    <p class="h2 mb-4 title">Register book</p>
     <div>
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Book title:*</p>
+          <p class="input-label">Book title:<span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <!-- Book title -->
@@ -17,23 +17,17 @@
             formControlName="title"
             type="text"
             class="form-control"
-            placeholder="Color of magic"
-            required
             [ngClass]="{
-              'is-invalid':
-                addBookForm.controls.title.invalid &&
-                addBookForm.controls.title.touched
+              'is-invalid': submitted && addBookForm.controls.title.errors
             }"
           />
           <div
+            *ngIf="submitted && addBookForm.controls.title.errors"
             class="invalid-feedback"
-            [ngClass]="{
-              'is-invalid':
-                addBookForm.controls.title.invalid &&
-                addBookForm.controls.title.touched
-            }"
           >
-            Please enter book title.
+            <div *ngIf="addBookForm.controls.title.errors.required">
+              Field is required.
+            </div>
           </div>
         </div>
       </div>
@@ -41,7 +35,7 @@
       <!-- Author -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Author:*</p>
+          <p class="input-label">Author:<span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <input
@@ -49,21 +43,35 @@
             #authorSearch
             type="text"
             class="form-control"
-            placeholder="Terry Pratchett"
             [matAutocomplete]="auto"
             [ngClass]="{
               'is-invalid':
-                addBookForm.controls.author.touched &&
+                submitted &&
                 !selectedAuthors.length &&
                 !addBookForm.controls.author.value
-              
             }"
+            (focus)="authorFocused=true"
+            (blur)="authorFocused=false"
           />
-          <div class="invalid-feedback">
-            Please select author.
+          <div
+            *ngIf="
+              submitted &&
+              !selectedAuthors.length &&
+              !addBookForm.controls.author.value
+            "
+            class="invalid-feedback"
+          >
+            <div
+              *ngIf="
+                !selectedAuthors.length && !addBookForm.controls.author.value
+              "
+            >
+              Field is required.
+            </div>
           </div>
-          <div *ngIf="addBookForm.controls.author.value" 
-          class="new-author-warning"
+          <div
+            *ngIf="addBookForm.controls.author.value && !authorFocused"
+            class="new-author-warning"
           >
             Entered author is saved as 'not confirmed'
           </div>
@@ -83,7 +91,12 @@
                     author.lastName
                 }}</span>
                 <span
-                  ><i class="fas fa-ban" (click)="onDeleteAuthor(author)"></i>
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="onDeleteAuthor(author)"
+                >
+                  <span aria-hidden="true">×</span>
                 </span>
               </li>
             </ul>
@@ -112,7 +125,7 @@
       <!-- Category -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Category:*</p>
+          <p class="input-label">Category:<span class="asterisk"> *</span></p>
         </div>
         <!-- Select multiple genres -->
         <div class="col-4">
@@ -121,11 +134,8 @@
             class="form-control"
             multiple
             placeholder="Select"
-            required
             [ngClass]="{
-              'is-invalid':
-                addBookForm.controls.genres.invalid &&
-                addBookForm.controls.genres.touched
+              'is-invalid': submitted && addBookForm.controls.genres.errors
             }"
           >
             <mat-select-trigger>
@@ -151,35 +161,28 @@
             }}</mat-option>
           </mat-select>
           <div
+            *ngIf="submitted && addBookForm.controls.genres.errors"
             class="invalid-feedback"
-            [ngClass]="{
-              'is-invalid':
-                addBookForm.controls.genres.invalid &&
-                addBookForm.controls.genres.touched
-            }"
           >
-            Please select genre.
+            <div *ngIf="addBookForm.controls.genres.errors.required">
+              Field is required.
+            </div>
           </div>
         </div>
       </div>
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Publishing house:</p>
+          <p class="input-label">Publishing house:</p>
         </div>
         <div class="col-4">
-          <input
-            formControlName="publisher"
-            type="text"
-            class="form-control"
-            placeholder="Machaon"
-          />
+          <input formControlName="publisher" type="text" class="form-control" />
         </div>
       </div>
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Notice:</p>
+          <p class="input-label">Notice:</p>
         </div>
         <div class="col-4">
           <textarea
@@ -199,7 +202,7 @@
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="h5 input-label">Image:</p>
+          <p class="input-label">Image:</p>
         </div>
         <div class="file-upload-wrapper">
           <input
@@ -210,26 +213,27 @@
             (change)="onFileSelected($event)"
           />
         </div>
-        <div class="col-4" *ngIf="selectedFile">
-          <p class="h5 input-label">{{ selectedFile.name }}</p>
+        <div class="col-4">
+          <div *ngIf="selectedFile">
+            <span>{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span>
+            <span
+              *ngIf="selectedFile"
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="onFileClear()"
+            >
+              <span aria-hidden="true">×</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Add book button -->
-    <button
-      class="btn btn-info"
-      type="submit"
-      name="submit"
-      [disabled]="
-        addBookForm.invalid ||
-        (selectedAuthors.length === 0 && !addBookForm.controls.author.value)
-      "
-    >
-      Submit
+    <button class="btn btn-info" type="submit" name="submit">
+      Save
     </button>
-    <button class="btn" (click)="goToPage('books')">
-      Cancel
-    </button>
+    <input type="button" class="btn" (click)="onCancel()" value="Cancel" />
   </form>
 </div>
