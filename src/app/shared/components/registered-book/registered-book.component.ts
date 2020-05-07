@@ -49,41 +49,43 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
     });
   }
 
-  isAuthenticated() {
+  isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
-
-  getStatus(book: IBook, index: number) {
-    if (book.available) {
-      this.bookStatus[index] = bookStatus.available;
-    } else {
-      const query = new RequestQueryParams();
+  getStatus(book : IBook, index: number){
+    if(book.available){
+      this.bookStatus[index] = bookStatus.available
+    }
+    else{
+      let query = new RequestQueryParams();
       query.first = false;
-      query.last = true;
+      query.last = true;    
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
-         if (value.receiveDate) {
-           this.bookStatus[index] = bookStatus.reading;
-         } else {
-           this.bookStatus[index] = bookStatus.requested;
+         if(value.receiveDate){
+           this.bookStatus[index] = bookStatus.reading
          }
-       }, error => {});
+         else{
+           this.bookStatus[index] = bookStatus.requested
+         }
+       }, error => {})
     }
   }
   async requestBook(bookId: number) {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
+        await this.translate.get("Do you want to request this book? Current owner will be notified about your request.").toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
         if (res) {
           this.requestService.requestBook(bookId).subscribe((value: IRequest) => {
+            this.ngOnInit();
             this.notificationService.success(this.translate
-              .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
+              .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
             }, err => {
               this.notificationService.warn(this.translate
-                .instant('Something went wrong!'), 'X');
+                .instant("Something went wrong!"), "X");
             });
         }
       });

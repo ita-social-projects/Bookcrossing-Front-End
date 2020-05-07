@@ -4,19 +4,16 @@ import {AuthenticationService} from '../../../core/services/authentication/authe
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   constructor(private authentication: AuthenticationService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isAuthenticated() {
     return this.authentication.isAuthenticated();
   }
-
 
 }
 

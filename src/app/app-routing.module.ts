@@ -19,6 +19,7 @@ import {RegisteredBookComponent} from './shared/components/registered-book/regis
 import {CurrentOwnedBooksComponent} from './shared/components/current-owned-books/current-owned-books.component';
 import {LocationsComponent} from './shared/components/admin/locations/locations.component';
 import {GenresComponent} from './shared/components/admin/genres/genres.component';
+import {ContactsComponent} from './shared/components/contacts/contacts.component';
 
 
 
@@ -49,6 +50,7 @@ const routes: Routes = [
   {path: 'demo', component: DemoComponent},
   {path: 'books/registered', component: RegisteredBookComponent},
   {path: 'books/current', component: CurrentOwnedBooksComponent},
+  {path: 'contacts', component: ContactsComponent},
   { path: 'password', children:
       [
         { path: 'forgot', component: ForgotPasswordComponent },

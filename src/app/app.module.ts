@@ -1,3 +1,4 @@
+import { BookEditFormComponent } from './shared/components/book-edit-form/book-edit-form.component';
 import { UserService } from './core/services/user/user.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
@@ -72,6 +73,7 @@ import { GenresComponent } from './shared/components/admin/genres/genres.compone
 import { LocationsComponent } from './shared/components/admin/locations/locations.component';
 import { GenreFormComponent } from './shared/components/admin/genre-form/genre-form.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { ContactsComponent } from './shared/components/contacts/contacts.component';
 
 @NgModule({
   declarations: [
@@ -98,6 +100,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     ResetPasswordComponent,
     AdminComponent,
     DemoComponent,
+    BookEditFormComponent,
     ViewLocationComponent,
     ContentFilterPipe,
     HomeComponent,
@@ -112,8 +115,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     AdminTableComponent,
     GenresComponent,
     LocationsComponent,
-    GenreFormComponent
-
+    GenreFormComponent,
+    ContactsComponent
   ],
   imports: [
     BrowserModule,
