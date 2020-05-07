@@ -1,14 +1,17 @@
-import { locationUrl } from '../../../configs/api-endpoint.constants';
+import {locationUrl} from '../../../configs/api-endpoint.constants';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ILocation } from '../../models/location';
-import { Subject } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
+import {CompletePaginationParams} from '../../models/completePaginationParameters';
+import {IPage} from '../../models/page';
+import {PaginationService} from '../pagination/pagination.service';
 
 @Injectable()
 export class LocationService {
   private apiUrl: string = locationUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private pagination: PaginationService) {}
 
   // observable location source
   private locationSubmitedSource = new Subject<ILocation>();
@@ -24,7 +27,9 @@ export class LocationService {
   getLocation() {
     return this.http.get<ILocation[]>(this.apiUrl);
   }
-
+  getLocationsPage(paginationParameters: CompletePaginationParams): Observable<IPage<ILocation>>{
+    return this.pagination.getPaginatedPage<ILocation>(locationUrl + 'paginated', paginationParameters);
+  }
   getLocationById(id: number) {
     return this.http.get<ILocation>(this.apiUrl + id);
   }

@@ -1,14 +1,7 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col">
+<div class="container">
+  <div class="map-container">
       <app-mapbox></app-mapbox>
-    </div>
-    <div class="col">
-      <app-view-location [isAdmin]="true" (editEvent)="onEditClick($event)"></app-view-location>
-    </div>
   </div>
-</div>
-<div>
   <form
     [formGroup]="addLocationForm"
     (ngSubmit)="onSubmit()"
@@ -60,10 +53,9 @@
     >
       Submit
     </button>
-    <button *ngIf="isEdited" 
+    <button *ngIf="isEdited"
     class="btn btn-danger"
-    type="submit"
-    (click)="onEditCancel()"
+    (click)="onCancel()"
   >
     Cancel
   </button>

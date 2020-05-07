@@ -21,7 +21,7 @@ export class ReportsComponent implements OnInit {
   @Output() onResolve : EventEmitter<number> = new EventEmitter<number>()
   @Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
   @Input() report : IReport[]
-  
+
   reports: IReport[];
   constructor() { }
   resolved = true;
@@ -30,7 +30,7 @@ export class ReportsComponent implements OnInit {
         id: 1,
         reportedId: 123,
         reportedBy: 4125,
-        reason: "this feature is not implemented yet, this is static sample table",
+        reason: "this feature is not implemented yet, this is static sample admin-table",
         date: '01.01.2077',
         resolvedBy: 1,
       },{

@@ -1,0 +1,34 @@
+.selectable-row-checkbox{
+  padding-left:1.75rem;
+}
+.isSelected{
+  background-color:rgba(0,0,0,0.125);
+  border-left: 2px solid deepskyblue;
+  border-right: 2px solid deepskyblue;
+}
+.table td:nth-child(1){
+  color: #4285f4 !important;
+}
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.table thead th {
+  font-size: .95rem;
+  font-weight: 500;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+  vertical-align: bottom;
+  border-bottom: 2px solid rgba(0,0,0,.06);
+}
+.table tbody td {
+  font-size: 1rem;
+}
+.active-header{
+  background-color: #eceff1;
+}
+@media (max-width: 800px) {
+  .action{
+    width:auto;
+  }
+}
