@@ -17,7 +17,6 @@ import { promise } from 'protractor';
 @Injectable()
 export class BookService {
   private apiUrl: string = bookUrl;
-  private isReceived: boolean;
 
   constructor(private http: HttpClient,
     private pagination: PaginationService,
@@ -49,43 +48,46 @@ export class BookService {
   }
 
   async isBeingReding(bookId: number): Promise<boolean>{  
-     let received: boolean;
-     var query: RequestQueryParams = new RequestQueryParams();
-     query.last = true;    
-     let promise = new Promise<boolean>((resolve) => {
-       this.requestService.getRequestForBook(bookId, query).subscribe({
-         next: value => {
-           if(value.receiveDate){
-             resolve(true);
-           }
-         },
-         error: () => {
-           resolve(false);
-         }
-       })
-     })
-     await promise.then(value=> received = value)
-     return received;
-  }
+    var query: RequestQueryParams = new RequestQueryParams();
+    query.last = true;    
+    let promise = new Promise<boolean>((res) => {
+      this.requestService.getRequestForBook(bookId, query).subscribe({
+        next: value => {
+          if(value.receiveDate){
+            res(true);
+          }
+          else{
+            res(false)
+          }
+        },
+        error: () => {
+          res(false);
+        }
+      })
+    })  
+    return promise;
+ }
 
-  getStatus(book : IBook) : bookStatus{
-    let requested = this.isRequested(book);
-    if(requested){
-      let received = this.isBeingReding(book.id);
-      if(received){
-        return bookStatus.reading;
-      }
-      else {
-        return bookStatus.requested;
-      }
-    }
-    return bookStatus.available;
-  }
-  
-  isRequested(book: IBook) : boolean {      
-    if(book.available === false) {
-      return true;
-    }
-    return false;
-  };
+ async getStatus(book : IBook) : Promise<bookStatus>{
+   let requested = this.isRequested(book);
+   if(requested){
+     let received: boolean;
+     await this.isBeingReding(book.id).then(value=> received = value)
+     if(received){
+       return bookStatus.reading;
+     }
+     else {
+       return bookStatus.requested;
+     }
+   }
+   return bookStatus.available;
+ }
+ 
+ 
+ isRequested(book: IBook) : boolean {      
+   if(book.available === false) {
+     return true;
+   }
+   return false;
+ };
 }

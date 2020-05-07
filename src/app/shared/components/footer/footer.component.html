@@ -1,10 +1,21 @@
-<footer class="page-footer font-small special-color-dark pt-4">
+<footer class="page-footer font-small mdb-color lighten-1 pt-3 pb-3">
 
   <div class="container">
-  </div>
-      <div class="footer-copyright text-center py-3">© 2020 Copyright:
+  <div class="row footer-copyright">
+    <div class="col-sm-5">
+      <div class="text-center py-3">Bookcrossing
+        <br>
         <a href="https://www.softserveinc.com/"> SoftServe.com </a>
-         <app-languages></app-languages>
       </div>
+    </div>
+    <div class="col-sm-3">
       <br>
+      <a mat-button class="contacts" [routerLink]="['contacts']"> Contacts </a>
+    </div>
+    <div class="col-sm-4 text-white">
+      <br>
+         <app-languages></app-languages>
+    </div>
+  </div>
+</div>
 </footer>

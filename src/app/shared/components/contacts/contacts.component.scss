@@ -1,0 +1,40 @@
+.intro-header {
+  height: unset !important;
+}
+.top-nav-collapse {
+  background-color: #78909c !important;
+}
+.view {
+  height: 100vh !important;
+}
+.navbar:not(.top-nav-collapse) {
+  background: transparent !important;
+}
+@media (max-width: 768px) {
+  .navbar:not(.top-nav-collapse) {
+    background: #78909c !important;
+  }
+}
+@media (max-width: 740px) {
+  .full-height,
+  .full-height body,
+  .full-height header,
+  .full-height header .view {
+    height: 700px;
+  }
+}
+
+.pt-5, .py-5 {
+  padding-top: 0rem !important;
+}
+
+i{
+  font-size: 40px;
+  color: white;
+}
+
+p{
+  font: 20px Roboto;
+  color: white;
+}
+

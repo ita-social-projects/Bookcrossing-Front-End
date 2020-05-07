@@ -1,6 +1,6 @@
 import { IBookPost } from './../../../core/models/bookPost';
 import { UserService } from './../../../core/services/user/user.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { switchMap, first, take } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +18,8 @@ import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { IUser } from 'src/app/core/models/user';
 import { pipe } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { BookEditFormComponent } from '../book-edit-form/book-edit-form.component';
+import { RefDirective } from '../../directives/ref.derictive';
 
 @Component({
   selector: 'app-book',
@@ -26,6 +28,7 @@ import { environment } from 'src/environments/environment';
   providers: [RequestService, BookService]
 })
 export class BookComponent implements OnInit {
+  @ViewChild(RefDirective, {static: false}) refDir : RefDirective
 
     readonly baseUrl = bookUrl;
     book: IBook;
@@ -46,7 +49,8 @@ export class BookComponent implements OnInit {
     private requestService:RequestService,
     private dialogService: DialogService,
     private userService: UserService,
-    private authentication: AuthenticationService
+    private authentication: AuthenticationService,
+    private resolver: ComponentFactoryResolver
     ) {}
   
   ngOnInit() {
@@ -59,7 +63,7 @@ export class BookComponent implements OnInit {
   this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
     this.book = value;
     this.getOwners(this.book.userId);
-    this.getStatus(value);
+    this.bookService.getStatus(this.book).then(res=> this.bookStatus = res)
     this.getUserWhoRequested();
     this.imagePath = environment.apiUrl +'/' + this.book.imagePath;
   });
@@ -67,6 +71,10 @@ export class BookComponent implements OnInit {
 
 isAuthenticated(){
   return this.authentication.isAuthenticated();
+}
+
+isAdmin(){
+  return this.authentication.isAdmin();
 }
 
 getOwners(userId: number){
@@ -86,6 +94,12 @@ getOwners(userId: number){
             }   
     });
 }
+showEditForm(book : IBook){
+  let formFactory = this.resolver.resolveComponentFactory(BookEditFormComponent);
+  let instance = this.refDir.containerRef.createComponent(formFactory).instance;
+  instance.book = book;
+  instance.onCancel.subscribe(()=> {this.refDir.containerRef.clear(); this.ngOnInit()});
+};
 
 getUserWhoRequested(){
   let query = new RequestQueryParams();
@@ -105,25 +119,6 @@ getUserWhoRequested(){
                 }
             });
 }
-  getStatus(book : IBook){
-    if(book.available){
-      this.bookStatus = bookStatus.available
-    }
-    else{
-      let query = new RequestQueryParams();
-      query.first = false;
-      query.last = true;    
-      this.requestService.getRequestForBook(book.id, query)
-     .subscribe((value: IRequest) => {
-         if(value.receiveDate){
-           this.bookStatus = bookStatus.reading
-         }
-         else{
-           this.bookStatus = bookStatus.requested
-         }
-       }, error => {})
-    }
-  }
 
   async makeAvailable() {
     this.dialogService
@@ -146,6 +141,7 @@ getUserWhoRequested(){
             image: null
           };
           this.bookService.putBook(this.bookId, book).subscribe(() => {
+            this.ngOnInit();
             this.notificationService.success(this.translate
               .instant("Your Book`s status changed to available."), "X");
           }, err => {
@@ -171,6 +167,7 @@ getUserWhoRequested(){
             this.requestService.deleteRequest(value.id).subscribe((value: boolean) => {
               let canceled = value;
               if(canceled){
+                this.ngOnInit();
                 this.notificationService.success(this.translate
                   .instant("Request is cancelled."), "X");
               }
@@ -195,6 +192,7 @@ getUserWhoRequested(){
           query.last = true;
           this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.requestService.approveReceive(value.id).subscribe((value: boolean) => {
+              this.ngOnInit();
                 this.notificationService.success(this.translate
                   .instant("Book’s owner has been changed."), "X");
               }, err => {
@@ -216,6 +214,7 @@ getUserWhoRequested(){
       .subscribe(async res => {
         if (res) {
           this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
+            this.ngOnInit();
             this.notificationService.success(this.translate
               .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
             }, err => {
