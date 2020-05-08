@@ -3,20 +3,27 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocationService } from 'src/app/core/services/location/location.service';
 import { ILocation } from 'src/app/core/models/location';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
-import { MapboxComponent } from '../mapbox/mapbox.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from '../../../../core/services/notification/notification.service';
 
 @Component({
-  selector: 'app-add-location',
-  templateUrl: './add-location.component.html',
-  styleUrls: ['./add-location.component.scss'],
+  selector: 'app-location-form',
+  templateUrl: './location-form.component.html',
+  styleUrls: ['./location-form.component.scss'],
 })
-export class AddLocationComponent implements OnInit {
+export class LocationFormComponent implements OnInit {
   public address: ILocation;
-  public isEdited: boolean = false;
+  public locationEdit: ILocation = {};
+  public isEdited = false;
 
   constructor(
+    private translate: TranslateService,
+    private notificationService: NotificationService,
+    private router: ActivatedRoute,
     private locationService: LocationService,
-    private mapboxService: MapboxService
+    private mapboxService: MapboxService,
+    private route: Router
   ) {
     mapboxService.currentAddressChanged$.subscribe((address) => {
       this.address = address;
@@ -28,6 +35,14 @@ export class AddLocationComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+    if (this.router.snapshot.paramMap.has('id')) {
+      this.locationEdit.id = +this.router.snapshot.paramMap.get('id');
+      this.locationEdit.city = this.router.snapshot.paramMap.get('city');
+      this.locationEdit.officeName = this.router.snapshot.paramMap.get('officeName');
+      this.locationEdit.street = this.router.snapshot.paramMap.get('street');
+      this.isEdited = true;
+      this.setLocationFormValues(this.locationEdit);
+    }
   }
 
   buildForm() {
@@ -39,7 +54,7 @@ export class AddLocationComponent implements OnInit {
   }
 
   onSubmit() {
-    let location: ILocation = {
+    const location: ILocation = {
       city: this.addLocationForm.get('city').value,
       street: this.addLocationForm.get('street').value,
       officeName: this.addLocationForm.get('officeName').value,
@@ -48,39 +63,32 @@ export class AddLocationComponent implements OnInit {
     if (!this.isEdited) {
       this.postLocation(location);
     } else {
-      location.id = this.address.id;
+      location.id = this.locationEdit.id;
       this.editLocation(location);
     }
-
-    this.isEdited = false;
-    this.addLocationForm.reset();
+    this.onCancel();
   }
 
   postLocation(location: ILocation) {
     this.locationService.postLocation(location).subscribe(
       (data: ILocation) => {
-        alert('Successfully added');
-        // to emit event end send new location to <app-view-location>
-        this.locationService.submitLocation(location);
+        this.locationService.submitLocation(data);
       },
-      (error) => {
-        alert(error.message);
-        console.log(error);
+      () => {
+        this.notificationService.warn(this.translate
+          .instant('Something went wrong!'), 'X');
       }
     );
   }
 
   editLocation(location: ILocation) {
     this.locationService.editLocation(location).subscribe(
-      (result) => {
-        alert('Successfully changed');
-        // to emit event end send new location to <app-view-location>
+      (data) => {
         this.locationService.submitLocation(location);
-        console.log(result);
       },
-      (error) => {
-        alert(error.message);
-        console.log(error);
+      () => {
+        this.notificationService.warn(this.translate
+        .instant('Something went wrong!'), 'X');
       }
     );
   }
@@ -93,14 +101,7 @@ export class AddLocationComponent implements OnInit {
     });
   }
 
-  onEditCancel() {
-    this.isEdited = false;
-    this.addLocationForm.reset();
-  }
-
-  onEditClick(event) {
-    this.isEdited = true;
-    this.setLocationFormValues(event);
-    this.address = event;
+  onCancel() {
+    this.route.navigate(['admin/locations']);
   }
 }

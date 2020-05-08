@@ -1,0 +1,28 @@
+<div class="container card p-3">
+  <div class="card-body card-body-cascade">
+    <div class="d-flex justify-content-center">
+      <div>
+        <canvas mdbChart height="400" width="500"
+                [chartType]="requestChartType"
+                [datasets]="requestChartDatasets"
+                [labels]="requestChartLabels"
+                [colors]="requestChartColors"
+                [options]="requestChartOptions"
+                [legend]="true">
+        </canvas>
+      </div>
+      <div>
+          <canvas mdbChart height="400" width="500"
+                  [chartType]="chartType"
+                  [datasets]="chartDatasets"
+                  [labels]="chartLabels"
+                  [colors]="chartColors"
+                  [options]="receivedChartOptions"
+                  [legend]="true">
+          </canvas>
+
+      </div>
+    </div>
+  </div>
+
+</div>

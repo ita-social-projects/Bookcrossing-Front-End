@@ -4,4 +4,4 @@ export interface IAuthor {
     lastName: string;
     middleName?: string;
     isConfirmed?: boolean;
-  } 
+  }

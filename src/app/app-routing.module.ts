@@ -6,21 +6,21 @@ import {RegistrationComponent} from './shared/components/registration/registrati
 import {BookComponent} from './shared/components/book/book.component';
 import {RequestsComponent} from './shared/components/requests/requests.component';
 import {BooksComponent} from './shared/components/books/books.component';
-import {AuthorsComponent} from './shared/components/authors/authors.component';
+import {AuthorsComponent} from './shared/components/admin/authors/authors.component';
 import {AddBookComponent} from './shared/components/add-book/add-book.component';
 import { DemoComponent } from './shared/components/demo/demo.component';
 import {AdminComponent} from './shared/components/admin/admin.component';
-import { AddLocationComponent } from './shared/components/add-location/add-location.component';
-import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
+import { LocationFormComponent } from './shared/components/admin/location-form/location-form.component';
 import { ForgotPasswordComponent } from './shared/components/password/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './shared/components/password/reset-password/reset-password.component';
 import {HomeComponent} from './shared/components/home/home.component';
 import {RulesComponent} from './shared/components/rules/rules.component';
-import {GenreComponent} from './shared/components/genre/genre.component';
 import {RegisteredBookComponent} from './shared/components/registered-book/registered-book.component';
 import {CurrentOwnedBooksComponent} from './shared/components/current-owned-books/current-owned-books.component';
-import {NgContentAst} from "@angular/compiler";
-import {ContactsComponent} from "./shared/components/contacts/contacts.component";
+import {LocationsComponent} from './shared/components/admin/locations/locations.component';
+import {GenresComponent} from './shared/components/admin/genres/genres.component';
+import {ContactsComponent} from './shared/components/contacts/contacts.component';
+import {DashboardComponent} from './shared/components/admin/dashboard/dashboard.component';
 
 
 
@@ -29,9 +29,13 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
 
-  {path: 'admin',component:AdminComponent,children:
+  {path: 'admin', component: AdminComponent, children:
       [
-        {path: 'authors', component: AuthorsComponent}
+        {path: 'dashboard', component: DashboardComponent},
+        {path: 'authors', component: AuthorsComponent},
+        {path: 'locations', component: LocationsComponent},
+        {path: 'genres', component: GenresComponent},
+        {path: 'location-form', component: LocationFormComponent}
       ]
   },
 
@@ -39,11 +43,10 @@ const routes: Routes = [
   {path: 'book', component: AddBookComponent},
   {path: 'requests', component: RequestsComponent, canActivate: [AuthGuard]},
   {path: 'books', component: BooksComponent},
-  {path: 'add-location', component: AddLocationComponent },
+  {path: 'location-form', component: LocationFormComponent },
   {path: '', component: HomeComponent},
   {path: 'rules', component: RulesComponent},
   {path: 'demo', component: DemoComponent},
-  {path: 'genres', component: GenreComponent},
   {path: 'books/registered', component: RegisteredBookComponent},
   {path: 'books/current', component: CurrentOwnedBooksComponent},
   {path: 'contacts', component: ContactsComponent},

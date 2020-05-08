@@ -1,0 +1,26 @@
+<table class="table table-hover mb-0">
+
+  <thead>
+  <tr>
+    <ng-container *ngFor="let name of displayColumns let i = index">
+      <th scope="col"(click)="onHeaderClicked(dataProperties[i])" [ngClass]="{'active-header': selectedHeader == dataProperties[i]}">{{name}}</th>
+    </ng-container>
+    <th scope="col">Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <ng-container *ngFor="let item of data let i = index;">
+    <tr id={{i}} (click)="onSelectedRowChange(item[dataProperties[0]])" [ngClass]="{'isSelected': selectedRows?.includes(item[dataProperties[0]])}" class="isSelected">
+        <td *ngFor="let column of dataProperties">
+          {{item[column]}}
+        </td>
+      <td>
+        <div class=" row d-flex align-items-center">
+          <button class="btn btn-md btn-md px-3 m-1" (click)=onEdit(item,$event)> <i
+            class="far fa-edit"></i></button>
+        </div>
+      </td>
+  </ng-container>
+  </tbody>
+</table>

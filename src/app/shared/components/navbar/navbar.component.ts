@@ -12,22 +12,22 @@ import {AuthenticationService} from 'src/app/core/services/authentication/authen
 export class NavbarComponent implements OnInit {
   @ViewChild('menu', {static: false}) menu: any;
   languages: Language[];
-  isLoggedIn: Boolean;
+  isLoggedIn: boolean;
+  adminActive = false;
 
   constructor(private authenticationService: AuthenticationService,
               private translate: TranslateService,
-              public languageService: LanguageService) {
-  }
+              public languageService: LanguageService)  { }
 
   ngOnInit() {
     this.isLoggedIn = this.authenticationService.currentUserValue?.token != null;
     this.languages = this.languageService.languages;
-    this.authenticationService.getLoginEmitter().subscribe(()=>{
+    this.authenticationService.getLoginEmitter().subscribe(() => {
       this.isLoggedIn = true;
-    }); 
-    this.authenticationService.getLogoutEmitter().subscribe(()=>{
+    });
+    this.authenticationService.getLogoutEmitter().subscribe(() => {
       this.isLoggedIn = false;
-    }); 
+    });
   }
 
   changeLang(lang: Language): void {

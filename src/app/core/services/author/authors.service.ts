@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { IAuthor } from 'src/app/core/models/author'
-import { authorUrl } from "src/app/configs/api-endpoint.constants";
+import { IAuthor } from 'src/app/core/models/author';
+import { authorUrl } from 'src/app/configs/api-endpoint.constants';
 import { IPage } from '../../models/page';
 import { CompletePaginationParams } from 'src/app/core/models/completePaginationParameters';
 import { PaginationService } from '../pagination/pagination.service';
@@ -24,11 +24,19 @@ export class AuthorService {
     this.authorEditedSource.next(author);
   }
 
-  getAuthorsPage(paginationParameters : CompletePaginationParams):Observable<IPage<IAuthor>>{
-    return this.pagination.getPaginatedPage<IAuthor>(authorUrl,paginationParameters);
+  getAuthorsPage(paginationParameters: CompletePaginationParams): Observable<IPage<IAuthor>> {
+    return this.pagination.getPaginatedPage<IAuthor>(authorUrl, paginationParameters);
   }
   getAuthorById(authorId: number) {
     return this.http.get<IAuthor[]>(authorUrl + `/${authorId}`);
+  }
+  mergeAuthors(author: IAuthor, authorIds: number[]) {
+     let params: HttpParams;
+     if (authorIds?.length > 0) {
+      for (const id of authorIds) {
+        params = params.append('authors', id.toString());
+      }
+    }
   }
   addAuthor(author: IAuthor) {
     return this.http.post<IAuthor>(authorUrl, author);

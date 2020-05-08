@@ -1,17 +1,17 @@
 import { HttpParams } from '@angular/common/http';
 
 export class FilterParameters {
-  private static filterPropertyName = "PropertyName";
-  private static filterValue = "Value";
-  private static filterMethod = "Method";
-  private static filterOperand = "Operand";
+  private static filterPropertyName = 'PropertyName';
+  private static filterValue = 'Value';
+  private static filterMethod = 'Method';
+  private static filterOperand = 'Operand';
 
   propertyName: string;
   value: string;
   method?: string;
   operand?: string;
 
-  static mapFilter(params: HttpParams, filters: FilterParameters[], filterName: string): HttpParams {    
+  static mapFilter(params: HttpParams, filters: FilterParameters[], filterName: string): HttpParams {
     for (let i = 0; i < filters.length; i++) {
       if (filters[i].propertyName && filters[i].value) {
         params = params
@@ -19,22 +19,23 @@ export class FilterParameters {
           .set(this.getFilterName(i, filterName, this.filterValue), filters[i].value);
 
         if (filters[i].method) {
-          params = params.set(this.getFilterName(i, filterName, this.filterMethod), filters[i].method)
+          params = params.set(this.getFilterName(i, filterName, this.filterMethod), filters[i].method);
         }
         if (filters[i].operand) {
-          params = params.set(this.getFilterName(i, filterName, this.filterOperand), filters[i].operand)
+          params = params.set(this.getFilterName(i, filterName, this.filterOperand), filters[i].operand);
         }
       }
     }
     return params;
-  }  
+  }
 
   static mapFilterFromQuery(params: any, filterName: string): FilterParameters[] {
     let filterCount = 0;
-    let filters = [];
-    while (params[this.getFilterName(filterCount, filterName, this.filterPropertyName)] && params[this.getFilterName(filterCount, filterName, this.filterValue)]) {
-      filters[filterCount] = new FilterParameters;
-      filters[filterCount].propertyName = params[this.getFilterName(filterCount, filterName, this.filterPropertyName)]
+    const filters = [];
+    while (params[this.getFilterName(filterCount, filterName, this.filterPropertyName)]
+                  && params[this.getFilterName(filterCount, filterName, this.filterValue)]) {
+      filters[filterCount] = new FilterParameters();
+      filters[filterCount].propertyName = params[this.getFilterName(filterCount, filterName, this.filterPropertyName)];
       filters[filterCount].value = params[this.getFilterName(filterCount, filterName, this.filterValue)]
         ? params[this.getFilterName(filterCount, filterName, this.filterValue)]
         : null;
@@ -49,7 +50,7 @@ export class FilterParameters {
     return filters;
   }
 
-  static mapFilterToQuery(queryParams: any, filters: FilterParameters[], filterName : string): any {
+  static mapFilterToQuery(queryParams: any, filters: FilterParameters[], filterName: string): any {
     for (let i = 0; i < filters.length; i++) {
       if (filters[i].propertyName && filters[i].value) {
         queryParams[this.getFilterName(i, filterName, this.filterPropertyName)] = filters[i].propertyName;
@@ -67,6 +68,6 @@ export class FilterParameters {
   }
 
   private static getFilterName(index: number, name: string, property: string): string {
-    return name + "[" + index + "]." + property;
+    return name + '[' + index + '].' + property;
   }
 }

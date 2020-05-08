@@ -35,13 +35,13 @@ import { PaginationComponent } from './shared/components/pagination/pagination.c
 import { MatCardModule } from '@angular/material/card';
 import { LanguageService } from './core/services/language/language.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { AddLocationComponent } from './shared/components/add-location/add-location.component';
+import { LocationFormComponent } from './shared/components/admin/location-form/location-form.component';
 import { LocationService } from './core/services/location/location.service';
 import { NotificationService } from './core/services/notification/notification.service';
 import { MapboxComponent } from './shared/components/mapbox/mapbox.component';
 import { MatInputModule } from '@angular/material/input';
-import { AuthorsComponent } from './shared/components/authors/authors.component';
-import { AuthorFormComponent } from './shared/components/author-form/author-form.component';
+import { AuthorsComponent } from './shared/components/admin/authors/authors.component';
+import { AuthorFormComponent } from './shared/components/admin/author-form/author-form.component';
 import { ReportsComponent } from './shared/components/reports/reports.component';
 import { DemoComponent } from './shared/components/demo/demo.component';
 import { ForgotPasswordComponent } from './shared/components/password/forgot-password/forgot-password.component';
@@ -59,7 +59,6 @@ import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { GenreComponent } from './shared/components/genre/genre.component';
 import { RegisteredBookComponent } from './shared/components/registered-book/registered-book.component';
 import { DialogService } from './core/services/dialog/dialog.service';
 import { LanguagesComponent } from './shared/components/languages/languages.component';
@@ -69,7 +68,13 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { BookFilterBarComponent } from './shared/components/book-filter-bar/book-filter-bar.component';
 import { CurrentOwnedBooksComponent } from './shared/components/current-owned-books/current-owned-books.component';
+import {AdminTableComponent} from './shared/components/admin/admin-table/admin-table.component';
+import { GenresComponent } from './shared/components/admin/genres/genres.component';
+import { LocationsComponent } from './shared/components/admin/locations/locations.component';
+import { GenreFormComponent } from './shared/components/admin/genre-form/genre-form.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
+import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +87,7 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     NavbarComponent,
     FooterComponent,
     BooksComponent,
-    AddLocationComponent,
+    LocationFormComponent,
     MapboxComponent,
     AuthorsComponent,
     AuthorFormComponent,
@@ -101,7 +106,6 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     ContentFilterPipe,
     HomeComponent,
     RulesComponent,
-    GenreComponent,
     RegisteredBookComponent,
     ConfirmDialogComponent,
     LanguagesComponent,
@@ -109,8 +113,12 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CurrentOwnedBooksComponent,
-    ContactsComponent
-
+    AdminTableComponent,
+    GenresComponent,
+    LocationsComponent,
+    GenreFormComponent,
+    ContactsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -127,6 +135,7 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     MatInputModule,
     MatIconModule,
     MatSortModule,
+    MatSidenavModule,
     NgxPaginationModule,
     AvatarModule,
     TranslateModule.forRoot({
@@ -160,7 +169,7 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     CookieService,
     JwtHelperService,
     LocationService,
-    GenreService, 
+    GenreService,
     DialogService,
     UserService
 

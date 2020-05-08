@@ -9,9 +9,13 @@
 //     position: relative;
 // }
 
-
-:host{
-    background-color: black;
+.selectable-row-checkbox{
+  padding-left:1.75rem;
+}
+.isSelected{
+  background-color:rgba(0,0,0,0.125);
+  border-left: 2px solid deepskyblue;
+  border-right: 2px solid deepskyblue;
 }
 .table {
     width: 100%;

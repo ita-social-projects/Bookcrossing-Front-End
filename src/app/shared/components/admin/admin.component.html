@@ -1,22 +1,38 @@
-<div class="sidebar-fixed pt-5">
-    <div class="d-flex justify-content-center">
-        <img src=""
-            class="logo-header" alt="company's logo">
-    </div>
-    <div class="list-group list-group-flush">
-        <div class="list-group-item active waves-effect" (click)="showTableManagement = !showTableManagement">
-            <i class="fa fa-pie-chart mr-3"></i>Table Management
-        </div>
-        <div *ngIf="showTableManagement">
-            <a routerLink="authors" class="list-group-item list-group-item-action waves-effect">
-                <i class="fas fa-table mr-3"></i>Authors</a>
-            <a routerLink="." class="list-group-item list-group-item-action waves-effect">
-                <i class="fas fa-table mr-3"></i>Not implemented</a>
-            <a routerLink="." class="list-group-item list-group-item-action waves-effect">
-                <i class="fas fa-table mr-3"></i>Not implemented</a>
-        </div>
-    </div>
-</div>
 <div class="admin-container">
-    <router-outlet></router-outlet>
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="over" [(opened)]="isSideBarOpened">
+      <div class="d-flex justify-content-center pt-4">
+        <img src="https://ldaily.ua/wp-content/uploads/2017/01/logo_SoftServe-810x270.jpg"
+             class="logo-header" alt="company's logo">
+      </div>
+      <div class="list-group list-group-flush mb-2 links" (click)="isSideBarOpened = !isSideBarOpened">
+        <a routerLink="dashboard" class="list-group-item list-group-item-action waves-effect">
+          <i class="far fa-chart-bar mr-3"></i>Dashboard</a>
+      </div>
+
+      <div class="list-group list-group-flush links">
+        <div class="list-group-item active waves-effect justify-content-center text-center"
+             (click)="showTableManagement = !showTableManagement">
+          <span>Table Management</span>
+        </div>
+        <div class="" *ngIf="showTableManagement" (click)="isSideBarOpened = !isSideBarOpened">
+          <a routerLink="authors" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>Authors</a>
+          <a routerLink="locations" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>Locations</a>
+          <a routerLink="genres" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>Genres</a>
+        </div>
+      </div>
+
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="slider">
+        <i class="fas fa-2x fa-angle-double-right" (click)="isSideBarOpened = !isSideBarOpened"></i>
+      </div>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
