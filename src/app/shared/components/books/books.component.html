@@ -1,40 +1,57 @@
 <div class="container my-5">
-  <app-book-filter-bar 
-    [(selectedGenres)]="selectedGenres" 
+  <app-book-filter-bar
+    [(selectedGenres)]="selectedGenres"
     [(selectedLocation)]="queryParams.location"
-    [(availableSelected)]="queryParams.showAvailable" 
+    [(availableSelected)]="queryParams.showAvailable"
     (filterChange)="onFilterChange($event)">
   </app-book-filter-bar>
+  <ng-template [ngIf]="books.length==0" [ngIfElse]="booksExist">
+    <div class="d-flex justify-content-center border border-light p-5">
+      <img src="https://cdn.dribbble.com/users/1512427/screenshots/6201637/02.png">
+    </div>
+  </ng-template>
 
-  <div class="card m-3" *ngFor="let book of books; let key = index">
-    <div class="row no-gutters">
-      <div class="col-auto">
-        <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-        <ng-template #thenBlock>
-          <img src="{{apiUrl}}/{{book.imagePath}}" class="rounded float-left" height="200" width="200" alt="rf">
-        </ng-template>
-        <ng-template #elseBlock>
-          <img
-            src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-            class="rounded float-left" height="200" width="200" alt="rf">
-        </ng-template>
-      </div>
-      <div class="col m-2">
-        <div class="card-block px-2">
-          <a [routerLink]="['/book/', book.id]"><h4 class="card-title"><strong>{{book.name}}</strong></h4></a>
-          <p class="card-text"> Authors : <a [href]="author.id" *ngFor="let author of book.authors; let i = index">
-              <ng-template [ngIf]="i!=0"> , </ng-template>{{author.firstName}} {{author.lastName}}
-            </a>
-            <br>
-            <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category </ng-template>
-            <ng-template #manyGenres>Categories : </ng-template>
+  <ng-template #booksExist>
+    <div class="card m-3" *ngFor="let book of books; let key = index">
+      <div class="row no-gutters">
+        <div class="col-auto">
+          <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
+          <ng-template #thenBlock>
+            <img src="{{apiUrl}}/{{book.imagePath}}" class="rounded float-left" height="200" width="200" alt="rf">
+          </ng-template>
+          <ng-template #elseBlock>
+            <img
+              src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
+              class="rounded float-left" height="200" width="200" alt="rf">
+          </ng-template>
+        </div>
+        <div class="col m-2">
+          <div class="card-block px-2">
+            <a [routerLink]="['/book/', book.id]"><h4 class="card-title"><strong>{{book.name}}</strong></h4></a>
 
-            <a [href]="genre.id" *ngFor="let genre of book.genres">{{genre.name}} </a>
-            <br>
-            Location : {{ book?.locations[0]?.location?.city + " " +  book?.locations[0]?.location?.officeName }}
-            <br>
-            Status : 
-            <span [ngSwitch]="bookStatus[key]">
+            <p class="card-text">
+              <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
+                Author :
+              </ng-template>
+
+              <ng-template #manyAuthors>Authors:</ng-template>
+
+              <strong *ngFor="let author of book.authors; let i = index">
+                <ng-template [ngIf]="i!=0"> , </ng-template>{{author.firstName}} {{author.lastName}}
+              </strong>
+              <br>
+              <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category </ng-template>
+              <ng-template #manyGenres>Categories : </ng-template>
+
+              <strong *ngFor="let genre of book.genres;let i = index">
+                <ng-template [ngIf]="i!=0" > , </ng-template>
+                {{genre.name}}
+              </strong>
+              <br>
+              Location : {{ book?.locations[0]?.location?.city + " " +  book?.locations[0]?.location?.officeName }}
+              <br>
+              Status :
+              <span [ngSwitch]="bookStatus[key]">
               <ng-template ngSwitchCase="1"><span class="badge badge-success product ml-2">Available</span>
                 <br>
                 <a role="button" class="btn btn-primary" [hidden]="!isAuthenticated()" (click)="requestBook(book.id)">Request</a></ng-template>
@@ -42,13 +59,14 @@
               <ng-template ngSwitchCase="3"><span class="badge badge-info product ml-2">Reading</span></ng-template>
             </span>
 
-          </p>
+            </p>
 
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <app-pagination *ngIf="books && books.length > 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
-    [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
-  </app-pagination>
+    <app-pagination *ngIf="books && books.length > 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
+                    [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+    </app-pagination>
+  </ng-template>
 </div>

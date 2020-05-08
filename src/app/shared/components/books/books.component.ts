@@ -46,7 +46,7 @@ export class BooksComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)  
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     })
@@ -62,7 +62,7 @@ export class BooksComponent implements OnInit,OnDestroy {
     else{
       let query = new RequestQueryParams();
       query.first = false;
-      query.last = true;    
+      query.last = true;
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
          if(value.receiveDate){
@@ -103,11 +103,11 @@ export class BooksComponent implements OnInit,OnDestroy {
   }
   private populateDataFromQuery() {
     if(this.queryParams.searchTerm){
-      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)      
+      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
     }
     if(typeof this.queryParams.showAvailable === "undefined"){
       this.queryParams.showAvailable = true;
-    }      
+    }
     if(this.queryParams.genres){
       let genres: number[];
       if(Array.isArray(this.queryParams.genres))
@@ -118,12 +118,16 @@ export class BooksComponent implements OnInit,OnDestroy {
         this.selectedGenres =  genres;
     }
   }
-  
+
   //Navigation
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
+    window.scrollTo({
+      top: 0,
+      behavior:'smooth'
+    });
   }
   private resetPageIndex() : void {
     this.queryParams.page = 1;
@@ -145,7 +149,7 @@ export class BooksComponent implements OnInit,OnDestroy {
         next: pageData => {
           this.books = pageData.page;
           for(var i = 0; i<pageData.page.length; i++){
-     
+
             this.getStatus(pageData.page[i], i)
         }
           if (pageData.totalCount) {
