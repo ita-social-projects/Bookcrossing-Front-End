@@ -258,6 +258,7 @@ constructor(
       firstName: firstName,
       lastName: lastName,
       middleName: middleName,
+      isConfirmed: false
     };
     console.log(author);
     return author;

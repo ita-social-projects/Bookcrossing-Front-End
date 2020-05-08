@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { IGenre } from "src/app/core/models/genre";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { IBook } from "src/app/core/models/book";
@@ -11,8 +11,9 @@ import { Router } from "@angular/router";
 import { IBookPost } from "src/app/core/models/bookPost";
 import { AuthenticationService } from "src/app/core/services/authentication/authentication.service";
 import { DialogService } from "src/app/core/services/dialog/dialog.service";
-import { TranslateService } from '@ngx-translate/core';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TranslateService } from "@ngx-translate/core";
+import { NotificationService } from "src/app/core/services/notification/notification.service";
+import { resolve } from "dns";
 
 @Component({
   selector: "app-add-book",
@@ -31,6 +32,8 @@ export class AddBookComponent implements OnInit {
     private dialogService: DialogService
   ) {}
 
+  @ViewChild("lastnameInput") inputLastname;
+
   addBookForm: FormGroup;
 
   userId: number;
@@ -41,12 +44,14 @@ export class AddBookComponent implements OnInit {
   authorsSubscription: SubscriptionLike;
   submitted = false;
   authorFocused: boolean = false;
+  lastnameInputVisible: boolean = false;
+  newAuthor: IAuthor;
 
   ngOnInit(): void {
     this.buildForm();
     this.getAllGenres();
     this.authorsSubscription = this.addBookForm
-      .get("author")
+      .get("authorFirstname")
       .valueChanges.subscribe((input) => {
         this.filterAuthors(input);
       });
@@ -89,16 +94,16 @@ export class AddBookComponent implements OnInit {
       title: new FormControl(null, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
-      author: new FormControl(null),
+      authorLastname: new FormControl(null),
+      authorFirstname: new FormControl(null),
       description: new FormControl(null),
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     if (this.validateForm(this.addBookForm)) {
-      console.log("asdasd");
       return;
     }
 
@@ -109,15 +114,19 @@ export class AddBookComponent implements OnInit {
       selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
 
-    const newAuthor: string = this.addBookForm.get("author").value;
-    if (newAuthor) {
-      console.log("new Author");
-      this.addNewAuthor(newAuthor);
+    // authors
+    const bookAuthors: IAuthor[] = this.selectedAuthors.slice();
+    if (this.addBookForm.get("authorFirstname").value.trim()) {
+      await this.addNewAuthor();
+      bookAuthors.push(this.newAuthor);
+      this.newAuthor = undefined;
     }
+    console.log(this.selectedAuthors);
+    
 
     let book: IBookPost = {
       name: this.addBookForm.get("title").value,
-      authors: this.selectedAuthors,
+      authors: bookAuthors,
       genres: selectedGenres,
       publisher: this.addBookForm.get("publisher").value,
       notice: this.addBookForm.get("description").value,
@@ -129,16 +138,23 @@ export class AddBookComponent implements OnInit {
       book.image = this.selectedFile;
     }
 
+    console.log(book);
     const formData: FormData = this.getFormData(book);
 
     this.bookService.postBook(formData).subscribe(
       (data: IBook) => {
-        this.notificationService.success(this.translate.instant("Book is registered successfully"), "X");
+        this.notificationService.success(
+          this.translate.instant("Book is registered successfully"),
+          "X"
+        );
         this.goToPage("book", data.id);
       },
       (error) => {
         console.log(error);
-        this.notificationService.warn(this.translate.instant("Something went wrong"), "X");
+        this.notificationService.warn(
+          this.translate.instant("Something went wrong"),
+          "X"
+        );
       }
     );
 
@@ -148,7 +164,7 @@ export class AddBookComponent implements OnInit {
     // after submmit subscription stops work
     this.authorsSubscription.unsubscribe();
     this.authorsSubscription = this.addBookForm
-      .get("author")
+      .get("authorFirstname")
       .valueChanges.subscribe((input) => {
         this.filterAuthors(input);
       });
@@ -156,14 +172,45 @@ export class AddBookComponent implements OnInit {
 
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
-      this.notificationService.warn(this.translate.instant("You have to be logged in to register book"), "X");
+      this.notificationService.warn(
+        this.translate.instant("You have to be logged in to register book"),
+        "X"
+      );
       return true;
-    } else if (!form.get("author").value && !this.selectedAuthors.length) {
+    } else if (
+      (!form.get("authorFirstname").value?.trim() || !form.get("authorLastname").value?.trim()) &&
+      !this.selectedAuthors.length
+    ) {
       return true;
     } else if (form.invalid) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  async addNewAuthor() {
+    // let author: IAuthor;
+    let newAuthor: IAuthor = {
+      firstName: this.addBookForm.get("authorFirstname").value,
+      lastName: this.addBookForm.get("authorLastname").value
+        ? this.addBookForm.get("authorLastname").value
+        : "",
+      isConfirmed: false,
+    };
+    this.newAuthor = await this.authorService.addAuthor(newAuthor).toPromise();
+  }
+
+  addAuthor(authors, author: IAuthor) {
+    const index = this.authors.findIndex((elem) => {
+      return (
+        elem?.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
+        elem?.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
+        elem?.lastName?.toLowerCase() === author.lastName?.toLowerCase()
+      );
+    });
+    if (index < 0) {
+      authors.push(author);
     }
   }
 
@@ -189,56 +236,14 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  addAuthor(author) {
-    const index = this.selectedAuthors.findIndex((elem) => {
-      return (
-        elem.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
-        elem.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
-        elem.lastName?.toLowerCase() === author.lastName?.toLowerCase()
-      );
-    });
-    if (index < 0) {
-      this.selectedAuthors.push(author);
-    }
-  }
-
-  addNewAuthor(newAuthor: string) {
-    const author = this.parseAuthorString(newAuthor);
-    this.addAuthor(author);
-  }
-
   onFileSelected(event) {
     this.selectedFile = event.target.files[0];
   }
 
-  // parses string and returns IAuthor object
-  parseAuthorString(input: string): IAuthor {
-    input = input.trim();
-    const words = input.split(/\s+/g);
-    const firstName = words[0];
-    let lastName = null;
-    let middleName = null;
-
-    // if input string contains > 3 words - second is middleName
-    if (words.length > 2) {
-      middleName = words[1];
-      lastName = words[2];
-    } else {
-      lastName = words[1];
-    }
-    const author: IAuthor = {
-      firstName: firstName,
-      lastName: lastName,
-      middleName: middleName,
-    };
-    console.log(author);
-    return author;
-  }
-
   onAuthorSelect(event) {
     console.log(event);
-    this.addBookForm.get("author").setValue("");
-    this.addAuthor(event.option.value);
+    this.addBookForm.get("authorFirstname").setValue("");
+    this.addAuthor(this.selectedAuthors, event.option.value);
   }
 
   // redirecting method
@@ -266,16 +271,27 @@ export class AddBookComponent implements OnInit {
     this.selectedFile = null;
   }
 
- async onCancel() {
+  async onCancel() {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get("Are yo sure want to cancel?").toPromise()
+        await this.translate.get("Are you sure want to cancel?").toPromise()
       )
       .afterClosed()
       .subscribe(async (res) => {
         if (res) {
-          this.goToPage('books');
-          }
+          this.goToPage("books");
+        }
       });
+  }
+
+  filterConfirmedAuthors() {
+    return this.authors.filter((x) => x.isConfirmed === true);
+  }
+  onPressSpace() {
+    this.lastnameInputVisible = true;
+    setTimeout(() => {
+      this.authorFocused = false;
+      this.inputLastname.nativeElement.focus();
+    }, 0);
   }
 }

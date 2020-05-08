@@ -42,7 +42,8 @@ title : string = "Add Author";
       id: this.form.get('id').value,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
-      middleName: this.form.get('middleName').value
+      middleName: this.form.get('middleName').value,
+      isConfirmed: true
     };
     this.updateAuthor(newAuthor);
   };
