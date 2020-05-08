@@ -101,11 +101,12 @@ export class AuthorsComponent implements OnInit {
     this.showForm(newAuthor, 'Add Author');
   }
   showEditForm(author: IAuthor) {
-    this.showForm(author, 'Edit Author');
+    this.showForm(author, 'Edit Author', true);
   }
-  showForm(author: IAuthor, title: string) {
+  showForm(author: IAuthor, title: string, isEdited = false) {
     const formFactory = this.resolver.resolveComponentFactory(AuthorFormComponent);
     const instance = this.refDir.containerRef.createComponent(formFactory).instance;
+    instance.isEdited = isEdited;
     instance.title = title;
     instance.author = author;
     instance.onCancel.subscribe(() => this.refDir.containerRef.clear());

@@ -1,11 +1,11 @@
-<div class="container">
+<div class="container p-3">
   <div class="map-container">
       <app-mapbox></app-mapbox>
   </div>
   <form
     [formGroup]="addLocationForm"
     (ngSubmit)="onSubmit()"
-    class="text-center border border-light p-5"
+    class="text-center border border-light p-5 form-background"
   >
     <p class="h4 mb-4" *ngIf="!isEdited">Add location</p>
     <p class="h4 mb-4" *ngIf="isEdited">Edit location</p>

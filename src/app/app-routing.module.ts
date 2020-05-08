@@ -20,6 +20,7 @@ import {CurrentOwnedBooksComponent} from './shared/components/current-owned-book
 import {LocationsComponent} from './shared/components/admin/locations/locations.component';
 import {GenresComponent} from './shared/components/admin/genres/genres.component';
 import {ContactsComponent} from './shared/components/contacts/contacts.component';
+import {DashboardComponent} from './shared/components/admin/dashboard/dashboard.component';
 
 
 
@@ -30,11 +31,9 @@ const routes: Routes = [
 
   {path: 'admin', component: AdminComponent, children:
       [
+        {path: 'dashboard', component: DashboardComponent},
         {path: 'authors', component: AuthorsComponent},
-        {path: 'locations', component: LocationsComponent, children:
-            [
-              {path: 'location-form', component: LocationFormComponent}
-            ]},
+        {path: 'locations', component: LocationsComponent},
         {path: 'genres', component: GenresComponent},
         {path: 'location-form', component: LocationFormComponent}
       ]

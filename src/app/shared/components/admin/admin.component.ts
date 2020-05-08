@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -8,8 +9,8 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 export class AdminComponent implements OnInit, OnDestroy {
 
   isSideBarOpened = false;
-  showTableManagement = true;
-  constructor() { }
+  showTableManagement = false;
+  constructor(private router: Router, private routeActive: ActivatedRoute) { }
 
   ngOnInit(): void {
   }

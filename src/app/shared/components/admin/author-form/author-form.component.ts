@@ -2,6 +2,8 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { IAuthor } from 'src/app/core/models/author';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthorService } from 'src/app/core/services/author/authors.service';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from '../../../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-author-form',
@@ -12,10 +14,15 @@ export class AuthorFormComponent implements OnInit {
 
 @Output() onCancel: EventEmitter<void> = new EventEmitter<void>();
 @Input() author: IAuthor;
+
+isEdited = false;
 form: FormGroup;
 title = 'Add Author';
 
-  constructor(private authorService: AuthorService, ) { }
+  constructor(
+    private authorService: AuthorService,
+    private translate: TranslateService,
+    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -39,28 +46,44 @@ title = 'Add Author';
 
   submit(): void {
     const newAuthor: IAuthor = {
-      id: this.form.get('id').value,
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value,
       middleName: this.form.get('middleName').value
     };
-    this.updateAuthor(newAuthor);
+    if (this.isEdited) {
+      newAuthor.id = this.form.get('id').value;
+      this.updateAuthor(newAuthor);
+      console.log(newAuthor);
+    } else {
+      this.addAuthor(newAuthor);
+    }
   }
 
   cancel(): void {
     this.onCancel.emit();
     this.form.reset();
   }
-
-  updateAuthor(author: IAuthor) {
-    this.authorService.updateAuthor(author).subscribe(
+  addAuthor(author: IAuthor) {
+    this.authorService.addAuthor(author).subscribe(
       (data: IAuthor) => {
-        alert('Changes accepted');
         this.authorService.editAuthor(author);
         this.cancel();
       },
       (error) => {
-        alert(error.message);
+        this.notificationService.warn(this.translate
+          .instant('Something went wrong!'), 'X');
+      },
+    );
+  }
+  updateAuthor(author: IAuthor) {
+    this.authorService.updateAuthor(author).subscribe(
+      (data: IAuthor) => {
+        this.authorService.editAuthor(author);
+        this.cancel();
+      },
+      (error) => {
+        this.notificationService.warn(this.translate
+          .instant('Something went wrong!'), 'X');
       },
     );
   }

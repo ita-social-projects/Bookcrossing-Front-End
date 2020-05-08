@@ -74,6 +74,7 @@ import { LocationsComponent } from './shared/components/admin/locations/location
 import { GenreFormComponent } from './shared/components/admin/genre-form/genre-form.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
+import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { ContactsComponent } from './shared/components/contacts/contacts.compone
     GenresComponent,
     LocationsComponent,
     GenreFormComponent,
-    ContactsComponent
+    ContactsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
