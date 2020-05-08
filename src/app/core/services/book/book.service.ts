@@ -13,6 +13,7 @@ import { BookQueryParams } from '../../models/bookQueryParams';
 import { IBookPost } from '../../models/bookPost';
 import { delay } from 'rxjs/operators';
 import { promise } from 'protractor';
+import { IBookPut } from '../../models/bookPut';
 
 @Injectable()
 export class BookService {
@@ -43,7 +44,7 @@ export class BookService {
     return this.http.post<IBook>(this.apiUrl, book);
   }
 
-  putBook(bookId: number, book: IBookPost){
+  putBook(bookId: number, book: FormData){
     return this.http.put(this.apiUrl + bookId, book);
   }
 

@@ -1,4 +1,3 @@
-import { IBookPost } from './../../../core/models/bookPost';
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { IAuthor } from "src/app/core/models/author";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -13,6 +12,7 @@ import { SubscriptionLike } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { IBookPut } from 'src/app/core/models/bookPut';
 
 @Component({
   selector: 'app-author-form',
@@ -59,7 +59,6 @@ constructor(
         this.authenticationService.getUserId().subscribe(
           (response: number) => {
             this.userId = response;
-            console.log(this.userId);
           },
           (error) => {
             console.log("fetching userId error");
@@ -132,23 +131,37 @@ constructor(
     if (newAuthor) {
       this.addNewAuthor(newAuthor);
     }
-
-    let book: IBookPost = {
+    let book: IBookPut = {
       id: this.book.id,
-      name: this.editBookForm.get('title').value,
-      authors: this.selectedAuthors,
-      genres: selectedGenres,
-      publisher: this.editBookForm.get('publisher').value,
-      notice: this.editBookForm.get('description').value,
-      available: true,
-      userId: this.userId,
+      fieldMasks: []
     };
-
-    // if (this.selectedFile) {
-    //   book.image = this.selectedFile;
-    // }
-
-    this.bookService.putBook(book.id, book).subscribe(
+    if(selectedGenres !== this.book.genres){
+      book.fieldMasks.push("BookGenre");
+      book.bookGenre = selectedGenres;
+    }
+    if(this.selectedAuthors !== this.book.authors){
+      book.fieldMasks.push("BookAuthor");
+      book.bookAuthor = this.selectedAuthors;
+    }
+    if(this.editBookForm.get('title').value !== this.book.name){
+      book.fieldMasks.push("Name");
+      book.name = this.editBookForm.get('title').value;
+    }
+    if(this.editBookForm.get('publisher').value !== this.book.publisher){
+      book.fieldMasks.push("Publisher");
+      book.publisher = this.editBookForm.get('publisher').value;
+    }
+    if(this.editBookForm.get('description').value !== this.book.notice){
+      book.fieldMasks.push("Notice");
+      book.notice = this.editBookForm.get('description').value;
+    }
+    if (this.selectedFile) {
+      book.fieldMasks.push("Image");
+      book.image = this.selectedFile;
+    }
+    console.log(book)
+    const formData: FormData = this.getFormData(book);
+    this.bookService.putBook(book.id, formData).subscribe(
       (data: boolean) => {
         this.notificationService.success(this.translate.instant("Book is edited successfully"), "X");
         this.onCancel.emit();
@@ -158,8 +171,6 @@ constructor(
       }
     );
     this.ngOnInit();
-    this.selectedAuthors = [];
-    this.editBookForm.reset();
 
     // after submmit subscription stops work
     this.authorsSubscription.unsubscribe();
@@ -247,6 +258,7 @@ constructor(
       firstName: firstName,
       lastName: lastName,
       middleName: middleName,
+      isConfirmed: false
     };
     console.log(author);
     return author;
@@ -257,15 +269,23 @@ constructor(
     this.addAuthor(event.option.value);
   }
 
-  getFormData(book: IBookPost): FormData {
+  getFormData(book: IBookPut): FormData {
     const formData = new FormData();
     Object.keys(book).forEach((key, index) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
           book[key].forEach((i, index) => {
+            if(key == "fieldMasks"){
+              console.log(`${key}[${index}]` + " " + book[key][index]);
+              formData.append(`${key}[${index}]`, book[key][index]);
+            }
+            else{
+              console.log(`${key}[${index}][id]` + " " + book[key][index]['id']);
             formData.append(`${key}[${index}][id]`, book[key][index]['id']);
+            }
           });
         } else {
+          console.log(key + " " + book[key]);
           formData.append(key, book[key]);
         }
       }
@@ -285,7 +305,6 @@ constructor(
       .subscribe(async (res) => {
         if (res) {
           this.onCancel.emit();
-    this.editBookForm.reset();
           }
       });
   }

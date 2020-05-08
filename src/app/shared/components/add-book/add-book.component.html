@@ -26,54 +26,85 @@
             class="invalid-feedback"
           >
             <div *ngIf="addBookForm.controls.title.errors.required">
-              Field is required.
+              This field is required.
             </div>
           </div>
         </div>
       </div>
-
       <!-- Author -->
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">Author:<span class="asterisk"> *</span></p>
         </div>
-        <div class="col-4">
-          <input
-            formControlName="author"
-            #authorSearch
-            type="text"
-            class="form-control"
-            [matAutocomplete]="auto"
-            [ngClass]="{
-              'is-invalid':
+        <div
+          [ngClass]="{
+            'col-4': !lastnameInputVisible && !lastnameInput.value,
+            'col-8': lastnameInputVisible || lastnameInput.value
+          }"
+        >
+          <div class="form-row">
+            <div class="col">
+              <input
+                formControlName="authorFirstname"
+                #firstnameInput
+                type="text"
+                class="form-control"
+                [matAutocomplete]="FirstNameAuto"
+                [ngClass]="{
+                  'is-invalid':
+                    submitted &&
+                    !selectedAuthors.length &&
+                    (!addBookForm.controls.authorFirstname.value?.trim() || !addBookForm.controls.authorLastname.value?.trim() )
+                }"
+                (keyup.Space)="onPressSpace()"
+                (focus)="authorFocused = true"
+                (blur)="authorFocused = false"
+              />
+              <div
+                *ngIf="
+                  submitted &&
+                  !selectedAuthors.length &&
+                  !addBookForm.controls.authorFirstname.value?.trim()
+                "
+                class="invalid-feedback"
+              >
+                This field is required.
+              </div>
+              <div
+              *ngIf="
                 submitted &&
                 !selectedAuthors.length &&
-                !addBookForm.controls.author.value
-            }"
-            (focus)="authorFocused=true"
-            (blur)="authorFocused=false"
-          />
-          <div
-            *ngIf="
-              submitted &&
-              !selectedAuthors.length &&
-              !addBookForm.controls.author.value
-            "
-            class="invalid-feedback"
-          >
-            <div
-              *ngIf="
-                !selectedAuthors.length && !addBookForm.controls.author.value
+                !addBookForm.controls.authorLastname.value
               "
+              class="invalid-feedback"
             >
-              Field is required.
+              Lastname is required.
+            </div>
+            </div>
+            <div
+              class="col"
+              [ngClass]="{
+                'hide-input': !lastnameInputVisible && !lastnameInput.value
+              }"
+            >
+              <input
+                formControlName="authorLastname"
+                #lastnameInput
+                type="text"
+                class="form-control"
+                [matAutocomplete]="LastNameAuto"
+                (blur)="lastnameInputVisible = false"
+              />
             </div>
           </div>
           <div
-            *ngIf="addBookForm.controls.author.value && !authorFocused"
+            *ngIf="
+              (addBookForm.controls.authorFirstname.value) &&
+              !authorFocused
+            "
             class="new-author-warning"
           >
-            Entered author is saved as 'not confirmed'
+            <span>Entered author is saved as 'not confirmed'</span>
           </div>
         </div>
         <div class="col">
@@ -104,14 +135,44 @@
         </div>
       </div>
       <mat-autocomplete
-        #auto="matAutocomplete"
-        (optionSelected)="onAuthorSelect($event); authorSearch.value = ''"
+        #FirstNameAuto="matAutocomplete"
+        (optionSelected)="
+          onAuthorSelect($event);
+          firstnameInput.value = '';
+          lastnameInput.value = ''
+        "
       >
         <mat-option
           *ngFor="
-            let author of authors
+            let author of filterConfirmedAuthors()
               | contentFilter
-                : authorSearch.value
+                : firstnameInput.value.trim()
+                : ['firstName', 'lastName', 'middleName']
+          "
+          [value]="author"
+          [ngClass]="{ 'hide-input': lastnameInputVisible }"
+        >
+          {{
+            author.firstName + " " + author.middleName + " " + author.lastName
+          }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-autocomplete
+        #LastNameAuto="matAutocomplete"
+        (optionSelected)="
+          onAuthorSelect($event);
+          lastnameInput.value = '';
+          lastnameInput.value = ''
+        "
+      >
+        <mat-option
+          *ngFor="
+            let author of filterConfirmedAuthors()
+              | contentFilter
+                : firstnameInput.value.trim()
+                : ['firstName', 'lastName', 'middleName']
+              | contentFilter
+                : lastnameInput.value.trim()
                 : ['firstName', 'lastName', 'middleName']
           "
           [value]="author"
@@ -165,12 +226,13 @@
             class="invalid-feedback"
           >
             <div *ngIf="addBookForm.controls.genres.errors.required">
-              Field is required.
+              This field is required.
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Publisher -->
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">Publishing house:</p>
@@ -215,7 +277,9 @@
         </div>
         <div class="col-4">
           <div *ngIf="selectedFile">
-            <span>{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span>
+            <span
+              >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
+            >
             <span
               *ngIf="selectedFile"
               type="button"

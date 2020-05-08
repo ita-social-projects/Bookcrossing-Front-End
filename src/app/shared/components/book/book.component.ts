@@ -20,6 +20,7 @@ import { pipe } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BookEditFormComponent } from '../book-edit-form/book-edit-form.component';
 import { RefDirective } from '../../directives/ref.derictive';
+import { IBookPut } from 'src/app/core/models/bookPut';
 
 @Component({
   selector: 'app-book',
@@ -119,7 +120,26 @@ getUserWhoRequested(){
                 }
             });
 }
-
+getFormData(book: IBookPut): FormData {
+  const formData = new FormData();
+  Object.keys(book).forEach((key, index) => {
+    if (book[key]) {
+      if (Array.isArray(book[key])) {
+        book[key].forEach((i, index) => {
+          if(key == "fieldMasks"){
+            formData.append(`${key}[${index}]`, book[key][index]);
+          }
+          else{
+          formData.append(`${key}[${index}][id]`, book[key][index]['id']);
+          }
+        });
+      } else {
+        formData.append(key, book[key]);
+      }
+    }
+  });
+  return formData;
+}
   async makeAvailable() {
     this.dialogService
       .openConfirmDialog(
@@ -128,19 +148,13 @@ getUserWhoRequested(){
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          console.log(this.book)
-          let book: IBookPost = {
+          let book: IBookPut = {
             id: this.book.id,
-            name: this.book.name,
-            userId: this.book.userId,
-            publisher: this.book.publisher,
+            fieldMasks: ["Available"],
             available: true,
-            notice: this.book.notice,
-            authors: this.book.authors,
-            genres: this.book.genres,
-            image: null
           };
-          this.bookService.putBook(this.bookId, book).subscribe(() => {
+          let formData = this.getFormData(book);
+          this.bookService.putBook(this.bookId, formData).subscribe(() => {
             this.ngOnInit();
             this.notificationService.success(this.translate
               .instant("Your Book`s status changed to available."), "X");
