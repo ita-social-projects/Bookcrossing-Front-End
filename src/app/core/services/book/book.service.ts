@@ -29,11 +29,15 @@ export class BookService {
   }
 
   getCurrentOwnedBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
-    return this.pagination.getBookPage<IBook>(bookUrl + 'current', bookParams);
+    return this.pagination.getBookPage<IBook>(this.apiUrl + 'current', bookParams);
   }
 
   getRegisteredBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'registered', bookParams);
+  }
+
+  getReadBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
+    return this.pagination.getBookPage<IBook>(this.apiUrl + 'read', bookParams);
   }
 
   getBookById(id: number): Observable<IBook> {

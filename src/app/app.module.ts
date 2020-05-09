@@ -74,7 +74,9 @@ import { LocationsComponent } from './shared/components/admin/locations/location
 import { GenreFormComponent } from './shared/components/admin/genre-form/genre-form.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
+import { ReadBooksComponent } from './shared/components/read-books/read-books.component';
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -113,6 +115,8 @@ import { DashboardComponent } from './shared/components/admin/dashboard/dashboar
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CurrentOwnedBooksComponent,
+    ContactsComponent,
+    ReadBooksComponent,
     AdminTableComponent,
     GenresComponent,
     LocationsComponent,

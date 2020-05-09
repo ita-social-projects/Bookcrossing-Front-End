@@ -17,11 +17,12 @@ import {HomeComponent} from './shared/components/home/home.component';
 import {RulesComponent} from './shared/components/rules/rules.component';
 import {RegisteredBookComponent} from './shared/components/registered-book/registered-book.component';
 import {CurrentOwnedBooksComponent} from './shared/components/current-owned-books/current-owned-books.component';
+import {ReadBooksComponent} from './shared/components/read-books/read-books.component';
+import {NgContentAst} from "@angular/compiler";
+import {ContactsComponent} from "./shared/components/contacts/contacts.component";
 import {LocationsComponent} from './shared/components/admin/locations/locations.component';
 import {GenresComponent} from './shared/components/admin/genres/genres.component';
-import {ContactsComponent} from './shared/components/contacts/contacts.component';
 import {DashboardComponent} from './shared/components/admin/dashboard/dashboard.component';
-
 
 
 // @ts-ignore
@@ -49,6 +50,7 @@ const routes: Routes = [
   {path: 'demo', component: DemoComponent},
   {path: 'books/registered', component: RegisteredBookComponent},
   {path: 'books/current', component: CurrentOwnedBooksComponent},
+  {path: 'books/read', component: ReadBooksComponent},
   {path: 'contacts', component: ContactsComponent},
   { path: 'password', children:
       [
