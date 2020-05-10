@@ -17,8 +17,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-current-owned-books',
-  templateUrl: './current-owned-books.component.html',
-  styleUrls: ['./current-owned-books.component.scss']
+  templateUrl: '../books/books.component.html',
+  styleUrls: ['../books/books.component.scss']
 })
 
 export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
