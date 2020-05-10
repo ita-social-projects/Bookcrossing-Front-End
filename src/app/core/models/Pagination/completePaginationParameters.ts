@@ -1,6 +1,6 @@
-import { FilterParameters } from './Pagination/FilterParameters';
-import { SortParameters } from './Pagination/SortParameters';
-import { PageableParameters } from './Pagination/pageableParameters';
+import { FilterParameters } from './filterParameters';
+import { SortParameters } from './sortParameters';
+import { PageableParameters } from './pageableParameters';
 import { HttpParams } from '@angular/common/http';
 
 export class CompletePaginationParams extends PageableParameters {

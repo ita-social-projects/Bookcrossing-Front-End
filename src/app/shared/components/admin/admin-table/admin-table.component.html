@@ -1,3 +1,4 @@
+<div class="table-responsive">
 <table class="table table-hover mb-0">
 
   <thead>
@@ -11,7 +12,7 @@
 
   <tbody>
   <ng-container *ngFor="let item of data let i = index;">
-    <tr id={{i}} (click)="onSelectedRowChange(item[dataProperties[0]])" [ngClass]="{'isSelected': selectedRows?.includes(item[dataProperties[0]])}" class="isSelected">
+    <tr id={{i}} (click)="onSelectedRowChange(item)" [ngClass]="{'isSelected': selectedRows?.includes(item)}" class="isSelected">
         <td *ngFor="let column of dataProperties">
           {{item[column]}}
         </td>
@@ -24,3 +25,4 @@
   </ng-container>
   </tbody>
 </table>
+</div>

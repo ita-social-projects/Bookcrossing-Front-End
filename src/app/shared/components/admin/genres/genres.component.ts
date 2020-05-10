@@ -1,11 +1,12 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {RefDirective} from '../../../directives/ref.derictive';
-import {CompletePaginationParams} from '../../../../core/models/completePaginationParameters';
+import {CompletePaginationParams} from '../../../../core/models/Pagination/completePaginationParameters';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FilterParameters} from '../../../../core/models/Pagination/filterParameters';
 import {SortParameters} from '../../../../core/models/Pagination/sortParameters';
 import {IGenre} from '../../../../core/models/genre';
 import {GenreService} from '../../../../core/services/genre/genre.service';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-genres',
@@ -29,12 +30,11 @@ export class GenresComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private router: Router,
     private genreService: GenreService,
-    private resolver: ComponentFactoryResolver
+    private dialog: MatDialog
   ) { }
 
 
   ngOnInit() {
-    // this.onAuthorEdited();
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.searchText = this.queryParams?.filters[0]?.value;
@@ -42,15 +42,6 @@ export class GenresComponent implements OnInit {
     });
   }
 
-  // private onAuthorEdited() {
-  //   this.authorService.authorEdited$.subscribe((author) => {
-  //     const editedAuthor = this.authors.find((x) => x.id === author.id);
-  //     if (editedAuthor) {
-  //       const index = this.authors.indexOf(editedAuthor);
-  //       this.authors[index] = author;
-  //     }
-  //   });
-  // }
   // Pagination/URL
   search(): void {
     if (this.queryParams?.filters[0]?.value === this.searchText) {
@@ -77,25 +68,6 @@ export class GenresComponent implements OnInit {
         queryParams: this.queryParams.getQueryObject()
       });
   }
-  // Form
-  // showAddForm() {
-  //   const newAuthor: IAuthor = {
-  //     firstName: '',
-  //     lastName: '',
-  //     middleName: ''
-  //   };
-  //   this.showForm(newAuthor, 'Add Author');
-  // }
-  // showEditForm(author: IAuthor) {
-  //   this.showForm(author, 'Edit Author');
-  // }
-  // showForm(author: IAuthor, title: string) {
-  //   const formFactory = this.resolver.resolveComponentFactory(AuthorFormComponent);
-  //   const instance = this.refDir.containerRef.createComponent(formFactory).instance;
-  //   instance.title = title;
-  //   instance.author = author;
-  //   instance.onCancel.subscribe(() => this.refDir.containerRef.clear());
-  // }
 
   // Get
   getGenres(params: CompletePaginationParams): void {
