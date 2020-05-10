@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {IGenre} from '../../models/genre';
 import {genreUrl} from '../../../configs/api-endpoint.constants';
-import {CompletePaginationParams} from '../../models/completePaginationParameters';
+import {CompletePaginationParams} from '../../models/Pagination/completePaginationParameters';
 import {IPage} from '../../models/page';
 import {PaginationService} from '../pagination/pagination.service';
 

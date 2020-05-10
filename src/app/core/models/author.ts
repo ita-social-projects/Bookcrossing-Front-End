@@ -3,5 +3,5 @@ export interface IAuthor {
     firstName: string;
     lastName: string;
     middleName?: string;
-    isConfirmed?: boolean;
+    isConfirmed?: boolean | string;
   }
