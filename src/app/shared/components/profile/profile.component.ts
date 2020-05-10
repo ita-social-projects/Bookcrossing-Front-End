@@ -27,16 +27,63 @@ export class ProfileComponent implements OnInit {
   locations: ILocation[];
 
   ngOnInit(): void {
-    /*this.authentication.getUserId()
-      .subscribe((res: number) => this.id = res);*/
-    this.locationService.getLocation().subscribe({
-        next: (data) => {
-          this.locations = data;
-        }
-      }
-    );
-    this.userService.getUserById(1)
-      .subscribe( user_ => { this.user = user_; });
+
+    this.userInfo();
+  }
+
+  async getUserId(): Promise<number> {
+    let recieve = 100;
+
+    let promice = new Promise<number>((resolve) => {
+      this.authentication.getUserId()
+        .subscribe({
+          next: (value: number) => {
+            if (value) {
+              resolve(value);
+            }
+          },
+          error: () => {
+            resolve(0);
+          }
+        });
+    })
+
+    await promice.then(value => this.id = value);
+    console.log('id :' + this.id);
+
+    return this.id;
+  }
+
+  async userInfo() {
+    await this.getUserId().then(res => this.getUserById());
+  }
+
+  async getUserByIdPromise(): Promise<IUser> {
+    let promice = new Promise<IUser>((resolve) => {
+      this.userService.getUserById(this.id)
+        .subscribe({
+          next: (value: IUser) => {
+            if (value) {
+              resolve(value);
+            }
+          },
+          error: () => {
+            resolve(null);
+          }
+        });
+    })
+
+    await promice.then(value => this.user = value);
+    console.log('id2 :' + this.user.id);
+
+    return this.user;
+  }
+
+  getUserById(){
+    this.userService.getUserById(this.id)
+    .subscribe(user_ => {
+    this.user = user_;
+  });
   }
 
   showEditForm(user: IUser) {
