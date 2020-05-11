@@ -1,7 +1,7 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {RefDirective} from '../../../directives/ref.derictive';
 import {ILocation} from '../../../../core/models/location';
-import {CompletePaginationParams} from '../../../../core/models/completePaginationParameters';
+import {CompletePaginationParams} from '../../../../core/models/Pagination/completePaginationParameters';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {LocationService} from '../../../../core/services/location/location.service';
 import {FilterParameters} from '../../../../core/models/Pagination/filterParameters';

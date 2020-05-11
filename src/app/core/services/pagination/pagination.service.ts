@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IPage } from '../../models/page';
-import { CompletePaginationParams } from 'src/app/core/models/completePaginationParameters';
+import { CompletePaginationParams } from 'src/app/core/models/Pagination/completePaginationParameters';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { PageableParameters } from '../../models/Pagination/pageableParameters';
 import { BookQueryParams } from '../../models/bookQueryParams';

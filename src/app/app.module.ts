@@ -127,6 +127,7 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     DashboardComponent,
     ProfileComponent,
     ProfileEditComponent
+
   ],
   imports: [
     BrowserModule,

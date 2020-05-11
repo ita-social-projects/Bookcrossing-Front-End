@@ -1,36 +1,45 @@
-<section class="backdrop">
+<section class="d-flex justify-content-center row justify-content-center">
 
-    <form class="form-popup border border-light pt-3 pb-3 pr-5 pl-5" [formGroup]="form" (ngSubmit)="submit()">
-        <h3 class="text-center py-4">
+    <form class="border border-light form-container col-sm" [formGroup]="form" (ngSubmit)="submit()">
+        <h3 class="text-center p-2">
             <strong>{{title}}</strong>
         </h3>
-
         <div class="form">
-            <div class="col mb-3">
-                <label for="AuthorFormFirstname">First name</label>
+            <div class="mb-3">
+                <label for="AuthorFormFirstname">First name <span class="asterisk"> *</span></label>
                 <input type="text" id="AuthorFormFirstname" class="form-control" formControlName="firstName"
                     name="firstName">
             </div>
 
-            <div class="col mb-3">
-                <label for="AuthorFormLastname">Last name</label>
+            <div class="mb-3">
+                <label for="AuthorFormLastname">Last name <span class="asterisk"> *</span></label>
                 <input type="text" id="AuthorFormLastname" class="form-control" formControlName="lastName"
                     name="lastName"></div>
 
-            <div class="col">
-                <label for="AuthorFormMiddlename">Middle name</label>
+            <div class="">
+                <label for="AuthorFormMiddlename">Middle name </label>
                 <input type="text" id="AuthorFormMiddlename" class="form-control" formControlName="middleName"
                     name="middleName"></div>
         </div>
-        <div class="d-flex">
-            <div class="col">
-                <button class="btn btn-md btn-outline-primary my-4 px-3 py-2 z-depth-0 waves-effect"
-                    type="submit">Submit</button>
-            </div>
-            <div class="col">
-                <button class="btn btn-md btn-outline-danger my-4 px-3 py-2 z-depth-0 waves-effect" type="button"
-                    (click)="cancel()">Cancel</button>
-            </div>
+        <div class="text-center mt-3">
+          <button class="btn btn-info" type="submit" name="submit">
+            Submit
+          </button>
+          <input type="button" class="btn" (click)="cancel()" value="Cancel" />
         </div>
     </form>
+  <aside *ngIf="authorsMerge?.length > 1" class="author-container border border-light col">
+      <h3 class="text-center p-2">
+        <strong>Selected authors: </strong>
+      </h3>
+      <div class="p-1">
+        <ul>
+          <li *ngFor="let a of authorsMerge"> {{a.firstName}} {{a.lastName}} {{a.middleName}}</li>
+        </ul>
+      <p class="pl-1"><em> Authors above will be merged into a single author: </em></p>
+      <span class="author-result">{{form.value.firstName}} {{form.value.lastName}} {{form.value.middleName}}</span>
+    </div>
+  </aside>
+
 </section>
+

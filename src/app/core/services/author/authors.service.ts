@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { IAuthor } from 'src/app/core/models/author';
 import { authorUrl } from 'src/app/configs/api-endpoint.constants';
 import { IPage } from '../../models/page';
-import { CompletePaginationParams } from 'src/app/core/models/completePaginationParameters';
+import { CompletePaginationParams } from 'src/app/core/models/Pagination/completePaginationParameters';
 import { PaginationService } from '../pagination/pagination.service';
 
 @Injectable({
@@ -15,28 +15,29 @@ export class AuthorService {
     private http: HttpClient,
     private pagination: PaginationService
   ) {}
+   public formAuthor: IAuthor;
+   public formMergeAuthors: IAuthor[];
+   private authorSubmittedSource = new Subject<IAuthor>();
+   authorSubmitted = this.authorSubmittedSource.asObservable();
 
-   private authorEditedSource = new Subject<IAuthor>();
-
-   authorEdited$ = this.authorEditedSource.asObservable();
-
-   editAuthor(author: IAuthor) {
-    this.authorEditedSource.next(author);
+   submitAuthor(author: IAuthor) {
+    this.authorSubmittedSource.next(author);
   }
 
   getAuthorsPage(paginationParameters: CompletePaginationParams): Observable<IPage<IAuthor>> {
-    return this.pagination.getPaginatedPage<IAuthor>(authorUrl, paginationParameters);
+    return this.pagination.getPaginatedPage<IAuthor>(authorUrl + '/paginated', paginationParameters);
   }
-  getAuthorById(authorId: number) {
-    return this.http.get<IAuthor[]>(authorUrl + `/${authorId}`);
+  getAuthorById(authorId: number){
+     return this.http.get<IAuthor>(authorUrl + `/${authorId}`);
   }
   mergeAuthors(author: IAuthor, authorIds: number[]) {
-     let params: HttpParams;
+     let params = new HttpParams();
      if (authorIds?.length > 0) {
       for (const id of authorIds) {
         params = params.append('authors', id.toString());
       }
     }
+     return this.http.put<IAuthor[]>(authorUrl + '/merge', {authors: authorIds, author});
   }
   addAuthor(author: IAuthor) {
     return this.http.post<IAuthor>(authorUrl, author);
