@@ -17,8 +17,8 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-registered-book',
-  templateUrl: './registered-book.component.html',
-  styleUrls: ['./registered-book.component.scss']
+  templateUrl: '../books/books.component.html',
+  styleUrls: ['../books/books.component.scss']
 })
 
 export class RegisteredBookComponent implements OnInit, OnDestroy {

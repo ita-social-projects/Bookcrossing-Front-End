@@ -76,6 +76,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
 import { ReadBooksComponent } from './shared/components/read-books/read-books.component';
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
+import { ProfileComponent } from './shared/components/profile/profile.component';
+import { ProfileEditComponent } from './shared/components/profile-edit/profile-edit.component';
 
 
 @NgModule({
@@ -123,6 +125,9 @@ import { DashboardComponent } from './shared/components/admin/dashboard/dashboar
     GenreFormComponent,
     ContactsComponent,
     DashboardComponent,
+    ProfileComponent,
+    ProfileEditComponent
+
   ],
   imports: [
     BrowserModule,

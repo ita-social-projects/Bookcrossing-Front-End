@@ -1,0 +1,80 @@
+<section class="backdrop">
+
+  <form
+    [formGroup]="editUserForm"
+    #ngForm="ngForm"
+    (ngSubmit)="onSubmit()"
+    class="form-popup text-center border border-light p-5">
+    <p class="h2 mb-4 title">Profile Edit</p>
+
+    <!--First Name-->
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">First name:<span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <input
+            formControlName="firstName"
+            type="text"
+            class="form-control"
+            [ngClass]="{
+            'is-invalid': submitted && editUserForm.controls.firstName.errors
+          }"/>
+        </div>
+      </div>
+    </div>
+
+    <!--Last Name-->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-4">
+        <input
+          formControlName="lastName"
+          type="text"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid': submitted && editUserForm.controls.lastName.errors
+          }"
+        />
+      </div>
+    </div>
+
+    <!--&lt;!&ndash;Birthday&ndash;&gt;
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-4">
+        <div class="md-form">
+          <input formControlName="birthday"
+                 type="date"
+                 id="input"
+                 class="form-control" mdbInput>
+          <label for="input">Choose your Birthday</label>
+        </div>
+      </div>
+    </div>
+    &lt;!&ndash;Location&ndash;&gt;
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-4">
+        <mat-select class="form-control select-dropdown"
+                    placeholder="Location">
+          <mat-option *ngFor="let location of locations" [value]="location.id" [matTooltip]="location.city + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
+            {{location.officeName}}, {{location.street}}</mat-option>
+        </mat-select>
+      </div>
+    </div>-->
+
+    <!-- Edit user button -->
+    <button class="btn btn-info" type="submit" name="submit">
+      Save
+    </button>
+    <input type="button" class="btn" (click)="cancel()" value="Cancel" />
+  </form>
+</section>
