@@ -1,63 +1,63 @@
 <div class="container p-3">
+  <div >
   <div class="map-container">
-      <app-mapbox></app-mapbox>
+    <app-mapbox></app-mapbox>
   </div>
-  <form
-    [formGroup]="addLocationForm"
-    (ngSubmit)="onSubmit()"
-    class="text-center border border-light p-5 form-background"
-  >
-    <p class="h4 mb-4" *ngIf="!isEdited">Add location</p>
-    <p class="h4 mb-4" *ngIf="isEdited">Edit location</p>
+</div>
+  <div>
+    <form
+      [formGroup]="addLocationForm"
+      (ngSubmit)="onSubmit()"
+      class="text-center border border-light p-5 form-background"
+    >
+      <p class="h4 mb-4 title" *ngIf="!isEdited">Add location</p>
+      <p class="h4 mb-4 title" *ngIf="isEdited">Edit location</p>
 
-    <div class="form-row mb-4">
-      <div class="col">
-        <!-- City input-->
-        <input
-          formControlName="city"
-          type="text"
-          class="form-control"
-          placeholder="City"
-          required
-        />
+      <!-- City input-->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">City: <span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <input formControlName="city" type="text" class="form-control" />
+        </div>
       </div>
 
       <!-- Street input -->
-      <div class="col">
-        <input
-          formControlName="street"
-          type="text"
-          class="form-control"
-          placeholder="Street"
-          required
-        />
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">Street: <span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <input formControlName="street" type="text" class="form-control" />
+        </div>
       </div>
 
       <!-- Office name input -->
-      <div class="col">
-        <input
-          formControlName="officeName"
-          type="text"
-          class="form-control"
-          placeholder="Building"
-          required
-        />
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">Building: <span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <input
+            formControlName="officeName"
+            type="text"
+            class="form-control"
+          />
+        </div>
       </div>
-    </div>
 
-    <!-- Add location button -->
-    <button
-      class="btn btn-info"
-      type="submit"
-      [disabled]="addLocationForm.invalid"
-    >
-      Submit
-    </button>
-    <button *ngIf="isEdited"
-    class="btn btn-danger"
-    (click)="onCancel()"
-  >
-    Cancel
-  </button>
-  </form>
+      <!-- Add location button -->
+      <button
+        class="btn btn-info"
+        type="submit"
+        [disabled]="addLocationForm.invalid"
+      >
+        Submit
+      </button>
+      <button *ngIf="isEdited" class="btn btn-danger" (click)="onCancel()">
+        Cancel
+      </button>
+    </form>
+  </div>
 </div>
