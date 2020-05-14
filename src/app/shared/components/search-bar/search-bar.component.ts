@@ -10,13 +10,13 @@ import { SearchBarService } from 'src/app/core/services/searchBar/searchBar.serv
 })
 export class SearchBarComponent implements OnInit {
 
-  bookParams = new BookQueryParams;  
+  bookParams = new BookQueryParams;
   searchQuery = {};
   searchTerm : string;
-  
+
   constructor(  private routeActive: ActivatedRoute,
     private searchBarService: SearchBarService,
-    private router: Router) { }  
+    private router: Router) { }
 
   ngOnInit(): void {
     this.searchBarService.currentTerm.subscribe(term => {
@@ -26,7 +26,7 @@ export class SearchBarComponent implements OnInit {
   }
   clearInput(){
     setTimeout(() =>{
-      
+
     if(!this.router.url.startsWith("/books"))
     this.searchTerm = null;
   },100)
@@ -35,11 +35,12 @@ export class SearchBarComponent implements OnInit {
     this.searchTerm = this.searchTerm.trim();
   }
   resertSearch() {
-    this.searchTerm = null;    
+    this.searchTerm = null;
     this.navigateToBooks(null);
   }
-  navigateToBooks(name : string){
+  navigateToBooks(name: string) {
     this.bookParams.searchTerm = name;
+    this.bookParams.pageSize = 8;
     this.router.navigate(['/books'],
     {
       relativeTo: this.routeActive,
