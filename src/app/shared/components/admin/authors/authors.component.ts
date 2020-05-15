@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver} from '@angular/core';
-import { IAuthor } from 'src/app/core/models/author';
-import {Router, ActivatedRoute, Params} from '@angular/router';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {IAuthor} from 'src/app/core/models/author';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {AuthorService} from 'src/app/core/services/author/authors.service';
-import { AuthorFormComponent } from '../author-form/author-form.component';
-import { RefDirective } from '../../../directives/ref.derictive';
-import { CompletePaginationParams } from 'src/app/core/models/completePaginationParameters';
-import { SortParameters } from 'src/app/core/models/Pagination/sortParameters';
-import { FilterParameters } from 'src/app/core/models/Pagination/filterParameters';
+import {RefDirective} from '../../../directives/ref.derictive';
+import {CompletePaginationParams} from 'src/app/core/models/Pagination/completePaginationParameters';
+import {SortParameters} from 'src/app/core/models/Pagination/sortParameters';
+import {FilterParameters} from 'src/app/core/models/Pagination/filterParameters';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationService} from '../../../../core/services/notification/notification.service';
 
@@ -20,14 +19,14 @@ export class AuthorsComponent implements OnInit {
   @ViewChild(RefDirective, {static: false}) refDir: RefDirective;
 
   authors: IAuthor[];
-  authorDisplayColumns: string[] = ['#', 'First Name', 'Last Name', 'Middle Name'];
-  authorProperties: string[] = ['id', 'firstName', 'lastName', 'middleName'];
+  authorDisplayColumns: string[] = ['#', 'First Name', 'Last Name', 'Middle Name', 'Approved'];
+  authorProperties: string[] = ['id', 'firstName', 'lastName', 'middleName', 'isConfirmed'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'lastName';
   totalSize: number;
 
-  selectedRows = [];
+  selectedRows: any = [];
 
   constructor(
     private translate: TranslateService,
@@ -35,7 +34,6 @@ export class AuthorsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private router: Router,
     private authorService: AuthorService,
-    private resolver: ComponentFactoryResolver
     ) { }
 
 
@@ -49,7 +47,8 @@ export class AuthorsComponent implements OnInit {
   }
 
   private onAuthorEdited() {
-    this.authorService.authorEdited$.subscribe((author) => {
+    this.authorService.authorSubmitted.subscribe((author) => {
+      author.isConfirmed = null;
       const editedAuthor = this.authors.find((x) => x.id === author.id);
       if (editedAuthor) {
         const index = this.authors.indexOf(editedAuthor);
@@ -87,29 +86,27 @@ export class AuthorsComponent implements OnInit {
   mergeClear() {
     this.selectedRows = [];
   }
-  merge() {
-    console.log(this.selectedRows);
+  mergeAuthors() {
+    if (this.selectedRows?.length < 2) {
+      this.notificationService.warn(this.translate
+        .instant('Please select two or more authors'), 'X');
+      return;
+    }
+    this.authorService.formMergeAuthors = this.selectedRows;
+    this.router.navigate(['admin/author-form']);
   }
 
   // Form
-  showAddForm() {
-    const newAuthor: IAuthor = {
-      firstName: '',
-      lastName: '',
-      middleName: ''
-    };
-    this.showForm(newAuthor, 'Add Author');
+  addAuthor() {
+    this.authorService.formMergeAuthors = null;
+    this.authorService.formAuthor = null;
+    this.router.navigate(['admin/author-form']);
   }
-  showEditForm(author: IAuthor) {
-    this.showForm(author, 'Edit Author', true);
-  }
-  showForm(author: IAuthor, title: string, isEdited = false) {
-    const formFactory = this.resolver.resolveComponentFactory(AuthorFormComponent);
-    const instance = this.refDir.containerRef.createComponent(formFactory).instance;
-    instance.isEdited = isEdited;
-    instance.title = title;
-    instance.author = author;
-    instance.onCancel.subscribe(() => this.refDir.containerRef.clear());
+  editAuthor(author: IAuthor) {
+    this.authorService.formMergeAuthors = null;
+    this.authorService.formAuthor = author;
+    this.router.navigate(['admin/author-form']);
+    console.log(this.authorService.formAuthor);
   }
 
   // Get
@@ -118,6 +115,13 @@ export class AuthorsComponent implements OnInit {
     .subscribe( {
       next: pageData => {
       this.authors = pageData.page;
+      this.authors.forEach(a => {
+        if (a.isConfirmed) {
+          a.isConfirmed = null;
+        } else {
+          a.isConfirmed = 'unapproved';
+        }
+      });
       if (pageData.totalCount) {
         this.totalSize = pageData.totalCount;
       }

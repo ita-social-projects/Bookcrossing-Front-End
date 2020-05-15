@@ -21,12 +21,13 @@ export class AdminTableComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  onSelectedRowChange(selectedId: number) {
+  onSelectedRowChange(selectedItem: any) {
     if (this.selectedRows) {
-      this.selectedRows = _.xor(this.selectedRows, [selectedId]);
+      this.selectedRows = _.xorBy(this.selectedRows, [selectedItem], this.dataProperties[0]);
       this.selectedRowsChange.emit(this.selectedRows);
     }
+
+    console.log(this.selectedRows);
   }
   onEdit(item: any, $event) {
     $event.stopPropagation();

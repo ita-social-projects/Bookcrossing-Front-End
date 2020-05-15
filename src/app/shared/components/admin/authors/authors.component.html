@@ -2,6 +2,8 @@
   <!--Add Form-->
 </ng-template>
 
+
+
 <div class="container my-5">
   <section>
     <div class="row">
@@ -9,7 +11,7 @@
         <div class="card card-list">
           <div class="card-header white d-flex  align-items-center py-3">
 
-            <p class="h5-responsive font-weight-bold mb-0 mr-2">
+            <p class="h5-responsive font-weight-bold mb-1 mr-2">
               Authors
             </p>
 
@@ -29,13 +31,13 @@
             <!-- header buttons -->
             <ul class="list-unstyled d-flex align-items-center mb-1">
               <li>
-                <button class="btn btn-md px-3 my-0 mr-0" (click)="showAddForm()">
+                <button class="btn btn-md px-3 my-0 mr-0" (click)="addAuthor()">
                   <i class="fas fa-plus pr-1"></i>
                   <span class="button-label">Add new</span>
                 </button>
               </li>
               <li>
-                <button class="btn btn-md px-3 my-0 mr-0" (click)="merge()">
+                <button class="btn btn-md px-3 my-0 mr-0" (click)="mergeAuthors()">
                   <i class="fas fa-compress-arrows-alt pr-1"></i>
                   <span class="button-label">Merge</span>
                 </button>
@@ -57,7 +59,7 @@
               [displayColumns]="authorDisplayColumns"
               [(selectedRows)]="selectedRows"
               [(selectedHeader)]="queryParams.sort.orderByField"
-              (editClicked)="showEditForm($event)"
+              (editClicked)="editAuthor($event)"
               (selectedHeaderChange)="changeSort($event)">
             </app-admin-table>
 

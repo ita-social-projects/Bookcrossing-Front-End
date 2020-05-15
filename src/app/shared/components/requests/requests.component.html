@@ -1,12 +1,19 @@
 <div class="container my-5">
 
-  <app-book-filter-bar 
+  <app-book-filter-bar
   [showAvailable]="false"
-  [(selectedGenres)]="selectedGenres" 
+  [(selectedGenres)]="selectedGenres"
   [(selectedLocation)]="queryParams.location"
   (filterChange)="onFilterChange($event)">
 </app-book-filter-bar>
-  
+
+  <ng-template [ngIf]="requests.length==0" [ngIfElse]="requestsExist">
+    <div class="d-flex justify-content-center border border-light p-5">
+      <img src="https://cdn.dribbble.com/users/1512427/screenshots/6201637/02.png">
+    </div>
+  </ng-template>
+
+  <ng-template #requestsExist>
   <div class="card m-3" *ngFor="let request of requests">
     <div class="row no-gutters">
       <div class="col-auto">
@@ -35,7 +42,7 @@
             Location : {{request.owner.userLocation[0].location.city + " " + request.owner.userLocation[0].location.officeName}}
             <br>
 
-            Status : 
+            Status :
               <span class="badge badge-info product ml-2">Requested</span>
               <br>
               <a role="button" class="btn btn-primary" (click)="cancelRequest(request.id)">Cancel request</a>
@@ -48,4 +55,5 @@
   <app-pagination *ngIf="requests && requests.length > 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
     [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
   </app-pagination>
+  </ng-template>
 </div>

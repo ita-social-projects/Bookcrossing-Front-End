@@ -1,28 +1,131 @@
-<div class="container card p-3">
-  <div class="card-body card-body-cascade">
-    <div class="d-flex justify-content-center">
-      <div>
-        <canvas mdbChart height="400" width="500"
-                [chartType]="requestChartType"
-                [datasets]="requestChartDatasets"
-                [labels]="requestChartLabels"
-                [colors]="requestChartColors"
-                [options]="requestChartOptions"
-                [legend]="true">
-        </canvas>
-      </div>
-      <div>
-          <canvas mdbChart height="400" width="500"
-                  [chartType]="chartType"
-                  [datasets]="chartDatasets"
-                  [labels]="chartLabels"
-                  [colors]="chartColors"
-                  [options]="receivedChartOptions"
-                  [legend]="true">
-          </canvas>
+<div class="container">
+  <section class="mt-md-4 pt-md-2 mb-4 pb-4">
 
+    <div class="row">
+
+      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+        <div class="card card-cascade cascading-admin-card">
+          <div class="admin-up">
+            <i class="fas fa-map-marker-alt indigo lighten-1  mr-3 z-depth-2"></i>
+            <div class="data">
+              <p class="text-uppercase">Location</p>
+              <mat-form-field class="reset">
+                <mat-select [(value)]="selectedLocation">
+                  <mat-option  value="All">All</mat-option>
+                  <mat-option value="Lviv">Lviv</mat-option>
+                  <mat-option value="Kyiv">Kyiv</mat-option>
+                  <mat-option value="Dnipro">Dnipro</mat-option>
+                  <mat-option value="Chernivtsi">Chernivtsi</mat-option>
+                  <mat-option value="Kharkiv">Kharkiv</mat-option>
+                  <mat-option value="Rivne">Rivne</mat-option>
+                  <mat-option value="IvanoFrankivsk">Ivano-Frankivsk</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+        <div class="card card-cascade cascading-admin-card">
+          <div class="admin-up">
+            <i class="fas fa-book primary-color mr-3 z-depth-2"></i>
+            <div class="data">
+              <p class="text-uppercase">Books Registered</p>
+              <h4 class="font-weight-bold dark-grey-text">{{totalBooksRegistered}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-xl-0 mb-4">
+        <div class="card card-cascade cascading-admin-card">
+          <div class="admin-up">
+            <i class="fas fa-user warning-color mr-3 z-depth-2"></i>
+            <div class="data">
+              <p class="text-uppercase">Users</p>
+              <h4 class="font-weight-bold dark-grey-text">{{totalAmountOfUsers}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-md-0 mb-4">
+        <div class="card card-cascade cascading-admin-card">
+          <div class="admin-up">
+            <i class="far fa-clock red accent-2 mr-3 z-depth-2"></i>
+            <div class="data">
+              <p class="text-uppercase">Expiring Requests</p>
+              <h4 class="font-weight-bold dark-grey-text">{{expiringRequests}}</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <section>
+    <div class="card card-cascade narrower">
+      <div class="row">
+        <div class="col-xl-8 col-lg-12 pb-2 mr-auto" id="line-chart">
+          <div class="line-chart indigo-gradient-darker">
+            <canvas id="lineChart"> {{lineChart}}</canvas>
+          </div>
+        </div>
+        <div class="col-xl-4 col-lg-12 pb-2" id="line-chart-header">
+          <div class="view view-cascade gradient-card-header line-chart-header indigo-gradient">
+            <h2 class="h2-responsive mb-0">Books</h2>
+          </div>
+          <div class="card-body card-body-cascade pb-0">
+
+            <div class="row card-body pt-3">
+
+              <div class="col-md-6">
+                <p class="lead">
+                  <span class="badge indigo-gradient-reverse p-2">Data range</span>
+                </p>
+
+                <mat-form-field>
+                  <mat-label>Choose Time Period</mat-label>
+                  <mat-select>
+                      <mat-option value="Week">Week</mat-option>
+                      <mat-option value="Month">Month</mat-option>
+                      <mat-option value="HalfYear">6 Month</mat-option>
+                      <mat-option value="Year">Year</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-</div>
+  <section>
+    <div class="p-3">
+      <div class="row">
+        <div class="col-xl-8 col-md-12 pb-2 mr-auto card card-cascade pl-3 mr-1 small-chart">
+          <div class="view view-cascade gradient-card-header bar-header indigo-gradient">
+            <h2 class="h2-responsive mb-0">Registered Books per City</h2>
+          </div>
+          <div class="line-chart mt-2 bar-chart">
+            <canvas id="barChart" (click)="barChartClicked($event)">{{ barChart }}</canvas>
+          </div>
+        </div>
+        <div class="col-xl-4 col-md-12 pb-2 ml-auto card card-cascade ml-2 pr-3 small-chart side-chart">
+          <div class="view view-cascade gradient-card-header chart-header indigo-gradient">
+            <h2 class="h2-responsive mb-0">Availability</h2>
+          </div>
+          <canvas id="pieCanvas">{{ pieChart }}</canvas>
+
+          <button type="button" class="btn indigo-gradient-reverse reset-button ml-auto" (click)="resetPie()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </section>

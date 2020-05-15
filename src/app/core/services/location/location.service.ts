@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ILocation } from '../../models/location';
 import {Observable, Subject} from 'rxjs';
-import {CompletePaginationParams} from '../../models/completePaginationParameters';
+import {CompletePaginationParams} from '../../models/Pagination/completePaginationParameters';
 import {IPage} from '../../models/page';
 import {PaginationService} from '../pagination/pagination.service';
 

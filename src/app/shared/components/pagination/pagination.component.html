@@ -2,10 +2,16 @@
   <ul class="pagination pg-blue justify-content-center mt-2 mb-0 p-0">
 
     <li class="page-item" [ngClass]="{disabled: selectedPage == 1}">
-      <a class="page-link" (click)="selectPage(1)">First</a>
+      <a class="page-link" (click)="selectPage(1)">
+        <span class="large-screen">First</span>
+        <span class="small-screen"><<</span>
+      </a>
     </li>
     <li class="page-item" [ngClass]="{disabled: selectedPage == 1}">
-      <a class="page-link" (click)="selectPage(selectedPage-1)">{{'components.requests.previous'|translate}}</a>
+      <a class="page-link" (click)="selectPage(selectedPage-1)">
+        <span class="large-screen">{{'components.requests.previous'|translate}}</span>
+        <span class="small-screen"><</span>
+      </a>
     </li>
 
     <ng-container *ngFor="let page of pageList let i = index">
@@ -15,9 +21,16 @@
     </ng-container>
 
     <li class="page-item" [ngClass]="{disabled: selectedPage == total}">
-      <a class="page-link" (click)="selectPage(selectedPage + 1)">{{'components.requests.next'|translate}}</a>
+      <a class="page-link" (click)="selectPage(selectedPage + 1)">
+        <span class="large-screen">{{'components.requests.next'|translate}}</span>
+        <span class="small-screen">></span>
+
+      </a>
     </li>
     <li class="page-item" [ngClass]="{disabled: selectedPage == total}">
-      <a class="page-link" (click)="selectPage(total)">Last</a>
+      <a class="page-link" (click)="selectPage(total)">
+        <span class="large-screen">Last</span>
+        <span class="small-screen"> >> </span>
+      </a>
     </li>
   </ul>
