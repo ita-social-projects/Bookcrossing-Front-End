@@ -1,5 +1,5 @@
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { Component,OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import { IBook } from 'src/app/core/models/book';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { ActivatedRoute, Params, Router } from "@angular/router";
@@ -25,8 +25,10 @@ import { environment } from 'src/environments/environment';
 })
 export class BooksComponent implements OnInit,OnDestroy {
 
+  isBlockView: boolean = false;
   books: IBook[];
   totalSize: number;
+  isRequester: boolean = false;
   bookStatus: bookStatus[] = [1,1,1,1,1]
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
@@ -55,6 +57,8 @@ export class BooksComponent implements OnInit,OnDestroy {
   isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
+
+  async cancelRequest(id: number){}
 
   getStatus(book : IBook, index: number){
     if(book.available){
@@ -166,5 +170,14 @@ export class BooksComponent implements OnInit,OnDestroy {
 
   ngOnDestroy(){
     this.searchBarService.changeSearchTerm(null)
+  }
+
+  onViewModeChange(viewModeChanged: string) {
+    if(viewModeChanged === 'block'){
+      this.isBlockView = true;
+    }
+    else {
+      this.isBlockView = false;
+    }
   }
 }

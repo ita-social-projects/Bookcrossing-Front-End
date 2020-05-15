@@ -40,6 +40,7 @@
       </ul>
       <ng-template [ngIf]="isLoggedIn" [ngIfElse]="login">
         <app-search-bar> </app-search-bar>
+        <app-notification></app-notification>
         <app-profile-avatar></app-profile-avatar>
       </ng-template>
     </div>

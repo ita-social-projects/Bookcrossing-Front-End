@@ -79,6 +79,11 @@ import { DashboardComponent } from './shared/components/admin/dashboard/dashboar
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { ProfileEditComponent } from './shared/components/profile-edit/profile-edit.component';
 import {DonateDialogComponent} from './shared/components/donate-dialog/donate-dialog.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {EllipsisPipe} from './shared/pipes/elipsis.pipe';
+import {NotificationComponent} from './shared/components/notification/notification.component';
+import {MatLineModule} from '@angular/material/core';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -99,6 +104,7 @@ import {DonateDialogComponent} from './shared/components/donate-dialog/donate-di
     BookFilterBarComponent,
     ReportsComponent,
     FilterPipe,
+    EllipsisPipe,
     RefDirective,
     PaginationComponent,
     DemoComponent,
@@ -128,7 +134,8 @@ import {DonateDialogComponent} from './shared/components/donate-dialog/donate-di
     DashboardComponent,
     ProfileComponent,
     ProfileEditComponent,
-    DonateDialogComponent
+    DonateDialogComponent,
+    NotificationComponent
 
   ],
   imports: [
@@ -136,11 +143,13 @@ import {DonateDialogComponent} from './shared/components/donate-dialog/donate-di
     AppRoutingModule,
     HttpClientModule,
     MatSnackBarModule,
+    MatButtonToggleModule,
     MatMenuModule,
     MatTooltipModule,
     JwtModule,
     MatDialogModule,
     MatButtonModule,
+    MatTooltipModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -165,10 +174,12 @@ import {DonateDialogComponent} from './shared/components/donate-dialog/donate-di
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: [""],
-        blacklistedRoutes: [""]
+        whitelistedDomains: [''],
+        blacklistedRoutes: ['']
       }
     }),
+    MatLineModule,
+    MatListModule
   ],
   providers: [
     BookService,

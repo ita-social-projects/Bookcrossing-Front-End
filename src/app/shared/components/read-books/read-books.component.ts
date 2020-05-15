@@ -17,12 +17,14 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-read-books',
-  templateUrl: './read-books.component.html',
-  styleUrls: ['./read-books.component.scss']
+  templateUrl: '../books/books.component.html',
+  styleUrls: ['../books/books.component.scss']
 })
 
 export class ReadBooksComponent implements OnInit, OnDestroy {
 
+  isBlockView: boolean = false;
+  isRequester: boolean = true;
   books: IBook[];
   totalSize: number;
   bookStatus: bookStatus[] = [1,1,1,1,1]
@@ -50,6 +52,14 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
       this.getBooks(this.queryParams);
     });
   }
+  onViewModeChange(viewModeChanged: string) {
+    if(viewModeChanged === 'block'){
+      this.isBlockView = true;
+    }
+    else {
+      this.isBlockView = false;
+    }
+  }
   isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
@@ -60,7 +70,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
     else{
       let query = new RequestQueryParams();
       query.first = false;
-      query.last = true;    
+      query.last = true;
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
          if(value.receiveDate){
@@ -72,6 +82,8 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
        }, error => {})
     }
   }
+  async cancelRequest(id:number){}
+
   async requestBook(bookId: number) {
     this.dialogService
       .openConfirmDialog(
@@ -135,7 +147,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
       });
   }
 
-  
+
   //get
   getBooks(params: BookQueryParams): void {
     this.bookService.getReadBooks(params)
@@ -143,7 +155,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
         next: pageData => {
           this.books = pageData.page;
           for(var i = 0; i<pageData.page.length; i++){
-     
+
             this.getStatus(pageData.page[i], i)
         }
           if (pageData.totalCount) {

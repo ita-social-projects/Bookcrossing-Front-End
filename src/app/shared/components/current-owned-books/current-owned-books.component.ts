@@ -23,7 +23,9 @@ import { environment } from 'src/environments/environment';
 
 export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
 
+  isBlockView: boolean = false;
   books: IBook[];
+  isRequester: boolean = false;
   totalSize: number;
   bookStatus: bookStatus[] = [1,1,1,1,1]
   queryParams: BookQueryParams = new BookQueryParams;
@@ -50,6 +52,8 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
       this.getBooks(this.queryParams);
     });
   }
+  async cancelRequest(id: number){}
+
   isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
@@ -60,7 +64,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
     else{
       let query = new RequestQueryParams();
       query.first = false;
-      query.last = true;    
+      query.last = true;
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
          if(value.receiveDate){
@@ -143,7 +147,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
         next: pageData => {
           this.books = pageData.page;
           for(var i = 0; i<pageData.page.length; i++){
-     
+
             this.getStatus(pageData.page[i], i)
         }
           if (pageData.totalCount) {
@@ -158,5 +162,13 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.searchBarService.changeSearchTerm(null);
+  }
+  onViewModeChange(viewModeChanged: string) {
+    if(viewModeChanged === 'block'){
+      this.isBlockView = true;
+    }
+    else {
+      this.isBlockView = false;
+    }
   }
 }

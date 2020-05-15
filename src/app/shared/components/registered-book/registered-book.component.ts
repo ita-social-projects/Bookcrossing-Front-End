@@ -23,7 +23,9 @@ import { environment } from 'src/environments/environment';
 
 export class RegisteredBookComponent implements OnInit, OnDestroy {
 
+  isBlockView: boolean = false;
   books: IBook[];
+  isRequester: boolean = false;
   userId: number;
   totalSize: number;
   bookStatus: bookStatus[] = [1, 1, 1, 1, 1];
@@ -49,6 +51,8 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
     });
   }
 
+  async cancelRequest(id: number){}
+
   isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
@@ -59,7 +63,7 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
     else{
       let query = new RequestQueryParams();
       query.first = false;
-      query.last = true;    
+      query.last = true;
       this.requestService.getRequestForBook(book.id, query)
      .subscribe((value: IRequest) => {
          if(value.receiveDate){
@@ -153,5 +157,13 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.searchBarService.changeSearchTerm(null);
+  }
+  onViewModeChange(viewModeChanged: string) {
+    if(viewModeChanged === 'block'){
+      this.isBlockView = true;
+    }
+    else {
+      this.isBlockView = false;
+    }
   }
 }

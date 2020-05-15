@@ -1,7 +1,7 @@
 <ng-template appRef>
   <!--Add Form-->
 </ng-template>
-<div class="container my-5 py-5 z-depth-1">
+<div class="container my-5 py-5 z-depth-1 animated fadeIn">
 
     <section class="text-center">
 
@@ -25,16 +25,16 @@
             </div>
               <div class="text-center text-md-left text-md-right mt-2">
                 <span [ngSwitch]="bookStatus">
-                  <ng-template ngSwitchCase="1"><button [hidden]="!isAuthenticated()" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="requestBook()">
+                  <ng-template ngSwitchCase="1"><button [hidden]="!isAuthenticated()" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isRequester" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block" (click)="startReading()">
+                    <button [hidden]="!isRequester" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> Start reading</button>
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="cancelRequest()">
+                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
                   </ng-template>
                   <ng-template ngSwitchCase="3">
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block"(click)="makeAvailable()" >
+                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> Make available</button>
                   </ng-template>
                 </span>
@@ -91,69 +91,3 @@
 
 
   </div>
-  <!-- <div class="container my-5">
-
-    <section class="dark-grey-text mb-5">
-
-      <h3 class="font-weight-bold text-center mb-5">{{ 'components.book.reviews' | translate }}</h3>
-
-      <div class="media mb-3">
-        <img class="card-img-100 rounded-circle z-depth-1-half d-flex mr-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (8).jpg" alt="Generic placeholder image">
-        <div class="media-body">
-          <a>
-            <h5 class="user-name font-weight-bold">John Doe</h5>
-          </a>
-          <div class="card-data">
-            <ul class="list-unstyled mb-1">
-              <li class="comment-date font-small grey-text">
-                <i class="far fa-clock"></i> 05/10/2015</li>
-            </ul>
-          </div>
-          <p class="dark-grey-text article">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-        </div>
-      </div>
-
-      <div class="media mb-3">
-        <img class=" card-img-100 rounded-circle z-depth-1-half d-flex mr-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (28).jpg" alt="Generic placeholder image">
-        <div class="media-body">
-          <a>
-            <h5 class="user-name font-weight-bold">Martha Smith</h5>
-          </a>
-          <div class="card-data">
-            <ul class="list-unstyled mb-1">
-              <li class="comment-date font-small grey-text">
-                <i class="far fa-clock"></i> 05/10/2015</li>
-            </ul>
-          </div>
-          <p class="dark-grey-text article">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-        </div>
-      </div>
-
-      <div class="media">
-        <img class=" card-img-100 rounded-circle z-depth-1-half d-flex mr-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (30).jpg" alt="Generic placeholder image">
-        <div class="media-body">
-          <a>
-            <h5 class="user-name font-weight-bold">Lily Brown</h5>
-          </a>
-          <div class="card-data">
-            <ul class="list-unstyled mb-1">
-              <li class="comment-date font-small grey-text">
-                <i class="far fa-clock"></i> 05/10/2015</li>
-            </ul>
-          </div>
-          <p class="dark-grey-text article">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-        </div>
-      </div>
-
-      </section>
-
-  </div> -->
