@@ -78,6 +78,12 @@ import { ReadBooksComponent } from './shared/components/read-books/read-books.co
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { ProfileEditComponent } from './shared/components/profile-edit/profile-edit.component';
+import {DonateDialogComponent} from './shared/components/donate-dialog/donate-dialog.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {EllipsisPipe} from './shared/pipes/elipsis.pipe';
+import {NotificationComponent} from './shared/components/notification/notification.component';
+import {MatLineModule} from '@angular/material/core';
+import {MatListModule} from '@angular/material/list';
 
 
 @NgModule({
@@ -98,6 +104,7 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     BookFilterBarComponent,
     ReportsComponent,
     FilterPipe,
+    EllipsisPipe,
     RefDirective,
     PaginationComponent,
     DemoComponent,
@@ -126,7 +133,9 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     ContactsComponent,
     DashboardComponent,
     ProfileComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    DonateDialogComponent,
+    NotificationComponent
 
   ],
   imports: [
@@ -134,11 +143,13 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     AppRoutingModule,
     HttpClientModule,
     MatSnackBarModule,
+    MatButtonToggleModule,
     MatMenuModule,
     MatTooltipModule,
     JwtModule,
     MatDialogModule,
     MatButtonModule,
+    MatTooltipModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -163,10 +174,12 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: [""],
-        blacklistedRoutes: [""]
+        whitelistedDomains: [''],
+        blacklistedRoutes: ['']
       }
     }),
+    MatLineModule,
+    MatListModule
   ],
   providers: [
     BookService,

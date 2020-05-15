@@ -1,7 +1,7 @@
    <ul class="nav-item avatar dropdown">
           <a class="nav-link avatar" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <ngx-avatar [name]="userName"></ngx-avatar>
+            <ngx-avatar size="45"[name]="userName"></ngx-avatar>
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">
@@ -12,8 +12,8 @@
             <a class="dropdown-item" [routerLink]="['/books/registered']">Registered</a>
             <a class="dropdown-item" [routerLink]="['/requests']">Requested</a>
             <a class="dropdown-item" [routerLink]="['/books/current']">Currently Owned</a>
-            <a class="dropdown-item" [routerLink]="['/books/read']">Read</a>   
-            <div class="dropdown-divider"></div>         
+            <a class="dropdown-item" [routerLink]="['/books/read']">Read</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" routerLink="" (click)="logout()">Log out</a>
           </div>
         </ul>

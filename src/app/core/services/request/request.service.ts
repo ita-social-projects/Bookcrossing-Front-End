@@ -40,12 +40,12 @@ export class RequestService {
     return this.pagination.getBookPage<IRequest>(`${this.baseUrl}/`,bookParams);
   }
 
-  deleteRequest(requestId: number) :Observable<boolean>{
-    return this.http.delete<boolean>(this.baseUrl + `/${requestId}`);
+  deleteRequest(requestId: number){
+    return this.http.delete(this.baseUrl + `/${requestId}`);
   }
 
-  approveReceive(requestId: number) :Observable<boolean>{
-    return this.http.put<boolean>(this.baseUrl + `/${requestId}`, {
+  approveReceive(requestId: number){
+    return this.http.put(this.baseUrl + `/${requestId}`, {
       requestId: requestId,
     });
   }

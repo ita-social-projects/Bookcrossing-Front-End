@@ -6,7 +6,7 @@
   min-width: 5rem;
   width: 14rem;
 }
-.ma
+
 .clear-icon, .search-icon{
   display: inline-block;
   fill: currentColor;
@@ -20,6 +20,19 @@
     line-height: 24px;
     width: 24px;
 }
+
+.card-height {
+  min-height: 350px;
+  height: 100%;
+}
+.photo-padding{
+  padding: 0px;
+}
+
+.img-height{
+  height: 400px;
+}
+
 .hidden{
   visibility: hidden;
 }
