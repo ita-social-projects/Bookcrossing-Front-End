@@ -46,7 +46,8 @@ export class BooksComponent implements OnInit,OnDestroy {
 
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
+
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
@@ -124,6 +125,10 @@ export class BooksComponent implements OnInit,OnDestroy {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
+    window.scrollTo({
+      top: 0,
+      behavior:'smooth'
+    });
   }
   private resetPageIndex() : void {
     this.queryParams.page = 1;
