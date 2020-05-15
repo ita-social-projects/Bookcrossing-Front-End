@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
+import {Component, EventEmitter, OnInit, Input, Output, ViewChild} from '@angular/core';
 import { IAuthor } from "src/app/core/models/author";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BookService } from 'src/app/core/services/book/book.service';
@@ -21,6 +21,7 @@ import { IBookPut } from 'src/app/core/models/bookPut';
 })
 export class BookEditFormComponent implements OnInit {
 
+@ViewChild("lastnameInput") inputLastname;
 @Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
 @Input() book : IBook
 
@@ -34,6 +35,8 @@ editBookForm: FormGroup;
   authorsSubscription: SubscriptionLike;
   submitted = false;
   authorFocused: boolean = false;
+  lastnameInputVisible: boolean = false;
+  newAuthor: IAuthor;
   selectedGenres = [];
 
 constructor(
@@ -51,7 +54,7 @@ constructor(
     this.buildForm();
     this.getAllGenres();
     this.authorsSubscription = this.editBookForm
-      .get('author')
+      .get('authorFirstname')
       .valueChanges.subscribe((input) => {
         this.filterAuthors(input);
       });
@@ -90,13 +93,14 @@ constructor(
       title: new FormControl({value:this.book.name, disabled: false}, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl({value:this.book.publisher, disabled: false}),
-      author: new FormControl(null),
+      authorLastname: new FormControl(null),
+      authorFirstname: new FormControl(null),
       description: new FormControl({value:this.book.notice, disabled: false}),
       image: new FormControl({value:this.book.imagePath, disabled: false}),
     });
     if(this.book.authors){
       this.book.authors.forEach(element => {
-        this.addAuthor(element);
+        this.addAuthor(this.selectedAuthors, element);
       });
     }
     if(this.book.genres){
@@ -114,7 +118,15 @@ constructor(
     }
   }
 
-  onSubmit() {
+
+  async onSubmit() {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('Do you want to edit book? The book will be edited permanently!').toPromise()
+      )
+      .afterClosed()
+      .subscribe(async res => {
+        if (res) {
     this.submitted = true;
 
     if (this.validateForm(this.editBookForm)) {
@@ -127,21 +139,25 @@ constructor(
       selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
 
-    const newAuthor: string = this.editBookForm.get('author').value;
-    if (newAuthor) {
-      this.addNewAuthor(newAuthor);
+    const bookAuthors: IAuthor[] = this.selectedAuthors.slice();
+    if(this.editBookForm.get("authorFirstname").value){
+      if (this.editBookForm.get("authorFirstname").value.trim()) {
+        await this.addNewAuthor();
+        bookAuthors.push(this.newAuthor);
+        this.newAuthor = undefined;
+      }
     }
     let book: IBookPut = {
       id: this.book.id,
       fieldMasks: []
     };
-    if(selectedGenres !== this.book.genres){
+    if(JSON.stringify(selectedGenres) !== JSON.stringify(this.book.genres)){
       book.fieldMasks.push("BookGenre");
       book.bookGenre = selectedGenres;
     }
-    if(this.selectedAuthors !== this.book.authors){
+    if(JSON.stringify(bookAuthors) !== JSON.stringify(this.book.authors)){
       book.fieldMasks.push("BookAuthor");
-      book.bookAuthor = this.selectedAuthors;
+      book.bookAuthor = bookAuthors;
     }
     if(this.editBookForm.get('title').value !== this.book.name){
       book.fieldMasks.push("Name");
@@ -159,7 +175,6 @@ constructor(
       book.fieldMasks.push("Image");
       book.image = this.selectedFile;
     }
-    console.log(book)
     const formData: FormData = this.getFormData(book);
     this.bookService.putBook(book.id, formData).subscribe(
       (data: boolean) => {
@@ -167,24 +182,31 @@ constructor(
         this.onCancel.emit();
       },
       (error) => {
-        this.notificationService.warn(this.translate.instant("Something went wrong"), "X");
+        this.notificationService.warn(this.translate.instant("Please edit something!"), "X");
       }
     );
-    this.ngOnInit();
 
     // after submmit subscription stops work
     this.authorsSubscription.unsubscribe();
     this.authorsSubscription = this.editBookForm
-      .get('author')
+      .get('authorFirstname')
       .valueChanges.subscribe((input) => {
         this.filterAuthors(input);
+      });
+        }
       });
   }
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
-      this.notificationService.warn(this.translate.instant("You have to be logged in to edit book"), "X");
+      this.notificationService.warn(
+        this.translate.instant("You have to be logged in to edit book"),
+        "X"
+      );
       return true;
-    } else if (!form.get("author").value && !this.selectedAuthors.length) {
+    } else if (
+      (!form.get("authorFirstname").value?.trim() || !form.get("authorLastname").value?.trim()) &&
+      !this.selectedAuthors.length
+    ) {
       return true;
     } else if (form.invalid) {
       return true;
@@ -214,24 +236,31 @@ constructor(
       this.selectedAuthors.splice(index, 1);
     }
   }
-  
 
-  addAuthor(author) {
-    const index = this.selectedAuthors.findIndex((elem) => {
+
+  async addNewAuthor() {
+    // let author: IAuthor;
+    let newAuthor: IAuthor = {
+      firstName: this.editBookForm.get("authorFirstname").value,
+      lastName: this.editBookForm.get("authorLastname").value
+        ? this.editBookForm.get("authorLastname").value
+        : "",
+      isConfirmed: false,
+    };
+    this.newAuthor = await this.authorService.addAuthor(newAuthor).toPromise();
+  }
+
+  addAuthor(authors, author: IAuthor) {
+    const index = this.authors.findIndex((elem) => {
       return (
-        elem.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
-        elem.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
-        elem.lastName?.toLowerCase() === author.lastName?.toLowerCase()
+        elem?.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
+        elem?.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
+        elem?.lastName?.toLowerCase() === author.lastName?.toLowerCase()
       );
     });
     if (index < 0) {
-      this.selectedAuthors.push(author);
+      authors.push(author);
     }
-  }
-
-  addNewAuthor(newAuthor: string) {
-    const author = this.parseAuthorString(newAuthor);
-    this.addAuthor(author);
   }
 
   onFileSelected(event) {
@@ -265,8 +294,8 @@ constructor(
   }
 
   onAuthorSelect(event) {
-    this.editBookForm.get('author').setValue('');
-    this.addAuthor(event.option.value);
+    this.editBookForm.get("authorFirstname").setValue("");
+    this.addAuthor(this.selectedAuthors, event.option.value);
   }
 
   getFormData(book: IBookPut): FormData {
@@ -276,11 +305,9 @@ constructor(
         if (Array.isArray(book[key])) {
           book[key].forEach((i, index) => {
             if(key == "fieldMasks"){
-              console.log(`${key}[${index}]` + " " + book[key][index]);
               formData.append(`${key}[${index}]`, book[key][index]);
             }
             else{
-              console.log(`${key}[${index}][id]` + " " + book[key][index]['id']);
             formData.append(`${key}[${index}][id]`, book[key][index]['id']);
             }
           });
@@ -296,16 +323,17 @@ constructor(
   onFileClear() {
     this.selectedFile = null;
   }
-  async cancel() {
-    this.dialogService
-      .openConfirmDialog(
-        await this.translate.get("Are yo sure want to cancel?").toPromise()
-      )
-      .afterClosed()
-      .subscribe(async (res) => {
-        if (res) {
-          this.onCancel.emit();
-          }
-      });
+  cancel() {
+    this.onCancel.emit();
+  }
+  filterConfirmedAuthors() {
+    return this.authors.filter((x) => x.isConfirmed === true);
+  }
+  onPressSpace() {
+    this.lastnameInputVisible = true;
+    setTimeout(() => {
+      this.authorFocused = false;
+      this.inputLastname.nativeElement.focus();
+    }, 0);
   }
 }

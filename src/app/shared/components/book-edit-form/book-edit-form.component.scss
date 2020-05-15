@@ -20,10 +20,13 @@ $color-danger: red;
 form {
     margin: 0% 10%;
 }
+.hide-input{
+  display: none;
+}
 
 .additional-selection {
     opacity: 0.75;
-    font-size: 0.75em;  
+    font-size: 0.75em;
 }
 mat-select{
     text-align: left;

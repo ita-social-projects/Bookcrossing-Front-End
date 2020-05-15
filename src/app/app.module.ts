@@ -78,6 +78,7 @@ import { ReadBooksComponent } from './shared/components/read-books/read-books.co
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { ProfileEditComponent } from './shared/components/profile-edit/profile-edit.component';
+import {DonateDialogComponent} from './shared/components/donate-dialog/donate-dialog.component';
 
 
 @NgModule({
@@ -126,7 +127,8 @@ import { ProfileEditComponent } from './shared/components/profile-edit/profile-e
     ContactsComponent,
     DashboardComponent,
     ProfileComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    DonateDialogComponent
 
   ],
   imports: [

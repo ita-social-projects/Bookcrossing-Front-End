@@ -16,14 +16,14 @@ import { environment } from 'src/environments/environment';
   providers: []
 })
 export class RequestsComponent implements OnInit {
-  
-  requests: IRequest[];
+
+  requests: IRequest[] = [];
   totalSize: number;
 
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
   apiUrl: string = environment.apiUrl;
-  
+
   constructor(
     private translate: TranslateService,
     private notificationService: NotificationService,
@@ -36,13 +36,13 @@ export class RequestsComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)  
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)
       this.populateDataFromQuery();
       this.getUserRequests(this.queryParams);
     })
   }
 
-  getUserRequests(params: BookQueryParams) : void {      
+  getUserRequests(params: BookQueryParams) : void {
     this.requestService.getUserRequestsPage(params)
     .subscribe( {
       next: pageData => {
@@ -53,7 +53,7 @@ export class RequestsComponent implements OnInit {
     },
     error: error => this.notificationService.warn(this.translate
       .instant("You haven`t made any requests yet!"), "X")
-   });   
+   });
   };
 
   async cancelRequest(requestId: number) {
@@ -64,8 +64,8 @@ export class RequestsComponent implements OnInit {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          this.requestService.deleteRequest(requestId).subscribe((value: boolean) => {
-            let canceled = value;
+          this.requestService.deleteRequest(requestId).subscribe(() => {
+            this.ngOnInit();
               this.notificationService.success(this.translate
                 .instant("Request is cancelled."), "X");
             }, err => {
@@ -84,9 +84,9 @@ export class RequestsComponent implements OnInit {
   }
   private populateDataFromQuery() {
     if(this.queryParams.searchTerm){
-      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)      
+      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
     }
-    this.queryParams.showAvailable = false;   
+    this.queryParams.showAvailable = false;
     if(this.queryParams.genres){
       let genres: number[];
       if(Array.isArray(this.queryParams.genres))
@@ -96,11 +96,15 @@ export class RequestsComponent implements OnInit {
        }
         this.selectedGenres =  genres;
     }
-  } 
+  }
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
+    window.scrollTo({
+      top: 0,
+      behavior:'smooth'
+    });
   }
   private resetPageIndex() : void {
     this.queryParams.page = 1;
