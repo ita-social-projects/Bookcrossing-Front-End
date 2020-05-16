@@ -25,6 +25,7 @@ import {GenresComponent} from './shared/components/admin/genres/genres.component
 import {DashboardComponent} from './shared/components/admin/dashboard/dashboard.component';
 import {ProfileComponent} from './shared/components/profile/profile.component';
 import {AuthorFormComponent} from './shared/components/admin/author-form/author-form.component';
+import {Role} from './core/models/role.enum';
 
 
 // @ts-ignore
@@ -32,7 +33,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
 
-  {path: 'admin', component: AdminComponent, children:
+  {path: 'admin', component: AdminComponent,
+    canActivate: [AuthGuard],
+    data: {roles: Role.Admin},
+    children:
       [
         {path: 'dashboard', component: DashboardComponent},
         {path: 'authors', component: AuthorsComponent},

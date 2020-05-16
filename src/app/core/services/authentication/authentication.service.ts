@@ -26,7 +26,7 @@ export class AuthenticationService {
   }
 
   constructor(private http: HttpClient,
-    private jwtHelper: JwtHelperService) {
+              private jwtHelper: JwtHelperService) {
     this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -72,25 +72,25 @@ export class AuthenticationService {
     });
   }
   isAuthenticated() {
-    const token: string = localStorage.getItem("currentUser");
+    const token: string = localStorage.getItem('currentUser');
     return token && !this.jwtHelper.isTokenExpired(token);
   }
 
  getUserId() {
-    return this.http.get(`${this.userUrl}/id/`)
+    return this.http.get(`${this.userUrl}/id/`);
   }
 
   isAdmin() {
-    const token: string = localStorage.getItem("currentUser");
+    return this.getUserRole() === 'Admin';
+  }
+
+  getUserRole() {
+    const token: string = localStorage.getItem('currentUser');
     if (token && !this.jwtHelper.isTokenExpired(token)) {
       const role = this.jwtHelper.decodeToken(token)[
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
-      ];
-      if (role === "Admin") {
-        return true;
-      }
-    } else {
-      return false;
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ];
+      return role;
     }
   }
 }
