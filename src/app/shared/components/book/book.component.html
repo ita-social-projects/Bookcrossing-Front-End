@@ -57,13 +57,13 @@
               <ng-template #manyGenres><strong>Categories: </strong></ng-template>
               <span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{ genre?.name }}</span></p>
               <p class="ml-xl-0 ml-4">
-                <strong>Location: </strong> {{ currentOwner?.userLocation[0]?.location?.city + " " +  currentOwner?.userLocation[0]?.location?.officeName}} </p>
+                <strong>Location: </strong> {{ book?.location?.location?.city + " " +  book?.location?.location?.officeName}} </p>
               <p class="ml-xl-0 ml-4">
-                <strong>Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName }} </p>
+                <strong *ngIf="currentOwner">Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName }} </p>
               <p class="ml-xl-0 ml-4">
-                <strong>Registered by: </strong> {{ firstOwner?.firstName + " " + firstOwner?.lastName }} </p>
+                <strong *ngIf="firstOwner">Registered by: </strong> {{ firstOwner?.firstName + " " + firstOwner?.lastName }} </p>
               <p class="ml-xl-0 ml-4" *ngIf="userWhoRequested != null">
-                <strong>Requested by: </strong> {{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} </p>
+                <strong *ngIf="userWhoRequested">Requested by: </strong> {{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} </p>
             <p class="ml-xl-0 ml-4">
               <strong>{{ 'components.book.publisher' | translate }}: </strong> {{ book?.publisher }} </p>
             <div class="ml-xl-0 ml-4">
@@ -81,7 +81,7 @@
         </div>
         <div class="col-lg-1">
           <div class=" row d-flex">
-            <button [hidden]="!isAdmin()" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
+            <button *ngIf="isAdmin() || isBookOwner" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
                 class="far fa-edit"></i></button>
           </div>
         </div>

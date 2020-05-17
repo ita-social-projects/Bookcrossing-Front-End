@@ -80,6 +80,7 @@ export class AuthenticationService {
     return this.http.get(`${this.userUrl}/id/`);
   }
 
+
   isAdmin() {
     return this.getUserRole() === 'Admin';
   }

@@ -9,6 +9,8 @@ export interface IUser {
   lastName: string;
   email: string;
   role: IRole;
-  userLocation: IRoomLocation[];
+  userLocation: IRoomLocation;
+  birthDate: Date;
+  registeredDate: Date;
   token?: string;
 }

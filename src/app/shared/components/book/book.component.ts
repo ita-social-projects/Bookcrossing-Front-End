@@ -32,6 +32,7 @@ export class BookComponent implements OnInit {
     book: IBook;
     bookId: number;
     isRequester: boolean;
+    isBookOwner: boolean;
     requestId: number;
     bookStatus: bookStatus;
     currentOwner: IUser;
@@ -79,6 +80,16 @@ getOwners(userId: number) {
   this.userService.getUserById(userId)
   .subscribe((value: IUser) => {
     this.currentOwner = value;
+    if (this.isAuthenticated()) {
+      this.authentication.getUserId().subscribe((value: number) => {
+          if (value === this.currentOwner.id) {
+            this.isBookOwner = true;
+          }
+        },
+        err => {
+          this.isBookOwner = false;
+        });
+    }
     const query = new RequestQueryParams();
     query.first = true;
     query.last = false;

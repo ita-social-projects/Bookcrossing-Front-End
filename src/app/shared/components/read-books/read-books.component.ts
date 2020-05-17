@@ -24,7 +24,7 @@ import { environment } from 'src/environments/environment';
 export class ReadBooksComponent implements OnInit, OnDestroy {
 
   isBlockView: boolean = false;
-  isRequester: boolean = true;
+  isRequester: boolean = false;
   books: IBook[];
   totalSize: number;
   bookStatus: bookStatus[] = [1,1,1,1,1]

@@ -15,8 +15,8 @@
 
   <ng-template #booksExist>
     <ng-template [ngIf]="isBlockView" [ngIfElse]="tableView">
-      <div class="animated fadeInRight">
-        <div class="container my-3">
+      <div>
+        <div class="my-3">
           <section>
             <div class="row">
               <div class="col-xl-6 mb-4" *ngFor="let book of books; let key = index">
@@ -24,18 +24,18 @@
                   <div class="view overlay">
                     <div class="container">
                       <div class="row">
-                        <div class="col-lg-6 photo-padding">
+                        <div class="col-lg-4 photo-padding">
                           <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
                           <ng-template #thenBlock>
-                              <img src="{{apiUrl}}/{{book.imagePath}}" class="img-fluid img-height" height="500px" width="500px">
+                              <img src="{{apiUrl}}/{{book.imagePath}}" class="img-fluid img-height" height="200px" width="200px">
                           </ng-template>
                           <ng-template #elseBlock>
                               <img
                                 src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-                                class="img-fluid img-height" height="500px" width="500px">
+                                class="img-fluid img-height" height="200px" width="200px">
                           </ng-template>
                         </div>
-                        <div class="col-lg-6 photo-padding">
+                        <div class="col-lg-8 photo-padding" >
                           <div class="card-body">
                             <a [routerLink]="['/book/', book.id]"><h5 class="card-title"><strong>{{book.name}}</strong>
                             </h5></a>
@@ -56,7 +56,9 @@
                                 {{author.firstName}} {{author.lastName}}
                               </strong>
                               <strong>
-                                <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':3" matTooltipClass="list-tooltip"
+                                <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':3"
+                                      matTooltipClass="mat-tooltip"
+                                      matTooltipPosition="right"
                                       class="text-primary">(...)</span>
                               </strong>
                             </ng-template>
@@ -77,13 +79,15 @@
                                 {{genre.name}}
                               </strong>
                               <strong>
-                                <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':3" matTooltipClass="list-tooltip"
+                                <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':3"
+                                      matTooltipClass="mat-tooltip"
+                                      matTooltipPosition="right"
                                       class="text-primary">(...)</span>
                               </strong>
                             </ng-template>
                             <br>
                             <span>
-                              Location: {{ book?.locations[0]?.location?.city + " " + book?.locations[0]?.location?.officeName }}
+                              Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                             </span>
                             <br>
                             <span>
@@ -114,7 +118,7 @@
       </div>
     </ng-template>
     <ng-template #tableView>
-      <div class="card m-3 animated fadeInRight" *ngFor="let book of books; let key = index">
+      <div class="card m-3" *ngFor="let book of books; let key = index">
         <div class="row no-gutters">
           <div class="col-auto">
             <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
@@ -149,7 +153,9 @@
                     {{author.firstName}} {{author.lastName}}
                   </strong>
                   <strong>
-                    <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5" matTooltipClass="list-tooltip"
+                    <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5"
+                          matTooltipClass="mat-tooltip"
+                          matTooltipPosition="right"
                           class="text-primary">(...)</span>
                   </strong>
                 </ng-template>
@@ -169,13 +175,15 @@
                     {{genre.name}}
                   </strong>
                   <strong>
-                    <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':7" matTooltipClass="list-tooltip"
+                    <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':7"
+                          matTooltipClass="mat-tooltip"
+                          matTooltipPosition="right"
                           class="text-primary">(...)</span>
                   </strong>
                 </ng-template>
                 <br>
                 <span>
-                  Location: {{ book?.locations[0]?.location?.city + " " + book?.locations[0]?.location?.officeName }}
+                  Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                 </span>
                 <br>
                 <span>Status: </span>

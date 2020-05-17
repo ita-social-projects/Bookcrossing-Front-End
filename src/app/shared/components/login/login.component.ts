@@ -12,6 +12,7 @@ import {first} from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  redirectUrl: string;
   loading = false;
   Isinvalid = false;
   submitted = false;
@@ -34,6 +35,9 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.redirectUrl = params['returnUrl'];
+    });
     /*    this.loginForm = this.formBuilder.group({
           username: ['', Validators.required],
           password: ['', Validators.required]
@@ -46,7 +50,12 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(['/books']);
+          if(typeof this.redirectUrl !== 'undefined'){
+            this.router.navigate([`${this.redirectUrl}`]);
+          }
+          else{
+            this.router.navigate(['/books']);
+          }
         },
         error => {
           this.Isinvalid = true;
