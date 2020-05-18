@@ -1,7 +1,7 @@
 <ng-template appRef>
   <!--Add Form-->
 </ng-template>
-<div class="container my-5 py-5 z-depth-1 animated fadeIn">
+<div class="container my-5 py-5 z-depth-1">
 
     <section class="text-center">
 
@@ -25,16 +25,16 @@
             </div>
               <div class="text-center text-md-left text-md-right mt-2">
                 <span [ngSwitch]="bookStatus">
-                  <ng-template ngSwitchCase="1"><button [hidden]="!isAuthenticated()" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="requestBook()">
+                  <ng-template ngSwitchCase="1"><button [hidden]="!isAuthenticated()" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isRequester" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="startReading()">
+                    <button [hidden]="!isRequester" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> Start reading</button>
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY" (click)="cancelRequest()">
+                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
                   </ng-template>
                   <ng-template ngSwitchCase="3">
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block animated flipInY"(click)="makeAvailable()" >
+                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> Make available</button>
                   </ng-template>
                 </span>

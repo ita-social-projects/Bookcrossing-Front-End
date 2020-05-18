@@ -15,24 +15,24 @@
       <ul class="navbar-nav mr-auto text-uppercase">
 
         <!--add new links here  -->
-        <li class="nav-item">
-          <a class="nav-link" routerLink="">{{'common.home' | translate}}</a>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link">{{'common.home' | translate}}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="books">{{'common.books' | translate}}</a>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['books']">
+          <a class="nav-link">{{'common.books' | translate}}</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="demo">{{'common.routes' | translate}}</a>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['demo']">
+          <a class="nav-link">{{'common.routes' | translate}}</a>
         </li>
         <ng-template #login>
           <div class="collapse navbar-collapse " id="basicExampleNav">
 
             <ul class="navbar-nav ml-auto text-uppercase">
-            <li class="nav-item">
-              <a class="nav-link" routerLink="login">login</a>
+            <li class="nav-item" routerLinkActive="active" [routerLink]="['login']">
+              <a class="nav-link">login</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="registration">registration</a>
+            <li class="nav-item" routerLinkActive="active" [routerLink]="['registration']">
+              <a class="nav-link">registration</a>
             </li>
           </ul>
           </div>

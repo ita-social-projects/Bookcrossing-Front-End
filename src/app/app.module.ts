@@ -84,6 +84,7 @@ import {EllipsisPipe} from './shared/pipes/elipsis.pipe';
 import {NotificationComponent} from './shared/components/notification/notification.component';
 import {MatLineModule} from '@angular/material/core';
 import {MatListModule} from '@angular/material/list';
+import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 
 
 @NgModule({
@@ -131,6 +132,7 @@ import {MatListModule} from '@angular/material/list';
     LocationsComponent,
     GenreFormComponent,
     ContactsComponent,
+    NotFoundComponent,
     DashboardComponent,
     ProfileComponent,
     ProfileEditComponent,
