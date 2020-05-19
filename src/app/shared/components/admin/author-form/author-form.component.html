@@ -1,41 +1,79 @@
 <section class="d-flex justify-content-center row justify-content-center">
 
-    <form class="border border-light form-container col-sm" [formGroup]="form" (ngSubmit)="submit()">
-        <h3 class="text-center p-2">
-            <strong>{{title}}</strong>
-        </h3>
-        <div class="form">
-            <div class="mb-3">
-                <label for="AuthorFormFirstname">First name <span class="asterisk"> *</span></label>
-                <input type="text" id="AuthorFormFirstname" class="form-control" formControlName="firstName"
-                    name="firstName">
-            </div>
-
-            <div class="mb-3">
-                <label for="AuthorFormLastname">Last name <span class="asterisk"> *</span></label>
-                <input type="text" id="AuthorFormLastname" class="form-control" formControlName="lastName"
-                    name="lastName"></div>
-
-            <div class="">
-                <label for="AuthorFormMiddlename">Middle name </label>
-                <input type="text" id="AuthorFormMiddlename" class="form-control" formControlName="middleName"
-                    name="middleName"></div>
+  <form class="border border-light form-container col-sm" [formGroup]="form" (ngSubmit)="submit()">
+    <h3 class="text-center p-2">
+      <strong>{{title}}</strong>
+    </h3>
+    <div class="form">
+      <div class="mt-2">
+        <label for="AuthorFormFirstname">First name <span class="asterisk"> *</span></label>
+        <input type="text" id="AuthorFormFirstname" class="form-control" formControlName="firstName"
+               name="firstName">
+      </div>
+      <div *ngIf="form.get('firstName').errors && form.get('firstName').touched">
+        <div *ngIf="form.get('firstName').errors?.required" class="validation-error">
+          This Field is required.
         </div>
-        <div class="text-center mt-3">
-          <button class="btn btn-info" type="submit" name="submit">
-            Submit
-          </button>
-          <input type="button" class="btn" (click)="cancel()" value="Cancel" />
+        <div *ngIf="form.get('firstName').errors.minlength" class="validation-error">
+          This Field Has to be more than {{form.get('firstName').errors?.minlength?.requiredLength}} characters
         </div>
-    </form>
+        <div *ngIf="form.get('firstName').errors.maxlength" class="validation-error">
+          This Field less than {{form.get('firstName').errors?.maxlength?.requiredLength}} characters
+        </div>
+        <div *ngIf="form.get('firstName').errors.pattern" class="validation-error">
+          Only letters and symbols <span class="bold-symbol">' -</span> are acceptable
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label for="AuthorFormLastname">Last name <span class="asterisk"> *</span></label>
+        <input type="text" id="AuthorFormLastname" class="form-control" formControlName="lastName"
+               name="lastName"></div>
+      <div *ngIf="form.get('lastName').errors && form.get('lastName').touched">
+        <div *ngIf="form.get('lastName').errors?.required" class="validation-error">
+          This Field is required.
+        </div>
+        <div *ngIf="form.get('lastName').errors.minlength" class="validation-error">
+          This Field has to be more than {{form.get('lastName').errors?.minlength?.requiredLength}} characters
+        </div>
+        <div *ngIf="form.get('lastName').errors.maxlength" class="validation-error">
+          This field has to be less than {{form.get('lastName').errors?.maxlength?.requiredLength}} characters
+        </div>
+        <div *ngIf="form.get('firstName').errors.pattern" class="validation-error">
+          Only letters and symbols <span class="bold-symbol">' -</span> are acceptable
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label for="AuthorFormMiddlename">Middle name </label>
+        <input type="text" id="AuthorFormMiddlename" class="form-control" formControlName="middleName"
+               name="middleName"></div>
+      <div *ngIf="form.get('middleName').errors && form.get('middleName').touched">
+        <div *ngIf="form.get('middleName').errors.pattern" class="validation-error">
+          Only letters and symbols <span class="bold-symbol">' -</span> are acceptable
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center mt-3">
+      <button class="btn btn-info" type="submit" [disabled]="form.invalid" name="submit">
+        Submit
+      </button>
+      <input type="button" class="btn" (click)="cancel()" value="Cancel"/>
+    </div>
+  </form>
+
+
   <aside *ngIf="authorsMerge?.length > 1" class="author-container border border-light col">
-      <h3 class="text-center p-2">
-        <strong>Selected authors: </strong>
-      </h3>
-      <div class="p-1">
-        <ul>
-          <li *ngFor="let a of authorsMerge"> {{a.firstName}} {{a.lastName}} {{a.middleName}}</li>
-        </ul>
+    <h3 class="text-center p-2">
+      <strong>Selected authors: </strong>
+    </h3>
+    <div class="p-1">
+      <ul>
+        <li *ngFor="let a of authorsMerge" (click)="changeMergeAuthor(a)" class="selectable">
+          {{a.firstName}} {{a.lastName}} {{a.middleName}}
+        </li>
+      </ul>
       <p class="pl-1"><em> Authors above will be merged into a single author: </em></p>
       <span class="author-result">{{form.value.firstName}} {{form.value.lastName}} {{form.value.middleName}}</span>
     </div>

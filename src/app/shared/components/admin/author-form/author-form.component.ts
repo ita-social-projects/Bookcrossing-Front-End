@@ -7,6 +7,7 @@ import {NotificationService} from '../../../../core/services/notification/notifi
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {merge} from 'rxjs';
+import {min} from 'rxjs/operators';
 
 enum FormAction {
   Edit,
@@ -39,8 +40,8 @@ form: FormGroup;
 
   ngOnInit(): void {
     if (this.authorService.formMergeAuthors?.length > 1) {
-      this.authorsMerge = this.authorService.formMergeAuthors;
-      this.author = this.authorsMerge[0];
+      this.authorsMerge = this.getSortedMergeAuthors();
+      this.author = this.selectMergeAuthor();
       this.title = 'Merged Author';
       this.action = FormAction.Merge;
     } else if (this.authorService.formAuthor?.id) {
@@ -58,6 +59,30 @@ form: FormGroup;
       this.author = newAuthor;
     }
     this.buildForm();
+  }
+  changeMergeAuthor(author: IAuthor) {
+    this.author = author;
+    this.buildForm();
+  }
+
+  private getSortedMergeAuthors(): IAuthor[] {
+    const authors = this.authorService.formMergeAuthors.sort((c, n) => {
+      if (c.id > n.id) {
+        return 1;
+      }
+      if (c.id < n.id) {
+        return -1;
+      }
+      return 0;
+    });
+    return authors;
+  }
+  private selectMergeAuthor(): IAuthor {
+    const confirmedAuthors = this.authorsMerge.filter(a => a.isConfirmed === null || a.isConfirmed === true);
+    if (confirmedAuthors?.length > 0) {
+      return confirmedAuthors[0];
+    }
+    return this.authorsMerge[0];
   }
   buildForm(): void {
     this.form = new FormGroup({
