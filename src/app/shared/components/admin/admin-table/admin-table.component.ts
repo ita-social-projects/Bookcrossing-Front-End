@@ -10,6 +10,7 @@ export class AdminTableComponent implements OnInit {
   @Output() selectedRowsChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() booleanButtonClicked: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() data: any[];
   @Input() dataProperties: string[];
@@ -17,6 +18,8 @@ export class AdminTableComponent implements OnInit {
 
   @Input() selectedHeader: string;
   @Input() selectedRows: number[];
+
+  @Input() booleanButtonText: string;
   constructor() { }
 
   ngOnInit(): void {
@@ -34,5 +37,18 @@ export class AdminTableComponent implements OnInit {
   onHeaderClicked(headerName: string) {
     this.selectedHeader = headerName;
     this.selectedHeaderChange.emit(headerName);
+  }
+
+  onBooleanButtonClick(item: any, $event) {
+    $event.stopPropagation();
+    this.booleanButtonClicked.emit(item);
+  }
+  isNotBoolean(value: any): boolean {
+    return !(typeof value === 'boolean');
+  }
+  isBooleanHeader(index: number): string {
+    if (this.data && typeof(this.data[0][this.dataProperties[index]]) === 'boolean') {
+      return 'text-center';
+    }
   }
 }

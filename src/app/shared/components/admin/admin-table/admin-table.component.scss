@@ -9,6 +9,9 @@
 .table td:nth-child(1){
   color: #4285f4 !important;
 }
+.table.table td {
+  padding: 0.75rem;
+}
 .table {
   width: 99%;
   margin-bottom: 1rem;
@@ -26,6 +29,9 @@
 }
 .active-header{
   background-color: #eceff1;
+}
+.admin-button{
+  margin-left: 0;
 }
 @media (max-width: 800px) {
   .action{

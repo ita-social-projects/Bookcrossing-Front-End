@@ -29,7 +29,7 @@ snack-bar-container.success {
     color : #fff;
   }
 
-snack-bar-container.warn {
+snack-bar-container.error {
     background-color: #ce3232;
     color : #fff;
   }
@@ -38,6 +38,10 @@ snack-bar-container.info {
     background-color: #259cc0;
     color : #fff;
   }
+snack-bar-container.warn {
+  background-color: #ffc107;
+  color : #fff;
+}
 
 
 snack-bar-container.notification simple-snack-bar{

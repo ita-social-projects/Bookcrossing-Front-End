@@ -89,7 +89,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
             this.notificationService.success(this.translate
               .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
             }, err => {
-              this.notificationService.warn(this.translate
+              this.notificationService.error(this.translate
                 .instant("Something went wrong!"), "X");
             });
         }

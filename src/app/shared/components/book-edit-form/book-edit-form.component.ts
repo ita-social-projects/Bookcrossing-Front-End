@@ -182,7 +182,7 @@ constructor(
         this.onCancel.emit();
       },
       (error) => {
-        this.notificationService.warn(this.translate.instant("Please edit something!"), "X");
+        this.notificationService.error(this.translate.instant("Please edit something!"), "X");
       }
     );
 
@@ -198,7 +198,7 @@ constructor(
   }
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
-      this.notificationService.warn(
+      this.notificationService.error(
         this.translate.instant("You have to be logged in to edit book"),
         "X"
       );

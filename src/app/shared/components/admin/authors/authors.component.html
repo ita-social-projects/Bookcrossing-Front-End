@@ -33,7 +33,7 @@
               <li>
                 <button class="btn btn-md px-3 my-0 mr-0" (click)="addAuthor()">
                   <i class="fas fa-plus pr-1"></i>
-                  <span class="button-label">Add new</span>
+                  <span class="button-label">Add New</span>
                 </button>
               </li>
               <li>
@@ -44,8 +44,7 @@
               </li>
               <li>
                 <button class="btn btn-md px-3 my-0 mr-0" (click)="mergeClear()">
-                  <i class="far fa-trash-alt pr-1"></i>
-                  <span class="button-label">Clear</span>
+                  <span class="button-label">Unselect All</span>
                 </button>
               </li>
             </ul>
@@ -59,8 +58,10 @@
               [displayColumns]="authorDisplayColumns"
               [(selectedRows)]="selectedRows"
               [(selectedHeader)]="queryParams.sort.orderByField"
+              booleanButtonText="Approve"
               (editClicked)="editAuthor($event)"
-              (selectedHeaderChange)="changeSort($event)">
+              (selectedHeaderChange)="changeSort($event)"
+              (booleanButtonClicked)="approveAuthor($event)">
             </app-admin-table>
 
             <app-pagination *ngIf="authors && authors.length > 0" [arraySize]="totalSize"

@@ -52,7 +52,7 @@ export class ResetPasswordComponent implements OnInit {
     ).subscribe(() => {
       this.router.navigateByUrl("/login");
     }, err => {
-      this.notificationService.warn(this.translate
+      this.notificationService.error(this.translate
         .instant("components.password.reset-error"), "X");
     });
   }

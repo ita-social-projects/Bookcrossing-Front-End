@@ -29,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.notificationService.success(this.translate
         .instant("components.password.forgot-success"), "X");
     }, err => {
-      this.notificationService.warn(this.translate
+      this.notificationService.error(this.translate
         .instant("components.password.forgot-error"), "X");
     });
   }

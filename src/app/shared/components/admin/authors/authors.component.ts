@@ -41,11 +41,20 @@ export class AuthorsComponent implements OnInit {
     this.onAuthorEdited();
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
-      this.searchText = this.queryParams?.filters[0]?.value;
+      this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
+      this.getSearchTerm(this.queryParams.filters);
       this.getAuthors(this.queryParams);
     });
   }
-
+  private getSearchTerm(filters: FilterParameters[]) {
+    let searchTerm = '';
+    if (filters?.length > 0) {
+      for (const filter of filters) {
+        searchTerm += filter.value + ' ';
+      }
+    }
+    this.searchText = searchTerm.trim();
+  }
   private onAuthorEdited() {
     this.authorService.authorSubmitted.subscribe((author) => {
       author.isConfirmed = null;
@@ -63,7 +72,13 @@ export class AuthorsComponent implements OnInit {
     }
     this.queryParams.page = 1;
     this.queryParams.filters = [];
-    this.queryParams.filters[0] = {propertyName: this.searchField, value: this.searchText} as FilterParameters;
+    const searchTerm = this.searchText.split(' ');
+    if (searchTerm.length > 1) {
+      this.queryParams.filters[0] = {propertyName: 'firstName', value: searchTerm[0], operand: 'And'} as FilterParameters;
+      this.queryParams.filters[1] = {propertyName: 'lastName', value: searchTerm[searchTerm.length - 1]} as FilterParameters;
+    } else{
+      this.queryParams.filters[0] = {propertyName: this.searchField, value: this.searchText} as FilterParameters;
+    }
     this.changeUrl();
   }
   changeSort(selectedHeader: string) {
@@ -82,7 +97,24 @@ export class AuthorsComponent implements OnInit {
         queryParams: this.queryParams.getQueryObject()
       });
   }
+  approveAuthor(author: IAuthor) {
+    author.isConfirmed = true;
+    console.log(author);
+    this.authorService.updateAuthor(author)
+      .subscribe( {
+        next: () => {
+          this.notificationService.success(this.translate
+            .instant('Author was approved!'), 'X');
+          this.authors[this.authors.indexOf(author)].isConfirmed = true;
+        },
+        error: () => {
+          this.notificationService.error(this.translate
+            .instant('Something went wrong!'), 'X');
+        }
+      });
+  }
 
+  // Form
   mergeClear() {
     this.selectedRows = [];
   }
@@ -95,8 +127,6 @@ export class AuthorsComponent implements OnInit {
     this.authorService.formMergeAuthors = this.selectedRows;
     this.router.navigate(['admin/author-form']);
   }
-
-  // Form
   addAuthor() {
     this.authorService.formMergeAuthors = null;
     this.authorService.formAuthor = null;
@@ -115,19 +145,12 @@ export class AuthorsComponent implements OnInit {
     .subscribe( {
       next: pageData => {
       this.authors = pageData.page;
-      this.authors.forEach(a => {
-        if (a.isConfirmed) {
-          a.isConfirmed = null;
-        } else {
-          a.isConfirmed = 'unapproved';
-        }
-      });
       if (pageData.totalCount) {
         this.totalSize = pageData.totalCount;
       }
     },
     error: () => {
-      this.notificationService.warn(this.translate
+      this.notificationService.error(this.translate
         .instant('Something went wrong!'), 'X');
     }
    });

@@ -7,7 +7,7 @@ export class SortParameters {
   static mapFromQuery(query: any): any {
     const sort: SortParameters = new SortParameters();
     sort.orderByField = query['Sort.OrderByField'] ? query['Sort.OrderByField'] : null;
-    sort.orderByAscending = query['Sort.OrderByAscending'] ? query['Sort.OrderByAscending'] : true;
+    sort.orderByAscending = query['Sort.OrderByAscending'] ? JSON.parse(query['Sort.OrderByAscending']) : true;
     return sort;
   }
   static mapToQueryObject(queryParams: any, sort: SortParameters): any {

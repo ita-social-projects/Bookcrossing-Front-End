@@ -75,7 +75,7 @@ export class LocationFormComponent implements OnInit {
         this.locationService.submitLocation(data);
       },
       () => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant('Something went wrong!'), 'X');
       }
     );
@@ -87,7 +87,7 @@ export class LocationFormComponent implements OnInit {
         this.locationService.submitLocation(location);
       },
       () => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
         .instant('Something went wrong!'), 'X');
       }
     );

@@ -87,7 +87,7 @@ export class ProfileEditComponent implements OnInit {
         this.onCancel.emit();
       },
       (error) => {
-        this.notificationService.warn(this.translate.instant('Something went wrong'), 'X');
+        this.notificationService.error(this.translate.instant('Something went wrong'), 'X');
       }
     );
     this.ngOnInit();

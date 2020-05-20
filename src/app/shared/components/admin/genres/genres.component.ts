@@ -37,6 +37,7 @@ export class GenresComponent implements OnInit {
   ngOnInit() {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
+      this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
       this.searchText = this.queryParams?.filters[0]?.value;
       this.getGenres(this.queryParams);
     });

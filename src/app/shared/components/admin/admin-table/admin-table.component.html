@@ -1,28 +1,48 @@
 <div class="table-responsive">
-<table class="table table-hover mb-0">
+  <table class="table table-hover mb-0">
+    <thead>
+    <tr>
+      <ng-container *ngFor="let name of displayColumns let i = index">
+        <th scope="col"
+            (click)="onHeaderClicked(dataProperties[i])"
+            [class.active-header]="selectedHeader === dataProperties[i]"
+            [ngClass]="isBooleanHeader(i)">
+          {{name}}
+        </th>
+      </ng-container>
+      <th scope="col" class="text-center"></th>
+    </tr>
+    </thead>
 
-  <thead>
-  <tr>
-    <ng-container *ngFor="let name of displayColumns let i = index">
-      <th scope="col"(click)="onHeaderClicked(dataProperties[i])" [ngClass]="{'active-header': selectedHeader == dataProperties[i]}">{{name}}</th>
-    </ng-container>
-    <th scope="col">Actions</th>
-  </tr>
-  </thead>
+    <tbody>
+    <ng-container *ngFor="let item of data let i = index;">
+      <tr
+        id={{i}} (click)="onSelectedRowChange(item)" [ngClass]="{'isSelected': selectedRows?.includes(item)}" class="isSelected">
+        <td *ngFor="let column of dataProperties" class="align-middle">
 
-  <tbody>
-  <ng-container *ngFor="let item of data let i = index;">
-    <tr id={{i}} (click)="onSelectedRowChange(item)" [ngClass]="{'isSelected': selectedRows?.includes(item)}" class="isSelected">
-        <td *ngFor="let column of dataProperties">
-          {{item[column]}}
+          <ng-template [ngIf]="isNotBoolean(item[column])" [ngIfElse]="BooleanColumn">
+            {{item[column]}}
+          </ng-template>
+
+          <ng-template #BooleanColumn>
+            <div class="text-center">
+              <button *ngIf="item[column] == false; else ApprovedIcon" class="btn btn-md admin-button px-3" (click)="onBooleanButtonClick(item, $event)">
+                {{booleanButtonText}}
+              </button>
+              <ng-template #ApprovedIcon>
+                <i class="fas fa-lg green-text fa-check-circle"></i>
+              </ng-template>
+            </div>
+          </ng-template>
+
         </td>
-      <td>
-        <div class=" row d-flex align-items-center">
-          <button class="btn btn-md btn-md px-3 m-1" (click)=onEdit(item,$event)> <i
-            class="far fa-edit"></i></button>
-        </div>
-      </td>
-  </ng-container>
-  </tbody>
-</table>
+        <td>
+          <div class=" row d-flex text-center">
+            <button class="btn btn-md admin-button px-3 mx-auto" (click)=onEdit(item,$event)> <i
+              class="far fa-edit"></i></button>
+          </div>
+        </td>
+    </ng-container>
+    </tbody>
+  </table>
 </div>

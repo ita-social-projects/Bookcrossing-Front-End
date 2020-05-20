@@ -175,7 +175,7 @@ getFormData(book: IBookPut): FormData {
             this.notificationService.success(this.translate
               .instant('Your Book`s status changed to available.'), 'X');
           }, err => {
-            this.notificationService.warn(this.translate
+            this.notificationService.error(this.translate
               .instant('Something went wrong!'), 'X');
           });
         }
@@ -199,7 +199,7 @@ getFormData(book: IBookPut): FormData {
                 this.notificationService.success(this.translate
                   .instant('Request is cancelled.'), 'X');
               }, err => {
-                this.notificationService.warn(this.translate
+                this.notificationService.error(this.translate
                   .instant('Something went wrong!'), 'X');
               });
             });
@@ -224,7 +224,7 @@ getFormData(book: IBookPut): FormData {
                   .instant('Book’s owner has been changed.'), 'X');
               this.Donate()
               }, err => {
-                this.notificationService.warn(this.translate
+                this.notificationService.error(this.translate
                   .instant('Something went wrong!'), 'X');
               });
             });
@@ -259,7 +259,7 @@ getFormData(book: IBookPut): FormData {
             this.notificationService.success(this.translate
               .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
             }, err => {
-              this.notificationService.warn(this.translate
+              this.notificationService.error(this.translate
                 .instant('Something went wrong!'), 'X');
             });
         }

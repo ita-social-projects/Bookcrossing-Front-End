@@ -70,7 +70,7 @@ export class RequestsComponent implements OnInit {
         this.totalSize = pageData.totalCount;
       }
     },
-    error: error => this.notificationService.warn(this.translate
+    error: error => this.notificationService.error(this.translate
       .instant("You haven`t made any requests yet!"), "X")
    });
   };
@@ -91,7 +91,7 @@ export class RequestsComponent implements OnInit {
               this.notificationService.success(this.translate
                 .instant("Request is cancelled."), "X");
             }, err => {
-              this.notificationService.warn(this.translate
+              this.notificationService.error(this.translate
                 .instant("Something went wrong!"), "X");
             });
         }

@@ -122,7 +122,7 @@ export class AddBookComponent implements OnInit {
       this.newAuthor = undefined;
     }
     console.log(this.selectedAuthors);
-    
+
 
     let book: IBookPost = {
       name: this.addBookForm.get("title").value,
@@ -151,7 +151,7 @@ export class AddBookComponent implements OnInit {
       },
       (error) => {
         console.log(error);
-        this.notificationService.warn(
+        this.notificationService.error(
           this.translate.instant("Something went wrong"),
           "X"
         );
@@ -172,7 +172,7 @@ export class AddBookComponent implements OnInit {
 
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
-      this.notificationService.warn(
+      this.notificationService.error(
         this.translate.instant("You have to be logged in to register book"),
         "X"
       );

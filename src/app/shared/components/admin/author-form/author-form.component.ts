@@ -90,15 +90,15 @@ form: FormGroup;
       firstName : new FormControl(this.author.firstName, [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(20),
+        Validators.maxLength(100),
         Validators.pattern('^([a-zA-Z \'-]+)$')]),
       lastName : new FormControl(this.author.lastName, [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(20),
+        Validators.maxLength(100),
         Validators.pattern('^([a-zA-Z \'-]+)$')]),
       middleName : new FormControl(this.author.middleName, [
-        Validators.maxLength(30),
+        Validators.maxLength(100),
         Validators.pattern('&^|^([a-zA-Z \'-]+)$')]),
     });
   }
@@ -136,9 +136,11 @@ form: FormGroup;
       () => {
         this.authorService.submitAuthor(author);
         this.cancel();
+        this.notificationService.success(this.translate
+          .instant('Authors were merged successfully'), 'X');
       },
       (error) => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant('Something went wrong!'), 'X');
       },
     );
@@ -148,9 +150,11 @@ form: FormGroup;
       (data: IAuthor) => {
         this.authorService.submitAuthor(author);
         this.cancel();
+        this.notificationService.success(this.translate
+          .instant('New author was created successfully!'), 'X');
       },
       (error) => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant('Something went wrong!'), 'X');
       },
     );
@@ -160,9 +164,11 @@ form: FormGroup;
       (data: IAuthor) => {
         this.authorService.submitAuthor(author);
         this.cancel();
+        this.notificationService.success(this.translate
+          .instant('Author was Edited successfully!'), 'X');
       },
       (error) => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant('Something went wrong!'), 'X');
       },
     );

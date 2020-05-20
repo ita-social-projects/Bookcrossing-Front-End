@@ -75,7 +75,7 @@ export class BookFilterBarComponent implements OnInit {
         this.locations = data;
       },
       error: () => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant("An error has occured, please try again later!"), "X")
       }
     }
@@ -87,7 +87,7 @@ export class BookFilterBarComponent implements OnInit {
         this.genres = data;
       },
       error: () => {
-        this.notificationService.warn(this.translate
+        this.notificationService.error(this.translate
           .instant("An error has occured, please try again later!"), "X")
       }
     }
