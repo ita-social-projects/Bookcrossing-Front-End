@@ -52,7 +52,6 @@ form: FormGroup;
       const newAuthor: IAuthor = {
         firstName: '',
         lastName: '',
-        middleName: ''
       };
       this.title = 'Add Author';
       this.action = FormAction.Add;
@@ -96,10 +95,7 @@ form: FormGroup;
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(100),
-        Validators.pattern('^([a-zA-Z \'-]+)$')]),
-      middleName : new FormControl(this.author.middleName, [
-        Validators.maxLength(100),
-        Validators.pattern('&^|^([a-zA-Z \'-]+)$')]),
+        Validators.pattern('^([a-zA-Z \'-]+)$')])
     });
   }
 
@@ -107,8 +103,7 @@ form: FormGroup;
   submit(): void {
     this.author = {
       firstName: this.form.get('firstName').value,
-      lastName: this.form.get('lastName').value,
-      middleName: this.form.get('middleName').value
+      lastName: this.form.get('lastName').value
     };
     if (this.action !== FormAction.Add) {
       this.author.id = this.form.get('id').value;

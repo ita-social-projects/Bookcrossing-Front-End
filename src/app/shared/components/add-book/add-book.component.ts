@@ -205,7 +205,6 @@ export class AddBookComponent implements OnInit {
     const index = this.authors.findIndex((elem) => {
       return (
         elem?.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
-        elem?.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
         elem?.lastName?.toLowerCase() === author.lastName?.toLowerCase()
       );
     });

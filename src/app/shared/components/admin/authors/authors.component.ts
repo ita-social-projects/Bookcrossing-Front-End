@@ -19,8 +19,8 @@ export class AuthorsComponent implements OnInit {
   @ViewChild(RefDirective, {static: false}) refDir: RefDirective;
 
   authors: IAuthor[];
-  authorDisplayColumns: string[] = ['#', 'First Name', 'Last Name', 'Middle Name', 'Approved'];
-  authorProperties: string[] = ['id', 'firstName', 'lastName', 'middleName', 'isConfirmed'];
+  authorDisplayColumns: string[] = ['#', 'First Name', 'Last Name', 'Approved'];
+  authorProperties: string[] = ['id', 'firstName', 'lastName', 'isConfirmed'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'lastName';

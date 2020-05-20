@@ -44,16 +44,6 @@
         </div>
       </div>
 
-      <div class="mt-3">
-        <label for="AuthorFormMiddlename">Middle name </label>
-        <input type="text" id="AuthorFormMiddlename" class="form-control" formControlName="middleName"
-               name="middleName"></div>
-      <div *ngIf="form.get('middleName').errors && form.get('middleName').touched">
-        <div *ngIf="form.get('middleName').errors.pattern" class="validation-error">
-          Only letters and symbols <span class="bold-symbol">' -</span> are acceptable
-        </div>
-      </div>
-
     </div>
     <div class="text-center mt-3">
       <button class="btn btn-info" type="submit" [disabled]="form.invalid" name="submit">
@@ -71,11 +61,11 @@
     <div class="p-1">
       <ul>
         <li *ngFor="let a of authorsMerge" (click)="changeMergeAuthor(a)" class="selectable">
-          {{a.firstName}} {{a.lastName}} {{a.middleName}}
+          {{a.firstName}} {{a.lastName}}
         </li>
       </ul>
       <p class="pl-1"><em> Authors above will be merged into a single author: </em></p>
-      <span class="author-result">{{form.value.firstName}} {{form.value.lastName}} {{form.value.middleName}}</span>
+      <span class="author-result">{{form.value.firstName}} {{form.value.lastName}}</span>
     </div>
   </aside>
 

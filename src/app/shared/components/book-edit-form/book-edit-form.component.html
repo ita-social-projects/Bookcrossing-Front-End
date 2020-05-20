@@ -119,8 +119,6 @@
                 <span>{{
                   author.firstName +
                   " " +
-                  author.middleName +
-                  "  " +
                   author.lastName
                   }}</span>
               <span
@@ -149,13 +147,13 @@
             let author of filterConfirmedAuthors()
               | contentFilter
                 : firstnameInput.value.trim()
-                : ['firstName', 'lastName', 'middleName']
+                : ['firstName', 'lastName']
           "
         [value]="author"
         [ngClass]="{ 'hide-input': lastnameInputVisible }"
       >
         {{
-        author.firstName + " " + author.middleName + " " + author.lastName
+        author.firstName + " "  + author.lastName
         }}
       </mat-option>
     </mat-autocomplete>
@@ -172,15 +170,15 @@
             let author of filterConfirmedAuthors()
               | contentFilter
                 : firstnameInput.value.trim()
-                : ['firstName', 'lastName', 'middleName']
+                : ['firstName', 'lastName']
               | contentFilter
                 : lastnameInput.value.trim()
-                : ['firstName', 'lastName', 'middleName']
+                : ['firstName', 'lastName']
           "
         [value]="author"
       >
         {{
-        author.firstName + " " + author.middleName + " " + author.lastName
+        author.firstName + " " + author.lastName
         }}
       </mat-option>
     </mat-autocomplete>

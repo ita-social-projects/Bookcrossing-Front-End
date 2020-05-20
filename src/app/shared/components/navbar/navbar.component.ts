@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
               public languageService: LanguageService)  { }
 
   ngOnInit() {
-    this.isLoggedIn = this.authenticationService.currentUserValue?.token != null;
+    this.isLoggedIn = this.authenticationService.isAuthenticated();
     this.languages = this.languageService.languages;
     this.authenticationService.getLoginEmitter().subscribe(() => {
       this.isLoggedIn = true;

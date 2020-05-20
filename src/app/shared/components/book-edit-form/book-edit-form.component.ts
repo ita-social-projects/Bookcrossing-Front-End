@@ -254,7 +254,6 @@ constructor(
     const index = this.authors.findIndex((elem) => {
       return (
         elem?.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
-        elem?.middleName?.toLowerCase() === author.middleName?.toLowerCase() &&
         elem?.lastName?.toLowerCase() === author.lastName?.toLowerCase()
       );
     });
@@ -274,19 +273,14 @@ constructor(
     const words = input.split(/\s+/g);
     const firstName = words[0];
     let lastName = null;
-    let middleName = null;
 
     // if input string contains > 3 words - second is middleName
-    if (words.length > 2) {
-      middleName = words[1];
-      lastName = words[2];
-    } else {
-      lastName = words[1];
+    if (words.length > 1) {
+      lastName = words[words.length - 1];
     }
     const author: IAuthor = {
       firstName: firstName,
       lastName: lastName,
-      middleName: middleName,
       isConfirmed: false
     };
     console.log(author);
