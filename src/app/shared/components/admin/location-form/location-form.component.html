@@ -19,7 +19,11 @@
           <p class="input-label">City: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
-          <input formControlName="city" type="text" class="form-control" />
+          <input 
+          formControlName="city" 
+          type="text" 
+          class="form-control"
+          maxlength="30" />
         </div>
       </div>
 
@@ -29,20 +33,25 @@
           <p class="input-label">Street: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
-          <input formControlName="street" type="text" class="form-control" />
+          <input 
+          formControlName="street" 
+          type="text" 
+          class="form-control"
+          maxlength="50" />
         </div>
       </div>
 
       <!-- Office name input -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Building: <span class="asterisk"> *</span></p>
+          <p class="input-label">Office: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <input
             formControlName="officeName"
             type="text"
             class="form-control"
+            maxlength="10"
           />
         </div>
       </div>
