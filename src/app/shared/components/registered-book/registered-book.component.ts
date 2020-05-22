@@ -1,19 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { IBook } from 'src/app/core/models/book';
-import { BookService } from 'src/app/core/services/book/book.service';
-import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { RequestService } from 'src/app/core/services/request/request.service';
-import { bookStatus } from 'src/app/core/models/bookStatus.enum';
-import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
-import { IRequest } from 'src/app/core/models/request';
-import {IUser} from '../../../core/models/user';
+import {IBook} from 'src/app/core/models/book';
+import {BookService} from 'src/app/core/services/book/book.service';
+import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {DialogService} from 'src/app/core/services/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from 'src/app/core/services/notification/notification.service';
+import {RequestService} from 'src/app/core/services/request/request.service';
+import {bookStatus} from 'src/app/core/models/bookStatus.enum';
+import {RequestQueryParams} from 'src/app/core/models/requestQueryParams';
+import {IRequest} from 'src/app/core/models/request';
 import {BookQueryParams} from '../../../core/models/bookQueryParams';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SearchBarService} from '../../../core/services/searchBar/searchBar.service';
-import { environment } from 'src/environments/environment';
+import {environment} from 'src/environments/environment';
+import {booksPage} from '../../../core/models/booksPage.enum';
 
 @Component({
   selector: 'app-registered-book',
@@ -28,7 +28,9 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
   isRequester: boolean = false;
   userId: number;
   totalSize: number;
-  bookStatus: bookStatus[] = [1, 1, 1, 1, 1];
+  booksPage: booksPage = booksPage.registered;
+  bookStatus: bookStatus[] = [undefined,undefined,undefined,undefined,
+    undefined,undefined,undefined,undefined]
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
   apiUrl: string = environment.apiUrl;
@@ -45,7 +47,7 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5);
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
@@ -65,14 +67,14 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
       query.first = false;
       query.last = true;
       this.requestService.getRequestForBook(book.id, query)
-     .subscribe((value: IRequest) => {
-         if(value.receiveDate){
-           this.bookStatus[index] = bookStatus.reading
-         }
-         else{
-           this.bookStatus[index] = bookStatus.requested
-         }
-       }, error => {})
+        .subscribe((value: IRequest) => {
+          if(value.receiveDate){
+            this.bookStatus[index] = bookStatus.reading
+          }
+          else{
+            this.bookStatus[index] = bookStatus.requested
+          }
+        }, error => {})
     }
   }
   async requestBook(bookId: number) {
@@ -107,7 +109,7 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
     if (typeof this.queryParams.showAvailable === 'undefined') {
-      this.queryParams.showAvailable = true;
+      this.queryParams.showAvailable = false;
     }
     if (this.queryParams.genres) {
       let genres: number[];
@@ -125,8 +127,12 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
+    window.scrollTo({
+      top: 0,
+      behavior:'smooth'
+    });
   }
-  private resetPageIndex(): void {
+  private resetPageIndex() : void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;
   }
@@ -139,21 +145,26 @@ export class RegisteredBookComponent implements OnInit, OnDestroy {
   }
 
 
-  // get
+  //get
   getBooks(params: BookQueryParams): void {
     this.bookService.getRegisteredBooks(params)
       .subscribe({
         next: pageData => {
           this.books = pageData.page;
+          for(var i = 0; i<pageData.page.length; i++){
+
+            this.getStatus(pageData.page[i], i)
+          }
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;
           }
         },
-        error: error => {
-          alert('An error has occured, please try again');
+        error: err => {
+          this.notificationService.error(this.translate
+            .instant("Something went wrong!"), "X");
         }
       });
-  }
+  };
 
   ngOnDestroy() {
     this.searchBarService.changeSearchTerm(null);

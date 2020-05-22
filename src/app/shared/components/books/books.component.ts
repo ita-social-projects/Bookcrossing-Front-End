@@ -1,22 +1,19 @@
-import { RequestService } from 'src/app/core/services/request/request.service';
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import { IBook } from 'src/app/core/models/book';
-import { BookService } from 'src/app/core/services/book/book.service';
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { BookQueryParams } from 'src/app/core/models/bookQueryParams';
-import { IGenre } from 'src/app/core/models/genre';
-import { ILocation } from 'src/app/core/models/location';
-import { GenreService } from 'src/app/core/services/genre/genre';
-import { LocationService } from 'src/app/core/services/location/location.service';
-import { SearchBarService } from 'src/app/core/services/searchBar/searchBar.service';
-import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
-import { TranslateService } from '@ngx-translate/core';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { IRequest } from 'src/app/core/models/request';
-import { bookStatus } from 'src/app/core/models/bookStatus.enum';
-import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
-import { environment } from 'src/environments/environment';
+import {RequestService} from 'src/app/core/services/request/request.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {IBook} from 'src/app/core/models/book';
+import {BookService} from 'src/app/core/services/book/book.service';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {BookQueryParams} from 'src/app/core/models/bookQueryParams';
+import {SearchBarService} from 'src/app/core/services/searchBar/searchBar.service';
+import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {DialogService} from 'src/app/core/services/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from 'src/app/core/services/notification/notification.service';
+import {IRequest} from 'src/app/core/models/request';
+import {bookStatus} from 'src/app/core/models/bookStatus.enum';
+import {RequestQueryParams} from 'src/app/core/models/requestQueryParams';
+import {environment} from 'src/environments/environment';
+import {booksPage} from 'src/app/core/models/booksPage.enum';
 
 @Component({
   selector: 'app-books',
@@ -28,8 +25,9 @@ export class BooksComponent implements OnInit,OnDestroy {
   isBlockView: boolean = false;
   books: IBook[];
   totalSize: number;
-  isRequester: boolean = false;
-  bookStatus: bookStatus[] = [1,1,1,1,1]
+  booksPage: booksPage = booksPage.list;
+  bookStatus: bookStatus[] = [undefined,undefined,undefined,undefined,
+    undefined,undefined,undefined,undefined]
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];

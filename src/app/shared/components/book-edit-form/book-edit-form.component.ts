@@ -118,15 +118,8 @@ constructor(
     }
   }
 
-
   async onSubmit() {
-    this.dialogService
-      .openConfirmDialog(
-        await this.translate.get('Do you want to edit book? The book will be edited permanently!').toPromise()
-      )
-      .afterClosed()
-      .subscribe(async res => {
-        if (res) {
+
     this.submitted = true;
 
     if (this.validateForm(this.editBookForm)) {
@@ -192,8 +185,6 @@ constructor(
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
         this.filterAuthors(input);
-      });
-        }
       });
   }
   validateForm(form: FormGroup): boolean {

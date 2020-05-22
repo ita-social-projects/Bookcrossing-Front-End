@@ -12,6 +12,7 @@ import {IBook} from '../../../core/models/book';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {bookStatus} from 'src/app/core/models/bookStatus.enum';
 import {RequestQueryParams} from '../../../core/models/requestQueryParams';
+import { booksPage } from 'src/app/core/models/booksPage.enum';
 
 @Component({
   selector: 'app-requests',
@@ -24,10 +25,11 @@ export class RequestsComponent implements OnInit {
   isBlockView: boolean = false;
   viewMode: string;
   requests: IRequest[] = [];
-  isRequester: boolean = true;
+  booksPage: booksPage = booksPage.requested;
   books: IBook[];
   totalSize: number;
-  bookStatus: bookStatus[] = [bookStatus.requested,bookStatus.requested,bookStatus.requested,bookStatus.requested,bookStatus.requested]
+  bookStatus: bookStatus[] = [bookStatus.requested,bookStatus.requested,bookStatus.requested,
+    bookStatus.requested,bookStatus.requested,bookStatus.requested,bookStatus.requested,bookStatus.requested]
 
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
@@ -46,7 +48,7 @@ export class RequestsComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
       this.populateDataFromQuery();
       this.getUserRequests(this.queryParams);
     })

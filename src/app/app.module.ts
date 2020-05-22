@@ -85,6 +85,7 @@ import {NotificationComponent} from './shared/components/notification/notificati
 import {MatLineModule} from '@angular/material/core';
 import {MatListModule} from '@angular/material/list';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
+import {UserNamePipe} from './shared/pipes/userName.pipe';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import {NotFoundComponent} from './shared/components/not-found/not-found.compone
     ReportsComponent,
     FilterPipe,
     EllipsisPipe,
+    UserNamePipe,
     RefDirective,
     PaginationComponent,
     DemoComponent,

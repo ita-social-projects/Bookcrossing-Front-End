@@ -31,7 +31,7 @@
           <label class="custom-control-label" for="showAvailableOnly">Available Only</label>
         </div>
     </ng-template>
-      <mat-button-toggle-group class="ml-3" #group="matButtonToggleGroup" [value]="selectedMode" (change)="onViewModeChange($event.value)">
+      <mat-button-toggle-group [ngClass]="{'ml-auto': !showAvailable}" class="ml-3" #group="matButtonToggleGroup" [value]="selectedMode" (change)="onViewModeChange($event.value)">
         <mat-button-toggle value="list">
           <mat-icon>format_list_bulleted</mat-icon>
         </mat-button-toggle>

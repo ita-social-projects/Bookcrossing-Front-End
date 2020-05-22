@@ -57,13 +57,25 @@
               <ng-template #manyGenres><strong>Categories: </strong></ng-template>
               <span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{ genre?.name }}</span></p>
               <p class="ml-xl-0 ml-4">
-                <strong>Location: </strong> {{ book?.location?.location?.city + " " +  book?.location?.location?.officeName}} </p>
-              <p class="ml-xl-0 ml-4">
-                <strong *ngIf="currentOwner">Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName }} </p>
-              <p class="ml-xl-0 ml-4">
-                <strong *ngIf="firstOwner">Registered by: </strong> {{ firstOwner?.firstName + " " + firstOwner?.lastName }} </p>
+                <strong>Location: </strong> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}} </p>
+              <p *ngIf="currentOwner !== null" class="ml-xl-0 ml-4">
+                <strong>Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName}}
+                <span>
+                  (<a [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
+                </span>
+              </p>
+              <p *ngIf="firstOwner !== null" class="ml-xl-0 ml-4">
+                <strong>Registered by: </strong> {{ firstOwner?.firstName + " " + firstOwner?.lastName }}
+                <span>
+                  (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
+                </span>
+              </p>
               <p class="ml-xl-0 ml-4" *ngIf="userWhoRequested != null">
-                <strong *ngIf="userWhoRequested">Requested by: </strong> {{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} </p>
+                <strong>Requested by: </strong> {{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}
+                <span>
+                  (<a [href]="'mailto:'.concat(userWhoRequested?.email)">{{ userWhoRequested?.email | UserName }}</a>)
+                </span>
+              </p>
             <p class="ml-xl-0 ml-4">
               <strong>{{ 'components.book.publisher' | translate }}: </strong> {{ book?.publisher }} </p>
             <div class="ml-xl-0 ml-4">
@@ -82,7 +94,11 @@
         <div class="col-lg-1">
           <div class=" row d-flex">
             <button *ngIf="isAdmin() || isBookOwner" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
-                class="far fa-edit"></i></button>
+                class="fas fa-edit"></i></button>
+          </div>
+          <div hidden class=" row d-flex">
+            <button *ngIf="bookStatus && bookStatus !== 1" class="btn btn-md btn-md px-3 m-1"> <i
+              class="fas fa-bell"></i></button>
           </div>
         </div>
       </div>

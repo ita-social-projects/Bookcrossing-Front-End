@@ -21,6 +21,7 @@
           [ngClass]="{
             'is-invalid': submitted && editBookForm.controls.title.errors
           }"
+          maxlength="50"
         />
         <div
           *ngIf="submitted && editBookForm.controls.title.errors"
@@ -51,6 +52,7 @@
               #firstnameInput
               type="text"
               class="form-control"
+              maxlength="20"
               [matAutocomplete]="FirstNameAuto"
               [ngClass]="{
                   'is-invalid':
@@ -94,6 +96,7 @@
               #lastnameInput
               type="text"
               class="form-control"
+              maxlength="20"
               [matAutocomplete]="LastNameAuto"
               (blur)="lastnameInputVisible = false"
             />
@@ -240,7 +243,11 @@
         <p class="input-label">Publishing house:</p>
       </div>
       <div class="col-4">
-        <input formControlName="publisher" type="text" class="form-control" />
+        <input
+          formControlName="publisher"
+          type="text"
+          class="form-control"
+          maxlength="50"/>
       </div>
     </div>
 
@@ -254,7 +261,7 @@
           formControlName="description"
           type="text"
           class="form-control"
-          placeholder=""
+          maxlength="500"
         ></textarea>
       </div>
     </div>

@@ -14,6 +14,7 @@ import { bookStatus } from 'src/app/core/models/bookStatus.enum';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { IRequest } from 'src/app/core/models/request';
 import { environment } from 'src/environments/environment';
+import { booksPage } from 'src/app/core/models/booksPage.enum';
 
 @Component({
   selector: 'app-current-owned-books',
@@ -25,9 +26,10 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
 
   isBlockView: boolean = false;
   books: IBook[];
-  isRequester: boolean = false;
+  booksPage: booksPage = booksPage.currentOwned;
   totalSize: number;
-  bookStatus: bookStatus[] = [1,1,1,1,1]
+  bookStatus: bookStatus[] = [undefined,undefined,undefined,undefined,
+    undefined,undefined,undefined,undefined]
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
 
@@ -47,7 +49,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 5)
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
@@ -66,14 +68,14 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
       query.first = false;
       query.last = true;
       this.requestService.getRequestForBook(book.id, query)
-     .subscribe((value: IRequest) => {
-         if(value.receiveDate){
-           this.bookStatus[index] = bookStatus.reading
-         }
-         else{
-           this.bookStatus[index] = bookStatus.requested
-         }
-       }, error => {})
+        .subscribe((value: IRequest) => {
+          if(value.receiveDate){
+            this.bookStatus[index] = bookStatus.reading
+          }
+          else{
+            this.bookStatus[index] = bookStatus.requested
+          }
+        }, error => {})
     }
   }
   async requestBook(bookId: number) {
@@ -107,7 +109,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
     }
     if (typeof this.queryParams.showAvailable === 'undefined') {
-      this.queryParams.showAvailable = true;
+      this.queryParams.showAvailable = false;
     }
     if (this.queryParams.genres) {
       let genres: number[];
@@ -126,8 +128,12 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
+    window.scrollTo({
+      top: 0,
+      behavior:'smooth'
+    });
   }
-  private resetPageIndex(): void {
+  private resetPageIndex() : void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;
   }
@@ -149,16 +155,17 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
           for(var i = 0; i<pageData.page.length; i++){
 
             this.getStatus(pageData.page[i], i)
-        }
+          }
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;
           }
         },
-        error: error => {
-          alert('An error has occured, please try again');
+        error: err => {
+          this.notificationService.error(this.translate
+            .instant("Something went wrong!"), "X");
         }
       });
-  }
+  };
 
   ngOnDestroy() {
     this.searchBarService.changeSearchTerm(null);

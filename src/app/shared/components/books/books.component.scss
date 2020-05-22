@@ -27,6 +27,8 @@
 }
 .photo-padding{
   padding: 0px;
+  width: 200px;
+  height: 200px;
 }
 ::ng-deep mat-tooltip-component{
   & .mat-tooltip{
@@ -35,6 +37,9 @@
     color: black;
     font-weight: bold;
     border: 2px inset #007bff;
+    overflow: visible;
+    text-overflow: clip;
+    max-width: 500px;
   }
 }
 
@@ -42,6 +47,9 @@
 .img-height{
   height: 265px;
   max-height: 100%;
+}
+.img-width{
+  min-width: 200px;
 }
 
 .hidden{
