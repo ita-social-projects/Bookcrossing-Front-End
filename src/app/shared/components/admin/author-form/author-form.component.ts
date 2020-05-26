@@ -29,6 +29,7 @@ authorsMerge: IAuthor[];
 action: FormAction = FormAction.Add;
 
 title: string;
+submitButtonText: string;
 form: FormGroup;
 
   constructor(
@@ -39,26 +40,10 @@ form: FormGroup;
     private notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    if (this.authorService.formMergeAuthors?.length > 1) {
-      this.authorsMerge = this.getSortedMergeAuthors();
-      this.author = this.selectMergeAuthor();
-      this.title = 'Merged Author';
-      this.action = FormAction.Merge;
-    } else if (this.authorService.formAuthor?.id) {
-      this.author = this.authorService.formAuthor;
-      this.title = 'Edit Author';
-      this.action = FormAction.Edit;
-    } else {
-      const newAuthor: IAuthor = {
-        firstName: '',
-        lastName: '',
-      };
-      this.title = 'Add Author';
-      this.action = FormAction.Add;
-      this.author = newAuthor;
-    }
+    this.getRequestType();
     this.buildForm();
   }
+
   changeMergeAuthor(author: IAuthor) {
     this.author = author;
     this.buildForm();
@@ -83,6 +68,30 @@ form: FormGroup;
     }
     return this.authorsMerge[0];
   }
+
+  getRequestType(): void {
+    if (this.authorService.formMergeAuthors?.length > 1) {
+      this.authorsMerge = this.getSortedMergeAuthors();
+      this.author = this.selectMergeAuthor();
+      this.title = 'Merged Author';
+      this.submitButtonText = 'Merge';
+      this.action = FormAction.Merge;
+    } else if (this.authorService.formAuthor?.id) {
+      this.author = this.authorService.formAuthor;
+      this.title = 'Edit Author';
+      this.submitButtonText = 'Update';
+      this.action = FormAction.Edit;
+    } else {
+      const newAuthor: IAuthor = {
+        firstName: '',
+        lastName: '',
+      };
+      this.title = 'Add Author';
+      this.submitButtonText = 'Add';
+      this.action = FormAction.Add;
+      this.author = newAuthor;
+    }
+  }
   buildForm(): void {
     this.form = new FormGroup({
       id : new FormControl({value: this.author.id, disabled: true}),
@@ -101,6 +110,10 @@ form: FormGroup;
 
 
   submit(): void {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) {
+      return;
+    }
     this.author = {
       firstName: this.form.get('firstName').value,
       lastName: this.form.get('lastName').value
@@ -125,6 +138,7 @@ form: FormGroup;
   cancel(): void {
     this.location.back();
   }
+
   mergeAuthors(author: IAuthor, authorIds: number[]) {
     console.log(authorIds);
     this.authorService.mergeAuthors(author, authorIds).subscribe(

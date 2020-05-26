@@ -19,25 +19,38 @@
           <p class="input-label">City: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
-          <input 
-          formControlName="city" 
-          type="text" 
-          class="form-control"
-          maxlength="30" />
+          <input
+          formControlName="city"
+          type="text"
+          class="form-control"/>
         </div>
+          <div *ngIf="addLocationForm.get('city').errors && addLocationForm.get('city').touched">
+            <div *ngIf="addLocationForm.get('city').errors?.required" class="validation-error">
+              This Field is required.
+            </div>
+            <div *ngIf="addLocationForm.get('city').errors?.maxlength" class="validation-error">
+              This Field less than {{addLocationForm.get('city').errors?.maxlength?.requiredLength}} characters
+            </div>
+          </div>
       </div>
-
       <!-- Street input -->
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">Street: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
-          <input 
-          formControlName="street" 
-          type="text" 
-          class="form-control"
-          maxlength="50" />
+          <input
+          formControlName="street"
+          type="text"
+          class="form-control" />
+        </div>
+        <div *ngIf="addLocationForm.get('street').errors && addLocationForm.get('street').touched">
+          <div *ngIf="addLocationForm.get('street').errors?.required" class="validation-error">
+            This Field is required.
+          </div>
+          <div *ngIf="addLocationForm.get('street').errors?.maxlength" class="validation-error">
+            This Field less than {{addLocationForm.get('street').errors?.maxlength?.requiredLength}} characters
+          </div>
         </div>
       </div>
 
@@ -51,20 +64,48 @@
             formControlName="officeName"
             type="text"
             class="form-control"
-            maxlength="10"
           />
         </div>
+        <div *ngIf="addLocationForm.get('officeName').errors && addLocationForm.get('officeName').touched">
+          <div *ngIf="addLocationForm.get('officeName').errors?.required" class="validation-error">
+            This Field is required.
+          </div>
+          <div *ngIf="addLocationForm.get('officeName').errors?.maxlength" class="validation-error">
+            This Field less than {{addLocationForm.get('officeName').errors?.maxlength?.requiredLength}} characters
+          </div>
+        </div>
       </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">Status: <span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <div class="">
+            <select class="form-control select-dropdown" formControlName="isActive">
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="addLocationForm.get('isActive').errors && addLocationForm.get('isActive').touched">
+          <div *ngIf="addLocationForm.get('isActive').errors?.required" class="validation-error">
+            This Field is required.
+          </div>
+        </div>
+      </div>
+
+
 
       <!-- Add location button -->
       <button
         class="btn btn-info"
         type="submit"
-        [disabled]="addLocationForm.invalid"
       >
-        Submit
+        {{submitButtonText}}
       </button>
-      <button *ngIf="isEdited" class="btn btn-danger" (click)="onCancel()">
+      <button class="btn btn-danger" (click)="onCancel()">
         Cancel
       </button>
     </form>

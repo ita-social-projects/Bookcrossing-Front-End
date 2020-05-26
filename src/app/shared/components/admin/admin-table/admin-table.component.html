@@ -26,15 +26,19 @@
 
           <ng-template #BooleanColumn>
             <div class="text-center">
-              <button *ngIf="item[column] == false; else ApprovedIcon" class="btn btn-md admin-button px-3" (click)="onBooleanButtonClick(item, $event)">
-                {{booleanButtonText}}
-              </button>
-              <ng-template #ApprovedIcon>
+              <ng-container *ngIf="item[column] == false; else TrueIcon">
+                <button *ngIf="booleanButtonClicked.observers.length > 0; else FalseIcon" class="btn btn-md admin-button px-3" (click)="onBooleanButtonClick(item, $event)">
+                  {{booleanButtonText}}
+                </button>
+                <ng-template #FalseIcon>
+                  <i class="fas fa-lg red-text fa-times-circle"></i>
+                </ng-template>
+              </ng-container>
+              <ng-template #TrueIcon>
                 <i class="fas fa-lg green-text fa-check-circle"></i>
               </ng-template>
             </div>
           </ng-template>
-
         </td>
         <td>
           <div class=" row d-flex text-center">

@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RefDirective} from '../../../directives/ref.derictive';
 import {ILocation} from '../../../../core/models/location';
 import {CompletePaginationParams} from '../../../../core/models/Pagination/completePaginationParameters';
@@ -14,12 +14,13 @@ import {SortParameters} from '../../../../core/models/Pagination/sortParameters'
 })
 export class LocationsComponent implements OnInit {
   locations: ILocation[];
-  locationDisplayColumns: string[] = ['#', 'City', 'Street', 'Office Name'];
-  locationProperties: string[] = ['id', 'city', 'street', 'officeName'];
+  locationDisplayColumns: string[] = ['#', 'City', 'Street', 'Office Name', 'Active'];
+  locationProperties: string[] = ['id', 'city', 'street', 'officeName', 'isActive'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'street';
   totalSize: number;
+  showInactive: boolean;
 
 
   constructor(
@@ -30,34 +31,39 @@ export class LocationsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.queryParams.filters = [];
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
-      this.searchText = this.queryParams?.filters[0]?.value;
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
-      this.getLocations(this.queryParams);
+      if (this.showInactive !== true) {
+        this.showInactive = false;
+        this.queryParams.filters[0] = {propertyName: 'isActive', value: 'false', method: 'NotEqual', operand: 'And'};
+      } else {
+        this.showInactive = this.queryParams?.filters[0]?.value !== 'false';
+      }
+      this.searchText = this.queryParams?.filters[1]?.value;
+      this.GetLocations(this.queryParams);
     });
-    this.onLocationSubmitted();
   }
 
-  private onLocationSubmitted() {
-    this.locationService.locationSubmited$.subscribe((location) => {
-      const editedLocation = this.locations?.find((x) => x.id === location.id);
-      if (editedLocation) {
-        const index = this.locations?.indexOf(editedLocation);
-        this.locations[index] = location;
-      } else {
-        this.locations?.push(location);
-      }
-    });
+  toggleInactive() {
+    this.queryParams.page = 1;
+    this.showInactive = !this.showInactive;
+    if (this.showInactive) {
+      this.queryParams.filters[0] = null;
+    } else {
+      this.queryParams.filters[0] = {propertyName: 'isActive', value: this.showInactive + '', method: 'NotEqual', operand: 'And'};
+    }
+    this.changeUrl();
   }
+
   // Pagination/URL
   search(): void {
     if (this.queryParams?.filters[0]?.value === this.searchText) {
       return;
     }
     this.queryParams.page = 1;
-    this.queryParams.filters = [];
-    this.queryParams.filters[0] = {propertyName: this.searchField, value: this.searchText} as FilterParameters;
+    this.queryParams.filters[1] = {propertyName: this.searchField, value: this.searchText};
     this.changeUrl();
   }
   changeSort(selectedHeader: string) {
@@ -77,14 +83,15 @@ export class LocationsComponent implements OnInit {
       });
   }
 
+
+  // CRUD
   AddLocation(): void {
     this.router.navigate(['admin/location-form']);
   }
-  EditLocation(location: ILocation): void{
+  EditLocation(location: ILocation): void {
     this.router.navigate(['admin/location-form', location]);
   }
-  // Get
-  getLocations(params: CompletePaginationParams): void {
+  GetLocations(params: CompletePaginationParams): void {
     this.locationService.getLocationsPage(params)
       .subscribe( {
         next: pageData => {

@@ -8,6 +8,7 @@ import {SortParameters} from 'src/app/core/models/Pagination/sortParameters';
 import {FilterParameters} from 'src/app/core/models/Pagination/filterParameters';
 import {TranslateService} from '@ngx-translate/core';
 import {NotificationService} from '../../../../core/services/notification/notification.service';
+import {DialogService} from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-authors',
@@ -33,8 +34,10 @@ export class AuthorsComponent implements OnInit {
     private notificationService: NotificationService,
     private routeActive: ActivatedRoute,
     private router: Router,
+    private dialogService: DialogService,
     private authorService: AuthorService,
-    ) { }
+  ) {
+  }
 
 
   ngOnInit() {
@@ -46,6 +49,7 @@ export class AuthorsComponent implements OnInit {
       this.getAuthors(this.queryParams);
     });
   }
+
   private getSearchTerm(filters: FilterParameters[]) {
     let searchTerm = '';
     if (filters?.length > 0) {
@@ -55,6 +59,7 @@ export class AuthorsComponent implements OnInit {
     }
     this.searchText = searchTerm.trim();
   }
+
   private onAuthorEdited() {
     this.authorService.authorSubmitted.subscribe((author) => {
       author.isConfirmed = null;
@@ -65,6 +70,7 @@ export class AuthorsComponent implements OnInit {
       }
     });
   }
+
   // Pagination/URL
   search(): void {
     if (this.queryParams?.filters[0]?.value === this.searchText) {
@@ -76,20 +82,23 @@ export class AuthorsComponent implements OnInit {
     if (searchTerm.length > 1) {
       this.queryParams.filters[0] = {propertyName: 'firstName', value: searchTerm[0], operand: 'And'} as FilterParameters;
       this.queryParams.filters[1] = {propertyName: 'lastName', value: searchTerm[searchTerm.length - 1]} as FilterParameters;
-    } else{
+    } else {
       this.queryParams.filters[0] = {propertyName: this.searchField, value: this.searchText} as FilterParameters;
     }
     this.changeUrl();
   }
+
   changeSort(selectedHeader: string) {
     this.queryParams.sort = {orderByField: selectedHeader, orderByAscending: !this.queryParams.sort.orderByAscending} as SortParameters;
     this.changeUrl();
   }
+
   pageChanged(currentPage: number): void {
-      this.queryParams.page = currentPage;
-      this.queryParams.firstRequest = false;
-      this.changeUrl();
+    this.queryParams.page = currentPage;
+    this.queryParams.firstRequest = false;
+    this.changeUrl();
   }
+
   private changeUrl(): void {
     this.router.navigate(['.'],
       {
@@ -97,27 +106,36 @@ export class AuthorsComponent implements OnInit {
         queryParams: this.queryParams.getQueryObject()
       });
   }
+
   approveAuthor(author: IAuthor) {
-    author.isConfirmed = true;
-    console.log(author);
-    this.authorService.updateAuthor(author)
-      .subscribe( {
-        next: () => {
-          this.notificationService.success(this.translate
-            .instant('Author was approved!'), 'X');
-          this.authors[this.authors.indexOf(author)].isConfirmed = true;
-        },
-        error: () => {
-          this.notificationService.error(this.translate
-            .instant('Something went wrong!'), 'X');
-        }
-      });
+    const dialogRef = this.dialogService
+      .openConfirmDialog(this.translate.instant('Are you sure you want to approve this author?'));
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (!confirmed) {
+        return;
+      }
+      author.isConfirmed = true;
+      console.log(author);
+      this.authorService.updateAuthor(author)
+        .subscribe({
+          next: () => {
+            this.notificationService.success(this.translate
+              .instant('Author was approved!'), 'X');
+            this.authors[this.authors.indexOf(author)].isConfirmed = true;
+          },
+          error: () => {
+            this.notificationService.error(this.translate
+              .instant('Something went wrong!'), 'X');
+          }
+        });
+    });
   }
 
   // Form
   mergeClear() {
     this.selectedRows = [];
   }
+
   mergeAuthors() {
     if (this.selectedRows?.length < 2) {
       this.notificationService.warn(this.translate
@@ -127,11 +145,13 @@ export class AuthorsComponent implements OnInit {
     this.authorService.formMergeAuthors = this.selectedRows;
     this.router.navigate(['admin/author-form']);
   }
+
   addAuthor() {
     this.authorService.formMergeAuthors = null;
     this.authorService.formAuthor = null;
     this.router.navigate(['admin/author-form']);
   }
+
   editAuthor(author: IAuthor) {
     this.authorService.formMergeAuthors = null;
     this.authorService.formAuthor = author;
@@ -142,17 +162,17 @@ export class AuthorsComponent implements OnInit {
   // Get
   getAuthors(params: CompletePaginationParams): void {
     this.authorService.getAuthorsPage(params)
-    .subscribe( {
-      next: pageData => {
-      this.authors = pageData.page;
-      if (pageData.totalCount) {
-        this.totalSize = pageData.totalCount;
-      }
-    },
-    error: () => {
-      this.notificationService.error(this.translate
-        .instant('Something went wrong!'), 'X');
-    }
-   });
+      .subscribe({
+        next: pageData => {
+          this.authors = pageData.page;
+          if (pageData.totalCount) {
+            this.totalSize = pageData.totalCount;
+          }
+        },
+        error: () => {
+          this.notificationService.error(this.translate
+            .instant('Something went wrong!'), 'X');
+        }
+      });
   }
 }

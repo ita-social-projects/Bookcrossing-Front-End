@@ -30,6 +30,13 @@
                   <span class="button-label">Add new</span>
                 </button>
               </li>
+              <li>
+                <div class="custom-control custom-checkbox header-checkbox  ml-auto p-2">
+                  <input type="checkbox" class="custom-control-input " id="showAvailableOnly" [checked]="showInactive"
+                         (change)="toggleInactive()">
+                  <label class="custom-control-label" for="showAvailableOnly">Display Inactive</label>
+                </div>
+              </li>
             </ul>
           </div>
 
@@ -43,7 +50,6 @@
               (editClicked)="EditLocation($event)"
               (selectedHeaderChange)="changeSort($event)">
             </app-admin-table>
-
             <app-pagination *ngIf="locations && locations.length > 0" [arraySize]="totalSize"
                             [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
             </app-pagination>

@@ -46,8 +46,8 @@
 
     </div>
     <div class="text-center mt-3">
-      <button class="btn btn-info" type="submit" [disabled]="form.invalid" name="submit">
-        Submit
+      <button class="btn btn-info" type="submit" name="submit">
+        {{submitButtonText}}
       </button>
       <input type="button" class="btn" (click)="cancel()" value="Cancel"/>
     </div>
