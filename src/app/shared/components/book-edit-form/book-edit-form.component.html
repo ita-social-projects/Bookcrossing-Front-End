@@ -266,6 +266,22 @@
       </div>
     </div>
 
+    <div *ngIf="isAdmin" class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">Inactive:</p>
+      </div>
+      <div class="col-4">
+        <div class="custom-control custom-checkbox">
+          <input formControlName="inactive"
+                 type="checkbox"
+                 class="form-control custom-control-input"
+                 id="inactive"
+                 [ngModel]="isInActive">
+          <label class="custom-control-label" for="inactive"></label>
+        </div>
+      </div>
+    </div>
+
     <div class="form-row mb-4">
       <button type="button" class="btn btn-info" (click)="fileInput.click()">
         Edit image

@@ -35,6 +35,9 @@ export class RequestService {
     }
     return this.http.get<IRequest>(this.baseUrl + `/${bookId}`, { params } );
   }
+  getAllRequestsForBook(bookId: number): Observable<IRequest[]>{
+    return this.http.get<IRequest[]>(this.baseUrl + `/${bookId}`);
+  }
 
   getUserRequestsPage(bookParams : BookQueryParams): Observable<IPage<IRequest>> {
     return this.pagination.getBookPage<IRequest>(`${this.baseUrl}/`,bookParams);

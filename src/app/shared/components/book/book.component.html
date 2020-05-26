@@ -24,26 +24,33 @@
               </div>
             </div>
               <div class="text-center text-md-left text-md-right mt-2">
-                <span [ngSwitch]="bookStatus">
-                  <ng-template ngSwitchCase="1"><button [hidden]="!isAuthenticated()" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="requestBook()">
+                <span [ngSwitch]="book?.state">
+                  <ng-template ngSwitchCase="0"><button [hidden]="!isAuthenticated()" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
-                  <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isRequester" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block" (click)="startReading()">
+                  <ng-template ngSwitchCase="1">
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> Start reading</button>
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="cancelRequest()">
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
                   </ng-template>
-                  <ng-template ngSwitchCase="3">
-                    <button [hidden]="!isRequester" class="btn purple-gradient btn-rounded btn-lg btn-block"(click)="makeAvailable()" >
+                  <ng-template ngSwitchCase="2">
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> Make available</button>
                   </ng-template>
                 </span>
             </div>
         </div>
-
         <div class="col-lg-7 text-center text-md-left">
 
-          <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4" style="font-size: 24px;">{{ book?.name }}</h2>
+          <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name">{{ book?.name }}</h2>
+          <div class="row">
+            <div class="col-2">
+              <div *ngIf="readCount !== null" class="font-weight-bold">Read by: <span class="font-weight-normal">{{readCount}}</span></div>
+            </div>
+            <div class="col-3">
+              <ngx-star-rating [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" rating="0" readonly="true"></ngx-star-rating>
+            </div>
+          </div>
         <br>
 
           <div class="font-weight-normal">
@@ -80,10 +87,11 @@
               <strong>{{ 'components.book.publisher' | translate }}: </strong> {{ book?.publisher }} </p>
             <div class="ml-xl-0 ml-4">
               <strong>Status: </strong>
-              <span [ngSwitch]="bookStatus">
-                <ng-template ngSwitchCase="1"><span class="badge badge-success product mb-4 ml-2">Available</span></ng-template>
-                <ng-template ngSwitchCase="2"><span class="badge badge-info product mb-4 ml-2">Requested</span></ng-template>
-                <ng-template ngSwitchCase="3"><span class="badge badge-info product mb-4 ml-2">Reading</span></ng-template>
+              <span [ngSwitch]="book?.state">
+                <ng-template ngSwitchCase="0"><span class="badge badge-success product mb-4 ml-2">Available</span></ng-template>
+                <ng-template ngSwitchCase="1"><span class="badge badge-info product mb-4 ml-2">Requested</span></ng-template>
+                <ng-template ngSwitchCase="2"><span class="badge badge-info product mb-4 ml-2">Reading</span></ng-template>
+                <ng-template ngSwitchCase="3"><span class="badge badge-light product mb-4 ml-2">Inactive</span></ng-template>
               </span>
             </div>
             <p [hidden]="!book?.notice" class="ml-xl-0 ml-4"><strong>Notice: </strong> {{ book?.notice }} </p>
@@ -95,10 +103,6 @@
           <div class=" row d-flex">
             <button *ngIf="isAdmin() || isBookOwner" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
                 class="fas fa-edit"></i></button>
-          </div>
-          <div hidden class=" row d-flex">
-            <button *ngIf="bookStatus && bookStatus !== 1" class="btn btn-md btn-md px-3 m-1"> <i
-              class="fas fa-bell"></i></button>
           </div>
         </div>
       </div>

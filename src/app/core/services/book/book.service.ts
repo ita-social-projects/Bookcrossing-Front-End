@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { IBook } from "../../models/book";
-import { bookStatus } from '../../models/bookStatus.enum';
+import { bookState } from '../../models/bookState.enum';
 import { RequestService } from '../request/request.service';
 import { IRequest } from '../../models/request';
 import {PaginationService} from "../pagination/pagination.service";
@@ -52,47 +52,12 @@ export class BookService {
     return this.http.put(this.apiUrl + bookId, book);
   }
 
-  async isBeingReding(bookId: number): Promise<boolean>{  
-    var query: RequestQueryParams = new RequestQueryParams();
-    query.last = true;    
-    let promise = new Promise<boolean>((res) => {
-      this.requestService.getRequestForBook(bookId, query).subscribe({
-        next: value => {
-          if(value.receiveDate){
-            res(true);
-          }
-          else{
-            res(false)
-          }
-        },
-        error: () => {
-          res(false);
-        }
-      })
-    })  
-    return promise;
- }
+  deactivateBook(bookId: number){
+    return this.http.put(this.apiUrl + bookId + '/deactivate', undefined);
+  }
 
- async getStatus(book : IBook) : Promise<bookStatus>{
-   let requested = this.isRequested(book);
-   if(requested){
-     let received: boolean;
-     await this.isBeingReding(book.id).then(value=> received = value)
-     if(received){
-       return bookStatus.reading;
-     }
-     else {
-       return bookStatus.requested;
-     }
-   }
-   return bookStatus.available;
- }
- 
- 
- isRequested(book: IBook) : boolean {      
-   if(book.available === false) {
-     return true;
-   }
-   return false;
- };
+  activateBook(bookId: number){
+    return this.http.put(this.apiUrl + bookId + '/activate', undefined);
+  }
+
 }

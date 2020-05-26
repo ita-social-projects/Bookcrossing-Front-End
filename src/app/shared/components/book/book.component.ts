@@ -1,23 +1,23 @@
-import { UserService } from './../../../core/services/user/user.service';
-import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { switchMap, first, take } from 'rxjs/operators';
-import { RequestService } from 'src/app/core/services/request/request.service';
-import { BookService } from 'src/app/core/services/book/book.service';
-import { ActivatedRoute } from '@angular/router';
-import { bookUrl } from 'src/app/configs/api-endpoint.constants';
-import { IBook } from 'src/app/core/models/book';
-import { NotificationService } from '../../../core/services/notification/notification.service';
+import {UserService} from '../../../core/services/user/user.service';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
+import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {switchMap} from 'rxjs/operators';
+import {RequestService} from 'src/app/core/services/request/request.service';
+import {BookService} from 'src/app/core/services/book/book.service';
+import {ActivatedRoute} from '@angular/router';
+import {bookUrl} from 'src/app/configs/api-endpoint.constants';
+import {IBook} from 'src/app/core/models/book';
+import {NotificationService} from '../../../core/services/notification/notification.service';
 import {TranslateService} from '@ngx-translate/core';
-import { IRequest } from 'src/app/core/models/request';
-import { bookStatus } from 'src/app/core/models/bookStatus.enum';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
-import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
-import { IUser } from 'src/app/core/models/user';
-import { environment } from 'src/environments/environment';
-import { BookEditFormComponent } from '../book-edit-form/book-edit-form.component';
-import { RefDirective } from '../../directives/ref.derictive';
-import { IBookPut } from 'src/app/core/models/bookPut';
+import {IRequest} from 'src/app/core/models/request';
+import {bookState} from 'src/app/core/models/bookState.enum';
+import {DialogService} from 'src/app/core/services/dialog/dialog.service';
+import {RequestQueryParams} from 'src/app/core/models/requestQueryParams';
+import {IUser} from 'src/app/core/models/user';
+import {environment} from 'src/environments/environment';
+import {BookEditFormComponent} from '../book-edit-form/book-edit-form.component';
+import {RefDirective} from '../../directives/ref.derictive';
+import {IBookPut} from 'src/app/core/models/bookPut';
 
 @Component({
   selector: 'app-book',
@@ -33,11 +33,12 @@ export class BookComponent implements OnInit {
     bookId: number;
     isRequester: boolean;
     isBookOwner: boolean;
-    bookStatus: bookStatus = null;
+    readCount: number = null;
     currentOwner: IUser = null;
     userWhoRequested: IUser = null;
     firstOwner: IUser = null;
     imagePath: string;
+    disabledButton: boolean = false;
 
   constructor(
     private translate: TranslateService,
@@ -61,11 +62,11 @@ export class BookComponent implements OnInit {
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
     this.book = value;
     this.getOwners(this.book.userId);
-    this.bookService.getStatus(this.book).then(res => this.bookStatus = res);
-    if(!value.available){
+    if(value.state !== bookState.available){
       this.getUserWhoRequested();
     }
     this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
+    this.getReadCount(value.id);
   });
 }
 
@@ -91,7 +92,7 @@ getOwners(userId: number) {
           this.isBookOwner = false;
         });
     }
-    if(!this.book.available){
+    if(this.book.state !== bookState.available){
       const query = new RequestQueryParams();
       query.first = true;
       query.last = false;
@@ -109,10 +110,27 @@ getOwners(userId: number) {
             }
     });
 }
+
+getReadCount(bookId: number){
+  this.requestService.getAllRequestsForBook(this.bookId).subscribe((value: IRequest[]) => {
+      let counter: number = 0;
+      value.forEach(function(item) {
+        if(item.receiveDate){
+          counter++;
+        }
+      })
+    this.readCount = counter;
+  },
+    err => {
+      this.notificationService.error(this.translate
+        .instant('Something went wrong (Read by counter)!'), 'X');
+    });
+}
 showEditForm(book: IBook) {
   const formFactory = this.resolver.resolveComponentFactory(BookEditFormComponent);
   const instance = this.refDir.containerRef.createComponent(formFactory).instance;
   instance.book = book;
+  instance.isAdmin = this.isAdmin()
   instance.onCancel.subscribe(() => {this.refDir.containerRef.clear(); this.ngOnInit(); });
 }
 
@@ -121,7 +139,7 @@ getUserWhoRequested() {
   query.first = false;
   query.last = true;
   this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
-            if (this.bookStatus !== bookStatus.available) {
+            if (this.book.state !== bookState.available) {
               this.userWhoRequested = value.user;
             if (this.isAuthenticated()) {
                   this.authentication.getUserId().subscribe((value: number) => {
@@ -163,23 +181,26 @@ getFormData(book: IBookPut): FormData {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
+          this.disabledButton = true;
           const book: IBookPut = {
             id: this.book.id,
-            fieldMasks: ['Available'],
-            available: true,
+            fieldMasks: ['State'],
+            state: bookState.available,
           };
           const formData = this.getFormData(book);
           this.bookService.putBook(this.bookId, formData).subscribe(() => {
+            this.disabledButton = false;
             this.ngOnInit();
             this.notificationService.success(this.translate
               .instant('Your Book`s status changed to available.'), 'X');
           }, err => {
+            this.disabledButton = false;
             this.notificationService.error(this.translate
               .instant('Something went wrong!'), 'X');
           });
         }
       });
-
+    this.disabledButton = false;
   }
   async cancelRequest() {
     this.dialogService
@@ -189,15 +210,18 @@ getFormData(book: IBookPut): FormData {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
+          this.disabledButton = true;
           const query = new RequestQueryParams();
           query.first = false;
           query.last = true;
           this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.requestService.deleteRequest(value.id).subscribe(() => {
+              this.disabledButton = false;
                 this.ngOnInit();
                 this.notificationService.success(this.translate
                   .instant('Request is cancelled.'), 'X');
               }, err => {
+              this.disabledButton = false;
                 this.notificationService.error(this.translate
                   .instant('Something went wrong!'), 'X');
               });
@@ -214,22 +238,25 @@ getFormData(book: IBookPut): FormData {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
+          this.disabledButton = true;
           const query = new RequestQueryParams();
           query.last = true;
           this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
             this.requestService.approveReceive(value.id).subscribe(() => {
+              this.disabledButton = false;
               this.ngOnInit();
               this.notificationService.success(this.translate
                   .instant('Book’s owner has been changed.'), 'X');
               this.Donate()
               }, err => {
+              this.disabledButton = false;
                 this.notificationService.error(this.translate
                   .instant('Something went wrong!'), 'X');
               });
             });
         }
       });
-
+    this.disabledButton = false;
   }
 
   async Donate(){
@@ -253,17 +280,22 @@ getFormData(book: IBookPut): FormData {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
+          this.disabledButton = true;
           this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
+            this.disabledButton = false;
             this.ngOnInit();
             this.notificationService.success(this.translate
               .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
             }, err => {
+            this.disabledButton = false;
               this.notificationService.error(this.translate
                 .instant('Something went wrong!'), 'X');
             });
         }
       });
-
   }
 
+  onRatingSet($event: number) {
+    console.log($event)
+  }
 }

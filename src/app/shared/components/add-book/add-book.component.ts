@@ -1,19 +1,19 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { IGenre } from "src/app/core/models/genre";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { IBook } from "src/app/core/models/book";
-import { IAuthor } from "src/app/core/models/author";
-import { BookService } from "src/app/core/services/book/book.service";
-import { GenreService } from "src/app/core/services/genre/genre";
-import { AuthorService } from "src/app/core/services/author/authors.service";
-import { SubscriptionLike } from "rxjs";
-import { Router } from "@angular/router";
-import { IBookPost } from "src/app/core/models/bookPost";
-import { AuthenticationService } from "src/app/core/services/authentication/authentication.service";
-import { DialogService } from "src/app/core/services/dialog/dialog.service";
-import { TranslateService } from "@ngx-translate/core";
-import { NotificationService } from "src/app/core/services/notification/notification.service";
-import { resolve } from "dns";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {IGenre} from 'src/app/core/models/genre';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {IBook} from 'src/app/core/models/book';
+import {IAuthor} from 'src/app/core/models/author';
+import {BookService} from 'src/app/core/services/book/book.service';
+import {GenreService} from 'src/app/core/services/genre/genre';
+import {AuthorService} from 'src/app/core/services/author/authors.service';
+import {SubscriptionLike} from 'rxjs';
+import {Router} from '@angular/router';
+import {IBookPost} from 'src/app/core/models/bookPost';
+import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {DialogService} from 'src/app/core/services/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {NotificationService} from 'src/app/core/services/notification/notification.service';
+import {bookState} from '../../../core/models/bookState.enum';
 
 @Component({
   selector: "app-add-book",
@@ -130,7 +130,7 @@ export class AddBookComponent implements OnInit {
       genres: selectedGenres,
       publisher: this.addBookForm.get("publisher").value,
       notice: this.addBookForm.get("description").value,
-      available: true,
+      state: bookState.available,
       userId: this.userId,
     };
 

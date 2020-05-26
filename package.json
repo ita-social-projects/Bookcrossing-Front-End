@@ -26,6 +26,7 @@
     "@mapbox/mapbox-gl-geocoder": "^4.5.1",
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^4.0.0",
+    "@sreyaj/ng-star-rating": "^2.0.0",
     "@types/chart.js": "^2.9.16",
     "angular-bootstrap-md": "^9.0.0",
     "angular-jwt": "^0.1.11",
