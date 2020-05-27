@@ -35,19 +35,19 @@ export class LocationsComponent implements OnInit {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
-      if (this.showInactive !== true) {
+      if (this.showInactive === undefined && this.queryParams.filters[0]) {
         this.showInactive = false;
         this.queryParams.filters[0] = {propertyName: 'isActive', value: 'false', method: 'NotEqual', operand: 'And'};
-      } else {
-        this.showInactive = this.queryParams?.filters[0]?.value !== 'false';
+      } else if (!this.queryParams.filters[0]) {
+        this.showInactive = true;
       }
       this.searchText = this.queryParams?.filters[1]?.value;
+      this.queryParams.page = this.queryParams.page > this.totalSize ? this.totalSize : this.queryParams.page;
       this.GetLocations(this.queryParams);
     });
   }
 
   toggleInactive() {
-    this.queryParams.page = 1;
     this.showInactive = !this.showInactive;
     if (this.showInactive) {
       this.queryParams.filters[0] = null;
@@ -59,7 +59,7 @@ export class LocationsComponent implements OnInit {
 
   // Pagination/URL
   search(): void {
-    if (this.queryParams?.filters[0]?.value === this.searchText) {
+    if (this.queryParams?.filters[1]?.value === this.searchText) {
       return;
     }
     this.queryParams.page = 1;
@@ -99,9 +99,14 @@ export class LocationsComponent implements OnInit {
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;
           }
+          // Redirect in page refreshed but no longer longer has content. We redirect to last viable page.
+          if (pageData?.page?.length < 1 && this.queryParams.page > pageData.totalCount / this.queryParams.pageSize) {
+            this.queryParams.page = pageData.totalCount / this.queryParams.pageSize;
+            this.changeUrl();
+          }
         },
         error: error => {
-          alert('An error has occured, please try again');
+          alert('An error has occurred, please try again');
         }
       });
   }

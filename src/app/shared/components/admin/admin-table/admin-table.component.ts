@@ -47,7 +47,7 @@ export class AdminTableComponent implements OnInit {
     return !(typeof value === 'boolean');
   }
   isBooleanHeader(index: number): string {
-    if (this.data && typeof(this.data[0][this.dataProperties[index]]) === 'boolean') {
+    if (this.data && this.data[0] && typeof(this.data[0][this.dataProperties[index]]) === 'boolean') {
       return 'text-center';
     }
   }

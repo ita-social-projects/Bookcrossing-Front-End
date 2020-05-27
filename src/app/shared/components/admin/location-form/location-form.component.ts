@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocationService } from 'src/app/core/services/location/location.service';
 import { ILocation } from 'src/app/core/models/location';
+import { Location} from '@angular/common';
 import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
@@ -24,6 +25,7 @@ export class LocationFormComponent implements OnInit {
     private router: ActivatedRoute,
     private locationService: LocationService,
     private mapboxService: MapboxService,
+    private ngLocation: Location,
     private route: Router
   ) {
     mapboxService.currentAddressChanged$.subscribe((address) => {
@@ -125,6 +127,6 @@ export class LocationFormComponent implements OnInit {
   }
 
   onCancel() {
-    this.route.navigate(['admin/locations']);
+    this.ngLocation.back();
   }
 }

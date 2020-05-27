@@ -33,7 +33,7 @@ export class FilterParameters {
     let filterCount = 0;
     const filters = [];
     while (params[this.getFilterName(filterCount, filterName, this.filterPropertyName)]
-                  && params[this.getFilterName(filterCount, filterName, this.filterValue)]) {
+                  || params[this.getFilterName(filterCount + 1, filterName, this.filterPropertyName)]) {
       filters[filterCount] = new FilterParameters();
       filters[filterCount].propertyName = params[this.getFilterName(filterCount, filterName, this.filterPropertyName)];
       filters[filterCount].value = params[this.getFilterName(filterCount, filterName, this.filterValue)]
