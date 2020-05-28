@@ -27,15 +27,6 @@ export class AppComponent {
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
-
-  @HostListener('window:beforeunload') onBeforeUnload() {
-    const s = localStorage.getItem('RememberMe');
-    if (s === '') {
-      this.authenticationService.logout();
-    }
-
-  }
-
   ngOnInit(): void {
     const lang: string = this.languageService.setIfNotExists();
     this.translate.setDefaultLang(lang);
