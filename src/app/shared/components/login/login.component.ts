@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute) {
-    if (this.authenticationService.currentUserValue) {
+    if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/books']);
     }
   }

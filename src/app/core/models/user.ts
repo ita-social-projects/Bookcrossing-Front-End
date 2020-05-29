@@ -12,5 +12,8 @@ export interface IUser {
   userLocation: IRoomLocation;
   birthDate: Date;
   registeredDate: Date;
-  token?: string;
+  token?: {
+    jwt: string,
+    refreshToken: string
+  };
 }

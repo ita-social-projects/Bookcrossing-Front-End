@@ -25,10 +25,8 @@ export class RegistrationComponent implements OnInit {
 
 
   async checkEmail(email) {
-
     this.validemail = ! await this.regservice.checkEmail(email);
     console.log(this.validemail);
-
   }
 
   SingUp(form) {
