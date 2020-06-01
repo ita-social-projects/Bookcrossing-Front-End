@@ -6,6 +6,8 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {LocationService} from '../../../../core/services/location/location.service';
 import {FilterParameters} from '../../../../core/models/Pagination/filterParameters';
 import {SortParameters} from '../../../../core/models/Pagination/sortParameters';
+import {NotificationService} from '../../../../core/services/notification/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-locations',
@@ -14,7 +16,11 @@ import {SortParameters} from '../../../../core/models/Pagination/sortParameters'
 })
 export class LocationsComponent implements OnInit {
   locations: ILocation[];
-  locationDisplayColumns: string[] = ['#', 'City', 'Street', 'Office Name', 'Active'];
+  locationDisplayColumns: string[] = ['#',
+    'components.admin.locations.city',
+    'components.admin.locations.street',
+    'components.admin.locations.office-name',
+    'components.admin.locations.active'];
   locationProperties: string[] = ['id', 'city', 'street', 'officeName', 'isActive'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
@@ -27,6 +33,8 @@ export class LocationsComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private router: Router,
     private locationService: LocationService,
+    private notificationService: NotificationService,
+    private translate: TranslateService
   ) { }
 
 
@@ -105,8 +113,9 @@ export class LocationsComponent implements OnInit {
             this.changeUrl();
           }
         },
-        error: error => {
-          alert('An error has occurred, please try again');
+        error: () => {
+          this.notificationService.error(this.translate
+            .instant('common-errors.error-message'), 'X');
         }
       });
   }

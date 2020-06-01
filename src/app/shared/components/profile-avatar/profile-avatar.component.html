@@ -6,14 +6,14 @@
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">
             <a class="dropdown-item" >{{userName}}</a>
-            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/profile']">My Profile</a>
-            <a class="dropdown-item" href="https://openeyes.org.ua/">Donate</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/profile']">{{'common.myProfile' | translate}}</a>
+            <a class="dropdown-item" href="https://openeyes.org.ua/">{{'common.donate' | translate}}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/registered']">Registered</a>
-            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/requests']">Requested</a>
-            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/current']">Currently Owned</a>
-            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/read']">Read</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/registered']">{{'common.registered' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/requests']">{{'common.requested' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/current']">{{'common.currentlyOwned' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/read']">{{'common.read' | translate}}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLink="" (click)="logout()">Log out</a>
+            <a class="dropdown-item" routerLink="" (click)="logout()">{{'common.logOut' | translate}}</a>
           </div>
         </ul>

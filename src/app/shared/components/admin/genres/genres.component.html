@@ -10,13 +10,13 @@
           <div class="card-header white d-flex  align-items-center py-3">
 
             <p class="h5-responsive font-weight-bold mb-1 mr-2">
-              Genres
+              {{'components.admin.genres.genres' | translate}}
             </p>
 
             <!-- header search -->
             <div class="col">
               <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search"
+                <input class="form-control" type="text" placeholder="{{'components.admin.search' | translate}}" aria-label="Search"
                        [(ngModel)]="searchText" (keyup.enter)="search()">
                 <div class="input-group-append">
                   <button class="input-group-text btn-light" (click)="search()">
@@ -31,7 +31,7 @@
               <li>
                 <button class="btn btn-md px-3 my-0 mr-0">
                   <i class="fas fa-plus pr-1"></i>
-                  <span class="button-label">Add new</span>
+                  <span class="button-label">{{'components.admin.add' | translate}}</span>
                 </button>
               </li>
             </ul>

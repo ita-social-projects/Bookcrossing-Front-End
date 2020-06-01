@@ -20,7 +20,9 @@ export class AuthorsComponent implements OnInit {
   @ViewChild(RefDirective, {static: false}) refDir: RefDirective;
 
   authors: IAuthor[];
-  authorDisplayColumns: string[] = ['#', 'First Name', 'Last Name', 'Approved'];
+  authorDisplayColumns: string[] = ['#', 'components.admin.authors.first-name',
+    'components.admin.authors.last-name',
+    'components.admin.authors.approved'];
   authorProperties: string[] = ['id', 'firstName', 'lastName', 'isConfirmed'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
@@ -36,8 +38,7 @@ export class AuthorsComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private authorService: AuthorService,
-  ) {
-  }
+  ) { }
 
 
   ngOnInit() {
@@ -109,7 +110,7 @@ export class AuthorsComponent implements OnInit {
 
   approveAuthor(author: IAuthor) {
     const dialogRef = this.dialogService
-      .openConfirmDialog(this.translate.instant('Are you sure you want to approve this author?'));
+      .openConfirmDialog(this.translate.instant('components.admin.authors.approve-confirm'));
     dialogRef.afterClosed().subscribe(confirmed => {
       if (!confirmed) {
         return;
@@ -120,12 +121,12 @@ export class AuthorsComponent implements OnInit {
         .subscribe({
           next: () => {
             this.notificationService.success(this.translate
-              .instant('Author was approved!'), 'X');
+              .instant('components.admin.authors.approve-success'), 'X');
             this.authors[this.authors.indexOf(author)].isConfirmed = true;
           },
           error: () => {
             this.notificationService.error(this.translate
-              .instant('Something went wrong!'), 'X');
+              .instant('common-errors.error-message'), 'X');
           }
         });
     });
@@ -139,7 +140,7 @@ export class AuthorsComponent implements OnInit {
   mergeAuthors() {
     if (this.selectedRows?.length < 2) {
       this.notificationService.warn(this.translate
-        .instant('Please select two or more authors'), 'X');
+        .instant('components.admin.authors.error-msg-merge'), 'X');
       return;
     }
     this.authorService.formMergeAuthors = this.selectedRows;
@@ -171,7 +172,7 @@ export class AuthorsComponent implements OnInit {
         },
         error: () => {
           this.notificationService.error(this.translate
-            .instant('Something went wrong!'), 'X');
+            .instant('common-errors.error-message'), 'X');
         }
       });
   }

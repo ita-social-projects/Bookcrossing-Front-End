@@ -10,13 +10,13 @@
       (ngSubmit)="onSubmit()"
       class="text-center border border-light p-5 form-background"
     >
-      <p class="h4 mb-4 title" *ngIf="!isEdited">Add location</p>
-      <p class="h4 mb-4 title" *ngIf="isEdited">Edit location</p>
+      <p class="h4 mb-4 title" *ngIf="!isEdited">{{'components.admin.location-form.add-title' | translate}}</p>
+      <p class="h4 mb-4 title" *ngIf="isEdited">{{'components.admin.location-form.edit-title' | translate}}</p>
 
       <!-- City input-->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">City: <span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.admin.locations.city' | translate}}: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <input
@@ -26,17 +26,17 @@
         </div>
           <div *ngIf="addLocationForm.get('city').errors && addLocationForm.get('city').touched">
             <div *ngIf="addLocationForm.get('city').errors?.required" class="validation-error">
-              This Field is required.
+              {{'common-errors.validation-required' | translate}}
             </div>
             <div *ngIf="addLocationForm.get('city').errors?.maxlength" class="validation-error">
-              This Field less than {{addLocationForm.get('city').errors?.maxlength?.requiredLength}} characters
+              {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('city').errors?.maxlength?.requiredLength} }}
             </div>
           </div>
       </div>
       <!-- Street input -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Street: <span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.admin.locations.street' | translate}}: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <input
@@ -46,10 +46,10 @@
         </div>
         <div *ngIf="addLocationForm.get('street').errors && addLocationForm.get('street').touched">
           <div *ngIf="addLocationForm.get('street').errors?.required" class="validation-error">
-            This Field is required.
+            {{'common-errors.validation-required' | translate}}
           </div>
           <div *ngIf="addLocationForm.get('street').errors?.maxlength" class="validation-error">
-            This Field less than {{addLocationForm.get('street').errors?.maxlength?.requiredLength}} characters
+            {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('street').errors?.maxlength?.requiredLength} }}
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
       <!-- Office name input -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Office: <span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.admin.locations.office-name' | translate}}: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <input
@@ -68,30 +68,30 @@
         </div>
         <div *ngIf="addLocationForm.get('officeName').errors && addLocationForm.get('officeName').touched">
           <div *ngIf="addLocationForm.get('officeName').errors?.required" class="validation-error">
-            This Field is required.
+            {{'common-errors.validation-required' | translate}}
           </div>
           <div *ngIf="addLocationForm.get('officeName').errors?.maxlength" class="validation-error">
-            This Field less than {{addLocationForm.get('officeName').errors?.maxlength?.requiredLength}} characters
+            {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('officeName').errors?.maxlength?.requiredLength} }}
           </div>
         </div>
       </div>
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Status: <span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.admin.locations.status' | translate}}: <span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <div class="">
             <select class="form-control select-dropdown" formControlName="isActive">
-              <option value="true">Active</option>
-              <option value="false">Inactive</option>
+              <option value="true">{{'components.admin.locations.active' | translate}}</option>
+              <option value="false">{{'components.admin.locations.inactive' | translate}}</option>
             </select>
           </div>
         </div>
 
         <div *ngIf="addLocationForm.get('isActive').errors && addLocationForm.get('isActive').touched">
           <div *ngIf="addLocationForm.get('isActive').errors?.required" class="validation-error">
-            This Field is required.
+            {{'common-errors.validation-required' | translate}}
           </div>
         </div>
       </div>
@@ -103,11 +103,11 @@
         class="btn btn-info"
         type="submit"
       >
-        {{submitButtonText}}
+        {{submitButtonText | translate}}
       </button>
 
       <button type="button" class="btn btn-danger" (click)="onCancel()">
-        Cancel
+        {{'common.cancel' | translate}}
       </button>
     </form>
   </div>
