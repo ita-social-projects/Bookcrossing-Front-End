@@ -36,13 +36,20 @@
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">Author:<span class="asterisk"> *</span></p>
+          <div class="custom-control custom-checkbox" style="text-align: left;">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="uncheckedAuthor"
+              [checked]="withoutAuthorChecked"
+              (change)="changeAuthorInput()"
+            />
+            <label class="custom-control-label" for="uncheckedAuthor"
+              >Without author</label
+            >
+          </div>
         </div>
-        <div
-          [ngClass]="{
-            'col-4': !lastnameInputVisible && !lastnameInput.value,
-            'col-8': lastnameInputVisible || lastnameInput.value
-          }"
-        >
+        <div class="col-4">
           <div class="form-row">
             <div class="col">
               <input
@@ -50,15 +57,18 @@
                 #firstnameInput
                 type="text"
                 class="form-control"
-                maxlength="20"
+                maxlength="100"
                 [matAutocomplete]="FirstNameAuto"
                 [ngClass]="{
                   'is-invalid':
                     submitted &&
-                    !selectedAuthors.length &&
-                    (!addBookForm.controls.authorFirstname.value?.trim() || !addBookForm.controls.authorLastname.value?.trim() )
+                    ((!selectedAuthors.length &&
+                      !addBookForm.controls.authorFirstname.value?.trim()) ||
+                      !checkAuthorLastName(
+                        addBookForm.controls.authorFirstname.value
+                      )) &&
+                    !withoutAuthorChecked
                 }"
-                (keyup.Space)="onPressSpace()"
                 (focus)="authorFocused = true"
                 (blur)="authorFocused = false"
               />
@@ -66,45 +76,28 @@
                 *ngIf="
                   submitted &&
                   !selectedAuthors.length &&
-                  !addBookForm.controls.authorFirstname.value?.trim()
+                  !addBookForm.controls.authorFirstname.value?.trim() &&
+                  !withoutAuthorChecked
                 "
                 class="invalid-feedback"
               >
                 This field is required.
               </div>
               <div
-              *ngIf="
-                submitted &&
-                !selectedAuthors.length &&
-                !addBookForm.controls.authorLastname.value
-              "
-              class="invalid-feedback"
-            >
-              Lastname is required.
-            </div>
-            </div>
-            <div
-              class="col"
-              [ngClass]="{
-                'hide-input': !lastnameInputVisible && !lastnameInput.value
-              }"
-            >
-              <input
-                formControlName="authorLastname"
-                #lastnameInput
-                type="text"
-                class="form-control"
-                maxlength="20"
-                [matAutocomplete]="LastNameAuto"
-                (blur)="lastnameInputVisible = false"
-              />
+                *ngIf="
+                  submitted &&
+                  !checkAuthorLastName(
+                    addBookForm.controls.authorFirstname.value
+                  ) && !withoutAuthorChecked
+                "
+                class="new-author-warning"
+              >
+                Lastname is required.
+              </div>
             </div>
           </div>
           <div
-            *ngIf="
-              (addBookForm.controls.authorFirstname.value) &&
-              !authorFocused
-            "
+            *ngIf="addBookForm.controls.authorFirstname.value && !authorFocused"
             class="new-author-warning"
           >
             <span>Entered author is saved as 'not confirmed'</span>
@@ -117,11 +110,7 @@
                 *ngFor="let author of selectedAuthors"
                 class="list-group-item"
               >
-                <span>{{
-                  author.firstName +
-                    "  " +
-                    author.lastName
-                }}</span>
+                <span>{{ author.firstName + "  " + author.lastName }}</span>
                 <span
                   type="button"
                   class="close"
@@ -137,11 +126,7 @@
       </div>
       <mat-autocomplete
         #FirstNameAuto="matAutocomplete"
-        (optionSelected)="
-          onAuthorSelect($event);
-          firstnameInput.value = '';
-          lastnameInput.value = ''
-        "
+        (optionSelected)="onAuthorSelect($event); firstnameInput.value = ''"
       >
         <mat-option
           *ngFor="
@@ -151,36 +136,8 @@
                 : ['firstName', 'lastName']
           "
           [value]="author"
-          [ngClass]="{ 'hide-input': lastnameInputVisible }"
         >
-          {{
-            author.firstName + " " + author.lastName
-          }}
-        </mat-option>
-      </mat-autocomplete>
-      <mat-autocomplete
-        #LastNameAuto="matAutocomplete"
-        (optionSelected)="
-          onAuthorSelect($event);
-          lastnameInput.value = '';
-          lastnameInput.value = ''
-        "
-      >
-        <mat-option
-          *ngFor="
-            let author of filterConfirmedAuthors()
-              | contentFilter
-                : firstnameInput.value.trim()
-                : ['firstName', 'lastName']
-              | contentFilter
-                : lastnameInput.value.trim()
-                : ['firstName', 'lastName']
-          "
-          [value]="author"
-        >
-          {{
-            author.firstName + " " + author.lastName
-          }}
+          {{ author.firstName + " " + author.lastName }}
         </mat-option>
       </mat-autocomplete>
 
@@ -239,11 +196,12 @@
           <p class="input-label">Publishing house:</p>
         </div>
         <div class="col-4">
-          <input 
-          formControlName="publisher" 
-          type="text" 
-          class="form-control" 
-          maxlength="50"/>
+          <input
+            formControlName="publisher"
+            type="text"
+            class="form-control"
+            maxlength="50"
+          />
         </div>
       </div>
 
