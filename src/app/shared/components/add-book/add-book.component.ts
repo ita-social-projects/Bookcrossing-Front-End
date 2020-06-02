@@ -1,19 +1,19 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {IGenre} from 'src/app/core/models/genre';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {IBook} from 'src/app/core/models/book';
-import {IAuthor} from 'src/app/core/models/author';
-import {BookService} from 'src/app/core/services/book/book.service';
-import {GenreService} from 'src/app/core/services/genre/genre';
-import {AuthorService} from 'src/app/core/services/author/authors.service';
-import {SubscriptionLike} from 'rxjs';
-import {Router} from '@angular/router';
-import {IBookPost} from 'src/app/core/models/bookPost';
-import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
-import {DialogService} from 'src/app/core/services/dialog/dialog.service';
-import {TranslateService} from '@ngx-translate/core';
-import {NotificationService} from 'src/app/core/services/notification/notification.service';
-import {bookState} from '../../../core/models/bookState.enum';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { IGenre } from "src/app/core/models/genre";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { IBook } from "src/app/core/models/book";
+import { IAuthor } from "src/app/core/models/author";
+import { BookService } from "src/app/core/services/book/book.service";
+import { GenreService } from "src/app/core/services/genre/genre";
+import { AuthorService } from "src/app/core/services/author/authors.service";
+import { SubscriptionLike } from "rxjs";
+import { Router } from "@angular/router";
+import { IBookPost } from "src/app/core/models/bookPost";
+import { AuthenticationService } from "src/app/core/services/authentication/authentication.service";
+import { DialogService } from "src/app/core/services/dialog/dialog.service";
+import { TranslateService } from "@ngx-translate/core";
+import { NotificationService } from "src/app/core/services/notification/notification.service";
+import { bookState } from "../../../core/models/bookState.enum";
 
 @Component({
   selector: "app-add-book",
@@ -32,8 +32,6 @@ export class AddBookComponent implements OnInit {
     private dialogService: DialogService
   ) {}
 
-  @ViewChild("lastnameInput") inputLastname;
-
   addBookForm: FormGroup;
 
   userId: number;
@@ -44,8 +42,8 @@ export class AddBookComponent implements OnInit {
   authorsSubscription: SubscriptionLike;
   submitted = false;
   authorFocused: boolean = false;
-  lastnameInputVisible: boolean = false;
   newAuthor: IAuthor;
+  withoutAuthorChecked = false;
 
   ngOnInit(): void {
     this.buildForm();
@@ -53,14 +51,19 @@ export class AddBookComponent implements OnInit {
     this.authorsSubscription = this.addBookForm
       .get("authorFirstname")
       .valueChanges.subscribe((input) => {
-        this.filterAuthors(input);
+        if (typeof input === "string") {
+          this.filterAuthors(input?.trim());
+        }
+        if (this.isAuthorTyped(input)) {
+          this.parseAuthors(input);
+          input = "";
+        }
       });
 
     if (this.isAuthenticated()) {
       this.authenticationService.getUserId().subscribe(
         (response: number) => {
           this.userId = response;
-          console.log(this.userId);
         },
         (error) => {
           console.log("fetching userId error");
@@ -94,7 +97,7 @@ export class AddBookComponent implements OnInit {
       title: new FormControl(null, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
-      authorLastname: new FormControl(null),
+      // authorLastname: new FormControl(null),
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
     });
@@ -114,15 +117,23 @@ export class AddBookComponent implements OnInit {
       selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
 
-    // authors
-    const bookAuthors: IAuthor[] = this.selectedAuthors.slice();
-    if (this.addBookForm.get("authorFirstname").value.trim()) {
-      await this.addNewAuthor();
-      bookAuthors.push(this.newAuthor);
+    const authorInput = this.addBookForm.get("authorFirstname").value.trim();
+    if (authorInput) {
+      this.parseAuthors(authorInput);
       this.newAuthor = undefined;
     }
-    console.log(this.selectedAuthors);
 
+    const bookAuthors: IAuthor[] = this.selectedAuthors
+      .slice()
+      .filter((x) => x.isConfirmed === true);
+    let newAuthors = this.selectedAuthors.filter(
+      (x) => x.isConfirmed === false
+    );
+
+    for (let i = 0; i < newAuthors.length; i++) {
+      const author = await this.addNewAuthor(newAuthors[i]);
+      bookAuthors.push(author);
+    }
 
     let book: IBookPost = {
       name: this.addBookForm.get("title").value,
@@ -134,11 +145,13 @@ export class AddBookComponent implements OnInit {
       userId: this.userId,
     };
 
+    if (this.withoutAuthorChecked) {
+      book.authors = [];
+    }
+
     if (this.selectedFile) {
       book.image = this.selectedFile;
     }
-
-    console.log(book);
     const formData: FormData = this.getFormData(book);
 
     this.bookService.postBook(formData).subscribe(
@@ -161,15 +174,22 @@ export class AddBookComponent implements OnInit {
     // this.goToPage("books");
     this.selectedAuthors = [];
 
-    // after submmit subscription stops work
+    // after submit subscription stops work
     this.authorsSubscription.unsubscribe();
     this.authorsSubscription = this.addBookForm
       .get("authorFirstname")
       .valueChanges.subscribe((input) => {
-        this.filterAuthors(input);
+        if (typeof input === "string") {
+          this.filterAuthors(input?.trim());
+        }
+        if (this.isAuthorTyped(input)) {
+          this.parseAuthors(input);
+          input = "";
+        }
       });
   }
 
+  //returns true is invalid
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
       this.notificationService.error(
@@ -178,27 +198,26 @@ export class AddBookComponent implements OnInit {
       );
       return true;
     } else if (
-      (!form.get("authorFirstname").value?.trim() || !form.get("authorLastname").value?.trim()) &&
-      !this.selectedAuthors.length
+      !form.get("authorFirstname").value?.trim() &&
+      !this.selectedAuthors.length &&
+      !this.withoutAuthorChecked
     ) {
       return true;
     } else if (form.invalid) {
       return true;
+    } else if (
+      !this.withoutAuthorChecked &&
+      form.get("authorFirstname").value?.trim()
+    ) {
+      return !this.checkAuthorLastName(form.get("authorFirstname").value);
     } else {
       return false;
     }
   }
 
-  async addNewAuthor() {
-    // let author: IAuthor;
-    let newAuthor: IAuthor = {
-      firstName: this.addBookForm.get("authorFirstname").value,
-      lastName: this.addBookForm.get("authorLastname").value
-        ? this.addBookForm.get("authorLastname").value
-        : "",
-      isConfirmed: false,
-    };
-    this.newAuthor = await this.authorService.addAuthor(newAuthor).toPromise();
+  async addNewAuthor(newAuthor) {
+    const author = await this.authorService.addAuthor(newAuthor).toPromise();
+    return author;
   }
 
   addAuthor(authors, author: IAuthor) {
@@ -240,7 +259,6 @@ export class AddBookComponent implements OnInit {
   }
 
   onAuthorSelect(event) {
-    console.log(event);
     this.addBookForm.get("authorFirstname").setValue("");
     this.addAuthor(this.selectedAuthors, event.option.value);
   }
@@ -286,11 +304,57 @@ export class AddBookComponent implements OnInit {
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
-  onPressSpace() {
-    this.lastnameInputVisible = true;
-    setTimeout(() => {
-      this.authorFocused = false;
-      this.inputLastname.nativeElement.focus();
-    }, 0);
+
+  isAuthorTyped(authorString: string): boolean {
+    if (/(\s*[a-zA-Z]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
+      return true;
+    }
+    return false;
+  }
+
+  parseAuthors(authorString: string) {
+    const delim = /(\s+|,+|;+)/g;
+    authorString = authorString.replace(delim, " ").trim();
+
+    const words: string[] = authorString.split(" ");
+    let count = words.length;
+    for (let i = 0; i < count / 2; i++) {
+      if (words[0] && words[1]) {
+        const author: IAuthor = {
+          firstName: words[0] ? words[0] : null,
+          lastName: words[1] ? words[1] : null,
+          isConfirmed: false,
+        };
+
+        words.splice(0, 2);
+        if (author.firstName && author.lastName) {
+          this.selectedAuthors.push(author);
+        }
+      }
+    }
+
+    this.addBookForm.patchValue({ authorFirstname: " " });
+  }
+
+  changeAuthorInput() {
+    if (this.withoutAuthorChecked) {
+      this.addBookForm.get("authorFirstname").enable();
+    } else {
+      this.addBookForm.get("authorFirstname").disable();
+    }
+    this.withoutAuthorChecked = !this.withoutAuthorChecked;
+    this.selectedAuthors = [];
+    this.addBookForm.patchValue({ authorFirstname: " " });
+  }
+
+  //returns false if less than 2 words
+  checkAuthorLastName(input: string): boolean {
+    const delim = /(\s+|,+|;+)/g;
+    input = input.replace(delim, " ").trim();
+    const words: string[] = input.split(" ");
+    if (words.length < 2) {
+      return false;
+    }
+    return true;
   }
 }

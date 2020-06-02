@@ -7,6 +7,8 @@ import {SortParameters} from '../../../../core/models/Pagination/sortParameters'
 import {IGenre} from '../../../../core/models/genre';
 import {GenreService} from '../../../../core/services/genre/genre.service';
 import {MatDialog} from '@angular/material/dialog';
+import {NotificationService} from '../../../../core/services/notification/notification.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-genres',
@@ -18,7 +20,7 @@ export class GenresComponent implements OnInit {
   @ViewChild(RefDirective, {static: false}) refDir: RefDirective;
 
   genres: IGenre[];
-  genresDisplayColumns: string[] = ['#', 'Genre'];
+  genresDisplayColumns: string[] = ['#', 'components.admin.genres.genre'];
   genresProperties: string[] = ['id', 'name'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
@@ -30,6 +32,8 @@ export class GenresComponent implements OnInit {
     private routeActive: ActivatedRoute,
     private router: Router,
     private genreService: GenreService,
+    private notificationService: NotificationService,
+    private translate: TranslateService,
     private dialog: MatDialog
   ) { }
 
@@ -80,8 +84,9 @@ export class GenresComponent implements OnInit {
             this.totalSize = pageData.totalCount;
           }
         },
-        error: error => {
-          alert('An error has occured, please try again');
+        error: () => {
+          this.notificationService.error(this.translate
+            .instant('common-errors.error-message'), 'X');
         }
       });
   }

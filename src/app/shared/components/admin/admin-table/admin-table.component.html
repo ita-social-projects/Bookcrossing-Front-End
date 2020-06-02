@@ -7,7 +7,7 @@
             (click)="onHeaderClicked(dataProperties[i])"
             [class.active-header]="selectedHeader === dataProperties[i]"
             [ngClass]="isBooleanHeader(i)">
-          {{name}}
+          {{name | translate}}
         </th>
       </ng-container>
       <th scope="col" class="text-center"></th>

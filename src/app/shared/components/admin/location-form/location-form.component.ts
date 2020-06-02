@@ -25,8 +25,7 @@ export class LocationFormComponent implements OnInit {
     private router: ActivatedRoute,
     private locationService: LocationService,
     private mapboxService: MapboxService,
-    private ngLocation: Location,
-    private route: Router
+    private ngLocation: Location
   ) {
     mapboxService.currentAddressChanged$.subscribe((address) => {
       this.address = address;
@@ -47,7 +46,7 @@ export class LocationFormComponent implements OnInit {
       this.isEdited = true;
       this.setLocationFormValues(this.locationEdit);
     }
-    this.submitButtonText = this.isEdited ? 'Update' : 'Save';
+    this.submitButtonText = this.isEdited ? 'common.update' : 'common.save';
   }
 
   buildForm() {
@@ -89,12 +88,12 @@ export class LocationFormComponent implements OnInit {
       (data: ILocation) => {
         this.locationService.submitLocation(data);
         this.notificationService.success(this.translate
-          .instant('New location was created successfully'), 'X');
+          .instant('components.admin.location-form.add-success-msg'), 'X');
         this.onCancel();
       },
       () => {
         this.notificationService.error(this.translate
-          .instant('Something went wrong!'), 'X');
+          .instant('common-error.error-message'), 'X');
       }
     );
   }
@@ -104,12 +103,12 @@ export class LocationFormComponent implements OnInit {
       (data) => {
         this.locationService.submitLocation(location);
         this.notificationService.success(this.translate
-          .instant('Location was updated successfully'), 'X');
+          .instant('components.admin.location-form.update-success-msg'), 'X');
         this.onCancel();
       },
       () => {
         this.notificationService.error(this.translate
-        .instant('Something went wrong!'), 'X');
+        .instant('common-error.error-message'), 'X');
       }
     );
   }

@@ -1,17 +1,27 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Chart} from 'chart.js';
 import {BaseChartDirective} from 'angular-bootstrap-md';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   selectedLocation = 'All';
   pieChart: Chart;
   barChart: Chart;
   lineChart: Chart;
+  languageChange: any;
+  translateSubscription: any;
+  pieChartLabels: string[];
+  pieChartTitle: string;
+  lineChartLabels: string[];
+  lineChartDataLabels = [
+    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December'
+  ];
 
   totalBooksRegistered = 336;
   totalAmountOfUsers = 86;
@@ -27,18 +37,42 @@ export class DashboardComponent implements OnInit {
     {city: 'Rivne', data: [15, 8, 12]},
     {city: 'Ivano-Frankivsk', data: [19, 23, 13]},
   ];
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.createLineChart()
+    this.createLineChart();
     this.createBarChart();
     this.createPieChart();
+    this.getChartLabels();
+    this.languageChange = this.translate.onLangChange.subscribe(() => this.getChartLabels());
   }
+  private getChartLabels() {
+    this.translateSubscription = this.translate.get(
+      [
+        'components.admin.dashboard.line-chart.months',
+        'components.admin.dashboard.line-chart.labels',
+        'components.admin.dashboard.pie-chart.labels',
+        'components.admin.dashboard.pie-chart.title'
+      ]
+    ).subscribe(value => {
+      this.lineChartDataLabels = Object.values(value['components.admin.dashboard.line-chart.months']).map(x => x + '');
+      this.lineChartLabels = Object.values(value['components.admin.dashboard.line-chart.labels']).map(x => x + '');
+      this.pieChartLabels = Object.values(value['components.admin.dashboard.pie-chart.labels']).map(x => x + '');
+      this.pieChartTitle = value['components.admin.dashboard.pie-chart.title'].toString();
+      this.lineChart.data.datasets[0].label = this.lineChartLabels[0];
+      this.lineChart.data.datasets[1].label = this.lineChartLabels[1];
+      this.getLineChartLabelData();
+      this.lineChart.update();
+      this.pieChart.data.labels = this.pieChartLabels;
+      this.pieChart.options.title.text = this.pieChartTitle;
+      this.pieChart.update();
+    });
+  }
+
   private createLineChart() {
     this.lineChart = new Chart('lineChart', {
       type: 'line',
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
         datasets: [{
           label: 'New Books Registered',
           data: [19, 15, 27, 28, 25, 31, 42],
@@ -80,6 +114,10 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+    this.getLineChartLabelData();
+  }
+  private getLineChartLabelData(start = 0, end = 6) {
+    this.lineChart.data.labels = this.lineChartDataLabels.splice(start, end);
   }
   private createBarChart() {
     this.barChart = new Chart('barChart', {
@@ -145,6 +183,7 @@ export class DashboardComponent implements OnInit {
   barChartClicked(e: any) {
     const activeElement = this.barChart.getElementAtEvent(e);
     const element = activeElement[0];
+    // tslint:disable:no-string-literal
     const label = this.barChart.data.labels[element['_index']];
     const data = this.pieChartData.find(d => d.city === label).data;
     this.pieChart.data.datasets[0].data = data;
@@ -154,7 +193,12 @@ export class DashboardComponent implements OnInit {
 
   resetPie(): void {
     this.pieChart.data.datasets[0].data = this.pieTotalData;
-    this.pieChart.options.title.text = 'Total';
+    this.pieChart.options.title.text = this.pieChartTitle;
     this.pieChart.update();
+  }
+
+  ngOnDestroy() {
+    this.translateSubscription.unsubscribe();
+    this.languageChange.unsibscribe();
   }
 }

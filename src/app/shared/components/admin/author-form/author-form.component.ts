@@ -10,9 +10,9 @@ import {merge} from 'rxjs';
 import {min} from 'rxjs/operators';
 
 enum FormAction {
-  Edit,
-  Add,
-  Merge
+  Edit = 'edit',
+  Add = 'add',
+  Merge = 'merge'
 }
 
 
@@ -73,24 +73,23 @@ form: FormGroup;
     if (this.authorService.formMergeAuthors?.length > 1) {
       this.authorsMerge = this.getSortedMergeAuthors();
       this.author = this.selectMergeAuthor();
-      this.title = 'Merged Author';
-      this.submitButtonText = 'Merge';
       this.action = FormAction.Merge;
     } else if (this.authorService.formAuthor?.id) {
       this.author = this.authorService.formAuthor;
-      this.title = 'Edit Author';
-      this.submitButtonText = 'Update';
       this.action = FormAction.Edit;
     } else {
       const newAuthor: IAuthor = {
         firstName: '',
         lastName: '',
       };
-      this.title = 'Add Author';
-      this.submitButtonText = 'Add';
       this.action = FormAction.Add;
       this.author = newAuthor;
     }
+    this.translateText();
+  }
+  private translateText() {
+    this.title = 'components.admin.authors-form.' + this.action + '-title';
+    this.submitButtonText = 'components.admin.authors-form.' + this.action + '-button';
   }
   buildForm(): void {
     this.form = new FormGroup({
@@ -99,16 +98,14 @@ form: FormGroup;
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(100),
-        Validators.pattern('^([a-zA-Z \'-]+)$')]),
+        Validators.pattern('^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)\'-]+)$')]),
       lastName : new FormControl(this.author.lastName, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(100),
-        Validators.pattern('^([a-zA-Z \'-]+)$')])
+        Validators.pattern('^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)\'-]+)$')])
     });
   }
-
-
   submit(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
@@ -122,7 +119,7 @@ form: FormGroup;
       this.author.id = this.form.get('id').value;
     }
     this.author.isConfirmed = true;
-    switch (+this.action) {
+    switch (this.action) {
       case FormAction.Edit:
         this.updateAuthor(this.author);
         break;
@@ -134,7 +131,6 @@ form: FormGroup;
         break;
     }
   }
-
   cancel(): void {
     this.location.back();
   }
@@ -146,11 +142,11 @@ form: FormGroup;
         this.authorService.submitAuthor(author);
         this.cancel();
         this.notificationService.success(this.translate
-          .instant('Authors were merged successfully'), 'X');
+          .instant('components.admin.authors.merge-success'), 'X');
       },
       (error) => {
         this.notificationService.error(this.translate
-          .instant('Something went wrong!'), 'X');
+          .instant('common-errors.error-message'), 'X');
       },
     );
   }
@@ -160,11 +156,11 @@ form: FormGroup;
         this.authorService.submitAuthor(author);
         this.cancel();
         this.notificationService.success(this.translate
-          .instant('New author was created successfully!'), 'X');
+          .instant('components.admin.authors.add-success'), 'X');
       },
       (error) => {
         this.notificationService.error(this.translate
-          .instant('Something went wrong!'), 'X');
+          .instant('common-errors.error-message'), 'X');
       },
     );
   }
@@ -174,11 +170,11 @@ form: FormGroup;
         this.authorService.submitAuthor(author);
         this.cancel();
         this.notificationService.success(this.translate
-          .instant('Author was Edited successfully!'), 'X');
+          .instant('components.admin.authors.update-success'), 'X');
       },
       (error) => {
         this.notificationService.error(this.translate
-          .instant('Something went wrong!'), 'X');
+          .instant('common-errors.error-message'), 'X');
       },
     );
   }

@@ -13,7 +13,6 @@ export class NavbarComponent implements OnInit {
   @ViewChild('menu', {static: false}) menu: any;
   languages: Language[];
   isLoggedIn: boolean;
-  adminActive = false;
 
   constructor(private authenticationService: AuthenticationService,
               private translate: TranslateService,
@@ -28,10 +27,5 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.getLogoutEmitter().subscribe(() => {
       this.isLoggedIn = false;
     });
-  }
-
-  changeLang(lang: Language): void {
-    this.languageService.setLanguage(lang);
-    this.translate.use(this.languageService.langToString(lang));
   }
 }

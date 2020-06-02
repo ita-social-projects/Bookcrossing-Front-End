@@ -2,7 +2,7 @@
     <div class="card-header white d-flex align-items-center py-3">
         <div class="form-inline">
           <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoriesChange($event)" class="form-control select-dropdown"
-            multiple placeholder="Categories">
+            multiple placeholder="{{'components.books.categories' | translate}}">
             <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
           </mat-select>
           <span [ngClass]="{'hidden': !(selectedGenres && selectedGenres.length > 0)}" class="clear-icon" (click)="onCategoriesReset()" aria-label="Clear"><svg focusable="false"
@@ -14,7 +14,7 @@
 
         <div class="form-inline ">
           <mat-select [(ngModel)]="selectedLocation" (ngModelChange)="onLocationChange()" class="form-control select-dropdown"
-            placeholder="Locations">
+            placeholder="{{'components.books.locations' | translate}}">
             <mat-option *ngFor="let location of locations" [value]="location.id" [matTooltip]="location.city + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
               {{location.officeName}}, {{location.street}}</mat-option>
           </mat-select>
@@ -28,7 +28,7 @@
         <div class="custom-control custom-checkbox pl-2 ml-auto p-2">
           <input type="checkbox" class="custom-control-input" id="showAvailableOnly" [checked]="availableSelected"
             (change)="toggleAvailable($event.target.checked)">
-          <label class="custom-control-label" for="showAvailableOnly">Available Only</label>
+          <label class="custom-control-label" for="showAvailableOnly">{{'components.books.availableOnly' | translate}}</label>
         </div>
     </ng-template>
       <mat-button-toggle-group [ngClass]="{'ml-auto': !showAvailable}" class="ml-3" #group="matButtonToggleGroup" [value]="selectedMode" (change)="onViewModeChange($event.value)">
