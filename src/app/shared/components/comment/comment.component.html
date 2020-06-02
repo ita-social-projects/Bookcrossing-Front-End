@@ -1,0 +1,80 @@
+<div class="my-comment">
+
+
+  <div class="row bootstrap snippets">
+    <div class=" col-md-offset-2 col-sm-12">
+      <div class="comment-wrapper">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            Comment panel
+          </div>
+          <div class="">
+            <textarea class="form-control width-40" [(ngModel)]='text' placeholder="write a comment..."
+                      rows="3"></textarea>
+            <br>
+            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right">
+              Post
+            </button>
+            <a *ngIf="!isAuthorized" [routerLink]="['/login']">login to comment</a>
+
+            <hr>
+            <ul class="media-list">
+
+              <li *ngFor="let c of comments;let i = index" [attr.data-index]="i" class="media">
+
+                <a class="pull-left">
+                  <ngx-avatar [name]="getUserName(c.owner)"></ngx-avatar>
+
+                </a>
+                <div class="media-body pad">
+                                <span class="text-muted pull-right">
+                                    <small class="text-muted">{{formatDate(c.date)}}  </small>
+                                </span>
+                  <strong class="text-success">by {{getUserName(c.owner)}}</strong>
+
+
+                  <a *ngIf="CanEditCommnet(c.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
+                     aria-expanded="false" aria-controls="collapseExample">
+                    edit
+                  </a>
+                  <button *ngIf="CanEditCommnet(c.owner)" (click)="deleateComment(c.id)" type="button" class="close"
+                          aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <p>
+                    {{c.text}}
+                  </p>
+                  <div class="collapse" id="root_{{i}}">
+                    <form #updateFrom="ngForm">
+                      <textarea [(ngModel)]="c.text" name="text"></textarea>
+                      <br>
+                      <button type="button" (click)="updateComment(c.id,updateFrom.value.text)"
+                              class="btn btn-primary btn-sm">Post
+                      </button>
+                    </form>
+
+                  </div>
+
+                  <a data-toggle="collapse" href="#root_subcomments_{{i}}" role="button"
+                     aria-expanded="false" aria-controls="collapseExample">
+                    {{c.comments.length}} subcomments
+                  </a>
+                  <div class="collapse" id="root_subcomments_{{i}}">
+                    <app-childcomment (update)="updateComments()" [comments]="c.comments" [level]="increment()"
+                                      [user]="user" [ids]="returnID(c.id)"
+                                      [isAuthorized]="isAuthorized"></app-childcomment>
+
+                  </div>
+
+
+                </div>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

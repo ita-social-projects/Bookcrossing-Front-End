@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+
   apiUrl: 'https://bookcrossingbackend-dev-as.azurewebsites.net',
   // apiUrl: 'https://localhost:44370',
   mapbox: {

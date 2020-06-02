@@ -68,6 +68,8 @@ import { ProfileAvatarComponent } from './shared/components/profile-avatar/profi
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { BookFilterBarComponent } from './shared/components/book-filter-bar/book-filter-bar.component';
 import { CurrentOwnedBooksComponent } from './shared/components/current-owned-books/current-owned-books.component';
+import { CommentComponent } from './shared/components/comment/comment.component';
+import { ChildcommentComponent } from './shared/components/comment/childcomment/childcomment.component';
 import {AdminTableComponent} from './shared/components/admin/admin-table/admin-table.component';
 import { GenresComponent } from './shared/components/admin/genres/genres.component';
 import { LocationsComponent } from './shared/components/admin/locations/locations.component';
@@ -128,6 +130,8 @@ import {StarRatingModule} from '@sreyaj/ng-star-rating';
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CurrentOwnedBooksComponent,
+    CommentComponent,
+    ChildcommentComponent,
     ContactsComponent,
     ReadBooksComponent,
     AdminTableComponent,

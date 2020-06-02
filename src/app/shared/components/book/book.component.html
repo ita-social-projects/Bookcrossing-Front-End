@@ -95,7 +95,6 @@
               </span>
             </div>
             <p [hidden]="!book?.notice" class="ml-xl-0 ml-4"><strong>Notice: </strong> {{ book?.notice }} </p>
-
           </div>
 
         </div>
@@ -108,6 +107,5 @@
       </div>
 
     </section>
-
-
+  <app-comment [bookId]="bookId"></app-comment>
   </div>

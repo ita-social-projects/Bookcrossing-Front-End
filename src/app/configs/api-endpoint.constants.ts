@@ -10,5 +10,7 @@ export const locationUrl = baseUrl + 'locations/';
 export const loginUrl = baseUrl + 'login';
 export const userUrl = baseUrl + 'users';
 export const genreUrl = baseUrl + 'genre/';
+export const commentRootUrl = baseUrl + 'bookrootcomments/';
+export const commentChildUrl = baseUrl + 'bookchildcomments/';
 export const refreshTokenUrl = loginUrl + '/refresh';
 

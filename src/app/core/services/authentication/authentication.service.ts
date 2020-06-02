@@ -29,15 +29,15 @@ export class AuthenticationService {
     return this.logoutEvent;
   }
 
-  constructor(private http: HttpClient,
-              private jwtHelper: JwtHelperService) {
-    this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
-    this.currentUser = this.currentUserSubject.asObservable();
-  }
+    constructor(private http: HttpClient,
+                private jwtHelper: JwtHelperService) {
+      this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
+      this.currentUser = this.currentUserSubject.asObservable();
+    }
 
-  public get currentUserValue(): IUser {
-    return this.currentUserSubject.value;
-  }
+    public get currentUserValue(): IUser {
+      return this.currentUserSubject.value;
+    }
 
   login(form) {
     return this.http.post<IUser>(this.baseUrl, form)
@@ -49,17 +49,16 @@ export class AuthenticationService {
           this.currentUserSubject.next(user);
           this.loginEvent.emit();
         }
+    return user;
+  }));
+}
 
-        return user;
-      }));
-  }
-
-  logout() {
-    localStorage.removeItem('RememberMe');
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
-    this.logoutEvent.emit();
-  }
+    logout() {
+      localStorage.removeItem('RememberMe');
+      localStorage.removeItem('currentUser');
+      this.currentUserSubject.next(null);
+      this.logoutEvent.emit();
+    }
 
   refresh(Token: IToken){
     return this.http.post<IUser>(this.refreshUrl,Token).pipe(map(user=>{
@@ -73,41 +72,41 @@ export class AuthenticationService {
   }
 
 
-  resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
-    return this.http.put(`${this.userUrl}/password/`, {
-      Password,
-      PasswordConfirmation,
-      Email,
-      ConfirmationNumber
-    });
-  }
+    resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
+      return this.http.put(`${this.userUrl}/password/`, {
+        Password,
+        PasswordConfirmation,
+        Email,
+        ConfirmationNumber
+      });
+    }
 
-  forgotPassword(email) {
-    return this.http.post(`${this.userUrl}/password/`, {
-      email
-    });
-  }
-  isAuthenticated() {
-    const token: string = localStorage.getItem('currentUser');
-    return token && !this.jwtHelper.isTokenExpired(token);
-  }
+    forgotPassword(email) {
+      return this.http.post(`${this.userUrl}/password/`, {
+        email
+      });
+    }
 
- getUserId() {
-    return this.http.get(`${this.userUrl}/id/`);
-  }
+    isAuthenticated() {
+      const token: string = localStorage.getItem("currentUser");
+      return token && !this.jwtHelper.isTokenExpired(token);
+    }
 
+    getUserId() {
+      return this.http.get(`${this.userUrl}/id/`)
+    }
 
-  isAdmin() {
-    return this.getUserRole() === 'Admin';
-  }
+    isAdmin() {
+      return this.getUserRole() === 'Admin';
+    }
 
-  getUserRole() {
-    const token: string = localStorage.getItem('currentUser');
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      const role = this.jwtHelper.decodeToken(token)[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        ];
-      return role;
+    getUserRole() {
+      const token: string = localStorage.getItem('currentUser');
+      if (token && !this.jwtHelper.isTokenExpired(token)) {
+        const role = this.jwtHelper.decodeToken(token)[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+          ];
+        return role;
+      }
     }
   }
-}
