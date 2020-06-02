@@ -1,6 +1,8 @@
 import {IRoomLocation} from './roomLocation';
 import { IRole } from './role';
 import { Role } from './role.enum';
+import {Token} from "@angular/compiler";
+import {IToken} from "./token";
 
 export interface IUser {
   id: number;
@@ -12,8 +14,5 @@ export interface IUser {
   userLocation: IRoomLocation;
   birthDate: Date;
   registeredDate: Date;
-  token?: {
-    jwt: string,
-    refreshToken: string
-  };
+  token:IToken;
 }

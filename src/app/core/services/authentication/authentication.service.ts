@@ -2,10 +2,13 @@ import {Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import {loginUrl} from '../../../configs/api-endpoint.constants';
+import {loginUrl, refreshTokenUrl} from '../../../configs/api-endpoint.constants';
 import {userUrl} from '../../../configs/api-endpoint.constants';
 import {IUser} from '../../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import {IToken} from "../../models/token";
+import {Token} from "@angular/compiler";
+
 
 
 @Injectable({providedIn: 'root'})
@@ -14,6 +17,7 @@ export class AuthenticationService {
   logoutEvent = new EventEmitter();
   readonly baseUrl = loginUrl;
   readonly userUrl = userUrl;
+  readonly refreshUrl = refreshTokenUrl;
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
 
@@ -36,11 +40,12 @@ export class AuthenticationService {
   }
 
   login(form) {
-    return this.http.post<any>(this.baseUrl, form)
+    return this.http.post<IUser>(this.baseUrl, form)
       .pipe(map(user => {
         if (user && user.token) {
           localStorage.setItem('RememberMe', form.RememberMe);
           localStorage.setItem('currentUser', JSON.stringify(user));
+          console.log('user creds is ',user);
           this.currentUserSubject.next(user);
           this.loginEvent.emit();
         }
@@ -54,6 +59,17 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.logoutEvent.emit();
+  }
+
+  refresh(Token: IToken){
+    return this.http.post<IUser>(this.refreshUrl,Token).pipe(map(user=>{
+       if(user && user.token){
+         console.log('received refresh ', user);
+         localStorage.setItem('currentUser',JSON.stringify(user));
+         this.currentUserSubject.next(user);
+       }
+       return user;
+     }));
   }
 
 
