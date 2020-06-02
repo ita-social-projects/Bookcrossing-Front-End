@@ -190,7 +190,6 @@ import {StarRatingModule} from '@sreyaj/ng-star-rating';
   providers: [
     BookService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     RequestService,
     LanguageService,
     NotificationService,
