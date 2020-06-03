@@ -1,6 +1,16 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {commentChildUrl, commentRootUrl} from '../../../configs/api-endpoint.constants';
+import {IRootInsertComment} from '../../models/comments/root-comment/rootInsert';
+import {IRootDeleteComment} from '../../models/comments/root-comment/rootDelete';
+import {IRootUpdateComment} from '../../models/comments/root-comment/rootUpdate';
+import {IChildDeleteComment} from '../../models/comments/child-comment/childDelete';
+import {IChildUpdateComment} from '../../models/comments/child-comment/childUpdate';
+import {IChildInsertComment} from '../../models/comments/child-comment/childInsert';
+import {IRootComment} from '../../models/comments/root-comment/root';
+import {Observable} from 'rxjs';
+import {IPage} from '../../models/page';
+import {IBook} from '../../models/book';
 
 @Injectable({
   providedIn: 'root'
@@ -13,66 +23,42 @@ export class CommentService {
   constructor(private http: HttpClient) {
   }
 
-  async getComments(id) {
-    return this.http.get(this.rootUrl + id).toPromise();
+  getComments(id) : Observable<IRootComment[]>{
+    return this.http.get<IRootComment[]>(this.rootUrl + id);
   }
 
 
-  postComment(_text, _bookid, _ownerid) {
-    return this.http.post(this.rootUrl,
-      {
-        text: _text,
-        bookId: _bookid,
-        ownerId: _ownerid
-      });
+  postComment(comment: IRootInsertComment): Observable<number> {
+    return this.http.post<number>(this.rootUrl, comment);
   }
 
-  deleteComment(_commentid, _ownerid) {
+  deleteComment(comment: IRootDeleteComment): Observable<number> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      body: {
-        id: _commentid,
-        ownerId: _ownerid
-      }
+      body: comment
     };
-    return this.http.delete(this.rootUrl, options);
+    return this.http.delete<number>(this.rootUrl, options);
   }
 
-  updateComment(_commentId, _text, _ownerId) {
-  return  this.http.put(this.rootUrl, {
-      id: _commentId,
-      text: _text,
-      ownerId: _ownerId
-    });
+  updateComment(comment: IRootUpdateComment): Observable<number> {
+    return  this.http.put<number>(this.rootUrl, comment);
   }
-  postChildComment(_ids,_text, _ownerid) {
-    return this.http.post(this.childUrl,
-      {
-        ids: _ids,
-        text: _text,
-        ownerId: _ownerid
-      });
+  postChildComment(comment: IChildInsertComment) {
+    return this.http.post(this.childUrl, comment);
   }
 
-  updateChildComment(_ids, _text, _ownerId) {
-    return  this.http.put(this.childUrl, {
-      ids: _ids,
-      text: _text,
-      ownerId: _ownerId
-    });
+  updateChildComment(comment: IChildUpdateComment) {
+    return  this.http.put(this.childUrl, comment);
   }
 
-  deleteChildComment(_ids, _ownerid) {
+  deleteChildComment(comment: IChildDeleteComment) {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       }),
-      body: {
-        ids: _ids,
-        ownerId: _ownerid
-      }
+      body: comment
     };
     return this.http.delete(this.childUrl, options);
   }

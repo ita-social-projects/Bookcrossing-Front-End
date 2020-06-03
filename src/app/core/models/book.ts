@@ -9,6 +9,7 @@ export interface IBook {
   publisher?: string;
   state: bookState;
   authors: IAuthor[];
+  rating: number;
   genres: IGenre[];
   imagePath?: string;
   notice?: string;

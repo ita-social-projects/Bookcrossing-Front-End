@@ -8,6 +8,7 @@
           <div class="panel-heading">
             Comment panel
           </div>
+          <ngx-star-rating [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
           <div class="">
             <textarea class="form-control width-40" [(ngModel)]='text' placeholder="write a comment..."
                       rows="3"></textarea>
@@ -15,7 +16,7 @@
             <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right">
               Post
             </button>
-            <a *ngIf="!isAuthorized" [routerLink]="['/login']">login to comment</a>
+            <a *ngIf="!isAuthenticated()" [routerLink]="['/login']">login to comment</a>
 
             <hr>
             <ul class="media-list">
@@ -41,11 +42,13 @@
                           aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
+                  <ngx-star-rating [filledColor]="'#FF8800'" [rating]="c.rating" readonly="true"></ngx-star-rating>
                   <p>
                     {{c.text}}
                   </p>
                   <div class="collapse" id="root_{{i}}">
                     <form #updateFrom="ngForm">
+                      <ngx-star-rating [filledColor]="'#FF8800'" [rating]="updateRating" (rated)="onEditRatingSet($event)"></ngx-star-rating>
                       <textarea [(ngModel)]="c.text" name="text"></textarea>
                       <br>
                       <button type="button" (click)="updateComment(c.id,updateFrom.value.text)"
@@ -62,7 +65,7 @@
                   <div class="collapse" id="root_subcomments_{{i}}">
                     <app-childcomment (update)="updateComments()" [comments]="c.comments" [level]="increment()"
                                       [user]="user" [ids]="returnID(c.id)"
-                                      [isAuthorized]="isAuthorized"></app-childcomment>
+                                      [isAuthorized]="isAuthenticated()"></app-childcomment>
 
                   </div>
 

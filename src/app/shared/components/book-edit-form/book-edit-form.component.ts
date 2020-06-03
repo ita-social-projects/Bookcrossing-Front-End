@@ -22,7 +22,6 @@ import {bookState} from '../../../core/models/bookState.enum';
 })
 export class BookEditFormComponent implements OnInit {
 
-@ViewChild("lastnameInput") inputLastname;
 @Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
 @Input() book : IBook
 @Input() isAdmin: boolean
@@ -38,7 +37,7 @@ editBookForm: FormGroup;
   authorsSubscription: SubscriptionLike;
   submitted = false;
   authorFocused: boolean = false;
-  lastnameInputVisible: boolean = false;
+  withoutAuthorChecked = false;
   newAuthor: IAuthor;
   selectedGenres = [];
 
@@ -59,7 +58,13 @@ constructor(
     this.authorsSubscription = this.editBookForm
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
-        this.filterAuthors(input);
+        if (typeof input === "string") {
+          this.filterAuthors(input?.trim());
+        }
+        if (this.isAuthorTyped(input)) {
+          this.parseAuthors(input);
+          input = "";
+        }
       });
       if (this.isAuthenticated()) {
         this.authenticationService.getUserId().subscribe(
@@ -96,7 +101,6 @@ constructor(
       title: new FormControl({value:this.book.name, disabled: false}, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl({value:this.book.publisher, disabled: false}),
-      authorLastname: new FormControl(null),
       authorFirstname: new FormControl(null),
       description: new FormControl({value:this.book.notice, disabled: false}),
       image: new FormControl({value:this.book.imagePath, disabled: false}),
@@ -139,13 +143,22 @@ constructor(
       selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
 
-    const bookAuthors: IAuthor[] = this.selectedAuthors.slice();
-    if(this.editBookForm.get("authorFirstname").value){
-      if (this.editBookForm.get("authorFirstname").value.trim()) {
-        await this.addNewAuthor();
-        bookAuthors.push(this.newAuthor);
-        this.newAuthor = undefined;
-      }
+    const authorInput = this.editBookForm.get("authorFirstname").value.trim();
+    if (authorInput) {
+      this.parseAuthors(authorInput);
+      this.newAuthor = undefined;
+    }
+
+    const bookAuthors: IAuthor[] = this.selectedAuthors
+      .slice()
+      .filter((x) => x.isConfirmed === true);
+    let newAuthors = this.selectedAuthors.filter(
+      (x) => x.isConfirmed === false
+    );
+
+    for (let i = 0; i < newAuthors.length; i++) {
+      const author = await this.addNewAuthor(newAuthors[i]);
+      bookAuthors.push(author);
     }
     let book: IBookPut = {
       id: this.book.id,
@@ -155,9 +168,11 @@ constructor(
       book.fieldMasks.push("BookGenre");
       book.bookGenre = selectedGenres;
     }
-    if(JSON.stringify(bookAuthors) !== JSON.stringify(this.book.authors)){
-      book.fieldMasks.push("BookAuthor");
-      book.bookAuthor = bookAuthors;
+    if(!this.withoutAuthorChecked){
+      if(JSON.stringify(bookAuthors) !== JSON.stringify(this.book.authors)){
+        book.fieldMasks.push("BookAuthor");
+        book.bookAuthor = bookAuthors;
+      }
     }
     if(this.editBookForm.get('title').value !== this.book.name){
       book.fieldMasks.push("Name");
@@ -193,12 +208,18 @@ constructor(
       );
     }
 
-    // after submmit subscription stops work
+    // after submit subscription stops work
     this.authorsSubscription.unsubscribe();
     this.authorsSubscription = this.editBookForm
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
-        this.filterAuthors(input);
+        if (typeof input === "string") {
+          this.filterAuthors(input?.trim());
+        }
+        if (this.isAuthorTyped(input)) {
+          this.parseAuthors(input);
+          input = "";
+        }
       });
   }
   chengeInActiveIfNeed(){
@@ -226,12 +247,18 @@ constructor(
       );
       return true;
     } else if (
-      (!form.get("authorFirstname").value?.trim() || !form.get("authorLastname").value?.trim()) &&
-      !this.selectedAuthors.length
+      !form.get("authorFirstname").value?.trim() &&
+      !this.selectedAuthors.length &&
+      !this.withoutAuthorChecked
     ) {
       return true;
     } else if (form.invalid) {
       return true;
+    } else if (
+      !this.withoutAuthorChecked &&
+      form.get("authorFirstname").value?.trim()
+    ) {
+      return !this.checkAuthorLastName(form.get("authorFirstname").value);
     } else {
       return false;
     }
@@ -260,16 +287,9 @@ constructor(
   }
 
 
-  async addNewAuthor() {
-    // let author: IAuthor;
-    let newAuthor: IAuthor = {
-      firstName: this.editBookForm.get("authorFirstname").value,
-      lastName: this.editBookForm.get("authorLastname").value
-        ? this.editBookForm.get("authorLastname").value
-        : "",
-      isConfirmed: false,
-    };
-    this.newAuthor = await this.authorService.addAuthor(newAuthor).toPromise();
+  async addNewAuthor(newAuthor) {
+    const author = await this.authorService.addAuthor(newAuthor).toPromise();
+    return author;
   }
 
   addAuthor(authors, author: IAuthor) {
@@ -344,11 +364,57 @@ constructor(
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
-  onPressSpace() {
-    this.lastnameInputVisible = true;
-    setTimeout(() => {
-      this.authorFocused = false;
-      this.inputLastname.nativeElement.focus();
-    }, 0);
+  isAuthorTyped(authorString: string): boolean {
+    if (/(\s*[a-zA-Z]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
+      return true;
+    }
+    return false;
   }
+
+  parseAuthors(authorString: string) {
+    const delim = /(\s+|,+|;+)/g;
+    authorString = authorString.replace(delim, " ").trim();
+
+    const words: string[] = authorString.split(" ");
+    let count = words.length;
+    for (let i = 0; i < count / 2; i++) {
+      if (words[0] && words[1]) {
+        const author: IAuthor = {
+          firstName: words[0] ? words[0] : null,
+          lastName: words[1] ? words[1] : null,
+          isConfirmed: false,
+        };
+
+        words.splice(0, 2);
+        if (author.firstName && author.lastName) {
+          this.selectedAuthors.push(author);
+        }
+      }
+    }
+
+    this.editBookForm.patchValue({ authorFirstname: " " });
+  }
+
+  changeAuthorInput() {
+    if (this.withoutAuthorChecked) {
+      this.editBookForm.get("authorFirstname").enable();
+    } else {
+      this.editBookForm.get("authorFirstname").disable();
+    }
+    this.withoutAuthorChecked = !this.withoutAuthorChecked;
+    this.selectedAuthors = [];
+    this.editBookForm.patchValue({ authorFirstname: " " });
+  }
+
+  //returns false if less than 2 words
+  checkAuthorLastName(input: string): boolean {
+    const delim = /(\s+|,+|;+)/g;
+    input = input.replace(delim, " ").trim();
+    const words: string[] = input.split(" ");
+    if (words.length < 2) {
+      return false;
+    }
+    return true;
+  }
+
 }

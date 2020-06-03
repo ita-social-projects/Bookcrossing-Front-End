@@ -3,13 +3,15 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUser} from '../../../../core/models/user';
 import {CommentService} from '../../../../core/services/commment/comment.service';
+import {IChildDeleteComment} from '../../../../core/models/comments/child-comment/childDelete';
+import {IChildUpdateComment} from '../../../../core/models/comments/child-comment/childUpdate';
+import {IChildInsertComment} from '../../../../core/models/comments/child-comment/childInsert';
+
 
 @Component({
   selector: 'app-childcomment',
   templateUrl: './childcomment.component.html',
-  styleUrls: ['./childcomment.component.scss'],
-  template: `
-    <app-childcomment [comments]="comments" [level]="level" [user]="user"></app-childcomment>`
+  styleUrls: ['./childcomment.component.scss']
 })
 export class ChildcommentComponent implements OnInit {
   @Input() comments;
@@ -75,21 +77,33 @@ export class ChildcommentComponent implements OnInit {
 
   async deleateComment(id) {
     let newids = this.returnID(id);
+    let deleteComment: IChildDeleteComment = {
+      id: newids, ownerId: this.user.id
+    }
+    this.commentservice.deleteChildComment(deleteComment).subscribe((r) => {
 
-    this.commentservice.deleteChildComment(newids, this.user.id).subscribe((r) => {
     });
     this.UpdateComments();
   }
 
   updateComment(id, text) {
     let newids = this.returnID(id);
-    this.commentservice.updateChildComment(newids, text, this.user.id).subscribe((r) => {
+    let updateComment: IChildUpdateComment = {
+      id: newids, ownerId: this.user.id, text: text
+    }
+    this.commentservice.updateChildComment(updateComment).subscribe((r) => {
+
     });
     this.UpdateComments();
   }
 
   PostComment() {
-    this.commentservice.postChildComment(this.ids, this.text, this.user.id).subscribe((r) => {
+    let postComment: IChildInsertComment = {
+      id: this.ids, ownerId: this.user.id, string: this.text
+
+    }
+    this.commentservice.postChildComment(postComment).subscribe((r) => {
+
 
     });
     this.text = '';

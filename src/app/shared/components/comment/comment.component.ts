@@ -4,6 +4,13 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUser} from '../../../core/models/user';
 import {__await} from 'tslib';
+import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
+import {UserService} from '../../../core/services/user/user.service';
+import {IRootComment} from '../../../core/models/comments/root-comment/root';
+import {IRootInsertComment} from '../../../core/models/comments/root-comment/rootInsert';
+import {IRootDeleteComment} from '../../../core/models/comments/root-comment/rootDelete';
+import {IRootUpdateComment} from '../../../core/models/comments/root-comment/rootUpdate';
+import {element} from 'protractor';
 
 @Component({
   selector: 'app-comment',
@@ -13,14 +20,16 @@ import {__await} from 'tslib';
 })
 export class CommentComponent implements OnInit {
   @Input() bookId = 0;
-  comments;
-  user: IUser = null;
+  comments: IRootComment[];
+  user: IUser;
   text = '';
+  rating = 0;
+  updateRating = 0;
   level = 0;
-  isAuthorized;
 
 
-  constructor(private  commentservice: CommentService,
+  constructor(private  commentservice: CommentService, private authenticationService: AuthenticationService,
+              private userService: UserService
   ) {
   }
 
@@ -28,15 +37,29 @@ export class CommentComponent implements OnInit {
     return this.level++;
   }
 
-  async ngOnInit() {
-    await this.updateComments();
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
-    this.isAuthorized = (this.user !== null);
+  ngOnInit() {
+    this.updateComments();
+    this.getUser()
+  }
+
+  isAuthenticated(){
+    return this.authenticationService.isAuthenticated()
+  }
+
+  getUser(){
+    if(this.isAuthenticated()){
+      console.log("Authencicated")
+      this.authenticationService.getUserId().subscribe((value: number)=> {
+        this.userService.getUserById(value).subscribe((value: IUser)=>{
+          this.user = value;
+        })
+      })
+    }
   }
 
 
   canCommit() {
-    return this.isAuthorized && (this.text !== '');
+    return this.isAuthenticated() && (this.text !== '');
   }
 
   CopyText(text) {
@@ -59,7 +82,7 @@ export class CommentComponent implements OnInit {
   }
 
   CanEditCommnet(owner) {
-    if (owner === null || this.user === null) {
+    if (owner === null || typeof this.user === 'undefined') {
       return false;
     } else {
       return owner.id === this.user.id;
@@ -80,35 +103,47 @@ export class CommentComponent implements OnInit {
     return ids;
   }
 
-  async updateComments() {
-    console.log('update');
-    this.comments = await this.commentservice.getComments(this.bookId);
-    this.comments.sort((a, b) => {
-      // @ts-ignore
-      return new Date(b.date) - new Date(a.date);
+  updateComments() {
+    this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[])=> {
+      this.comments = value;
     });
   }
 
   async PostComment() {
-
-    this.commentservice.postComment(this.text, this.bookId, this.user.id).subscribe((r) => {
+    let postComment: IRootInsertComment = {
+      bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
+    }
+    this.commentservice.postComment(postComment).subscribe((r) => {
 
     });
     this.text = '';
-    await this.updateComments();
+    this.ngOnInit()
   }
 
   async deleateComment(id) {
+    let deleteComment: IRootDeleteComment = {
+      id: id, ownerId: this.user.id
 
-    this.commentservice.deleteComment(id, this.user.id).subscribe((r) => {
+    }
+    this.commentservice.deleteComment(deleteComment).subscribe((r) => {
     });
-    this.updateComments();
+    this.ngOnInit()
   }
 
   async updateComment(id, text) {
-    this.commentservice.updateComment(id, text, this.user.id).subscribe((r) => {
+    let updateComment: IRootUpdateComment = {
+      id: id, ownerId: this.user.id, rating: this.updateRating, text: text
+    }
+    this.commentservice.updateComment(updateComment).subscribe((r) => {
     });
-    this.updateComments();
+    this.ngOnInit()
+  }
+
+  onRatingSet($event: number) {
+    this.rating = $event;
+  }
+  onEditRatingSet($event: number) {
+    this.updateRating = $event;
   }
 
 }
