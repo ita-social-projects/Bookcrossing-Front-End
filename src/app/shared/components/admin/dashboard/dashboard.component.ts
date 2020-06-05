@@ -199,6 +199,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.translateSubscription.unsubscribe();
-    this.languageChange.unsibscribe();
   }
 }

@@ -43,7 +43,7 @@ export class LocationsComponent implements OnInit {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
-      if (this.showInactive === undefined && this.queryParams.filters[0]) {
+      if (this.showInactive === undefined) {
         this.showInactive = false;
         this.queryParams.filters[0] = {propertyName: 'isActive', value: 'false', method: 'NotEqual', operand: 'And'};
       } else if (!this.queryParams.filters[0]) {

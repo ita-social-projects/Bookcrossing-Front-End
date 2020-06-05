@@ -62,6 +62,9 @@ export class LocationFormComponent implements OnInit {
         Validators.maxLength(50)]),
       isActive: new FormControl(null, Validators.required),
     });
+    if (!this.isEdited) {
+      this.addLocationForm.controls['isActive'].setValue(true);
+    }
   }
 
   onSubmit() {

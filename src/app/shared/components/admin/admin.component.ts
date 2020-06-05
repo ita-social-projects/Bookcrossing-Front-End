@@ -13,6 +13,10 @@ export class AdminComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private routeActive: ActivatedRoute) { }
 
   ngOnInit(): void {
+    const activeChild = this.routeActive.children.length;
+    if (activeChild === 0) {
+      this.router.navigate(['dashboard'], {relativeTo: this.routeActive});
+    }
   }
   ngOnDestroy() {
   }
