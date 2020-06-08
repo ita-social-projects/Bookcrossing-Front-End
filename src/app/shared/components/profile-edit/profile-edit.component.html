@@ -42,34 +42,38 @@
       </div>
     </div>
 
-    <!--&lt;!&ndash;Birthday&ndash;&gt;
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+        <p class="input-label">Birthday:</p>
       </div>
       <div class="col-4">
-        <div class="md-form">
-          <input formControlName="birthday"
-                 type="date"
-                 id="input"
-                 class="form-control" mdbInput>
-          <label for="input">Choose your Birthday</label>
-        </div>
+        <!--<mat-form-field>
+          <mat-label>Choose a date</mat-label>
+          <input matInput formControlName="birthDate" [matDatepicker]="birthDate">
+          <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+          <mat-datepicker #birthDate startView="year" [startAt]="user.birthDate"></mat-datepicker>
+        </mat-form-field>-->
+        <mat-form-field color="accent">
+          <mat-label>Inherited calendar color</mat-label>
+          <input matInput [matDatepicker]="picker1" formControlName="birthDate">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
       </div>
     </div>
-    &lt;!&ndash;Location&ndash;&gt;
+
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+        <p class="input-label">Location :<span class="asterisk"> *</span></p>
       </div>
       <div class="col-4">
         <mat-select class="form-control select-dropdown"
-                    placeholder="Location">
+                    placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}">
           <mat-option *ngFor="let location of locations" [value]="location.id" [matTooltip]="location.city + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
             {{location.officeName}}, {{location.street}}</mat-option>
         </mat-select>
       </div>
-    </div>-->
+    </div>
 
     <!-- Edit user button -->
     <button class="btn btn-info" type="submit" name="submit">

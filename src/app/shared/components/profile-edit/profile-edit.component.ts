@@ -30,7 +30,7 @@ export class ProfileEditComponent implements OnInit {
   location: ILocation;
   locations: ILocation[] = [];
   submitted = false;
-  fieldMasks = ['FirstName', 'LastName'];
+  fieldMasks = ['FirstName', 'LastName', 'BirthDate'];
   private notificationService: NotificationService;
 
   constructor(
@@ -59,29 +59,34 @@ export class ProfileEditComponent implements OnInit {
 
   buildForm() {
     this.editUserForm = new FormGroup({
-      firstName: new FormControl({value: this.user.firstName, disabled: false}),
-      lastName: new FormControl({value: this.user.lastName, disabled: false}),
-      /*birthday: new FormControl({value: this.user.birthday, disabled: false}),*/
+      firstName: new FormControl({value: this.user.firstName, disabled: false}, Validators.required),
+      lastName: new FormControl({value: this.user.lastName, disabled: false}, Validators.required),
+      birthDate: new FormControl({value: this.user.birthDate, disabled: false})
       /*userLocation: new FormControl({value: this.user.userLocation, disabled: false})*/
     });
-
   }
 
   onSubmit() {
+    this.editUserForm.markAllAsTouched();
+    if (this.editUserForm.invalid) {
+      return;
+    }
     this.submitted = true;
 
-    let user: IUserPut = {
+    const user: IUserPut = {
       id: this.user.id,
       middleName: this.user.middleName,
       firstName: this.editUserForm.get('firstName').value,
       lastName: this.editUserForm.get('lastName').value,
-      /*birthday: this.editUserForm.get('birthday').value,*/
+      birthDate: /*this.user.birthDate,*/ this.editUserForm.get('birthDate').value,
       email: this.user.email,
       password: this.password,
+      registeredDate: this.user.registeredDate,
+      userRoomId: this.user.userLocation,
       roleId: this.user.role.id,
       fieldMasks: this.fieldMasks
     };
-
+    console.log(user);
     this.userService.editUser(user.id, user).subscribe(
       (data: boolean) => {
         this.onCancel.emit();
@@ -94,7 +99,7 @@ export class ProfileEditComponent implements OnInit {
     this.editUserForm.reset();
   }
 
-  getFormData(user: IUserPut): FormData {
+  /*getFormData(user: IUserPut): FormData {
     const formData = new FormData();
     Object.keys(user).forEach((key, index) => {
       if (user[key]) {
@@ -103,8 +108,7 @@ export class ProfileEditComponent implements OnInit {
             if (key == 'fieldMasks') {
               console.log(`${key}[${index}]` + ' ' + user[key][index]);
               formData.append(`${key}[${index}]`, user[key][index]);
-            }
-            else{
+            } else{
               console.log(`${key}[${index}][id]` + ' ' + user[key][index]['id']);
               formData.append(`${key}[${index}][id]`, user[key][index]['id']);
             }
@@ -116,7 +120,7 @@ export class ProfileEditComponent implements OnInit {
       }
     });
     return formData;
-  }
+  }*/
 
   async cancel() {
     this.isEditing = false;
