@@ -89,6 +89,7 @@ import {MatListModule} from '@angular/material/list';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
 import {UserNamePipe} from './shared/pipes/userName.pipe';
 import {StarRatingModule} from '@sreyaj/ng-star-rating';
+import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
@@ -145,8 +146,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     ProfileComponent,
     ProfileEditComponent,
     DonateDialogComponent,
-    NotificationComponent
-
+    NotificationComponent,
+    BreadcrumbValuePipe
   ],
   imports: [
     BrowserModule,
