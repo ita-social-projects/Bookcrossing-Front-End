@@ -9,5 +9,9 @@ export interface IUserPut {
   email: string;
   password: string;
   roleId: number;
+  birthDate: Date;
+  registeredDate: Date;
+  userRoomId: IRoomLocation;
   fieldMasks?: string[];
 }
+

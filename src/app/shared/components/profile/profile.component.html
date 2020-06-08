@@ -15,16 +15,16 @@
     <td>Email</td>
     <td>{{user.email}}</td>
   </tr>
-  <!--<tr>
-    <td>Location</td>
-    <td *ngFor="let location of user.userLocation" class ="location"><span>{{location.location.city}}</span><span>{{location.location.street}}</span>
-      <span>{{location.location.rooms}}</span>
-    </td>
-  </tr>
   <tr>
     <td>Birthday</td>
-    <td>birthday here</td>
-  </tr>-->
+    <td>{{user.birthDate | date }}</td>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td class ="location"><span>{{user.userLocation.location.city}}</span><span>{{user.userLocation.location.street}}</span>
+      <span>{{user.userLocation.location.rooms}}</span>
+    </td>
+  </tr>
   <tr>
     <td>
       <button (click)="showEditForm(user)" class="btn peach-gradient">Edit</button>
