@@ -1,13 +1,19 @@
 <ng-template appRef>
   <!--Add Form-->
 </ng-template>
-<div class="container my-5 py-5 z-depth-1">
 
+<div class="container my-4">
+
+  <mdb-breadcrumb>
+    <mdb-breadcrumb-item class="blue-text" (click)="navigate()" >{{previousBooksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+    <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
+  </mdb-breadcrumb>
+
+
+<div class="container my-3 py-5 z-depth-1">
     <section class="text-center">
-
       <div class="row">
         <div class="col-lg-4">
-
             <div class="carousel-inner text-center text-md-left" role="listbox">
               <div class="size carousel-item active zoom">
                 <div class="mask flex-center waves-effect waves-light">
@@ -109,3 +115,4 @@
     </section>
   <app-comment [bookId]="bookId"></app-comment>
   </div>
+</div>

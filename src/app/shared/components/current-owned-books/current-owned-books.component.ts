@@ -34,6 +34,7 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
   totalSize: number;
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
+  route = this.router.url;
 
   selectedGenres: number[];
 
@@ -56,7 +57,13 @@ export class CurrentOwnedBooksComponent implements OnInit, OnDestroy {
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
+    this.router.events.subscribe((val) => {
+      if( this.router.url != ''){
+        this.route =  this.router.url;
+      } 
+    });
   }
+  
   getUserId(){
     if (this.isAuthenticated()) {
       this.authentication.getUserId().subscribe((value: number) => {

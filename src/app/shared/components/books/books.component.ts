@@ -34,8 +34,9 @@ export class BooksComponent implements OnInit,OnDestroy {
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];
+  route = this.router.url;
 
-
+  
   constructor(private routeActive: ActivatedRoute,
     private router: Router,
     private bookService: BookService,
@@ -54,7 +55,13 @@ export class BooksComponent implements OnInit,OnDestroy {
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
+    this.router.events.subscribe((val) => {
+      if( this.router.url != ''){
+        this.route =  this.router.url;
+      } 
+    });
   }
+
   isAuthenticated(){
     return this.authentication.isAuthenticated();
   }
