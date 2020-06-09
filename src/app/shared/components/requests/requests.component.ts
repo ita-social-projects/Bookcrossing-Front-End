@@ -34,24 +34,30 @@ export class RequestsComponent implements OnInit {
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
   apiUrl: string = environment.apiUrl;
+  route = this.router.url;
 
   constructor(
     private translate: TranslateService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
+    private routeActive: ActivatedRoute,
     private requestService: RequestService,
     private searchBarService : SearchBarService,
     private router : Router,
     private dialogService: DialogService,
-    private authentication: AuthenticationService
+    private authentication: AuthenticationService,
   ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params: Params) => {
+    this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
       this.populateDataFromQuery();
       this.getUserRequests(this.queryParams);
     })
+    this.router.events.subscribe((val) => {
+      if( this.router.url != ''){
+        this.route =  this.router.url;
+      } 
+    });
   }
 
   isAuthenticated(){
@@ -138,7 +144,7 @@ export class RequestsComponent implements OnInit {
   private changeUrl(): void {
     this.router.navigate(['.'],
       {
-        relativeTo: this.route,
+        relativeTo: this.routeActive,
         queryParams: this.queryParams,
       });
   }
@@ -150,5 +156,4 @@ export class RequestsComponent implements OnInit {
       this.isBlockView = false;
     }
   }
-
 }

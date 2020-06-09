@@ -4,7 +4,7 @@ import {AuthenticationService} from 'src/app/core/services/authentication/authen
 import {switchMap} from 'rxjs/operators';
 import {RequestService} from 'src/app/core/services/request/request.service';
 import {BookService} from 'src/app/core/services/book/book.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {bookUrl} from 'src/app/configs/api-endpoint.constants';
 import {IBook} from 'src/app/core/models/book';
 import {NotificationService} from '../../../core/services/notification/notification.service';
@@ -18,6 +18,7 @@ import {environment} from 'src/environments/environment';
 import {BookEditFormComponent} from '../book-edit-form/book-edit-form.component';
 import {RefDirective} from '../../directives/ref.derictive';
 import {IBookPut} from 'src/app/core/models/bookPut';
+import { booksPage } from 'src/app/core/models/booksPage.enum';
 
 @Component({
   selector: 'app-book',
@@ -39,11 +40,13 @@ export class BookComponent implements OnInit {
     firstOwner: IUser = null;
     imagePath: string;
     disabledButton: boolean = false;
+    previousBooksPage: booksPage;
 
   constructor(
     private translate: TranslateService,
     private notificationService: NotificationService,
-    private route: ActivatedRoute,
+    private router: Router,
+    private routeActive: ActivatedRoute,
     private bookService: BookService,
     private requestService: RequestService,
     private dialogService: DialogService,
@@ -54,7 +57,7 @@ export class BookComponent implements OnInit {
 
   ngOnInit() {
 
-    this.route.paramMap.pipe(
+    this.routeActive.paramMap.pipe(
       switchMap(params => params.getAll('id'))
   )
   .subscribe(data => this.bookId = +data);
@@ -68,6 +71,11 @@ export class BookComponent implements OnInit {
     this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
     this.getReadCount(value.id);
   });
+  this.previousBooksPage = history.state.booksPage;
+}
+
+navigate(){
+  this.router.navigateByUrl(history.state.previousRoute);
 }
 
 isAuthenticated() {
