@@ -24,7 +24,7 @@ export class CommentComponent implements OnInit {
   user: IUser;
   text = '';
   rating = 0;
-  updateRating = 0;
+  updateRating = undefined;
   level = 0;
 
 
@@ -104,12 +104,17 @@ export class CommentComponent implements OnInit {
   }
 
   updateComments() {
+    console.log("dadada")
     this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[])=> {
       this.comments = value;
+      this.comments.sort((a, b) => {
+        // @ts-ignore
+        return new Date(b.date) - new Date(a.date);
+      });
     });
   }
 
-  async PostComment() {
+  PostComment() {
     let postComment: IRootInsertComment = {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
     }
@@ -118,9 +123,10 @@ export class CommentComponent implements OnInit {
     });
     this.text = '';
     this.ngOnInit()
+    this.updateComments()
   }
 
-  async deleateComment(id) {
+  deleateComment(id) {
     let deleteComment: IRootDeleteComment = {
       id: id, ownerId: this.user.id
 
@@ -128,15 +134,20 @@ export class CommentComponent implements OnInit {
     this.commentservice.deleteComment(deleteComment).subscribe((r) => {
     });
     this.ngOnInit()
+    this.updateComments()
   }
 
-  async updateComment(id, text) {
+  updateComment(id, text, rating) {
+    if(typeof this.updateRating === 'undefined'){
+      this.updateRating = rating;
+    }
     let updateComment: IRootUpdateComment = {
       id: id, ownerId: this.user.id, rating: this.updateRating, text: text
     }
     this.commentservice.updateComment(updateComment).subscribe((r) => {
     });
     this.ngOnInit()
+    this.updateComments()
   }
 
   onRatingSet($event: number) {
