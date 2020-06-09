@@ -104,7 +104,7 @@ constructor(
       authorFirstname: new FormControl(null),
       description: new FormControl({value:this.book.notice, disabled: false}),
       image: new FormControl({value:this.book.imagePath, disabled: false}),
-      inactive: new FormControl(null)
+      inactive: new FormControl(false)
     });
     if(this.book.state === bookState.inActive){
       this.isInActive = true;
@@ -142,24 +142,31 @@ constructor(
       const id = this.editBookForm.get('genres').value[i];
       selectedGenres.push({ id: id, name: this.getGenreById(id) });
     }
+    let bookAuthors: IAuthor[];
 
-    const authorInput = this.editBookForm.get("authorFirstname").value.trim();
-    if (authorInput) {
-      this.parseAuthors(authorInput);
-      this.newAuthor = undefined;
+    if(this.editBookForm.get("authorFirstname").value !== null){
+      const authorInput = this.editBookForm.get("authorFirstname").value.trim();
+      if (authorInput) {
+        this.parseAuthors(authorInput);
+        this.newAuthor = undefined;
+      }
+
+       bookAuthors = this.selectedAuthors
+        .slice()
+        .filter((x) => x.isConfirmed === true);
+      let newAuthors = this.selectedAuthors.filter(
+        (x) => x.isConfirmed === false
+      );
+
+      for (let i = 0; i < newAuthors.length; i++) {
+        const author = await this.addNewAuthor(newAuthors[i]);
+        bookAuthors.push(author);
+      }
+    }
+    else {
+      bookAuthors = this.selectedAuthors
     }
 
-    const bookAuthors: IAuthor[] = this.selectedAuthors
-      .slice()
-      .filter((x) => x.isConfirmed === true);
-    let newAuthors = this.selectedAuthors.filter(
-      (x) => x.isConfirmed === false
-    );
-
-    for (let i = 0; i < newAuthors.length; i++) {
-      const author = await this.addNewAuthor(newAuthors[i]);
-      bookAuthors.push(author);
-    }
     let book: IBookPut = {
       id: this.book.id,
       fieldMasks: []
@@ -173,6 +180,10 @@ constructor(
         book.fieldMasks.push("BookAuthor");
         book.bookAuthor = bookAuthors;
       }
+    }
+    else {
+      book.fieldMasks.push("BookAuthor");
+      book.bookAuthor = [];
     }
     if(this.editBookForm.get('title').value !== this.book.name){
       book.fieldMasks.push("Name");
@@ -408,6 +419,7 @@ constructor(
 
   //returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
+
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, " ").trim();
     const words: string[] = input.split(" ");
