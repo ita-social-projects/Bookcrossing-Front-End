@@ -66,6 +66,7 @@ export class AuthenticationService {
          console.log('received refresh ', user);
          localStorage.setItem('currentUser',JSON.stringify(user));
          this.currentUserSubject.next(user);
+         this.loginEvent.emit();
        }
        return user;
      }));
