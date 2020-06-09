@@ -3,6 +3,8 @@
       [(selectedGenres)]="selectedGenres"
       [(selectedLocation)]="queryParams.location"
       [(availableSelected)]="queryParams.showAvailable"
+      [(orderByField)]="queryParams.orderByField"
+      [(orderByFieldAscending)]="queryParams.orderByAscending"
       [showAvailable]="booksPage!==2"
       (filterChange)="onFilterChange($event)"
       (viewMode)="onViewModeChange($event)"
