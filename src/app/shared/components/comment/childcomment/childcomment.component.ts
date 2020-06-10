@@ -78,28 +78,30 @@ export class ChildcommentComponent implements OnInit {
   async deleateComment(id) {
     let newids = this.returnID(id);
     let deleteComment: IChildDeleteComment = {
-      id: newids, ownerId: this.user.id
+      ids: newids, ownerId: this.user.id
     }
     this.commentservice.deleteChildComment(deleteComment).subscribe((r) => {
 
     });
-    this.UpdateComments();
+    this.ngOnInit()
+    this.UpdateComments()
   }
 
   updateComment(id, text) {
     let newids = this.returnID(id);
     let updateComment: IChildUpdateComment = {
-      id: newids, ownerId: this.user.id, text: text
+      ids: newids, ownerId: this.user.id, text: text
     }
     this.commentservice.updateChildComment(updateComment).subscribe((r) => {
 
     });
-    this.UpdateComments();
+    this.ngOnInit()
+    this.UpdateComments()
   }
 
   PostComment() {
     let postComment: IChildInsertComment = {
-      id: this.ids, ownerId: this.user.id, string: this.text
+      ids: this.ids, ownerId: this.user.id, text: this.text
 
     }
     this.commentservice.postChildComment(postComment).subscribe((r) => {
@@ -107,6 +109,7 @@ export class ChildcommentComponent implements OnInit {
 
     });
     this.text = '';
-    this.UpdateComments();
+    this.ngOnInit()
+    this.UpdateComments()
   }
 }

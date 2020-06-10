@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate([`${this.redirectUrl}`]);
           }
           else{
-            this.router.navigate(['/books']);
+            this.router.navigate(['/']);
           }
         },
         error => {

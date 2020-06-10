@@ -45,7 +45,7 @@ export class SearchBarComponent implements OnInit {
     {
       relativeTo: this.routeActive,
       queryParams: this.bookParams,
-      queryParamsHandling: 'merge'
+      queryParamsHandling: !this.router.url.startsWith('/books') ? '' : 'merge'
     });
   }
 }

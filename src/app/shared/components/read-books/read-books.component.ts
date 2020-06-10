@@ -34,6 +34,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
   totalSize: number;
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
+  route = this.router.url;
 
   selectedGenres: number[];
 
@@ -55,6 +56,11 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
       this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
+    });
+    this.router.events.subscribe((val) => {
+      if( this.router.url != ''){
+        this.route =  this.router.url;
+      } 
     });
   }
 

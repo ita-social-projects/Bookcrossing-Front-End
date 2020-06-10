@@ -18,7 +18,8 @@ export class BookFilterBarComponent implements OnInit {
   @Output() selectedLocationChange: EventEmitter<number> = new EventEmitter<number>();
   @Output() availableSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() viewMode: EventEmitter<string> = new EventEmitter<string>()
-
+  @Output() orderByFieldChange:EventEmitter<string> = new EventEmitter<string>();
+  @Output() orderByFieldAscendingChange:EventEmitter<boolean> = new EventEmitter<boolean>();
   genres: IGenre[]
   selectedMode: string;
   locations: ILocation[];
@@ -26,6 +27,8 @@ export class BookFilterBarComponent implements OnInit {
   @Input() selectedLocation: number;
   @Input() availableSelected?: boolean;
   @Input() showAvailable: boolean = true;
+  @Input() orderByField:string;
+  @Input() orderByFieldAscending: boolean = true;
   constructor(
     private genreService: GenreService,
     private locationService: LocationService,
@@ -39,7 +42,6 @@ export class BookFilterBarComponent implements OnInit {
   }
   notifyFilterChange() {
     this.filterChange.emit(true);
-
   }
   //Categories
   onCategoriesChange(isOpened: boolean) {
@@ -108,5 +110,22 @@ export class BookFilterBarComponent implements OnInit {
       this.selectedMode = 'list'
       this.viewMode.emit("list")
     }
+  }
+
+  onOrderByFieldChange() {
+
+    this.orderByFieldChange.emit(this.orderByField);
+    this.notifyFilterChange();
+  }
+
+  onOrderByFieldReset() {
+    this.orderByFieldChange.emit(null);
+    this.notifyFilterChange();
+  }
+
+  onOrderByAscendingChange() {
+    this.orderByFieldAscending= !this.orderByFieldAscending;
+    this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
+    this.notifyFilterChange();
   }
 }
