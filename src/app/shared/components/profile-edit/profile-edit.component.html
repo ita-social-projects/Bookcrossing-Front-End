@@ -5,15 +5,20 @@
     #ngForm="ngForm"
     (ngSubmit)="onSubmit()"
     class="form-popup text-center border border-light p-5">
-    <p class="h2 mb-4 title">Profile Edit</p>
 
     <!--First Name-->
+    <div *ngIf="editUserForm.get('firstName').errors && editUserForm.get('firstName').touched">
+      <div *ngIf="editUserForm.get('firstName').errors?.required" class="validation-error">
+        {{'common-errors.validation-required' | translate}}
+      </div>
+    </div>
     <div>
       <div class="form-row mb-4">
+        <div class="col-2"></div>
         <div class="col-3">
-          <p class="input-label">First name:<span class="asterisk"> *</span></p>
+          <p class="input-label padding-left">First name :<span class="asterisk"> *</span></p>
         </div>
-        <div class="col-4">
+        <div class="col-3">
           <input
             formControlName="firstName"
             type="text"
@@ -22,15 +27,22 @@
             'is-invalid': submitted && editUserForm.controls.firstName.errors
           }"/>
         </div>
+        <div class="col-2"></div>
       </div>
     </div>
 
     <!--Last Name-->
-    <div class="form-row mb-4">
-      <div class="col-3">
-        <p class="input-label">Last name:<span class="asterisk"> *</span></p>
+    <div *ngIf="editUserForm.get('lastName').errors && editUserForm.get('lastName').touched">
+      <div *ngIf="editUserForm.get('lastName').errors?.required" class="validation-error">
+        {{'common-errors.validation-required' | translate}}
       </div>
-      <div class="col-4">
+    </div>
+    <div class="form-row mb-4">
+      <div class="col-2"></div>
+      <div class="col-3">
+        <p class="input-label padding-left">Last name:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-3">
         <input
           formControlName="lastName"
           type="text"
@@ -40,45 +52,95 @@
           }"
         />
       </div>
+      <div class="col-2"></div>
     </div>
 
     <div class="form-row mb-4">
+      <div class="col-2"></div>
       <div class="col-3">
-        <p class="input-label">Birthday:</p>
+        <p class="input-label padding-left">Email :</p>
       </div>
-      <div class="col-4">
-        <!--<mat-form-field>
-          <mat-label>Choose a date</mat-label>
-          <input matInput formControlName="birthDate" [matDatepicker]="birthDate">
-          <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
-          <mat-datepicker #birthDate startView="year" [startAt]="user.birthDate"></mat-datepicker>
-        </mat-form-field>-->
-        <mat-form-field color="accent">
-          <mat-label>Inherited calendar color</mat-label>
+      <div class="col-3 ">
+        <span class="padding-left">{{user.email}}</span>
+      </div>
+      <div class="col-2"></div>
+    </div>
+
+    <div class="form-row mb-4">
+      <div class="col-2"></div>
+      <div class="col-3">
+        <p class="input-label padding-left">Birthday :</p>
+      </div>
+      <div class="col-3 ">
+        <mat-form-field color="accent" class="padding-left">
+          <mat-label>Pick birthday</mat-label>
           <input matInput [matDatepicker]="picker1" formControlName="birthDate">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
       </div>
+      <div class="col-2"></div>
     </div>
-
     <div class="form-row mb-4">
+      <div class="col-2"></div>
       <div class="col-3">
-        <p class="input-label">Location :<span class="asterisk"> *</span></p>
+        <p class="input-label padding-left">Location :<span class="asterisk"> *</span></p>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <mat-select class="form-control select-dropdown"
                     placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}">
-          <mat-option *ngFor="let location of locations" [value]="location.id" [matTooltip]="location.city + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
+          <mat-option *ngFor="let location of locations" (click)="newLocation(location)" [value]="location.id" [matTooltip]="location.city
+                                    + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
             {{location.officeName}}, {{location.street}}</mat-option>
         </mat-select>
       </div>
+      <div class="col-2"></div>
     </div>
 
-    <!-- Edit user button -->
-    <button class="btn btn-info" type="submit" name="submit">
-      Save
-    </button>
-    <input type="button" class="btn" (click)="cancel()" value="Cancel" />
+    <div *ngIf="editUserForm.get('room').errors && editUserForm.get('room').touched">
+      <div *ngIf="editUserForm.get('room').errors?.required" class="validation-error">
+        {{'common-errors.validation-required' | translate}}
+      </div>
+      <div *ngIf="editUserForm.get('room').errors.minlength" class="validation-error">
+        {{'common-errors.validation-min-length' | translate:{value:editUserForm.get('room').errors?.minlength?.requiredLength} }}
+      </div>
+      <div *ngIf="editUserForm.get('room').errors.maxlength" class="validation-error">
+        {{'common-errors.validation-max-length' | translate:{value:editUserForm.get('room').errors?.maxlength?.requiredLength} }}
+      </div>
+    </div>
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-2"></div>
+        <div class="col-3">
+          <p class="input-label padding-left">Room number:<span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-3">
+          <input
+            formControlName="room"
+            type="number"
+            class="form-control"
+
+            [ngClass]="{
+            'is-invalid': submitted && editUserForm.controls.room.errors
+          }"/>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-2"></div>
+        <div class="col-3"></div>
+        <div class="col-3">
+          <!-- Edit user button -->
+          <button class="btn btn-info" type="submit" name="submit">
+            Save
+          </button>
+          <input type="button" class="btn" (click)="cancel()" value="Cancel" />
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+
   </form>
 </section>
