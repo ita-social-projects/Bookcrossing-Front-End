@@ -1,5 +1,5 @@
 export interface IChildInsertComment {
-  id?: string[];
-  string?: string;
+  ids?: string[];
+  text?: string;
   ownerId: number;
 }

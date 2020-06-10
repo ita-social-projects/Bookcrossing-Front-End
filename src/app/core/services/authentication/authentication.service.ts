@@ -1,13 +1,13 @@
 import {Injectable, EventEmitter, Output} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {catchError, map, take, tap} from 'rxjs/operators';
 import {loginUrl, refreshTokenUrl} from '../../../configs/api-endpoint.constants';
 import {userUrl} from '../../../configs/api-endpoint.constants';
 import {IUser} from '../../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {IToken} from "../../models/token";
-import {Token} from "@angular/compiler";
+
 
 
 
@@ -15,9 +15,11 @@ import {Token} from "@angular/compiler";
 export class AuthenticationService {
   loginEvent = new EventEmitter();
   logoutEvent = new EventEmitter();
+
   readonly baseUrl = loginUrl;
   readonly userUrl = userUrl;
   readonly refreshUrl = refreshTokenUrl;
+
   private currentUserSubject: BehaviorSubject<IUser>;
   public currentUser: Observable<IUser>;
 
@@ -60,15 +62,13 @@ export class AuthenticationService {
       this.logoutEvent.emit();
     }
 
-  refresh(Token: IToken){
-    return this.http.post<IUser>(this.refreshUrl,Token).pipe(map(user=>{
-       if(user && user.token){
+    refresh(Token: IToken){
+    return this.http.post<IUser>(this.refreshUrl,Token).pipe(tap(user=>{
          console.log('received refresh ', user);
          localStorage.setItem('currentUser',JSON.stringify(user));
          this.currentUserSubject.next(user);
-       }
-       return user;
-     }));
+         this.loginEvent.emit();
+    }));
   }
 
 
@@ -89,7 +89,7 @@ export class AuthenticationService {
 
     isAuthenticated() {
       const token: string = localStorage.getItem("currentUser");
-      return token && !this.jwtHelper.isTokenExpired(token);
+      return token!==null;
     }
 
     getUserId() {
@@ -102,7 +102,7 @@ export class AuthenticationService {
 
     getUserRole() {
       const token: string = localStorage.getItem('currentUser');
-      if (token && !this.jwtHelper.isTokenExpired(token)) {
+      if (token) {
         const role = this.jwtHelper.decodeToken(token)[
           'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
           ];
