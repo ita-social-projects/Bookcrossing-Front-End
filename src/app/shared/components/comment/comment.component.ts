@@ -104,7 +104,6 @@ export class CommentComponent implements OnInit {
   }
 
   updateComments() {
-    console.log("dadada")
     this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[])=> {
       this.comments = value;
       this.comments.sort((a, b) => {

@@ -42,7 +42,7 @@
                           aria-label="Close">
                     <span aria-hidden="true">×</span>
                   </button>
-                  <ngx-star-rating [filledColor]="'#FF8800'" [rating]="c.rating" readonly="true"></ngx-star-rating>
+                  <ngx-star-rating *ngIf="c.rating !== 0" [filledColor]="'#FF8800'" [rating]="c.rating" readonly="true"></ngx-star-rating>
                   <p>
                     {{c.text}}
                   </p>
