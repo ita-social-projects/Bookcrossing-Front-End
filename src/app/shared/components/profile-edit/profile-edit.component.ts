@@ -30,7 +30,7 @@ export class ProfileEditComponent implements OnInit {
   changingLocation = false;
   locations: ILocation[] = [];
   submitted = false;
-  fieldMasks = ['FirstName', 'LastName', 'BirthDate', 'UserLocation'];
+  fieldMasks = ['FirstName', 'LastName', 'BirthDate', 'UserRoomId'];
   private notificationService: NotificationService;
 
   constructor(
