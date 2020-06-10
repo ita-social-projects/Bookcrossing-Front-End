@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable, throwError} from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { AuthenticationService } from '../../core/services/authentication/authentication.service';
-import {catchError, switchMap, tap} from "rxjs/operators";
+import {catchError, filter, switchMap, take, tap} from "rxjs/operators";
 import {error} from "@angular/compiler/src/util";
 
 import {IUser} from "../../core/models/user";
@@ -26,10 +26,18 @@ export class JwtInterceptor implements HttpInterceptor {
       request = this.addToken(request,currentUser.token.jwt);
     }
 
-   return next.handle(request).pipe(catchError(err => {
-     if(err instanceof HttpErrorResponse && err.status===401){
-       console.log('caught error in intercept');
-       return this.handle401error(request,next,currentUser);
+   return next.handle(request).pipe(catchError( err => {
+     console.log('caught error in intercept ',err);
+
+     if(err instanceof HttpErrorResponse) {
+       if (err.status === 401) {
+         if (err.headers.get("Token-Expired")) {
+           console.log("I got header token expired ")
+           return this.handle401error(request, next, currentUser);
+         }
+       }
+
+       return throwError(err);
      }else{
        return throwError(err);
      }
@@ -37,14 +45,28 @@ export class JwtInterceptor implements HttpInterceptor {
   }
 
  private handle401error(request:HttpRequest<any>,next:HttpHandler,currentUser : IUser){
-     this.refreshTokenSubject.next(null);
+     if(!this.isRefreshing) {
+       console.log('Token is not refreshing, so can be refreshed');
+       this.isRefreshing = true;
+       this.refreshTokenSubject.next(null);
        return this.authenticationService.refresh(currentUser.token).pipe(switchMap((token: IUser) => {
-       this.isRefreshing = false;
-       console.log('in handle 401 error i got',token);
-       this.refreshTokenSubject.next(token.token.refreshToken);
-       return next.handle(this.addToken(request,token.token.jwt));
-     }));
+         console.log('in handle 401 error i got', token);
+         this.refreshTokenSubject.next(token.token.jwt);
+         this.isRefreshing = false;
+         return next.handle(this.addToken(request, token.token.jwt));
+       }));
+     }else{
+       console.log('Token is being expired, so waiting...');
+       return this.refreshTokenSubject.pipe(
+         filter(token=>token!=null),
+         take(1),
+         switchMap(jwt=>{
+           console.log('wtf');
+         return next.handle(this.addToken(request,jwt))
+         })
 
+       )
+     }
 
 
  }
