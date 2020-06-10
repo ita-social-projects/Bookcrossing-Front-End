@@ -333,7 +333,7 @@ export class AddBookComponent implements OnInit {
       }
     }
 
-    this.addBookForm.patchValue({ authorFirstname: " " });
+    this.addBookForm.patchValue({ authorFirstname: "" });
   }
 
   changeAuthorInput() {
@@ -344,7 +344,7 @@ export class AddBookComponent implements OnInit {
     }
     this.withoutAuthorChecked = !this.withoutAuthorChecked;
     this.selectedAuthors = [];
-    this.addBookForm.patchValue({ authorFirstname: " " });
+    this.addBookForm.patchValue({ authorFirstname: "" });
   }
 
   //returns false if less than 2 words

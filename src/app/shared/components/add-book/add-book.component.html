@@ -97,7 +97,7 @@
             </div>
           </div>
           <div
-            *ngIf="addBookForm.controls.authorFirstname.value && !authorFocused"
+            *ngIf="addBookForm.controls.authorFirstname.dirty && addBookForm.controls.authorFirstname.value!='' && !withoutAuthorChecked"
             class="new-author-warning"
           >
             <span>Entered author is saved as 'not confirmed'</span>
