@@ -48,7 +48,6 @@ export class CommentComponent implements OnInit {
 
   getUser(){
     if(this.isAuthenticated()){
-      console.log("Authencicated")
       this.authenticationService.getUserId().subscribe((value: number)=> {
         this.userService.getUserById(value).subscribe((value: IUser)=>{
           this.user = value;

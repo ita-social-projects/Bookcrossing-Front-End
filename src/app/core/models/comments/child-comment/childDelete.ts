@@ -1,4 +1,4 @@
 export interface IChildDeleteComment {
-  id?: string[];
+  ids?: string[];
   ownerId: number;
 }

@@ -1,5 +1,5 @@
 export interface IChildUpdateComment {
-  id?: string[];
+  ids?: string[];
   text: string;
   ownerId: number;
 }
