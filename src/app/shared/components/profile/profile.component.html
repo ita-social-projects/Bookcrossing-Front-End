@@ -1,7 +1,7 @@
-<ng-template appRef>
+<ng-template appRef >
 
 </ng-template>
-<table class="table container">
+<table class="table container" [hidden]="isEditing">
   <tbody>
   <tr>
     <td>First Name</td>
@@ -27,7 +27,7 @@
   </tr>
   <tr>
     <td>
-      <button (click)="showEditForm(user)" class="btn peach-gradient">Edit</button>
+      <button (click)="showEditForm(user)" class="btn blue-gradient">Edit</button>
     </td>
     <td></td>
   </tr>

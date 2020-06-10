@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
 
   user: IUser;
   id: number;
-  isEditing: boolean;
+  isEditing = false;
   locations: ILocation[];
 
   ngOnInit(): void {
@@ -86,10 +86,15 @@ export class ProfileComponent implements OnInit {
   });
   }
 
+  changeEditStatus(event) {
+    this.isEditing = event;
+  }
+
   showEditForm(user: IUser) {
+    this.isEditing = true;
     let formFactory = this.resolver.resolveComponentFactory(ProfileEditComponent);
     let instance = this.refDir.containerRef.createComponent(formFactory).instance;
     instance.user = user;
-    instance.onCancel.subscribe(() => {this.refDir.containerRef.clear(); this.ngOnInit(); });
+    instance.onCancel.subscribe(() => {this.refDir.containerRef.clear(); this.ngOnInit(); this.isEditing = false; });
   }
 }
