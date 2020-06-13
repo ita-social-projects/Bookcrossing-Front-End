@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.lineChart.data.datasets[1].data = [];
     if (this.selectedDataRange === DateRangeEnum.Week || this.selectedDataRange === DateRangeEnum.Month) {
       for (let i = 0; i < this.selectedDataRange; i++) {
-        const formattedDate = this.datepipe.transform(today, 'dd.MM.yyyy');
+        const formattedDate = this.datepipe.transform(today, 'M/d/yyyy');
         this.lineChart.data.labels.unshift(formattedDate);
         this.setLineChartData(formattedDate);
         today.setDate(today.getDate() - 1);
