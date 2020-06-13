@@ -90,7 +90,6 @@ export class ProfileEditComponent implements OnInit {
     user.birthDate.setHours(12);
     user.userLocation.roomNumber = this.editUserForm.get('room').value;
     this.changeLocation();
-    console.log(user);
 
     this.userService.editUser(user.id, user).subscribe(
       (data: boolean) => {
@@ -108,7 +107,6 @@ export class ProfileEditComponent implements OnInit {
   newLocation(location: ILocation) {
     this.location = location;
     this.changingLocation = true;
-    console.log('new location :' + location);
   }
 
   changeLocation() {
@@ -116,7 +114,6 @@ export class ProfileEditComponent implements OnInit {
       this.user.userLocation.location = this.location;
       this.changingLocation = false;
     }
-    console.log('change :' + this.location + 'user location :' + this.user.userLocation.location);
   }
 
   async cancel() {

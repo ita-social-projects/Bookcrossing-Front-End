@@ -46,7 +46,7 @@ export class ProfileComponent implements OnInit {
             resolve(0);
           }
         });
-    })
+    });
 
     await promice.then(value => this.id = value);
     console.log('id :' + this.id);
@@ -58,36 +58,11 @@ export class ProfileComponent implements OnInit {
     await this.getUserId().then(res => this.getUserById());
   }
 
-  async getUserByIdPromise(): Promise<IUser> {
-    let promice = new Promise<IUser>((resolve) => {
-      this.userService.getUserById(this.id)
-        .subscribe({
-          next: (value: IUser) => {
-            if (value) {
-              resolve(value);
-            }
-          },
-          error: () => {
-            resolve(null);
-          }
-        });
-    })
-
-    await promice.then(value => this.user = value);
-    console.log('id2 :' + this.user.id);
-
-    return this.user;
-  }
-
-  getUserById(){
+  getUserById() {
     this.userService.getUserById(this.id)
     .subscribe(user_ => {
     this.user = user_;
   });
-  }
-
-  changeEditStatus(event) {
-    this.isEditing = event;
   }
 
   showEditForm(user: IUser) {

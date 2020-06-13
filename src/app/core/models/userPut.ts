@@ -1,5 +1,4 @@
 import {IRoomLocation} from './roomLocation';
-import { IRole } from './role';
 
 export interface IUserPut {
   id: number;
