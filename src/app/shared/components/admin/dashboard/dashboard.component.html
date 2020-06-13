@@ -10,15 +10,11 @@
             <div class="data">
               <p class="text-uppercase">{{'components.admin.locations.locations' | translate}}</p>
               <mat-form-field class="reset">
-                <mat-select [(value)]="selectedLocation">
+                <mat-select [(ngModel)]="selectedLocation" (ngModelChange)="onLocationChange(selectedLocation)">
                   <mat-option value="All">{{'components.admin.dashboard.all' | translate}}</mat-option>
-                  <mat-option value="Lviv">Lviv</mat-option>
-                  <mat-option value="Kyiv">Kyiv</mat-option>
-                  <mat-option value="Dnipro">Dnipro</mat-option>
-                  <mat-option value="Chernivtsi">Chernivtsi</mat-option>
-                  <mat-option value="Kharkiv">Kharkiv</mat-option>
-                  <mat-option value="Rivne">Rivne</mat-option>
-                  <mat-option value="IvanoFrankivsk">Ivano-Frankivsk</mat-option>
+                  <mat-option *ngFor="let location of locations" [value]="location" [matTooltip]="location" matTooltipPosition="right">
+                    {{location}}
+                  </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -32,7 +28,7 @@
             <i class="fas fa-book primary-color mr-3 z-depth-2"></i>
             <div class="data">
               <p class="text-uppercase">{{'components.admin.dashboard.books-registered' | translate}}</p>
-              <h4 class="font-weight-bold dark-grey-text">{{totalBooksRegistered}}</h4>
+              <h4 class="font-weight-bold dark-grey-text">{{locationData?.totalBooks}}</h4>
             </div>
           </div>
         </div>
@@ -44,7 +40,7 @@
             <i class="fas fa-user warning-color mr-3 z-depth-2"></i>
             <div class="data">
               <p class="text-uppercase">{{'components.admin.dashboard.users' | translate}}</p>
-              <h4 class="font-weight-bold dark-grey-text">{{totalAmountOfUsers}}</h4>
+              <h4 class="font-weight-bold dark-grey-text">{{locationData?.totalUsers}}</h4>
             </div>
           </div>
         </div>
@@ -56,7 +52,7 @@
             <i class="far fa-clock red accent-2 mr-3 z-depth-2"></i>
             <div class="data">
               <p class="text-uppercase">{{'components.admin.dashboard.inactive-books' | translate}}</p>
-              <h4 class="font-weight-bold dark-grey-text">{{expiringRequests}}</h4>
+              <h4 class="font-weight-bold dark-grey-text">{{locationData?.deactivatedBooks}}</h4>
             </div>
           </div>
         </div>
@@ -89,11 +85,11 @@
 
                 <mat-form-field>
                   <mat-label>{{'components.admin.dashboard.choose-data-range' | translate}}</mat-label>
-                  <mat-select>
-                      <mat-option value="Week">{{'components.admin.dashboard.week' | translate}}</mat-option>
-                      <mat-option value="Month">{{'components.admin.dashboard.month' | translate}}</mat-option>
-                      <mat-option value="HalfYear">{{'components.admin.dashboard.six-months' | translate}}</mat-option>
-                      <mat-option value="Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
+                  <mat-select [(ngModel)]="selectedDataRange" (ngModelChange)="onDateRangeChange(selectedLocation)">
+                      <mat-option [value]="DateRangeEnumValues.Week">{{'components.admin.dashboard.week' | translate}}</mat-option>
+                      <mat-option [value]="DateRangeEnumValues.Month">{{'components.admin.dashboard.month' | translate}}</mat-option>
+                      <mat-option [value]="DateRangeEnumValues.HalfYear">{{'components.admin.dashboard.six-months' | translate}}</mat-option>
+                      <mat-option [value]="DateRangeEnumValues.Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
                   </mat-select>
                 </mat-form-field>
               </div>

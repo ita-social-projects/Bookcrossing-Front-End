@@ -91,6 +91,7 @@ import {UserNamePipe} from './shared/pipes/userName.pipe';
 import {StarRatingModule} from '@sreyaj/ng-star-rating';
 import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -206,7 +207,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     LocationService,
     GenreService,
     DialogService,
-    UserService
+    UserService,
+    DatePipe
 
   ],
   entryComponents: [AuthorFormComponent],
