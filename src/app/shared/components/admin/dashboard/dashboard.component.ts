@@ -100,7 +100,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.dashboardService.getDashboardData()
       .subscribe({
         next: data => {
-          console.log(data);
           this.locations = data.cities;
           this.locationData = data.locationData;
           this.pieChartCityData = data.availabilityData;
@@ -189,7 +188,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.pieChartTitle = value['components.admin.dashboard.pie-chart.title'].toString();
       this.lineChart.data.datasets[0].label = this.lineChartLabels[0];
       this.lineChart.data.datasets[1].label = this.lineChartLabels[1];
-      this.getLineChartLabelData();
+      if (this.selectedDataRange === DateRangeEnum.HalfYear || this.selectedDataRange === DateRangeEnum.Year) {
+        this.getLineChartLabelData();
+      }
       this.lineChart.update();
       this.pieChart.data.labels = this.pieChartLabels;
       this.pieChart.options.title.text = this.pieChartTitle;
