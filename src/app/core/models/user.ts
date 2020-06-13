@@ -6,13 +6,13 @@ import {IToken} from "./token";
 
 export interface IUser {
   id: number;
-  firstName: string;
-  middleName: string;
-  lastName: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
   email: string;
   role: IRole;
   userLocation: IRoomLocation;
   birthDate: Date;
   registeredDate: Date;
-  token:IToken;
+  token: IToken;
 }
