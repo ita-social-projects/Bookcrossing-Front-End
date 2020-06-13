@@ -32,7 +32,12 @@ mat-sidenav {
 
 @media (max-width: 600px) {
   .slider{
+    width: 36px;
+    height: 36px;
+  }
+  .slider-icon{
     position:relative;
-    top:2px;
+    top:-1px;
+    font-size: 1.3em;
   }
 }

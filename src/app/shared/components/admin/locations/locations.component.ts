@@ -39,7 +39,6 @@ export class LocationsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.queryParams.filters = [];
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField ? this.queryParams.sort.orderByField : 'id';
@@ -109,7 +108,8 @@ export class LocationsComponent implements OnInit {
           }
           // Redirect in page refreshed but no longer longer has content. We redirect to last viable page.
           if (pageData?.page?.length < 1 && this.queryParams.page > pageData.totalCount / this.queryParams.pageSize) {
-            this.queryParams.page = pageData.totalCount / this.queryParams.pageSize;
+            this.queryParams.page = Math.ceil(pageData.totalCount / this.queryParams.pageSize);
+            console.log(this.queryParams.page);
             this.changeUrl();
           }
         },

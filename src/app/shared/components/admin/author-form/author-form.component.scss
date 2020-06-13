@@ -6,6 +6,9 @@ input {
         border: 1px solid green;
     }
 }
+section {
+  padding-bottom: 10px;
+}
 .row {
   margin-right: 0;
   margin-left: 0;
@@ -53,5 +56,8 @@ input {
   .row{
     margin-left: 0px;
     margin-right: 0px;
+  }
+  section {
+    padding: 0 5px 10px 5px;
   }
 }

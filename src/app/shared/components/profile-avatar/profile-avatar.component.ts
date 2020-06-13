@@ -19,8 +19,11 @@ export class ProfileAvatarComponent implements OnInit {
     this.userName = currentUser.firstName + " " + currentUser.lastName;
   }
 
+  isAdmin(): boolean {
+    return this.authenticationService.isAdmin();
+  }
   logout() {
-    this.authenticationService.logout();    
+    this.authenticationService.logout();
   }
 
 }

@@ -33,3 +33,18 @@ input,select {
   font-size: 80%;
   color: #dc3545;
 }
+
+
+
+@media (max-width: 600px) {
+  .form-row .col-4, .form-row .col-3 {
+    max-width: none;
+    flex: none;
+  }
+  .form-row {
+    margin-bottom: 0.5rem !important;
+  }
+  .form-row p {
+    margin-bottom: 0.5rem;
+  }
+}
