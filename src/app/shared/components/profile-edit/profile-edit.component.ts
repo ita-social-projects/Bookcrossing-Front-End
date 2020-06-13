@@ -62,7 +62,8 @@ export class ProfileEditComponent implements OnInit {
       firstName: new FormControl({value: this.user.firstName, disabled: false}, Validators.required),
       lastName: new FormControl({value: this.user.lastName, disabled: false}, Validators.required),
       birthDate: new FormControl({value: this.user.birthDate, disabled: false}),
-      room: new FormControl(this.user.userLocation.roomNumber, [Validators.required, Validators.minLength(4)])
+      room: new FormControl((this.user.userLocation.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
+        [Validators.required, Validators.minLength(4)])
     });
   }
 
@@ -79,7 +80,7 @@ export class ProfileEditComponent implements OnInit {
       firstName: this.editUserForm.get('firstName').value,
       lastName: this.editUserForm.get('lastName').value,
       birthDate: new Date(this.editUserForm.get('birthDate').value),
-      userRoomId: this.user.userLocation,
+      userLocation: this.user.userLocation,
       email: this.user.email,
       password: this.password,
       registeredDate: this.user.registeredDate,
@@ -87,9 +88,10 @@ export class ProfileEditComponent implements OnInit {
       fieldMasks: this.fieldMasks
     };
     user.birthDate.setHours(12);
-    user.userRoomId.roomNumber = this.editUserForm.get('room').value;
-    console.log(user);
+    user.userLocation.roomNumber = this.editUserForm.get('room').value;
     this.changeLocation();
+    console.log(user);
+
     this.userService.editUser(user.id, user).subscribe(
       (data: boolean) => {
         this.onCancel.emit();
@@ -106,6 +108,7 @@ export class ProfileEditComponent implements OnInit {
   newLocation(location: ILocation) {
     this.location = location;
     this.changingLocation = true;
+    console.log('new location :' + location);
   }
 
   changeLocation() {
@@ -113,6 +116,7 @@ export class ProfileEditComponent implements OnInit {
       this.user.userLocation.location = this.location;
       this.changingLocation = false;
     }
+    console.log('change :' + this.location + 'user location :' + this.user.userLocation.location);
   }
 
   async cancel() {

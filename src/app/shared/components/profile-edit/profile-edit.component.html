@@ -86,9 +86,10 @@
       <div class="col-3">
         <p class="input-label padding-left">Location :<span class="asterisk"> *</span></p>
       </div>
+      <!--placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}"-->
       <div class="col-3">
         <mat-select class="form-control select-dropdown"
-                    placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}">
+                    placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}"  >
           <mat-option *ngFor="let location of locations" (click)="newLocation(location)" [value]="location.id" [matTooltip]="location.city
                                     + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
             {{location.officeName}}, {{location.street}}</mat-option>
@@ -127,6 +128,7 @@
         <div class="col-2"></div>
       </div>
     </div>
+
     <div>
       <div class="form-row mb-4">
         <div class="col-2"></div>
