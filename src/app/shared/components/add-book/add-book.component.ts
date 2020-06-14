@@ -104,9 +104,10 @@ export class AddBookComponent implements OnInit {
   }
 
   async onSubmit() {
-    this.submitted = true;
+   
 
     if (this.validateForm(this.addBookForm)) {
+      this.submitted = true;
       return;
     }
 
@@ -160,9 +161,11 @@ export class AddBookComponent implements OnInit {
           this.translate.instant("Book is registered successfully"),
           "X"
         );
+        this.submitted = false;
         this.goToPage("book", data.id);
       },
       (error) => {
+        this.submitted = true;
         console.log(error);
         this.notificationService.error(
           this.translate.instant("Something went wrong"),
