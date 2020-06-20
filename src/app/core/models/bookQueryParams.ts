@@ -1,4 +1,3 @@
-import { FilterParameters } from './Pagination/FilterParameters';
 import { PageableParameters } from './Pagination/pageableParameters';
 import { HttpParams } from '@angular/common/http';
 
