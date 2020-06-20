@@ -68,7 +68,7 @@ const routes: Routes = [
   },
   {path: 'books/read', component: ReadBooksComponent},
   {path: 'contacts', component: ContactsComponent},
-  {path: 'profile', component: ProfileComponent},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
   { path: 'password', children:
       [
         {path: 'forgot', component: ForgotPasswordComponent},
