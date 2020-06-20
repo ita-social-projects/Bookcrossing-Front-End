@@ -6,6 +6,11 @@
       margin: 0px;
 }
 
+.dropdown-unclickable-item{
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 @media (max-width: 990px){
   .avatar{
       position: relative;
