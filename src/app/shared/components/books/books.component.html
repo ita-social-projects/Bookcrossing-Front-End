@@ -69,13 +69,16 @@
                                   Author :
                                 </ng-template>
                                 <ng-template #manyAuthors>Authors:</ng-template>
-                                <ng-template [ngIf]="book.authors.length < 2 || book.authors.length == 2 &&
-                                                      book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < 23" [ngIfElse]="manyAuthorsEllipsis">
-                                    <strong *ngFor="let author of book.authors; let i = index">
-                                     <ng-template [ngIf]="i!=0">,</ng-template>
+                                <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
+                                    <ng-template  [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
+                                                      book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength" 
+                                                      [ngIfElse]="manyAuthorsEllipsis">
+                                      <strong *ngFor="let author of book.authors; let i = index">
+                                      <ng-template [ngIf]="i != 0">,</ng-template>
                                         {{author.firstName}} {{author.lastName}}
-                                    </strong>
-                                 </ng-template>
+                                      </strong>
+                                    </ng-template>
+                                </ng-template>
                                   <ng-template #manyAuthorsEllipsis>
                                     <strong>
                                       <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':0"
