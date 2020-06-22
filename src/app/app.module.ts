@@ -92,6 +92,7 @@ import {StarRatingModule} from '@sreyaj/ng-star-rating';
 import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
+import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
 
 
 @NgModule({
@@ -148,7 +149,8 @@ import { DatePipe } from '@angular/common';
     ProfileEditComponent,
     DonateDialogComponent,
     NotificationComponent,
-    BreadcrumbValuePipe
+    BreadcrumbValuePipe,
+    DefaultImageDerective
   ],
   imports: [
     BrowserModule,

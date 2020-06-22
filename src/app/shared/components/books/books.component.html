@@ -39,15 +39,7 @@
                     <div class="container">
                       <div class="row">
                         <div class="col-lg-4 photo-padding">
-                          <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-                          <ng-template #thenBlock>
-                              <img src="{{apiUrl}}/{{book.imagePath}}" class="img-fluid img-height img-width" height="200px" width="200px">
-                          </ng-template>
-                          <ng-template #elseBlock>
-                              <img
-                                src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-                                class="img-fluid img-height img-width" height="200px" width="200px">
-                          </ng-template>
+                          <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
                         </div>
                         <div class="col-lg-8 m2" >
                           <div class="card-block m-2 px-2">
@@ -138,7 +130,6 @@
                             </p>
                           </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -153,15 +144,7 @@
       <div class="card m-3" *ngFor="let book of books; let key = index">
         <div class="row no-gutters">
           <div class="col-auto">
-            <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock>
-              <img src="{{apiUrl}}/{{book.imagePath}}" class="rounded float-left" height="215" width="200" alt="rf">
-            </ng-template>
-            <ng-template #elseBlock>
-              <img
-                src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-                class="rounded float-left" height="215" width="200" alt="rf">
-            </ng-template>
+              <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="215" width="200" alt="rf">
           </div>
           <div class="col m-2">
             <div class="card-block px-2">
