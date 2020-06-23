@@ -116,12 +116,9 @@ export class CommentComponent implements OnInit {
     let postComment: IRootInsertComment = {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
     }
-    this.commentservice.postComment(postComment).subscribe((r) => {
-
-    });
+    this.commentservice.postComment(postComment).subscribe(() => this.updateComments());
+        //.toPromise().then(() => this.updateComments());
     this.text = '';
-    this.ngOnInit()
-    this.updateComments()
   }
 
   deleateComment(id) {
