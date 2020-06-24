@@ -20,7 +20,9 @@
                   <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
                   <ng-template #thenBlock>
                     <img src="{{imagePath}}"
-                    class="rounded float-left img-fluid">
+                         appDefaultImage
+                         default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
+                         class="rounded float-left img-fluid">
                   </ng-template>
                   <ng-template #elseBlock>
                     <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
