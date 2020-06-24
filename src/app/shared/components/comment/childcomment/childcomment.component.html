@@ -54,7 +54,7 @@
                     {{c.comments.length}} subcomments
                   </a>
                   <div class="collapse" id="child_subcomments_{{level}}_{{i}}">
-                    <app-childcomment (update)="UpdateComments()" [comments]="c.comments" [level]="increment()"
+                    <app-childcomment (update)="UpdateComments()" [comments]="c.comments" [level]="level + 1"
                                       [user]="user" [ids]="returnID(c.id)" [isAuthorized]="isAuthorized" ></app-childcomment>
 
                   </div>

@@ -116,12 +116,8 @@ export class CommentComponent implements OnInit {
     let postComment: IRootInsertComment = {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
     }
-    this.commentservice.postComment(postComment).subscribe((r) => {
-
-    });
+    this.commentservice.postComment(postComment).subscribe(() => this.updateComments());
     this.text = '';
-    this.ngOnInit()
-    this.updateComments()
   }
 
   deleateComment(id) {
@@ -129,10 +125,7 @@ export class CommentComponent implements OnInit {
       id: id, ownerId: this.user.id
 
     }
-    this.commentservice.deleteComment(deleteComment).subscribe((r) => {
-    });
-    this.ngOnInit()
-    this.updateComments()
+    this.commentservice.deleteComment(deleteComment).subscribe(() => this.updateComments());
   }
 
   updateComment(id, text, rating) {
@@ -142,10 +135,7 @@ export class CommentComponent implements OnInit {
     let updateComment: IRootUpdateComment = {
       id: id, ownerId: this.user.id, rating: this.updateRating, text: text
     }
-    this.commentservice.updateComment(updateComment).subscribe((r) => {
-    });
-    this.ngOnInit()
-    this.updateComments()
+    this.commentservice.updateComment(updateComment).subscribe(() => this.updateComments());
   }
 
   onRatingSet($event: number) {

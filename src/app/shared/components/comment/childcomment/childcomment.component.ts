@@ -80,11 +80,7 @@ export class ChildcommentComponent implements OnInit {
     let deleteComment: IChildDeleteComment = {
       ids: newids, ownerId: this.user.id
     }
-    this.commentservice.deleteChildComment(deleteComment).subscribe((r) => {
-
-    });
-    this.ngOnInit()
-    this.UpdateComments()
+    this.commentservice.deleteChildComment(deleteComment).subscribe(() => this.UpdateComments());
   }
 
   updateComment(id, text) {
@@ -92,11 +88,7 @@ export class ChildcommentComponent implements OnInit {
     let updateComment: IChildUpdateComment = {
       ids: newids, ownerId: this.user.id, text: text
     }
-    this.commentservice.updateChildComment(updateComment).subscribe((r) => {
-
-    });
-    this.ngOnInit()
-    this.UpdateComments()
+    this.commentservice.updateChildComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
   PostComment() {
@@ -104,12 +96,7 @@ export class ChildcommentComponent implements OnInit {
       ids: this.ids, ownerId: this.user.id, text: this.text
 
     }
-    this.commentservice.postChildComment(postComment).subscribe((r) => {
-
-
-    });
+    this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
-    this.ngOnInit()
-    this.UpdateComments()
   }
 }
