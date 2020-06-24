@@ -92,11 +92,7 @@ export class ChildcommentComponent implements OnInit {
     let updateComment: IChildUpdateComment = {
       ids: newids, ownerId: this.user.id, text: text
     }
-    this.commentservice.updateChildComment(updateComment).subscribe((r) => {
-
-    });
-    this.ngOnInit()
-    this.UpdateComments()
+    this.commentservice.updateChildComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
   PostComment() {

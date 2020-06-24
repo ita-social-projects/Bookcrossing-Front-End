@@ -117,7 +117,6 @@ export class CommentComponent implements OnInit {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
     }
     this.commentservice.postComment(postComment).subscribe(() => this.updateComments());
-        //.toPromise().then(() => this.updateComments());
     this.text = '';
   }
 
@@ -139,10 +138,7 @@ export class CommentComponent implements OnInit {
     let updateComment: IRootUpdateComment = {
       id: id, ownerId: this.user.id, rating: this.updateRating, text: text
     }
-    this.commentservice.updateComment(updateComment).subscribe((r) => {
-    });
-    this.ngOnInit()
-    this.updateComments()
+    this.commentservice.updateComment(updateComment).subscribe(() => this.updateComments());
   }
 
   onRatingSet($event: number) {
