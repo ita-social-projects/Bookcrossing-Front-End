@@ -125,10 +125,7 @@ export class CommentComponent implements OnInit {
       id: id, ownerId: this.user.id
 
     }
-    this.commentservice.deleteComment(deleteComment).subscribe((r) => {
-    });
-    this.ngOnInit()
-    this.updateComments()
+    this.commentservice.deleteComment(deleteComment).subscribe(() => this.updateComments());
   }
 
   updateComment(id, text, rating) {

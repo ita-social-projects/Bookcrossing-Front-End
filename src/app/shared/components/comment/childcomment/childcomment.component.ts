@@ -80,11 +80,7 @@ export class ChildcommentComponent implements OnInit {
     let deleteComment: IChildDeleteComment = {
       ids: newids, ownerId: this.user.id
     }
-    this.commentservice.deleteChildComment(deleteComment).subscribe((r) => {
-
-    });
-    this.ngOnInit()
-    this.UpdateComments()
+    this.commentservice.deleteChildComment(deleteComment).subscribe(() => this.UpdateComments());
   }
 
   updateComment(id, text) {
