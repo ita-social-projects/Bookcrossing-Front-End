@@ -14,6 +14,8 @@ import {NotificationService} from 'src/app/core/services/notification/notificati
 import {DialogService} from 'src/app/core/services/dialog/dialog.service';
 import {IBookPut} from 'src/app/core/models/bookPut';
 import {bookState} from '../../../core/models/bookState.enum';
+import {ILanguage} from '../../../core/models/language';
+import {BookLanguageService} from '../../../core/services/bookLanguage/bookLanguage.service';
 
 @Component({
   selector: 'app-author-form',
@@ -40,6 +42,7 @@ editBookForm: FormGroup;
   withoutAuthorChecked = false;
   newAuthor: IAuthor;
   selectedGenres = [];
+  languages: ILanguage[] = [];
 
 constructor(
   private translate: TranslateService,
@@ -49,12 +52,14 @@ constructor(
   private genreService: GenreService,
   private authorService: AuthorService,
   private authenticationService: AuthenticationService,
-  private router: Router
+  private router: Router,
+  private bookLanguageService: BookLanguageService
 ) {}
 
   ngOnInit(): void {
     this.buildForm();
     this.getAllGenres();
+    this.getAllLanguages();
     this.authorsSubscription = this.editBookForm
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
@@ -104,7 +109,8 @@ constructor(
       authorFirstname: new FormControl(null),
       description: new FormControl({value:this.book.notice, disabled: false}),
       image: new FormControl({value:this.book.imagePath, disabled: false}),
-      inactive: new FormControl(false)
+      inactive: new FormControl(false),
+      languageId: new FormControl({value: this.book.language.id, disabled: false})
     });
     if(this.book.state === bookState.inActive){
       this.isInActive = true;
@@ -197,6 +203,10 @@ constructor(
       book.fieldMasks.push("Notice");
       book.notice = this.editBookForm.get('description').value;
     }
+    if(this.editBookForm.get('languageId').value !== this.book.language.id) {
+      book.fieldMasks.push("LanguageId");
+      book.languageId = this.editBookForm.get('languageId').value;
+    }
     if (this.selectedFile) {
       book.fieldMasks.push("Image");
       book.image = this.selectedFile;
@@ -283,6 +293,17 @@ constructor(
     this.genreService.getGenre().subscribe(
       (data) => {
         this.genres = data;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  getAllLanguages() {
+    this.bookLanguageService.getLanguage().subscribe(
+      (data) => {
+        this.languages = data;
       },
       (error) => {
         console.log(error);

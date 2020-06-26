@@ -194,6 +194,35 @@
       </div>
     </div>
 
+    <!-- Language -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">Language:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-4">
+        <mat-select
+          class="form-control"
+          formControlName="languageId"
+          placeholder="Select"
+          [ngClass]="{
+              'is-invalid': submitted && editBookForm.controls.languageId.errors
+            }"
+        >
+          <mat-option *ngFor="let language of languages" [value]="language.id">{{
+            language.name
+            }}</mat-option>
+        </mat-select>
+        <div
+          *ngIf="submitted && editBookForm.controls.languageId.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="editBookForm.controls.languageId.errors.required">
+            This field is required.
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Publisher -->
     <div class="form-row mb-4">
       <div class="col-3">

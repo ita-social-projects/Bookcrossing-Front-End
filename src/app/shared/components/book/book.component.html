@@ -72,6 +72,9 @@
               <ng-template #manyGenres><strong>Categories: </strong></ng-template>
               <span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{ genre?.name }}</span></p>
               <p class="ml-xl-0 ml-4">
+                <strong>Language: </strong> {{ book?.language?.name }}
+              </p>
+              <p class="ml-xl-0 ml-4">
                 <strong>Location: </strong> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}} </p>
               <p *ngIf="currentOwner !== null" class="ml-xl-0 ml-4">
                 <strong>Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName}}
