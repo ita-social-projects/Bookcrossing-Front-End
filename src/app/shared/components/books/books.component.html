@@ -113,6 +113,10 @@
                                 </ng-template>
                                   <br>
                                   <span>
+                                    Language: {{ book?.language?.name }}
+                                  </span>
+                                  <br>
+                                  <span>
                                     Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                                   </span>
                                   <br>
@@ -152,10 +156,10 @@
           <div class="col-auto">
             <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
             <ng-template #thenBlock>
-              <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="215px" width="200px">
+              <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
             </ng-template>
             <ng-template #elseBlock>
-              <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="215px" width="200px">
+              <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
             </ng-template>
           </div>
           <div class="col m-2">
@@ -209,6 +213,10 @@
                           class="text-primary">...</span>
                   </strong>
                 </ng-template>
+                <br>
+                <span>
+                  Language: {{ book?.language?.name }}
+                </span>
                 <br>
                 <span>
                   Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}

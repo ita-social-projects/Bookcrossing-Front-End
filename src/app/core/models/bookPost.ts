@@ -1,7 +1,7 @@
 import { IRoomLocation } from './roomLocation';
-import { IAuthor } from "src/app/core/models/author";
-import { IGenre } from "src/app/core/models/genre";
-import {bookState} from './bookState.enum';
+import { IAuthor } from 'src/app/core/models/author';
+import { IGenre } from 'src/app/core/models/genre';
+import { bookState } from './bookState.enum';
 export interface IBookPost {
   id?: number;
   name: string;
@@ -12,4 +12,5 @@ export interface IBookPost {
   genres: IGenre[];
   image?: File;
   notice?: string;
+  languageId: number;
 }

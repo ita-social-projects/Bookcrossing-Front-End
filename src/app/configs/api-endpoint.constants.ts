@@ -14,4 +14,5 @@ export const commentRootUrl = baseUrl + 'bookrootcomments/';
 export const commentChildUrl = baseUrl + 'bookchildcomments/';
 export const refreshTokenUrl = loginUrl + '/refresh';
 export const dashboardUrl = baseUrl + 'admin/dashboard';
+export const languageUrl = baseUrl + 'language/';
 

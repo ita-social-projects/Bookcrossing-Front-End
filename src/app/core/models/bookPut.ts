@@ -13,4 +13,5 @@ export interface IBookPut {
   image?: File;
   notice?: string;
   fieldMasks?: string[];
+  languageId?: number;
 }
