@@ -95,7 +95,7 @@ import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
 import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.service';
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
-import { LanguageFormComponent } from './shared/components/admin/language-form/language-form.component';
+import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 
 
 @NgModule({

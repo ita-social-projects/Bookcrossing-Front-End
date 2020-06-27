@@ -37,7 +37,6 @@ export class BookLanguagesComponent implements OnInit {
     private dialog: MatDialog
   ) { }
 
-
   ngOnInit() {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
@@ -57,15 +56,18 @@ export class BookLanguagesComponent implements OnInit {
     this.queryParams.filters[0] = {propertyName: this.searchField, value: this.searchText} as FilterParameters;
     this.changeUrl();
   }
+
   changeSort(selectedHeader: string) {
     this.queryParams.sort = {orderByField: selectedHeader, orderByAscending: !this.queryParams.sort.orderByAscending} as SortParameters;
     this.changeUrl();
   }
+
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
   }
+
   private changeUrl(): void {
     this.router.navigate(['.'],
       {

@@ -42,16 +42,14 @@
         </td>
         <td>
           <div class="manage-btns row d-flex text-center">
-            <button class="btn btn-md admin-button px-3 " (click)=onEdit(item,$event)> <i
+            <button class="btn btn-md admin-button px-3" (click)=onEdit(item,$event)> <i
               class="far fa-edit"></i></button>
             <ng-template [ngIf]="canDelete">
               <button class="btn btn-md admin-button px-3" (click)=onDelete(item,$event)> <i
                 class="fa fa-trash-alt"></i></button>
             </ng-template>
-
           </div>
         </td>
-
     </ng-container>
     </tbody>
   </table>
