@@ -93,6 +93,9 @@ import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
+import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.service';
+import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
+import { LanguageFormComponent } from './shared/components/admin/language-form/language-form.component';
 
 
 @NgModule({
@@ -150,7 +153,9 @@ import {DefaultImageDerective} from './shared/directives/defaultImage.derective'
     DonateDialogComponent,
     NotificationComponent,
     BreadcrumbValuePipe,
-    DefaultImageDerective
+    DefaultImageDerective,
+    BookLanguagesComponent,
+    LanguageFormComponent
   ],
   imports: [
     BrowserModule,
@@ -210,8 +215,8 @@ import {DefaultImageDerective} from './shared/directives/defaultImage.derective'
     GenreService,
     DialogService,
     UserService,
-    DatePipe
-
+    DatePipe,
+    BookLanguageService,
   ],
   entryComponents: [AuthorFormComponent],
   bootstrap: [AppComponent]

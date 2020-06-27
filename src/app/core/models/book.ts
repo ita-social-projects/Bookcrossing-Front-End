@@ -15,5 +15,5 @@ export interface IBook {
   imagePath?: string;
   notice?: string;
   location: IRoomLocation;
-  language: ILanguage;
+  language: IAuthor;
 }

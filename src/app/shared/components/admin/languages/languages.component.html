@@ -1,0 +1,61 @@
+<ng-template appRef>
+  <!--Add Form-->
+</ng-template>
+
+<div class="container my-5">
+  <section>
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-list">
+          <div class="card-header white d-flex  align-items-center py-3">
+
+            <p class="h5-responsive font-weight-bold mb-1 mr-2">
+              {{'components.admin.languages.languages' | translate}}
+            </p>
+
+            <!-- header search -->
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control" type="text" placeholder="{{'components.admin.search' | translate}}" aria-label="Search"
+                       [(ngModel)]="searchText" (keyup.enter)="search()">
+                <div class="input-group-append">
+                  <button class="input-group-text btn-light" (click)="search()">
+                    <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- header buttons -->
+            <ul class="list-unstyled d-flex align-items-center mb-1">
+              <li>
+                <button class="btn btn-md px-3 my-0 mr-0" (click)="addLanguage()">
+                  <i class="fas fa-plus pr-1"></i>
+                  <span class="button-label">{{'components.admin.add' | translate}}</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Table -->
+          <div class="card-body">
+            <app-admin-table
+              [data]="languages"
+              [dataProperties]="languagesProperties"
+              [displayColumns]="languagesDisplayColumns"
+              [(selectedHeader)]="queryParams.sort.orderByField"
+              (editClicked)="editLanguage($event)"
+              [canDelete]="true"
+              (deleteClicked)="deleteLanguage($event)"
+              (selectedHeaderChange)="changeSort($event)">
+            </app-admin-table>
+
+            <app-pagination *ngIf="languages && languages.length > 0" [arraySize]="totalSize"
+                            [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+            </app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
