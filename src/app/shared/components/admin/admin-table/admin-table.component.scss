@@ -33,6 +33,11 @@
 .admin-button{
   margin-left: 0;
 }
+
+.manage-btns {
+  justify-content: space-around;
+}
+
 @media (max-width: 800px) {
   .action{
     width:auto;
