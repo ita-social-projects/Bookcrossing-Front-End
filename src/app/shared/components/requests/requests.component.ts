@@ -33,6 +33,7 @@ export class RequestsComponent implements OnInit {
   totalSize: number;
   queryParams: BookQueryParams = new BookQueryParams;
   selectedGenres: number[];
+  selectedLanguages: number[];
   apiUrl: string = environment.apiUrl;
   route = this.router.url;
 
@@ -108,6 +109,7 @@ export class RequestsComponent implements OnInit {
   }
   onFilterChange(filterChanged : boolean){
     this.queryParams.genres = this.selectedGenres
+    this.queryParams.languages = this.selectedLanguages
     if(filterChanged){
       this.resetPageIndex()
       this.changeUrl();
@@ -126,6 +128,15 @@ export class RequestsComponent implements OnInit {
          genres = [+this.queryParams.genres];
        }
         this.selectedGenres =  genres;
+    }
+    if(this.queryParams.languages){
+      let languages: number[];
+      if(Array.isArray(this.queryParams.languages))
+       languages = this.queryParams.languages.map(v=>+v);
+       else{
+         languages = [+this.queryParams.languages];
+       }
+        this.selectedLanguages =  languages;
     }
   }
   pageChanged(currentPage: number): void {
