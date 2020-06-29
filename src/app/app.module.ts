@@ -93,7 +93,7 @@ import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
-import {BookLanguageService} from './core/services/bookLanguage/bookLanguage';
+import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.service';
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 

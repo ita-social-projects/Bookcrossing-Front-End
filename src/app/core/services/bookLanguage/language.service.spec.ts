@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { BookLanguageService } from './language';
 
-describe('GenreService', () => {
+describe('LanguageService', () => {
   let service: BookLanguageService;
 
   beforeEach(() => {
