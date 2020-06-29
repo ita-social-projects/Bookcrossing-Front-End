@@ -8,7 +8,7 @@ import {LanguageService } from 'src/app/core/services/language/language.service'
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle/button-toggle';
-import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLanguage';
+import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLanguage.service';
 
 @Component({
   selector: 'app-book-filter-bar',
