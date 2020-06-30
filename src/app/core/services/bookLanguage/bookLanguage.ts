@@ -26,7 +26,7 @@ export class BookLanguageService {
     return this.http.delete(this.apiUrl + id);
   }
 
-  editGenre(language: ILanguage) {
+  editLanguage(language: ILanguage) {
     return this.http.put(this.apiUrl, language);
   }
 }
