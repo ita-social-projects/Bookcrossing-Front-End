@@ -1,0 +1,28 @@
+﻿dist: trusty
+sudo: false
+
+language: node_js
+node_js:
+  - '13.7.0'
+
+addons:
+    chrome: stable
+  
+cache:
+  directories:
+    - ./node_modules
+
+install:
+  - npm install
+
+before_script:
+  - npm install -g @angular/cli
+  
+script:
+  - ng build --prod --base-href $base_href 
+  
+deploy:
+  provider: heroku
+  api_key: $API_Key
+  app: book-crossing-dev
+  on: develop
