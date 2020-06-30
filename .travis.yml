@@ -26,5 +26,3 @@ deploy:
   api_key: $API_Key
   app: book-crossing-dev
   on: develop
-  app: bookcrossingtest
-  on: 251-ImplementedCD
