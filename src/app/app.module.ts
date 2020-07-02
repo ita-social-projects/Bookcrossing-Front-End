@@ -93,6 +93,7 @@ import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
+import { LocationPopupComponent } from './shared/components/location-popup/location-popup.component';
 
 
 @NgModule({
@@ -150,7 +151,8 @@ import {DefaultImageDerective} from './shared/directives/defaultImage.derective'
     DonateDialogComponent,
     NotificationComponent,
     BreadcrumbValuePipe,
-    DefaultImageDerective
+    DefaultImageDerective,
+    LocationPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -213,7 +215,7 @@ import {DefaultImageDerective} from './shared/directives/defaultImage.derective'
     DatePipe
 
   ],
-  entryComponents: [AuthorFormComponent],
+  entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
