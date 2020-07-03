@@ -315,7 +315,7 @@ export class AddBookComponent implements OnInit {
       .afterClosed()
       .subscribe(async (res) => {
         if (res) {
-          this.goToPage('books');
+          this.goToPage('/');
         }
       });
   }
