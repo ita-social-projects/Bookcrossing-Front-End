@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { ILanguage } from '../../models/language';
-import {genreUrl, languageUrl} from '../../../configs/api-endpoint.constants';
+import { languageUrl } from '../../../configs/api-endpoint.constants';
 import { CompletePaginationParams } from '../../models/Pagination/completePaginationParameters';
 import { IPage } from '../../models/page';
 import { PaginationService } from '../pagination/pagination.service';
-import {IGenre} from '../../models/genre';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookLanguageService {
-  constructor(private http: HttpClient, private pagination: PaginationService) { }
+  public formLanguage: ILanguage;
+  private languageSubmittedSource = new Subject<ILanguage>();
+  languageSubmitted = this.languageSubmittedSource.asObservable();
+  constructor(
+    private http: HttpClient,
+    private pagination: PaginationService
+  ) { }
+
+  submitLanguage(language: ILanguage) {
+    this.languageSubmittedSource.next(language);
+  }
 
   getLanguage(): Observable<ILanguage[]> {
     return this.http.get<ILanguage[]>(languageUrl);
@@ -31,7 +40,7 @@ export class BookLanguageService {
   }
 
   deleteLanguage(languageId: number) {
-    return this.http.delete<ILanguage>(languageUrl + `/${languageId}`);
+    return this.http.delete<ILanguage>(languageUrl + `${languageId}`);
   }
 
   updateLanguage(language: ILanguage) {

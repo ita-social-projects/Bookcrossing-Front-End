@@ -22,6 +22,16 @@
   .hidden{
     visibility: hidden;
   }
+
+  .block
+  {
+    top: 100000;
+    margin: 0.25%;
+    margin-top: 3% !important;
+    margin-bottom: 0.2% !important;
+    width: 18% !important;
+  }
+
   .mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
     background: blue;
     background-image: initial;

@@ -1,6 +1,6 @@
 <div class="card card-list">
     <div class="card-header white d-flex align-items-center py-3">
-        <div class="form-inline">
+        <div class="form-inline block" >
           <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoriesChange($event)" class="form-control select-dropdown"
             multiple placeholder="{{'components.books.categories' | translate}}">
             <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
@@ -12,7 +12,19 @@
               </svg></span>
         </div>
 
-      <div class="form-inline">
+        <div class="form-inline block">
+          <mat-select [(ngModel)]="selectedLanguages" (openedChange)="onLanguagesChange($event)" class="form-control select-dropdown"
+            multiple placeholder="{{'components.books.languages' | translate}}">
+            <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.name}}</mat-option>
+          </mat-select>
+          <span [ngClass]="{'hidden': !(selectedLanguages && selectedLanguages.length > 0)}" class="clear-icon" (click)="onLanguagesReset()" aria-label="Clear"><svg focusable="false"
+            viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                </path>
+              </svg></span>
+        </div>
+
+      <div class="form-inline block">
         <mat-select placeholder="Sort by" [(ngModel)]="orderByField" (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
           <mat-option value="Rating">Rating <i class="fas fa-star"></i></mat-option>
           <mat-option value="DateAdded">Date added <i class="far fa-clock"></i></mat-option>
@@ -41,7 +53,7 @@
 
       </div>
 
-        <div class="form-inline ">
+        <div class="form-inline block">
           <mat-select [(ngModel)]="selectedLocation" (ngModelChange)="onLocationChange()" class="form-control select-dropdown"
             placeholder="{{'components.books.locations' | translate}}">
             <mat-option *ngFor="let location of locations" [value]="location.id" [matTooltip]="location.city + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}

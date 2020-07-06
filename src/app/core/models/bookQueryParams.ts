@@ -7,6 +7,7 @@ export class BookQueryParams extends PageableParameters {
   searchTerm?: string;
   location?: number;
   genres?: number[];
+  languages?: number[];
   orderByField?:string;
   orderByAscending?:boolean;
   static mapFromQuery(params: any, defaultPage: number = 1, defaultPageSize: number = 8): BookQueryParams {
@@ -17,6 +18,7 @@ export class BookQueryParams extends PageableParameters {
     book.searchTerm = params.searchTerm ? params.searchTerm : undefined;
     book.showAvailable = typeof params.showAvailable === 'undefined' ? undefined : JSON.parse(params.showAvailable);
     book.genres = params.genres ? params.genres : undefined;
+    book.languages = params.languages ? params.languages : undefined;
     book.orderByField = params.orderByField ? params.orderByField : undefined;
     book.orderByAscending = typeof params.orderByAscending==='undefined' ? undefined : JSON.parse(params.orderByAscending)
     return book;
@@ -37,6 +39,11 @@ export class BookQueryParams extends PageableParameters {
     if (this.genres?.length > 0) {
       for (const id of this.genres) {
         params = params.append('genres', id.toString());
+      }
+    }
+    if (this.languages?.length > 0) {
+      for (const id of this.languages) {
+        params = params.append('languages', id.toString());
       }
     }
     if(this.orderByField){

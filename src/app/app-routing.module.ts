@@ -29,6 +29,8 @@ import {ProfileComponent} from './shared/components/profile/profile.component';
 import {AuthorFormComponent} from './shared/components/admin/author-form/author-form.component';
 import {Role} from './core/models/role.enum';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
+import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
+import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 
 
 // @ts-ignore
@@ -46,7 +48,9 @@ const routes: Routes = [
         {path: 'locations', component: LocationsComponent},
         {path: 'genres', component: GenresComponent},
         {path: 'location-form', component: LocationFormComponent},
-        {path: 'author-form', component: AuthorFormComponent}
+        {path: 'author-form', component: AuthorFormComponent},
+        {path: 'languages', component: BookLanguagesComponent},
+        {path: 'language-form', component: LanguageFormComponent}
       ]
   },
 

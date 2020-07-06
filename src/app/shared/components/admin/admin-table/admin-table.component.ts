@@ -11,10 +11,12 @@ export class AdminTableComponent implements OnInit {
   @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() booleanButtonClicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() deleteClicked: EventEmitter<any> = new EventEmitter<any>();
 
   @Input() data: any[];
   @Input() dataProperties: string[];
   @Input() displayColumns: string[];
+  @Input() canDelete: false;
 
   @Input() selectedHeader: string;
   @Input() selectedRows: number[];
@@ -34,6 +36,12 @@ export class AdminTableComponent implements OnInit {
     $event.stopPropagation();
     this.editClicked.emit(item);
   }
+
+  onDelete(item: any, $event) {
+    $event.stopPropagation();
+    this.deleteClicked.emit(item);
+  }
+
   onHeaderClicked(headerName: string) {
     this.selectedHeader = headerName;
     this.selectedHeaderChange.emit(headerName);
