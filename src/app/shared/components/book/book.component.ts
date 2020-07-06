@@ -4,7 +4,7 @@ import {AuthenticationService} from 'src/app/core/services/authentication/authen
 import {switchMap} from 'rxjs/operators';
 import {RequestService} from 'src/app/core/services/request/request.service';
 import {BookService} from 'src/app/core/services/book/book.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, GuardsCheckStart} from '@angular/router';
 import {bookUrl} from 'src/app/configs/api-endpoint.constants';
 import {IBook} from 'src/app/core/models/book';
 import {NotificationService} from '../../../core/services/notification/notification.service';
@@ -281,6 +281,7 @@ getFormData(book: IBookPut): FormData {
   }
 
   async requestBook() {
+    if(!(await this.authentication.validateLocation())) return;
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()

@@ -57,7 +57,7 @@ export class AuthenticationService {
           this.loginEvent.emit();
 
           this.userService.getUserById(user.id).subscribe(userInfo => {
-            if(!userInfo.userLocation?.location?.isActive){
+            if (!userInfo.userLocation?.location?.isActive) {
               this.dialogService.openLocationDialog(userInfo);
             }
           });
@@ -98,7 +98,18 @@ export class AuthenticationService {
     });
   }
 
-  
+  async validateLocation(): Promise<boolean> {
+    const userId = this.currentUserValue.id;
+    const userInfo = await this.userService.getUserById(userId).toPromise();
+
+    let hasActiveLocation = userInfo.userLocation?.location?.isActive;
+    if (!hasActiveLocation) {
+      return this.dialogService.openLocationDialog(userInfo)
+        .afterClosed().toPromise();
+    }
+    
+    return hasActiveLocation;
+  }
 
   isAuthenticated() {
     const token: string = localStorage.getItem("currentUser");

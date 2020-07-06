@@ -75,7 +75,7 @@ export class LocationPopupComponent implements OnInit {
     }
 
     this.userService.editUser(this.user.id, userPut).subscribe(
-      () => this.dialogRef.close(),
+      () => this.dialogRef.close(true),
       (error) => {
         console.log(error);
         this.notificationService.error(this.translateService.instant('Something went wrong'), 'X');

@@ -29,6 +29,7 @@ import {ProfileComponent} from './shared/components/profile/profile.component';
 import {AuthorFormComponent} from './shared/components/admin/author-form/author-form.component';
 import {Role} from './core/models/role.enum';
 import {NotFoundComponent} from './shared/components/not-found/not-found.component';
+import { LocationGuard } from './core/guards/location.guard';
 
 
 // @ts-ignore
@@ -51,7 +52,7 @@ const routes: Routes = [
   },
 
   {path: 'book/:id', component: BookComponent},
-  {path: 'book', component: AddBookComponent},
+  {path: 'book', component: AddBookComponent, canActivate: [LocationGuard]},
   {path: 'books/requests', component: RequestsComponent, canActivate: [AuthGuard]},
   {path: 'books', component: BooksComponent},
   {path: 'location-form', component: LocationFormComponent },
