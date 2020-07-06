@@ -470,15 +470,11 @@ constructor(
           });
           break;
       }
-
       event.target.classList.add('is-invalid');
       setTimeout(() => {
         event.target.classList.remove('is-invalid');
       }, 3000);
-
-
       this.notificationService.error(
-        // The text has been cropped.Maximum field length: ' + maxLength
         this.translate.instant('common-errors.validation-max-length', {value: maxLength}),
         'X'
       );
