@@ -22,7 +22,7 @@ export class LocationPopupComponent implements OnInit {
       this.locationForm = this.formBuilder.group({
         location: ['', Validators.required],
         roomNumber: ['', [Validators.required, Validators.maxLength(7)]]
-      })
+      });
      }
 
   get location() { return this.locationForm.get('location'); }
@@ -40,7 +40,5 @@ export class LocationPopupComponent implements OnInit {
   }
 
   onSubmit(): void{
-    console.log(this.location.invalid)
-    console.log(this.locationForm.value);
   }
 }
