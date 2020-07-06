@@ -33,16 +33,16 @@
             </div>
               <div class="text-center text-md-left text-md-right mt-2">
                 <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button [hidden]="!isAuthenticated()" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="requestBook()">
+                  <ng-template ngSwitchCase="0"><button [hidden]="!isAuthenticated()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="mt-0 btn purple-gradient btn-rounded btn-lg btn-block" (click)="startReading()">
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> Start reading</button>
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block" (click)="cancelRequest()">
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn purple-gradient btn-rounded btn-lg btn-block"(click)="makeAvailable()" >
+                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> Make available</button>
                   </ng-template>
                 </span>
@@ -62,50 +62,85 @@
         <br>
 
           <div class="font-weight-normal">
-
-            <p class="ml-xl-0 ml-4">
-              <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>Author: </strong></ng-template>
-              <ng-template #manyAuthors><strong>Authors: </strong></ng-template>
-              <span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></p>
-            <p class="ml-xl-0 ml-4">
-              <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>Category: </strong></ng-template>
-              <ng-template #manyGenres><strong>Categories: </strong></ng-template>
-              <span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{ genre?.name }}</span></p>
-              <p class="ml-xl-0 ml-4">
-                <strong>Language: </strong> {{ book?.language?.name }}
-              </p>
-              <p class="ml-xl-0 ml-4">
-                <strong>Location: </strong> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}} </p>
-              <p *ngIf="currentOwner !== null" class="ml-xl-0 ml-4">
-                <strong>Current owner: </strong> {{ currentOwner?.firstName + " " + currentOwner?.lastName}}
-                <span>
-                  (<a [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
-                </span>
-              </p>
-              <p *ngIf="firstOwner !== null" class="ml-xl-0 ml-4">
-                <strong>Registered by: </strong> {{ firstOwner?.firstName + " " + firstOwner?.lastName }}
-                <span>
-                  (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
-                </span>
-              </p>
-              <p class="ml-xl-0 ml-4" *ngIf="userWhoRequested != null">
-                <strong>Requested by: </strong> {{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}
-                <span>
-                  (<a [href]="'mailto:'.concat(userWhoRequested?.email)">{{ userWhoRequested?.email | UserName }}</a>)
-                </span>
-              </p>
-            <p class="ml-xl-0 ml-4">
-              <strong>{{ 'components.book.publisher' | translate }}: </strong> {{ book?.publisher }} </p>
-            <div class="ml-xl-0 ml-4">
-              <strong>Status: </strong>
-              <span [ngSwitch]="book?.state">
-                <ng-template ngSwitchCase="0"><span class="badge badge-success product mb-4 ml-2">Available</span></ng-template>
-                <ng-template ngSwitchCase="1"><span class="badge badge-info product mb-4 ml-2">Requested</span></ng-template>
-                <ng-template ngSwitchCase="2"><span class="badge badge-info product mb-4 ml-2">Reading</span></ng-template>
-                <ng-template ngSwitchCase="3"><span class="badge badge-light product mb-4 ml-2">Inactive</span></ng-template>
-              </span>
-            </div>
-            <p [hidden]="!book?.notice" class="ml-xl-0 ml-4"><strong>Notice: </strong> {{ book?.notice }} </p>
+            <table class="table borderless">
+              <tbody>
+                <tr *ngIf="book?.authors != null">
+                  <th scope="row">
+                    <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>Author: </strong></ng-template>
+                    <ng-template #manyAuthors><strong>Authors: </strong></ng-template>
+                  </th>
+                  <td class="align-middle"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
+                </tr>
+                <tr *ngIf="book?.genres != null">
+                  <th scope="row">
+                    <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>Category: </strong></ng-template>
+                    <ng-template #manyGenres><strong>Categories: </strong></ng-template>
+                  </th>
+                  <td class="align-middle"><span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0"> , </ng-template>{{genre?.name }}</span></td>
+                </tr>
+                <tr *ngIf="book?.language != null">
+                  <th scope="row">
+                    <strong>Language: </strong>
+                  </th>
+                  <td class="align-middle">{{ book?.language?.name }}</td>
+                </tr>
+                <tr *ngIf="book?.location != null">
+                  <th scope="row">
+                    <strong>Location: </strong>
+                  </th>
+                  <td class="align-middle"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                </tr>
+                <tr *ngIf="currentOwner !== null">
+                  <th scope="row">
+                    <strong>Current owner: </strong>
+                  </th>
+                  <td class="align-middle">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <span>
+                    (<a [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
+                  </span></td>
+                </tr>
+                <tr *ngIf="firstOwner !== null">
+                  <th scope="row">
+                    <strong>Registered by: </strong> 
+                  </th>
+                  <td class="align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
+                    <span>
+                      (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
+                    </span></td>
+                </tr>
+                <tr *ngIf="userWhoRequested != null">
+                  <th scope="row">
+                    <strong>Requested by: </strong>
+                  </th>
+                  <td class="align-middle">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}<span>
+                    (<a [href]="'mailto:'.concat(userWhoRequested?.email)">{{ userWhoRequested?.email | UserName }}</a>)
+                  </span></td>
+                </tr>
+                <tr *ngIf="book?.publisher != null">
+                  <th scope="row">
+                    <strong>{{ 'components.book.publisher' | translate }}:</strong> 
+                  </th>
+                  <td class="align-middle">{{ book?.publisher }} </td>
+                </tr>
+                <tr *ngIf="book?.state != null">
+                  <th scope="row">
+                    <strong>Status: </strong>
+                  </th>
+                  <td class="align-middle"><span [ngSwitch]="book?.state">
+                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span></ng-template>
+                    <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span></ng-template>
+                    <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span></ng-template>
+                    <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span></ng-template>
+                  </span></td>
+                </tr>
+                <tr *ngIf="book?.notice != null">
+                  <th scope="row">
+                    <strong>Notice: </strong>
+                  </th>
+                  <td class="align-middle">{{ book?.notice }} </td>
+                </tr>
+              </tbody>
+            </table>
+            
           </div>
 
         </div>
