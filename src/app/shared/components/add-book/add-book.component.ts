@@ -14,8 +14,8 @@ import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { bookState } from '../../../core/models/bookState.enum';
-import {ILanguage} from '../../../core/models/language';
-import {BookLanguageService} from '../../../core/services/bookLanguage/bookLanguage.service';
+import { ILanguage } from '../../../core/models/language';
+import { BookLanguageService } from '../../../core/services/bookLanguage/bookLanguage.service';
 
 @Component({
   selector: 'app-add-book',
@@ -33,7 +33,7 @@ export class AddBookComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private bookLanguageService: BookLanguageService
-  ) {}
+  ) { }
 
   addBookForm: FormGroup;
 

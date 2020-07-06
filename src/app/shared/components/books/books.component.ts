@@ -113,6 +113,8 @@ export class BooksComponent implements OnInit,OnDestroy {
   }
 
   async requestBook(bookId: number) {
+    const userHasValidLocation: boolean = await this.authentication.validateLocation();
+    if(!userHasValidLocation) return;
     this.dialogService
       .openConfirmDialog(
         await this.translate.get("Do you want to request this book? Current owner will be notified about your request.").toPromise()
