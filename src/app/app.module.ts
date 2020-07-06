@@ -94,6 +94,10 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
 import { LocationPopupComponent } from './shared/components/location-popup/location-popup.component';
+import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.service';
+import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
+import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
+import { RegistrationService } from './core/services/registration/registration.service';
 
 
 @NgModule({
@@ -152,7 +156,9 @@ import { LocationPopupComponent } from './shared/components/location-popup/locat
     NotificationComponent,
     BreadcrumbValuePipe,
     DefaultImageDerective,
-    LocationPopupComponent
+    LocationPopupComponent,
+    BookLanguagesComponent,
+    LanguageFormComponent
   ],
   imports: [
     BrowserModule,
@@ -205,6 +211,7 @@ import { LocationPopupComponent } from './shared/components/location-popup/locat
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     RequestService,
     LanguageService,
+    RegistrationService,
     NotificationService,
     CookieService,
     JwtHelperService,
@@ -212,8 +219,8 @@ import { LocationPopupComponent } from './shared/components/location-popup/locat
     GenreService,
     DialogService,
     UserService,
-    DatePipe
-
+    DatePipe,
+    BookLanguageService,
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

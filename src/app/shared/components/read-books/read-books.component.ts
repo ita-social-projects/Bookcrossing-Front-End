@@ -37,6 +37,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
   route = this.router.url;
 
   selectedGenres: number[];
+  selectedLanguages: number[];
 
 
   constructor(private bookService: BookService,
@@ -143,6 +144,7 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
     }
   onFilterChange(filterChanged: boolean) {
     this.queryParams.genres = this.selectedGenres
+    this.queryParams.languages = this.selectedLanguages
     if (filterChanged) {
       this.resetPageIndex()
       this.changeUrl();
@@ -164,6 +166,16 @@ export class ReadBooksComponent implements OnInit, OnDestroy {
         genres = [+this.queryParams.genres];
       }
       this.selectedGenres =  genres;
+    }
+    if (this.queryParams.languages) {
+      let languages: number[];
+      if (Array.isArray(this.queryParams.languages)) {
+        languages = this.queryParams.languages.map(v => +v);
+      }
+      else {
+        languages = [+this.queryParams.languages];
+      }
+      this.selectedLanguages =  languages;
     }
   }
 

@@ -20,7 +20,7 @@
             [ngClass]="{
               'is-invalid': submitted && addBookForm.controls.title.errors
             }"
-            maxlength="50"
+            maxlength="100"
           />
           <div
             *ngIf="submitted && addBookForm.controls.title.errors"
@@ -229,7 +229,7 @@
             formControlName="publisher"
             type="text"
             class="form-control"
-            maxlength="50"
+            maxlength="100"
           />
         </div>
       </div>
@@ -243,7 +243,7 @@
             formControlName="description"
             type="text"
             class="form-control"
-            maxlength="500"
+            maxlength="255"
           ></textarea>
         </div>
       </div>
