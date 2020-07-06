@@ -1,75 +1,58 @@
 <div class="container my-5 py-5 z-depth-1">
-
-
+ 
 
   <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
-
-
-
     <div class="row d-flex justify-content-center">
-
-
       <div class="col-md-6">
 
-
-        <form class="text-center" #RegistrationFrom="ngForm">
+        <form class="text-center" #RegistrationForm="ngForm">
 
           <p class="h4 mb-4">Sign up</p>
 
           <div class="form-row mb-4">
             <div class="col">
 
-              <input type="text" required ngModel name="FirstName" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
+              <input type="text" maxlength="20" #nameRef='ngModel' required ngModel name="FirstName" id="defaultRegisterFormFirstName" class="form-control" placeholder="First name">
 
             </div>
             <div class="col">
 
-              <input type="text" required ngModel name="LastName" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
-            </div>
-            <div class="col">
+              <input type="text" maxlength="20" #surnameRef='ngModel' required ngModel name="LastName" id="defaultRegisterFormLastName" class="form-control" placeholder="Last name">
 
-              <input type="text" required ngModel name="MiddleName" id="defaultRegisterFormMiddleName" class="form-control" placeholder="MiddleName">
             </div>
           </div>
 
 
-          <input type="email"  #emailRef='ngModel' (change)="checkEmail(RegistrationFrom.value.email)"  required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="E-mail">
-          <p *ngIf="!validemail && emailRef.dirty  ">email is exist </p>
-
-          <input  #pass1Ref='ngModel' type="password" required ngModel name="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password"
+          <input type="email" maxlength="40" #emailRef='ngModel' (change)="isEmail(RegistrationForm.value.email)" required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4 mail" placeholder="E-mail">
+          <p *ngIf="emailRef.dirty && !isEmail(RegistrationForm.value.email)">E-mail is invalid </p>
+          
+          <input (change)="checkPassword(RegistrationForm.value.password)" #pass1Ref='ngModel' type="password" maxlength="32" required ngModel name="password" id="defaultRegisterFormPassword" class="form-control password" placeholder="Password"
                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
-<br>
-          <input (change)="comparePasswords(RegistrationFrom.value.password,
-          RegistrationFrom.value.confirmPassword)"  #pass2Ref='ngModel' type="password" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" class="form-control" placeholder="Confirm Password"
+          <p *ngIf="pass1Ref.dirty && !checkPassword(RegistrationForm.value.password)">Password is too short</p>
+          <input (change)="comparePasswords(RegistrationForm.value.password,
+          RegistrationForm.value.confirmPassword)"  #pass2Ref='ngModel' type="password" maxlength="32" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" class="form-control password" placeholder="Confirm Password"
                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
-<p *ngIf="pass1Ref.dirty && pass2Ref.dirty && !(comparePasswords(RegistrationFrom.value.password,
-          RegistrationFrom.value.confirmPassword))">Password mismatch</p>
+          <p *ngIf="pass1Ref.dirty && pass2Ref.dirty && !(comparePasswords(RegistrationForm.value.password,
+          RegistrationForm.value.confirmPassword))">Passwords are different</p>
 
-          <button [disabled]="((RegistrationFrom.invalid) || !(comparePasswords(RegistrationFrom.value.password,
-          RegistrationFrom.value.confirmPassword)) || !validemail ) " (click)="SingUp(RegistrationFrom)" class="btn btn-info my-4 btn-block" >Sign up</button>
-
-
+          <button [disabled]="( RegistrationForm.invalid || !checkPassword(RegistrationForm.value.password) || (!comparePasswords(RegistrationForm.value.password,
+          RegistrationForm.value.confirmPassword)) || !isEmail(RegistrationForm.value.email) || !emailRef || !pass1Ref || !pass2Ref|| !nameRef || !surnameRef)" 
+          (click)="SignUp(RegistrationForm)" class="btn btn-info my-4 btn-block" >Sign up</button>
 
 
 
           <p>Already a member?
-            <a class="text-primary" (click)="navigateToSingIn()" >Sign in</a>
+            <a class="text-primary" (click)="navigateToSignIn()" >Sign in</a>
           </p>
 
 
 
         </form>
-
-
       </div>
-
-
     </div>
-
-
-
   </section>
-
-
-
 </div>
+
+
+
+

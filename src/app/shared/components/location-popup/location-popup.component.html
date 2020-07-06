@@ -1,0 +1,54 @@
+<h3 mat-dialog-title class="dialog-title mb-1">Please specify your location</h3>
+<p>The action is required for Book's registration and Book's requesting</p>
+<form [formGroup]="locationForm" #ngForm="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
+  <mat-dialog-content class="pt-3 pb-4">
+    <div class="d-flex flex-column">
+      <div class="row no-gutters align-items-center mb-4">
+        <div class="col-4">
+          <label class="input-label m-0">Location:<span class="asterisk"> *</span></label>
+        </div>
+        <div class="col-8">
+          <mat-select class="form-control select-dropdown"
+            [ngClass]="{
+              'is-invalid': ngForm.submitted && location.invalid
+            }"
+            placeholder="Select one" formControlName="location" required>
+            <mat-option *ngFor="let location of locations" [value]="location" [matTooltip]="location.city
+                                    + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">
+              {{location.city}} {{location.officeName}}, {{location.street}}</mat-option>
+          </mat-select>
+        </div>
+        <div class="w-100"></div>
+        <div *ngIf="location.errors && ngForm.submitted" class="offset-4 col">
+          <small *ngIf="location.errors?.required" class="text-danger">The field is required</small>
+        </div>
+      </div>
+      <div class="row no-gutters align-items-center">
+        <div class="col-4">
+          <label class="input-label m-0">Room number:<span class="asterisk"> *</span></label>
+        </div>
+        <div class="col-8">
+          <input type="text" class="form-control" 
+          [ngClass]="{
+            'is-invalid': ngForm.submitted && roomNumber.invalid
+          }"
+          formControlName="roomNumber" required maxlength="7" />
+        </div>
+        <div class="w-100"></div>
+        <div *ngIf="roomNumber.errors && ngForm.submitted" class="offset-4 col">
+          <small *ngIf="roomNumber.errors?.required" class="text-danger">The field is required</small>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <div class="row w-100 justify-content-end">
+      <div class="col-lg-3 col-md-3 col-sm">
+        <button type="submit" class="btn btn-primary w-100">Save</button>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm">
+        <button class="btn w-100" [mat-dialog-close]="false">Close</button>
+      </div>
+    </div>
+  </mat-dialog-actions>
+</form>

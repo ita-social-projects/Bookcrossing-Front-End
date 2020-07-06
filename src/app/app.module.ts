@@ -93,9 +93,11 @@ import { BreadcrumbValuePipe } from './shared/pipes/breadcrumbValue.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
 import {DefaultImageDerective} from './shared/directives/defaultImage.derective';
+import { LocationPopupComponent } from './shared/components/location-popup/location-popup.component';
 import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.service';
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
+import { RegistrationService } from './core/services/registration/registration.service';
 
 
 @NgModule({
@@ -154,6 +156,7 @@ import {LanguageFormComponent} from './shared/components/admin/language-form/lan
     NotificationComponent,
     BreadcrumbValuePipe,
     DefaultImageDerective,
+    LocationPopupComponent,
     BookLanguagesComponent,
     LanguageFormComponent
   ],
@@ -208,6 +211,7 @@ import {LanguageFormComponent} from './shared/components/admin/language-form/lan
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     RequestService,
     LanguageService,
+    RegistrationService,
     NotificationService,
     CookieService,
     JwtHelperService,
@@ -218,7 +222,7 @@ import {LanguageFormComponent} from './shared/components/admin/language-form/lan
     DatePipe,
     BookLanguageService,
   ],
-  entryComponents: [AuthorFormComponent],
+  entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

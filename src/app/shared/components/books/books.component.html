@@ -64,20 +64,21 @@
                             </ng-template>
                             <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
                             <p class="card-text">
-                                <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                                  Author :
-                                </ng-template>
-                                <ng-template #manyAuthors>Authors:</ng-template>
-                                <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
-                                    <ng-template  [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
-                                                      book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength"
-                                                      [ngIfElse]="manyAuthorsEllipsis">
-                                      <strong *ngFor="let author of book.authors; let i = index">
-                                      <ng-template [ngIf]="i != 0">,</ng-template>
-                                        {{author.firstName}} {{author.lastName}}
-                                      </strong>
-                                    </ng-template>
-                                </ng-template>
+                                <ng-template [ngIf]="book.authors.length > 0">
+                                  <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
+                                    Author :
+                                  </ng-template>
+                                  <ng-template #manyAuthors>Authors:</ng-template>
+                                  <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
+                                      <ng-template  [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
+                                                        book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength"
+                                                        [ngIfElse]="manyAuthorsEllipsis">
+                                        <strong *ngFor="let author of book.authors; let i = index">
+                                        <ng-template [ngIf]="i != 0">,</ng-template>
+                                          {{author.firstName}} {{author.lastName}}
+                                        </strong>
+                                      </ng-template>
+                                  </ng-template>
                                   <ng-template #manyAuthorsEllipsis>
                                     <strong>
                                       <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':0"
@@ -90,6 +91,7 @@
                                         </span>
                                     </strong>
                                   </ng-template>
+                                </ng-template>
                                 <br>
                                 <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
                                 <ng-template #manyGenres>Categories:</ng-template>
@@ -167,9 +169,9 @@
             <div class="card-block px-2">
               <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
               <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
-
               <p class="card-text">
-                <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
+                <ng-template [ngIf]="book.authors.length > 0">
+                  <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
                   Author:
                 </ng-template>
 
@@ -191,6 +193,7 @@
                           matTooltipPosition="right"
                           class="text-primary">...</span>
                   </strong>
+                  </ng-template>
                 </ng-template>
                 <br>
                 <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>

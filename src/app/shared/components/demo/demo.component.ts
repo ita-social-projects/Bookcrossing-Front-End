@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-demo',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DemoComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private dialogService: DialogService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  openLocationPopup(){
+    this.dialogService.openLocationDialog(null);
+  }
 }
