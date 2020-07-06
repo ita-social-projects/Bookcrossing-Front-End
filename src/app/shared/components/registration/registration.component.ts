@@ -40,6 +40,7 @@ export class RegistrationComponent implements OnInit {
 
   checkPassword(a:string)
   {
+    if (a == null) a = '';
     let minimumLength = 4;
     return a.length >= minimumLength;      //length of password should be 4 symbols or more
   }
