@@ -156,7 +156,7 @@ import { RegistrationService } from './core/services/registration/registration.s
     NotificationComponent,
     BreadcrumbValuePipe,
     DefaultImageDerective,
-    LocationPopupComponent
+    LocationPopupComponent,
     BookLanguagesComponent,
     LanguageFormComponent
   ],
