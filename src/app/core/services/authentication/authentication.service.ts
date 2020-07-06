@@ -7,10 +7,8 @@ import { userUrl } from '../../../configs/api-endpoint.constants';
 import { IUser } from '../../models/user';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IToken } from "../../models/token";
-import { MatDialog } from '@angular/material/dialog';
-import { LocationPopupComponent } from 'src/app/shared/components/location-popup/location-popup.component';
 import { UserService } from '../user/user.service';
-import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { DialogService } from '../dialog/dialog.service';
 
 
 
@@ -107,7 +105,7 @@ export class AuthenticationService {
       return this.dialogService.openLocationDialog(userInfo)
         .afterClosed().toPromise();
     }
-    
+
     return hasActiveLocation;
   }
 
