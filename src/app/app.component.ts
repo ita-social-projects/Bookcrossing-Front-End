@@ -7,9 +7,6 @@ import {IUser} from '../app/core/models/user';
 import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from './core/services/language/language.service';
 
-import {MatDialog} from '@angular/material/dialog';
-import {LocationPopupComponent} from './shared/components/location-popup/location-popup.component';
-
 
 @Component({
   selector: 'app-root',
@@ -26,8 +23,7 @@ export class AppComponent {
     private router: Router,
     private authenticationService: AuthenticationService,
     private translate: TranslateService,
-    private languageService: LanguageService,
-    private dialogService: MatDialog
+    private languageService: LanguageService
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
@@ -35,7 +31,6 @@ export class AppComponent {
     const lang: string = this.languageService.setIfNotExists();
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);
-    this.dialogService.open(LocationPopupComponent);
   }
 
   logout() {

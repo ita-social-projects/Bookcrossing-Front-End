@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LocationService } from 'src/app/core/services/location/location.service';
 import { ILocation } from 'src/app/core/models/location';
+import { IUser } from 'src/app/core/models/user';
 
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-location-popup',
@@ -18,7 +19,8 @@ export class LocationPopupComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<LocationPopupComponent>,
     private locationService: LocationService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) private user: IUser) {
       this.locationForm = this.formBuilder.group({
         location: ['', Validators.required],
         roomNumber: ['', [Validators.required, Validators.maxLength(7)]]
