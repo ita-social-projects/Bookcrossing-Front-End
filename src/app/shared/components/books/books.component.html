@@ -172,26 +172,27 @@
               <p class="card-text">
                 <ng-template [ngIf]="book.authors.length > 0">
                   <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                    Author:
-                  </ng-template>
-                  <ng-template #manyAuthors>Authors:</ng-template>
-                  <ng-template [ngIf]="book.authors.length<=5" [ngIfElse]="manyAuthorsEllipsis">
-                    <strong *ngFor="let author of book.authors; let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{author.firstName}} {{author.lastName}}
-                    </strong>
-                  </ng-template>
-                  <ng-template #manyAuthorsEllipsis>
-                    <strong *ngFor="let author of book.authors | slice:0:5; let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{author.firstName}} {{author.lastName}}
-                    </strong>
-                    <strong>
-                      <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5"
-                            matTooltipClass="mat-tooltip"
-                            matTooltipPosition="right"
-                            class="text-primary">...</span>
-                    </strong>
+                  Author:
+                </ng-template>
+
+                <ng-template #manyAuthors>Authors:</ng-template>
+                <ng-template [ngIf]="book.authors.length<=5" [ngIfElse]="manyAuthorsEllipsis">
+                  <span *ngFor="let author of book.authors; let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{author.firstName}} {{author.lastName}}
+                  </span>
+                </ng-template>
+                <ng-template #manyAuthorsEllipsis>
+                  <strong *ngFor="let author of book.authors | slice:0:5; let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{author.firstName}} {{author.lastName}}
+                  </strong>
+                  <strong>
+                    <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5"
+                          matTooltipClass="mat-tooltip"
+                          matTooltipPosition="right"
+                          class="text-primary">...</span>
+                  </strong>
                   </ng-template>
                 </ng-template>
                 <br>
@@ -199,10 +200,10 @@
                 <ng-template #manyGenres>Categories:</ng-template>
 
                 <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
-                  <strong *ngFor="let genre of book.genres;let i = index">
+                  <span *ngFor="let genre of book.genres;let i = index">
                     <ng-template [ngIf]="i!=0">,</ng-template>
                     {{genre.name}}
-                  </strong>
+                  </span>
                 </ng-template>
                 <ng-template #manyGenresEllipsis>
                   <strong *ngFor="let genre of book.genres | slice:0:7;let i = index">

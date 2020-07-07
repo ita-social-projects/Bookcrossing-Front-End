@@ -450,4 +450,35 @@ constructor(
     return true;
   }
 
+  checkLength(fieldName: string, event: any, maxLength: number) {
+    const value = event.target.value;
+    if (value.length > maxLength) {
+      switch (fieldName) {
+        case 'title':
+          this.editBookForm.patchValue({
+            title: value.substr(0, maxLength)
+          });
+          break;
+        case 'publisher':
+          this.editBookForm.patchValue({
+            publisher: value.substr(0, maxLength)
+          });
+          break;
+        case 'description':
+          this.editBookForm.patchValue({
+            description: value.substr(0, maxLength)
+          });
+          break;
+      }
+      event.target.classList.add('is-invalid');
+      setTimeout(() => {
+        event.target.classList.remove('is-invalid');
+      }, 3000);
+      this.notificationService.error(
+        this.translate.instant('common-errors.validation-max-length', {value: maxLength}),
+        'X'
+      );
+    }
+  }
+
 }
