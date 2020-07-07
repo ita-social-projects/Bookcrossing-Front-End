@@ -63,7 +63,7 @@ export class ProfileEditComponent implements OnInit {
       lastName: new FormControl({value: this.user.lastName, disabled: false}, Validators.required),
       birthDate: new FormControl({value: this.user.birthDate, disabled: false}),
       room: new FormControl((this.user.userLocation.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
-        [Validators.required, Validators.minLength(4)])
+        [Validators.required, Validators.maxLength(7)])
     });
   }
 
