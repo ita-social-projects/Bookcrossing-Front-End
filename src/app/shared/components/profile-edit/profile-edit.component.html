@@ -101,9 +101,6 @@
       <div *ngIf="editUserForm.get('room').errors?.required" class="validation-error">
         {{'common-errors.validation-required' | translate}}
       </div>
-      <div *ngIf="editUserForm.get('room').errors.minlength" class="validation-error">
-        {{'common-errors.validation-min-length' | translate:{value:editUserForm.get('room').errors?.minlength?.requiredLength} }}
-      </div>
       <div *ngIf="editUserForm.get('room').errors.maxlength" class="validation-error">
         {{'common-errors.validation-max-length' | translate:{value:editUserForm.get('room').errors?.maxlength?.requiredLength} }}
       </div>
@@ -117,9 +114,9 @@
         <div class="col-3">
           <input
             formControlName="room"
-            type="number"
+            type="text"
             class="form-control"
-
+            maxlength="7"
             [ngClass]="{
             'is-invalid': submitted && editUserForm.controls.room.errors
           }"/>
