@@ -49,11 +49,10 @@
             </div>
         </div>
         <div class="col-lg-7 text-center text-md-left">
-
-          <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name">{{ book?.name }}</h2>
+          <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
           <div class="row">
-            <div class="col-2">
-              <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin">Read by: <span class="font-weight-normal">{{readCount}}</span></div>
+            <div class="col-3" >
+              <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin" style="padding-left: 10px;">Read by: <span class="font-weight-normal">{{readCount}}</span></div>
             </div>
             <div class="col-3">
               <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
