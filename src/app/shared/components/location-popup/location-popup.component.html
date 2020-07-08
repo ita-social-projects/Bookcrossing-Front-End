@@ -1,4 +1,4 @@
-<h3 mat-dialog-title class="dialog-title mb-1">Please specify your location</h3>
+<h3 mat-dialog-title class="dialog-title mb-1" id="locationPopupTitle">Please specify your location</h3>
 <p>The action is required for Book's registration and Book's requesting</p>
 <form [formGroup]="locationForm" #ngForm="ngForm" (ngSubmit)="onSubmit()" class="needs-validation">
   <mat-dialog-content class="pt-3 pb-4">
@@ -20,7 +20,7 @@
         </div>
         <div class="w-100"></div>
         <div *ngIf="location.errors && ngForm.submitted" class="offset-sm-4 col-sm">
-          <small *ngIf="location.errors?.required" class="text-danger">The field is required</small>
+          <small *ngIf="location.errors?.required" class="text-danger">{{ "common-errors.validation-required" | translate }}</small>
         </div>
       </div>
       <div class="row no-gutters align-items-center">
@@ -32,11 +32,13 @@
           [ngClass]="{
             'is-invalid': ngForm.submitted && roomNumber.invalid
           }"
-          formControlName="roomNumber" required maxlength="7" />
+          formControlName="roomNumber" required maxlength="7" pattern="^[^\s]{1,7}$"/>
         </div>
         <div class="w-100"></div>
         <div *ngIf="roomNumber.errors && ngForm.submitted" class="offset-sm-4 col-sm">
-          <small *ngIf="roomNumber.errors?.required" class="text-danger">The field is required</small>
+          <small *ngIf="roomNumber.errors?.required" class="text-danger">{{ "common-errors.validation-required" | translate }}</small>
+          <small *ngIf="roomNumber.errors?.pattern" class="text-danger">{{ ("common-errors.validation-letter-symbol-pattern" | translate) 
+            + " " + ("common-errors.validation-are-acceptable" | translate) }}</small>
         </div>
       </div>
     </div>
