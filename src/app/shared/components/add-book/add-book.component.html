@@ -21,6 +21,7 @@
               'is-invalid': submitted && addBookForm.controls.title.errors
             }"
             (input)="checkLength('title', $event, 100)"
+            trim="blur"
           />
           <div
             *ngIf="submitted && addBookForm.controls.title.errors"
@@ -230,6 +231,7 @@
             type="text"
             class="form-control"
             (input)="checkLength('publisher', $event, 100)"
+            trim="blur"
           />
         </div>
       </div>
@@ -244,6 +246,7 @@
             type="text"
             class="form-control"
             (input)="checkLength('description', $event, 250)"
+            trim="blur"
           ></textarea>
         </div>
       </div>

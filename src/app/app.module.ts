@@ -98,7 +98,7 @@ import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.ser
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 import { RegistrationService } from './core/services/registration/registration.service';
-
+import { InputTrimModule } from 'ng2-trim-directive';
 
 @NgModule({
   declarations: [
@@ -161,6 +161,7 @@ import { RegistrationService } from './core/services/registration/registration.s
     LanguageFormComponent
   ],
   imports: [
+    InputTrimModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

@@ -40,6 +40,7 @@
     "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "mapbox-gl": "^1.10.0",
+    "ng2-trim-directive": "^2.3.4",
     "ngx-avatar": "^3.7.0",
     "ngx-cookie-service": "^3.0.4",
     "ngx-pagination": "^5.0.0",
