@@ -31,7 +31,7 @@ export class LocationPopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) private user: IUser) {
       this.locationForm = this.formBuilder.group({
         location: ['', Validators.required],
-        roomNumber: ['', [Validators.required, Validators.maxLength(7)]]
+        roomNumber: ['', [Validators.required, Validators.maxLength(7), Validators.pattern(/^[^\s]{1,7}$/)]]
       });
      }
 
