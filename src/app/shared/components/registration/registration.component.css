@@ -9,5 +9,47 @@
     padding-bottom: 10 !important;
     margin-bottom: 0 !important;
     margin-top: 5% !important;
-    padding-top: 10 !important;
+    padding-top: 8 !important;
+}
+
+.fa-eye-slash:hover,
+.fa-eye:hover {
+  cursor: pointer;
+}
+
+#block_container {
+    display: flex;
+    justify-content: center;
+}
+
+.flag
+{
+    padding-bottom: 10 !important;
+    margin-bottom: 0 !important;
+    margin-top: 5% !important;
+    padding-top: 8 !important;
+}
+
+.eye
+{
+    background-color: white;
+}
+
+p{
+    color:red;
+    font-family: Roboto;
+    font-size: 12.8;
+    text-align: left;
+    padding-bottom: 10 !important;
+    margin-bottom: 0 !important;
+}
+
+.fields
+{
+    padding-top: 4% !important;
+}
+
+#hidden
+{
+    display:none;
 }
