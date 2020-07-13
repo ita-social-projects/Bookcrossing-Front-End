@@ -36,9 +36,10 @@
 }
 
 p{
-    color:red;
+    color: red;
     font-family: Roboto;
-    font-size: 12.8;
+    font-weight: 400;
+    font-size: 12.8px;
     text-align: left;
     padding-bottom: 10 !important;
     margin-bottom: 0 !important;

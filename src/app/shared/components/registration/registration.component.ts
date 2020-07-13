@@ -26,6 +26,7 @@ export class RegistrationComponent implements OnInit {
   RegistrationForm: FormGroup;
   fieldTextType: boolean;
   repeatFieldTextType: boolean;
+  clicked = false;
   
   ngOnInit(): void {
     this.buildForm();
@@ -88,10 +89,12 @@ export class RegistrationComponent implements OnInit {
 
   async SignUp(RegistrationForm)
   {
+    RegistrationForm.clicked = true;
     RegistrationForm.value.password = RegistrationForm.value.password.trim();
     if(!this.checkPassword(RegistrationForm.value.password)){ 
        (<HTMLInputElement>document.getElementById('defaultRegisterFormPassword')).value = RegistrationForm.value.password;
        (<HTMLInputElement>document.getElementById('defaultRegisterFormConfirmPassword')).value = "";
+       RegistrationForm.clicked = false;
        return;
     }
     this.regService.registrate(RegistrationForm.value).subscribe(
