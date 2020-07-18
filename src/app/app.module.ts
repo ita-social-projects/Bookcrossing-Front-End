@@ -98,6 +98,8 @@ import {BookLanguageService} from './core/services/bookLanguage/bookLanguage.ser
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 import { RegistrationService } from './core/services/registration/registration.service';
+import { ForbidEmailComponent } from './shared/components/email-notification-forbid/email-notification-forbid.component';
+import { EmailNotificationService } from './core/services/emailnotification/emailnotification.service';
 import { InputTrimModule } from 'ng2-trim-directive';
 
 @NgModule({
@@ -158,7 +160,8 @@ import { InputTrimModule } from 'ng2-trim-directive';
     DefaultImageDerective,
     LocationPopupComponent,
     BookLanguagesComponent,
-    LanguageFormComponent
+    LanguageFormComponent,
+    ForbidEmailComponent
   ],
   imports: [
     InputTrimModule,
@@ -222,6 +225,7 @@ import { InputTrimModule } from 'ng2-trim-directive';
     UserService,
     DatePipe,
     BookLanguageService,
+    EmailNotificationService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

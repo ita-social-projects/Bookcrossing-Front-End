@@ -1,14 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import { NgModule }      from '@angular/core';
-import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
+import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms'; 
 import {IUserReg} from '../../../core/models/UserReg';
 import {Router} from '@angular/router';
 import {RegistrationService} from '../../../core/services/registration/registration.service';
-import { IUser } from 'src/app/core/models/user';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
-import { DIR_DOCUMENT } from '@angular/cdk/bidi';
 
 @Component({
   selector: 'app-registration',
