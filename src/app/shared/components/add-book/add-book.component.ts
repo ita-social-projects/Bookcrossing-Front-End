@@ -368,6 +368,7 @@ export class AddBookComponent implements OnInit {
 
   // returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
+    if(!input) return true; 
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
