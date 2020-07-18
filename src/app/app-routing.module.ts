@@ -32,7 +32,7 @@ import {NotFoundComponent} from './shared/components/not-found/not-found.compone
 import { LocationGuard } from './core/guards/location.guard';
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
-
+import {ForbidEmailComponent} from './shared/components/email-notification-forbid/email-notification-forbid.component'
 
 // @ts-ignore
 const routes: Routes = [
@@ -61,6 +61,7 @@ const routes: Routes = [
   {path: 'books', component: BooksComponent},
   {path: 'location-form', component: LocationFormComponent },
   {path: '', component: HomeComponent},
+  {path: 'email', component: ForbidEmailComponent},
   {path: 'rules', component: RulesComponent},
   {path: 'demo', component: DemoComponent},
   {path: 'books/registered', component: RegisteredBookComponent},

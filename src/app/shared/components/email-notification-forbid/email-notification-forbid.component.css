@@ -1,0 +1,25 @@
+p
+{
+    padding-top: 2%;
+}
+
+button
+{
+    position: absolute;
+    top: 50%;
+    width: 36%;
+    height: 40px;
+}
+
+.button-left
+{
+    left: 80%;
+    margin-right: -100%;
+    transform: translate(-50%, -60%);
+}
+.button-right
+{
+    left: 20%;
+    margin-right: -100%;
+    transform: translate(-50%, -60%);
+}
