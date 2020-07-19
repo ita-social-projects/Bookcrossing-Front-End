@@ -27,6 +27,10 @@ export class ForbidEmailComponent implements OnInit {
     this.route.queryParams.subscribe(query => {
       this.email = query.email;
       this.number = query.number;
+      if (this.email == null || this.number == null)
+      {
+        document.body.innerHTML = ""; 
+      }
     });
   }
 
@@ -45,6 +49,7 @@ export class ForbidEmailComponent implements OnInit {
 
 
   No():void {
+    document.body.innerHTML = ""; 
     window.close();
   }
 }

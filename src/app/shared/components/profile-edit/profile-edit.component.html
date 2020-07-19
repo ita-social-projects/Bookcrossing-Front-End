@@ -124,6 +124,26 @@
         <div class="col-2"></div>
       </div>
     </div>
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-2"></div>
+        <div class="col-3">
+          <p class="input-label padding-left">Receive e-mails:</p>
+        </div>
+        <div class="col-3">
+          <label class="switch">
+            <input #isEmail type="checkbox"
+            formControlName="isEmail" 
+            (change)="onIsEmailChange(isEmail.checked)"
+            *ngIf="editUserForm.controls.isEmail" checked
+            class="form-control">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </div>
+
 
     <div>
       <div class="form-row mb-4">

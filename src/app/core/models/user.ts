@@ -11,6 +11,7 @@ export interface IUser {
   lastName?: string;
   email: string;
   role: IRole;
+  isEmailAllowed: boolean;
   userLocation: IRoomLocation;
   birthDate: Date;
   registeredDate: Date;

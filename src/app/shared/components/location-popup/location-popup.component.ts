@@ -68,6 +68,7 @@ export class LocationPopupComponent implements OnInit {
       birthDate: this.user.birthDate,
       userLocation: newLocation,
       email: this.user.email,
+      isEmailAllowed: this.user.isEmailAllowed,
       password: localStorage.getItem('password'),
       registeredDate: this.user.registeredDate,
       roleId: this.user.role.id,
