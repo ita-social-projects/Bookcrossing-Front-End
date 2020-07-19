@@ -1,25 +1,33 @@
 p
 {
-    padding-top: 2%;
+    font-size: 15pt;
+    padding-top: 5%;
+    padding-bottom: 1%;
 }
 
 button
 {
     position: absolute;
     top: 50%;
-    width: 36%;
+    width: 35%;
     height: 40px;
+}
+
+.f
+{
+    height: 350px;
+    overflow-x:  hidden;
 }
 
 .button-left
 {
     left: 80%;
-    margin-right: -100%;
-    transform: translate(-50%, -60%);
+    margin-right: -95%;
+    transform: translate(-40%, -40%);
 }
 .button-right
 {
     left: 20%;
-    margin-right: -100%;
-    transform: translate(-50%, -60%);
+    margin-right: -95%;
+    transform: translate(-40%, -40%);
 }

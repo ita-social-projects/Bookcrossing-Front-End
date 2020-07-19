@@ -29,8 +29,9 @@ export class ProfileEditComponent implements OnInit {
   location: ILocation;
   changingLocation = false;
   locations: ILocation[] = [];
+  isEmail: boolean;
   submitted = false;
-  fieldMasks = ['FirstName', 'LastName', 'BirthDate', 'UserRoomId'];
+  fieldMasks = ['FirstName', 'LastName', 'BirthDate', 'UserRoomId', 'IsEmailAllowed'];
   private notificationService: NotificationService;
 
   constructor(
@@ -62,6 +63,7 @@ export class ProfileEditComponent implements OnInit {
       firstName: new FormControl({value: this.user.firstName, disabled: false}, Validators.required),
       lastName: new FormControl({value: this.user.lastName, disabled: false}, Validators.required),
       birthDate: new FormControl({value: this.user.birthDate, disabled: false}),
+      isEmail: new FormControl({value: this.user.isEmailAllowed, disabled: false}),
       room: new FormControl((this.user.userLocation.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
         [Validators.required, Validators.maxLength(7)])
     });
@@ -82,6 +84,7 @@ export class ProfileEditComponent implements OnInit {
       birthDate: new Date(this.editUserForm.get('birthDate').value),
       userLocation: this.user.userLocation,
       email: this.user.email,
+      isEmailAllowed: this.isEmail,
       password: this.password,
       registeredDate: this.user.registeredDate,
       roleId: this.user.role.id,
@@ -129,5 +132,9 @@ export class ProfileEditComponent implements OnInit {
           this.editUserForm.reset();
         }
       });
+  }
+
+  onIsEmailChange(isChecked: boolean) {
+    this.isEmail = isChecked;
   }
 }

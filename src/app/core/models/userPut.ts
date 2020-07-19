@@ -6,6 +6,7 @@ export interface IUserPut {
   lastName?: string;
   middleName?: string;
   email: string;
+  isEmailAllowed: boolean;
   password: string;
   roleId: number;
   birthDate: Date;
