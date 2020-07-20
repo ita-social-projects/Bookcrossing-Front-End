@@ -44,6 +44,7 @@ export class AddBookComponent implements OnInit {
   selectedFile = null;
   authorsSubscription: SubscriptionLike;
   submitted = false;
+  submittedValid = false;
   authorFocused = false;
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
@@ -110,8 +111,11 @@ export class AddBookComponent implements OnInit {
   }
 
   async onSubmit() {
+    if(this.submittedValid) return;
+    this.submitted = this.submittedValid = true;
+
     if (this.validateForm(this.addBookForm)) {
-      this.submitted = true;
+      this.submittedValid = false;
       return;
     }
 
@@ -166,11 +170,10 @@ export class AddBookComponent implements OnInit {
           this.translate.instant('Book is registered successfully'),
           'X'
         );
-        this.submitted = false;
         this.goToPage('book', data.id);
       },
       (error) => {
-        this.submitted = true;
+        this.submittedValid = false;
         console.log(error);
         this.notificationService.error(
           this.translate.instant('Something went wrong'),
