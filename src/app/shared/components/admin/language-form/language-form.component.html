@@ -7,8 +7,8 @@
     <div class="form">
       <div class="mt-2">
         <label for="LanguageFormName">{{'components.admin.languages.name' | translate}} <span class="asterisk"> *</span></label>
-        <input type="text" id="LanguageFormName" class="form-control" formControlName="name"
-               name="name">
+        <input #LanguageName type="text" id="LanguageFormName" class="form-control" formControlName="name"
+               name="name" (input)="checkLength(LanguageName, 20)">
       </div>
       <div *ngIf="form.get('name').errors && form.get('name').touched">
         <div *ngIf="form.get('name').errors?.required" class="validation-error">
