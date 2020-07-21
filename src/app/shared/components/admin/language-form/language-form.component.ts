@@ -24,6 +24,7 @@ export class LanguageFormComponent implements OnInit {
   title: string;
   submitButtonText: string;
   form: FormGroup;
+  hideErrorInterval: NodeJS.Timeout;
 
   constructor(
     private router: ActivatedRoute,
@@ -121,5 +122,19 @@ export class LanguageFormComponent implements OnInit {
           .instant('common-errors.error-message'), 'X');
       },
     );
+  }
+
+  public checkLength(input: HTMLInputElement, maxLength): void {
+    if (input.value.length > maxLength) {
+      this.form.controls[input.name].setErrors({ maxlength: {requiredLength: maxLength}});
+      this.form.controls[input.name].markAsTouched();
+      input.value = input.value.substr(0, maxLength);
+
+      clearInterval(this.hideErrorInterval);
+      this.hideErrorInterval = setTimeout(() => {
+        this.form.controls[input.name].setErrors(null);
+        this.form.controls[input.name].markAsTouched();
+      }, 2000);
+    }
   }
 }
