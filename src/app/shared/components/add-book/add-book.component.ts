@@ -7,7 +7,7 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { GenreService } from 'src/app/core/services/genre/genre';
 import { AuthorService } from 'src/app/core/services/author/authors.service';
 import { SubscriptionLike } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IBookPost } from 'src/app/core/models/bookPost';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
@@ -16,6 +16,11 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { bookState } from '../../../core/models/bookState.enum';
 import { ILanguage } from '../../../core/models/language';
 import { BookLanguageService } from '../../../core/services/bookLanguage/bookLanguage.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.prod';
+import { OuterServiceService } from 'src/app/core/services/outerService/outer-service.service';
+import { OuterBook } from 'src/app/core/models/outerBook';
+import { AutofillMonitor } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-add-book',
@@ -23,7 +28,9 @@ import { BookLanguageService } from '../../../core/services/bookLanguage/bookLan
   styleUrls: ['./add-book.component.scss'],
 })
 export class AddBookComponent implements OnInit {
+  
   constructor(
+    private http: HttpClient,
     private translate: TranslateService,
     private notificationService: NotificationService,
     private bookService: BookService,
@@ -32,7 +39,9 @@ export class AddBookComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private router: Router,
     private dialogService: DialogService,
-    private bookLanguageService: BookLanguageService
+    private bookLanguageService: BookLanguageService,
+    private outerService:OuterServiceService,
+    private activeroute:ActivatedRoute
   ) { }
 
   addBookForm: FormGroup;
@@ -48,8 +57,9 @@ export class AddBookComponent implements OnInit {
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
+  outerBook:OuterBook
 
-  ngOnInit(): void {
+  ngOnInit(): void{
     this.buildForm();
     this.getAllGenres();
     this.getAllLanguages();
@@ -75,7 +85,29 @@ export class AddBookComponent implements OnInit {
         }
       ); 
     }
+
+    this.activeroute.queryParams.subscribe((params)=>{
+      if(params['outerBookId']){
+        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook=>{ this.outerBook=outerBook;
+        this.autoFill();
+        });
+      }
+    })
+
   }
+
+  autoFill(){
+    console.log(this.outerBook);
+    this.addBookForm.get('title').setValue(this.outerBook.title);
+    this.addBookForm.get('description').setValue(this.outerBook.description);
+    this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
+
+  }
+
+setSearchTerm(searchTerm:string){
+
+  this.router.navigate(['found-books'],{queryParams:{'searchTerm':searchTerm}});
+}
 
   isAuthenticated() {
     return this.authenticationService.isAuthenticated();
@@ -99,13 +131,14 @@ export class AddBookComponent implements OnInit {
 
   buildForm() {
     this.addBookForm = new FormGroup({
-      title: new FormControl(null, Validators.required),
+      title: new FormControl('', Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
       // authorLastname: new FormControl(null),
-      authorFirstname: new FormControl(null),
+      authorFirstname: new FormControl(''),
       description: new FormControl(null),
-      languageId: new FormControl(null, Validators.required)
+      languageId: new FormControl(null, Validators.required),
+      image: new FormControl('')
     });
   }
 
@@ -148,7 +181,8 @@ export class AddBookComponent implements OnInit {
       notice: this.addBookForm.get('description').value,
       state: bookState.available,
       userId: this.userId,
-      languageId: this.addBookForm.get('languageId').value
+      languageId: this.addBookForm.get('languageId').value,
+      image: this.addBookForm.get('img').value
     };
 
     if (this.withoutAuthorChecked) {

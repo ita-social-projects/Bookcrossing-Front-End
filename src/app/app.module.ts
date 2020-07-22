@@ -99,6 +99,7 @@ import {BookLanguagesComponent} from './shared/components/admin/languages/langua
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
 import { RegistrationService } from './core/services/registration/registration.service';
 import { InputTrimModule } from 'ng2-trim-directive';
+import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +159,8 @@ import { InputTrimModule } from 'ng2-trim-directive';
     DefaultImageDerective,
     LocationPopupComponent,
     BookLanguagesComponent,
-    LanguageFormComponent
+    LanguageFormComponent,
+    FoundBooksComponent
   ],
   imports: [
     InputTrimModule,
