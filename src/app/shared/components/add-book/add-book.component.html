@@ -3,7 +3,7 @@
     [formGroup]="addBookForm"
     #ngForm="ngForm"
     (ngSubmit)="onSubmit()"
-    class="text-center border border-light p-5"
+    class="border border-light p-5"
   >
     <p class="h2 mb-4 title">Register book</p>
     <div>
@@ -14,21 +14,19 @@
         <div class="col-4">
           <!-- Book title -->
           <input
+            #Title
             formControlName="title"
             type="text"
             class="form-control"
-            [ngClass]="{
-              'is-invalid': submitted && addBookForm.controls.title.errors
-            }"
-            (input)="checkLength('title', $event, 100)"
+            (input)="checkLength(Title, 150)"
             trim="blur"
           />
-          <div
-            *ngIf="submitted && addBookForm.controls.title.errors"
-            class="invalid-feedback"
-          >
-            <div *ngIf="addBookForm.controls.title.errors.required">
+          <div *ngIf="addBookForm.get('title').errors">
+            <div *ngIf="addBookForm.get('title').errors?.required && addBookForm.get('title').touched" class="validation-error">
               This field is required.
+            </div>
+            <div *ngIf="addBookForm.get('title').errors?.maxlength" class="validation-error">
+              {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('title').errors?.maxlength?.requiredLength} }}
             </div>
           </div>
         </div>
@@ -58,47 +56,40 @@
                 #firstnameInput
                 type="text"
                 class="form-control"
-                maxlength="100"
                 [matAutocomplete]="FirstNameAuto"
-                [ngClass]="{
-                  'is-invalid':
-                    submitted &&
-                    ((!selectedAuthors.length &&
-                      !addBookForm.controls.authorFirstname.value?.trim()) ||
-                      !checkAuthorLastName(
-                        addBookForm.controls.authorFirstname.value
-                      )) &&
-                    !withoutAuthorChecked
-                }"
                 (focus)="authorFocused = true"
                 (blur)="authorFocused = false"
+                (input)="checkLength(firstnameInput, 100)"
+                [ngClass]="{
+                  'ng-invalid': addBookForm.get('authorFirstname').touched &&
+                       !selectedAuthors.length &&
+                       !addBookForm.controls.authorFirstname.value?.trim() &&
+                       !withoutAuthorChecked
+                }"
               />
               <div
-                *ngIf="
-                  submitted &&
-                  !selectedAuthors.length &&
-                  !addBookForm.controls.authorFirstname.value?.trim() &&
-                  !withoutAuthorChecked
-                "
-                class="invalid-feedback"
-              >
+                *ngIf=" addBookForm.get('authorFirstname').touched &&
+                       !selectedAuthors.length &&
+                       !addBookForm.controls.authorFirstname.value?.trim() &&
+                       !withoutAuthorChecked"
+                class="validation-error">
                 This field is required.
               </div>
               <div
-                *ngIf="
-                  submitted &&
-                  !checkAuthorLastName(
-                    addBookForm.controls.authorFirstname.value
-                  ) && !withoutAuthorChecked
-                "
-                class="new-author-warning"
-              >
+                *ngIf="submitted &&
+                       !checkAuthorLastName(addBookForm.controls.authorFirstname.value) &&
+                       !withoutAuthorChecked"
+                class="validation-error">
                 Lastname is required.
+              </div>
+              <div *ngIf="addBookForm.get('authorFirstname').errors?.maxlength" class="validation-error">
+                {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('authorFirstname').errors?.maxlength?.requiredLength} }}
               </div>
             </div>
           </div>
-          <div
-            *ngIf="addBookForm.controls.authorFirstname.dirty && addBookForm.controls.authorFirstname.value!='' && !withoutAuthorChecked"
+          <div *ngIf="addBookForm.controls.authorFirstname.dirty &&
+                      addBookForm.controls.authorFirstname.value!='' &&
+                      !withoutAuthorChecked"
             class="new-author-warning"
           >
             <span>Entered author is saved as 'not confirmed'</span>
@@ -154,9 +145,6 @@
             class="form-control"
             multiple
             placeholder="Select"
-            [ngClass]="{
-              'is-invalid': submitted && addBookForm.controls.genres.errors
-            }"
           >
             <mat-select-trigger>
               {{
@@ -176,15 +164,10 @@
                 }})
               </span>
             </mat-select-trigger>
-            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
-              genre.name
-            }}</mat-option>
+            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
           </mat-select>
-          <div
-            *ngIf="submitted && addBookForm.controls.genres.errors"
-            class="invalid-feedback"
-          >
-            <div *ngIf="addBookForm.controls.genres.errors.required">
+          <div *ngIf="addBookForm.get('genres').touched && addBookForm.get('genres').errors" class="validation-error">
+            <div *ngIf="addBookForm.get('genres').errors.required">
               This field is required.
             </div>
           </div>
@@ -200,20 +183,11 @@
           <mat-select
             class="form-control"
             formControlName="languageId"
-            placeholder="Select"
-            [ngClass]="{
-              'is-invalid': submitted && addBookForm.controls.languageId.errors
-            }"
-          >
-            <mat-option *ngFor="let language of languages" [value]="language.id">{{
-              language.name
-              }}</mat-option>
+            placeholder="Select">
+            <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.name }}</mat-option>
           </mat-select>
-          <div
-            *ngIf="submitted && addBookForm.controls.languageId.errors"
-            class="invalid-feedback"
-          >
-            <div *ngIf="addBookForm.controls.languageId.errors.required">
+          <div *ngIf="addBookForm.get('languageId').touched && addBookForm.get('languageId').errors" class="validation-error">
+            <div *ngIf="addBookForm.get('languageId').errors.required">
               This field is required.
             </div>
           </div>
@@ -227,12 +201,16 @@
         </div>
         <div class="col-4">
           <input
+            #Publisher
             formControlName="publisher"
             type="text"
             class="form-control"
-            (input)="checkLength('publisher', $event, 150)"
+            (input)="checkLength(Publisher, 150)"
             trim="blur"
           />
+          <div *ngIf="addBookForm.get('publisher').errors?.maxlength" class="validation-error">
+            {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('publisher').errors?.maxlength?.requiredLength} }}
+          </div>
         </div>
       </div>
 
@@ -242,12 +220,16 @@
         </div>
         <div class="col-4">
           <textarea
+            #Description
             formControlName="description"
             type="text"
             class="form-control"
-            (input)="checkLength('description', $event, 250)"
-            trim="blur"
-          ></textarea>
+            (input)="checkLength(Description, 250)"
+            trim="blur">
+          </textarea>
+          <div *ngIf="addBookForm.get('description').errors?.maxlength" class="validation-error">
+            {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('description').errors?.maxlength?.requiredLength} }}
+          </div>
         </div>
       </div>
 
@@ -290,9 +272,9 @@
     </div>
 
     <!-- Add book button -->
-    <button class="btn btn-info" type="submit" name="submit">
-      Save
-    </button>
-    <input type="button" class="btn" (click)="onCancel()" value="Cancel" />
+    <div class="center">
+      <button class="btn btn-info" type="submit" name="submit">Save</button>
+      <button class="btn" (click)="onCancel()">Cancel</button>
+    </div>
   </form>
 </div>
