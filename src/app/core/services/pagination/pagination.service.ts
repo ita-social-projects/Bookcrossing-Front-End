@@ -5,6 +5,7 @@ import { CompletePaginationParams } from 'src/app/core/models/Pagination/complet
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { PageableParameters } from '../../models/Pagination/pageableParameters';
 import { BookQueryParams } from '../../models/bookQueryParams';
+import { OuterBookQueryParams } from '../../models/outerBookQueryParams';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,11 @@ export class PaginationService {
     return this.http.get<IPage<T>>(getUrl, { params });
   }
   getBookPage<T>(getUrl: string, bookParams: BookQueryParams): Observable<IPage<T>> {
+    let params = new HttpParams();
+    params = bookParams.getHttpParams();
+    return this.http.get<IPage<T>>(getUrl, { params });
+  }
+  getOuterBookPage<T>(getUrl: string, bookParams: OuterBookQueryParams): Observable<IPage<T>> {
     let params = new HttpParams();
     params = bookParams.getHttpParams();
     return this.http.get<IPage<T>>(getUrl, { params });

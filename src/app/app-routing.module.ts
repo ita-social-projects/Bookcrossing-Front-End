@@ -32,6 +32,7 @@ import {NotFoundComponent} from './shared/components/not-found/not-found.compone
 import { LocationGuard } from './core/guards/location.guard';
 import {BookLanguagesComponent} from './shared/components/admin/languages/languages.component';
 import {LanguageFormComponent} from './shared/components/admin/language-form/language-form.component';
+import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 import {ForbidEmailComponent} from './shared/components/email-notification-forbid/email-notification-forbid.component'
 
 // @ts-ignore
@@ -57,6 +58,7 @@ const routes: Routes = [
 
   {path: 'book/:id', component: BookComponent},
   {path: 'book', component: AddBookComponent, canActivate: [LocationGuard]},
+  {path: 'found-books', component: FoundBooksComponent},
   {path: 'books/requests', component: RequestsComponent, canActivate: [AuthGuard]},
   {path: 'books', component: BooksComponent},
   {path: 'location-form', component: LocationFormComponent },

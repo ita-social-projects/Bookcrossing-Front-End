@@ -101,6 +101,7 @@ import { RegistrationService } from './core/services/registration/registration.s
 import { ForbidEmailComponent } from './shared/components/email-notification-forbid/email-notification-forbid.component';
 import { EmailNotificationService } from './core/services/emailnotification/emailnotification.service';
 import { InputTrimModule } from 'ng2-trim-directive';
+import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { InputTrimModule } from 'ng2-trim-directive';
     LocationPopupComponent,
     BookLanguagesComponent,
     LanguageFormComponent,
+    FoundBooksComponent,
     ForbidEmailComponent
   ],
   imports: [

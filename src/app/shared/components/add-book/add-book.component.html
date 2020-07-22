@@ -233,6 +233,23 @@
         </div>
       </div>
 
+      <div class="form-row mb-4 ">
+        <div class="col-3" style="text-align: left;">
+          <button type="button" (click)="setSearchTerm(searchTerm.value)"  class="btn btn-info"  >
+            Find by ISBN/BookTitle
+          </button>
+        </div>
+          <div class="col-4" >
+            <input
+           #searchTerm
+            class="form-control"
+            trim="blur"
+            type="text"
+            />
+            
+          </div>
+        </div>
+    
       <div class="form-row mb-4">
         <button type="button" class="btn btn-info" (click)="fileInput.click()">
           Add image
@@ -255,7 +272,7 @@
         <div class="col-4">
           <div *ngIf="selectedFile">
             <span
-              >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
+            >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
             >
             <span
               *ngIf="selectedFile"
