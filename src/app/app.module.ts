@@ -162,9 +162,8 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
     LocationPopupComponent,
     BookLanguagesComponent,
     LanguageFormComponent,
-    FoundBooksComponent
+    FoundBooksComponent,
     ForbidEmailComponent
-
   ],
   imports: [
     InputTrimModule,
