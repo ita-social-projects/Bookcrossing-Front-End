@@ -49,6 +49,7 @@ export class AddBookComponent implements OnInit {
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
+  hideErrorInterval: NodeJS.Timeout;
 
   ngOnInit(): void {
     this.buildForm();
@@ -74,7 +75,7 @@ export class AddBookComponent implements OnInit {
         (error) => {
           console.log('fetching userId error');
         }
-      ); 
+      );
     }
   }
 
@@ -103,7 +104,6 @@ export class AddBookComponent implements OnInit {
       title: new FormControl(null, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
-      // authorLastname: new FormControl(null),
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
       languageId: new FormControl(null, Validators.required)
@@ -111,9 +111,12 @@ export class AddBookComponent implements OnInit {
   }
 
   async onSubmit() {
-    if(this.submittedValid) return;
-    this.submitted = this.submittedValid = true;
+    if (this.submittedValid) {
+      return;
+    }
 
+    this.submitted = this.submittedValid = true;
+    this.addBookForm.markAllAsTouched();
     if (this.validateForm(this.addBookForm)) {
       this.submittedValid = false;
       return;
@@ -371,44 +374,32 @@ export class AddBookComponent implements OnInit {
 
   // returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
-    if(!input) return true; 
+    if (!input) {
+      return true;
+    }
+
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
-    if (words.length < 2) {
-      return false;
-    }
-    return true;
+    return words.length >= 2;
   }
 
-  checkLength(fieldName: string, event: any, maxLength: number) {
-    const value = event.target.value;
-    if (value.length > maxLength) {
-      switch (fieldName) {
-        case 'title':
-          this.addBookForm.patchValue({
-            title: value.substr(0, maxLength)
-          });
-          break;
-        case 'publisher':
-          this.addBookForm.patchValue({
-            publisher: value.substr(0, maxLength)
-          });
-          break;
-        case 'description':
-          this.addBookForm.patchValue({
-            description: value.substr(0, maxLength)
-          });
-          break;
-      }
-      event.target.classList.add('is-invalid');
-      setTimeout(() => {
-          event.target.classList.remove('is-invalid');
-      }, 3000);
-      this.notificationService.error(
-        this.translate.instant('common-errors.validation-max-length', {value: maxLength}),
-        'X'
-      );
+  checkLength(element: HTMLElement, maxLength: number) {
+
+    const input = (element as HTMLInputElement) != null ? (element as HTMLInputElement) : (element as HTMLTextAreaElement);
+
+    if (input.value.length > maxLength) {
+      const fieldName = input.attributes['formControlName'].value;
+      input.value = input.value.substr(0, maxLength);
+
+      this.addBookForm.controls[fieldName].setErrors({ maxlength: {requiredLength: maxLength}});
+      this.addBookForm.controls[fieldName].markAsTouched();
+
+      clearInterval(this.hideErrorInterval);
+      this.hideErrorInterval = setTimeout(() => {
+        this.addBookForm.controls[fieldName].setErrors(null);
+        this.addBookForm.controls[fieldName].markAsTouched();
+      }, 2000);
     }
   }
 }
