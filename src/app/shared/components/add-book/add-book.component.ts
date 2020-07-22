@@ -58,7 +58,8 @@ export class AddBookComponent implements OnInit {
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
-  outerBook:OuterBook
+  outerBook:OuterBook;
+  hideErrorInterval:NodeJS.Timeout;
 
 
   ngOnInit(): void{
@@ -138,7 +139,6 @@ setSearchTerm(searchTerm:string){
       publisher: new FormControl(null),
 
       // authorLastname: new FormControl(null),
-      authorFirstname: new FormControl(''),
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
       languageId: new FormControl(null, Validators.required),
