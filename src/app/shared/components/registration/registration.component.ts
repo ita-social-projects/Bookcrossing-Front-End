@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import { NgModule }      from '@angular/core';
-import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
+import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms'; 
 import {IUserReg} from '../../../core/models/UserReg';
 import {Router} from '@angular/router';
 import {RegistrationService} from '../../../core/services/registration/registration.service';
-import { IUser } from 'src/app/core/models/user';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,6 +20,9 @@ export class RegistrationComponent implements OnInit {
   }
 
   RegistrationForm: FormGroup;
+  fieldTextType: boolean;
+  repeatFieldTextType: boolean;
+  clicked = false;
   
   ngOnInit(): void {
     this.buildForm();
@@ -34,15 +34,38 @@ export class RegistrationComponent implements OnInit {
       else return false;
   }
 
+  isEmpty(str:string) {
+    if (str.trim() == "") return true;
+    return false;
+  }
+
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
+  toggleRepeatFieldTextType() {
+    this.repeatFieldTextType = !this.repeatFieldTextType;
+  }
+
+
   comparePasswords(a: string, b: string) {
     return a === b;
   }
 
   checkPassword(a:string)
   {
-    if (a == null) a = '';
+    if (a == null) return true;
     let minimumLength = 4;
-    return a.length >= minimumLength;      //length of password should be 4 symbols or more
+    if(a.length < minimumLength)
+    {
+      document.getElementById('hidden').style.display = "block";
+      return false;
+    }
+    else
+    {
+      document.getElementById('hidden').style.display = "none";
+      return true;
+    }
   }
 
   navigateToSignIn() {
@@ -62,6 +85,14 @@ export class RegistrationComponent implements OnInit {
 
   async SignUp(RegistrationForm)
   {
+    RegistrationForm.clicked = true;
+    RegistrationForm.value.password = RegistrationForm.value.password.trim();
+    if(!this.checkPassword(RegistrationForm.value.password)){ 
+       (<HTMLInputElement>document.getElementById('defaultRegisterFormPassword')).value = RegistrationForm.value.password;
+       (<HTMLInputElement>document.getElementById('defaultRegisterFormConfirmPassword')).value = "";
+       RegistrationForm.clicked = false;
+       return;
+    }
     this.regService.registrate(RegistrationForm.value).subscribe(
       (data: IUserReg) => {
         this.notificationService.success(

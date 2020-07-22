@@ -26,6 +26,11 @@
     </td>
   </tr>
   <tr>
+    <td>Receive e-mails</td>
+    <td *ngIf="user.isEmailAllowed">Yes</td>
+    <td *ngIf="!user.isEmailAllowed">No</td>
+  </tr>
+  <tr>
     <td>
       <button (click)="showEditForm(user)" class="btn blue-gradient">Edit</button>
     </td>

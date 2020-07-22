@@ -53,6 +53,7 @@ export class AddBookComponent implements OnInit {
   selectedFile = null;
   authorsSubscription: SubscriptionLike;
   submitted = false;
+  submittedValid = false;
   authorFocused = false;
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
@@ -143,8 +144,11 @@ setSearchTerm(searchTerm:string){
   }
 
   async onSubmit() {
+    if(this.submittedValid) return;
+    this.submitted = this.submittedValid = true;
+
     if (this.validateForm(this.addBookForm)) {
-      this.submitted = true;
+      this.submittedValid = false;
       return;
     }
 
@@ -200,11 +204,10 @@ setSearchTerm(searchTerm:string){
           this.translate.instant('Book is registered successfully'),
           'X'
         );
-        this.submitted = false;
         this.goToPage('book', data.id);
       },
       (error) => {
-        this.submitted = true;
+        this.submittedValid = false;
         console.log(error);
         this.notificationService.error(
           this.translate.instant('Something went wrong'),
@@ -402,6 +405,7 @@ setSearchTerm(searchTerm:string){
 
   // returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
+    if(!input) return true; 
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
