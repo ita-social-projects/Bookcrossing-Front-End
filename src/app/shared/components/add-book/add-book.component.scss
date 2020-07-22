@@ -1,4 +1,11 @@
-$color-danger: red;
+input, textarea, mat-select {
+  &.ng-invalid.ng-touched {
+    border: 1px solid red !important;
+  }
+  &.ng-valid.ng-touched {
+    border: 1px solid green;
+  }
+}
 
 form {
     margin: 0% 10%;
@@ -53,4 +60,14 @@ li{
 
 .hide-input{
     display: none;
+}
+
+.validation-error {
+  width: 100%;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.center {
+  text-align: center;
 }
