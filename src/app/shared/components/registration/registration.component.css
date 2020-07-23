@@ -36,9 +36,8 @@
 }
 
 p{
-    color: 'FF3547';
+    color: rgb(255, 53, 71) !important;
     font-family: Roboto;
-    font-weight: 400;
     font-size: 12.8px;
     text-align: left;
     padding-bottom: 10 !important;
