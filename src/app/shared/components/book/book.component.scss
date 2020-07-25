@@ -24,3 +24,13 @@ table {
 .badge{
 display: initial;
 }
+
+
+.heartbox
+{
+  position: absolute;
+  z-index: 1;
+  top:0px;
+  right:0px;
+  outline:none; 
+}

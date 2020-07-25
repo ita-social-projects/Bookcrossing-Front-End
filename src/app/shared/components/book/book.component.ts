@@ -19,6 +19,7 @@ import { BookEditFormComponent } from '../book-edit-form/book-edit-form.componen
 import { RefDirective } from '../../directives/ref.derictive';
 import { IBookPut } from 'src/app/core/models/bookPut';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
+import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-book',
@@ -34,6 +35,7 @@ export class BookComponent implements OnInit {
   bookId: number;
   isRequester: boolean;
   isBookOwner: boolean;
+  isWished;
   readCount: number = null;
   currentOwner: IUser = null;
   userWhoRequested: IUser = null;
@@ -52,7 +54,8 @@ export class BookComponent implements OnInit {
     private dialogService: DialogService,
     private userService: UserService,
     private authentication: AuthenticationService,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private wishListService: WishListService
   ) { }
 
   ngOnInit() {
@@ -68,6 +71,7 @@ export class BookComponent implements OnInit {
       if (value.state !== bookState.available) {
         this.getUserWhoRequested();
       }
+      this.isWished = this.wishListService.isWished(this.bookId);
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
@@ -307,5 +311,33 @@ export class BookComponent implements OnInit {
 
   onRatingSet($event: number) {
     console.log($event)
+  }
+
+  changeWishList(book:IBook):void
+  {
+      if(this.isWished) 
+      {
+        this.wishListService.removeFromWishList(book.id).subscribe(
+          (data) => { this.isWished = false; },
+          (error) => {
+            this.notificationService.error(
+              this.translate.instant('Something went wrong'),
+              'X'
+            );
+          }
+        );
+      }
+      else
+      {
+        this.wishListService.addToWishList(book.id).subscribe(
+        (data) => { this.isWished = true; },
+          (error) => {
+            this.notificationService.error(
+              this.translate.instant('Cannot add own book to the wish list'),
+              'X'
+            );
+          }
+        );
+      }
   }
 }

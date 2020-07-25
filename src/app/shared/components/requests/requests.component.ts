@@ -16,8 +16,8 @@ import { booksPage } from 'src/app/core/models/booksPage.enum';
 
 @Component({
   selector: 'app-requests',
-  templateUrl: '../books/books.component.html',
-  styleUrls: ['../books/books.component.scss'],
+  templateUrl: './requests.component.html',
+  styleUrls: ['./requests.component.scss'],
   providers: []
 })
 export class RequestsComponent implements OnInit {

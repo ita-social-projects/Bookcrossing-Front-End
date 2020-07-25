@@ -15,5 +15,6 @@ export const commentChildUrl = baseUrl + 'bookchildcomments/';
 export const refreshTokenUrl = loginUrl + '/refresh';
 export const dashboardUrl = baseUrl + 'admin/dashboard';
 export const languageUrl = baseUrl + 'language/';
-export const outerBookUrl = baseUrl + 'OuterBooksSource/'
+export const outerBookUrl = baseUrl + 'OuterBooksSource/';
+export const wishListUrl = baseUrl + 'WishList/';
 
