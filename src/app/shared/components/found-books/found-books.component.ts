@@ -6,7 +6,7 @@ import {environment} from 'src/environments/environment';
 import {booksPage} from 'src/app/core/models/booksPage.enum';
 import { HttpClient } from '@angular/common/http';
 import { OuterServiceService } from 'src/app/core/services/outerService/outer-service.service';
-import { OuterBook } from 'src/app/core/models/outerBook';
+import { IOuterBook } from 'src/app/core/models/outerBook';
 import { IPage } from 'src/app/core/models/page';
 import { CompletePaginationParams } from 'src/app/core/models/Pagination/completePaginationParameters';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -32,7 +32,7 @@ export class FoundBooksComponent implements OnInit {
   selectedGenres: number[];
   selectedLanguages: number[];
   route = this.router.url;
-  foundBooks:IPage<OuterBook>;
+  foundBooks:IPage<IOuterBook>;
 
 
   

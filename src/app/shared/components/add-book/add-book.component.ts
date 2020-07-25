@@ -19,7 +19,7 @@ import { BookLanguageService } from '../../../core/services/bookLanguage/bookLan
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
 import { OuterServiceService } from 'src/app/core/services/outerService/outer-service.service';
-import { OuterBook } from 'src/app/core/models/outerBook';
+import { IOuterBook } from 'src/app/core/models/outerBook';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 
 @Component({
@@ -58,7 +58,7 @@ export class AddBookComponent implements OnInit {
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
-  outerBook:OuterBook;
+  outerBook:IOuterBook;
   hideErrorInterval:NodeJS.Timeout;
 
 
@@ -104,13 +104,21 @@ export class AddBookComponent implements OnInit {
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('description').setValue(this.outerBook.description);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
-
+    for(var i=0;i<this.outerBook.authors.length;i++){
+      this.addBookForm.get('authorFirstname').setValue(this.outerBook.authors[i].fullName);
+      }
   }
 
-setSearchTerm(searchTerm:string){
+  testFunction(event){
+    const file = event.target.files
+    let formData: FormData = new FormData();
+    formData.append("image", file);
+ }
 
-  this.router.navigate(['found-books'],{queryParams:{'searchTerm':searchTerm}});
-}
+  setSearchTerm(searchTerm:string){
+
+    this.router.navigate(['found-books'],{queryParams:{'searchTerm':searchTerm}});
+  }
 
   isAuthenticated() {
     return this.authenticationService.isAuthenticated();
@@ -192,7 +200,7 @@ setSearchTerm(searchTerm:string){
       state: bookState.available,
       userId: this.userId,
       languageId: this.addBookForm.get('languageId').value,
-      image: this.addBookForm.get('img').value
+      image: this.addBookForm.get('image').value
     };
 
     if (this.withoutAuthorChecked) {
