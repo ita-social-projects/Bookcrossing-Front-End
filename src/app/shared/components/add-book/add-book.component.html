@@ -263,6 +263,7 @@
         <div class="file-upload-wrapper">
           <input
             #fileInput
+            formControlName="image"
             style="display: none;"
             type="file"
             accept="image/png, image/jpeg"
@@ -270,7 +271,7 @@
           />
         </div>
         <div class="col-4">
-          <div *ngIf="selectedFile">
+          <div *ngIf="selectedFile" >
             <span
             >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
             >
