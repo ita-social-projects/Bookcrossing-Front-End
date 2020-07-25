@@ -60,7 +60,7 @@ const routes: Routes = [
   {path: 'books/requests', component: RequestsComponent, canActivate: [AuthGuard]},
   {path: 'books', component: BooksComponent},
   {path: 'location-form', component: LocationFormComponent },
-  {path: 'wishlist', component: WishListComponent},
+  {path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
   {path: '', component: HomeComponent},
   {path: 'email', component: ForbidEmailComponent},
   {path: 'rules', component: RulesComponent},

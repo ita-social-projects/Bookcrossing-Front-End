@@ -1,147 +1,152 @@
 <div class="container my-4">
-    <div>
-      <mdb-breadcrumb>
-        <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
-      </mdb-breadcrumb>
+  <div>
+    <mdb-breadcrumb>
+      <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
+  </div>
+
+    <app-book-filter-bar
+      [(selectedGenres)]="selectedGenres"
+      [(selectedLanguages)]="selectedLanguages"
+      [(selectedLocation)]="queryParams.location"
+      [(availableSelected)]="queryParams.showAvailable"
+      [(orderByField)]="queryParams.orderByField"
+      [(orderByFieldAscending)]="queryParams.orderByAscending"
+      [showAvailable]="booksPage!==2"
+      (filterChange)="onFilterChange($event)"
+      (viewMode)="onViewModeChange($event)"
+    >
+    </app-book-filter-bar>
+
+  <ng-template [ngIf]="books?.length==0" [ngIfElse]="booksExist">
+    <div class="container my-5 py-5 z-depth-1">
+
+      <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+        <h3 class="font-weight-bold">No books found.</h3>
+      </section>
+
     </div>
-  
-      <app-book-filter-bar
-        [(selectedGenres)]="selectedGenres"
-        [(selectedLanguages)]="selectedLanguages"
-        [(selectedLocation)]="queryParams.location"
-        [(availableSelected)]="queryParams.showAvailable"
-        [(orderByField)]="queryParams.orderByField"
-        [(orderByFieldAscending)]="queryParams.orderByAscending"
-        [showAvailable]="booksPage!==2"
-        (filterChange)="onFilterChange($event)"
-        (viewMode)="onViewModeChange($event)"
-      >
-      </app-book-filter-bar>
-  
-    <ng-template [ngIf]="books?.length==0" [ngIfElse]="booksExist">
-      <div class="container my-5 py-5 z-depth-1">
-  
-        <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-          <h3 class="font-weight-bold">No books found.</h3>
-        </section>
-  
-      </div>
-    </ng-template>
-  
-    <ng-template #booksExist>
-      <ng-template [ngIf]="isBlockView" [ngIfElse]="tableView">
-        <div>
-          <div class="my-3">
-            <section>
-              <div class="row">
-                <div class="col-xl-6 mb-3" *ngFor="let book of books; let key = index">
-                  <div class="card card-ecommerce card-height">
-                    <div class="view overlay">
-                      <div class="container">
-                        <div class="row">
-                          <div class="col-lg-4 photo-padding">
-                            <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-                            <ng-template #thenBlock>
-                              <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
+  </ng-template>
+
+  <ng-template #booksExist>
+    <ng-template [ngIf]="isBlockView" [ngIfElse]="tableView">
+      <div>
+        <div class="my-3">
+          <section>
+            <div class="row">
+              <div class="col-xl-6 mb-3" *ngFor="let book of books; let key = index">
+                <div class="card card-ecommerce card-height">
+                  <div class="view overlay">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-4 photo-padding">
+                          <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
+                          <ng-template #thenBlock>
+                            <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
+                          </ng-template>
+                          <ng-template #elseBlock>
+                            <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
+                          </ng-template>
+                        </div>
+                        <ng-template [ngIf]="isAuthenticated()">
+                          <button class="heartbox" aria-hidden="true" change type="default" mat-fab color="warn" (click)=changeWishList(book,key)>
+                            <mat-icon *ngIf="isWisher[key]" class="heart">favorite</mat-icon>
+                            <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
+                          </button> 
+                        </ng-template>  
+                        <div class="col-lg-8 m2" >
+                          <div class="card-block m-2 px-2">
+                            <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
+                              <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong>
+                              </h4></a>
                             </ng-template>
-                            <ng-template #elseBlock>
-                              <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
+                            <ng-template #bookTitleElse>
+                              <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0"
+                                 matTooltipClass="mat-tooltip"
+                                 matTooltipPosition="right"
+                                 class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
+                              </h4>
+                              </a>
                             </ng-template>
-                          </div>
-                          <div class="col-lg-8 m2" >
-                            <div class="card-block m-2 px-2">
-                              <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
-                                <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong>
-                                </h4></a>
-                              </ng-template>
-                              <ng-template #bookTitleElse>
-                                <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0"
-                                   matTooltipClass="mat-tooltip"
-                                   matTooltipPosition="right"
-                                   class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
-                                </h4>
-                                </a>
-                              </ng-template>
-                              <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
-                              <p class="card-text">
-                                  <ng-template [ngIf]="book.authors.length > 0">
-                                    <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                                      Author :
-                                    </ng-template>
-                                    <ng-template #manyAuthors>Authors:</ng-template>
-                                    <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
-                                        <ng-template  [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
-                                                          book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength"
-                                                          [ngIfElse]="manyAuthorsEllipsis">
-                                          <strong *ngFor="let author of book.authors; let i = index">
-                                          <ng-template [ngIf]="i != 0">,</ng-template>
-                                            {{author.firstName}} {{author.lastName}}
-                                          </strong>
-                                        </ng-template>
-                                    </ng-template>
-                                    <ng-template #manyAuthorsEllipsis>
-                                      <strong>
-                                        <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':0"
-                                            matTooltipClass="mat-tooltip"
-                                            matTooltipPosition="right">
-                                            <strong *ngFor="let author of book.authors | slice:0:1; let i = index">
-                                              <ng-template [ngIf]="i!=0">,</ng-template>
-                                              {{author.firstName}} {{author.lastName}}
-                                            </strong>...
-                                          </span>
-                                      </strong>
-                                    </ng-template>
+                            <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
+                            <p class="card-text">
+                                <ng-template [ngIf]="book.authors.length > 0">
+                                  <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
+                                    Author :
                                   </ng-template>
-                                  <br>
-                                  <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
-                                  <ng-template #manyGenres>Categories:</ng-template>
-  
-                                  <ng-template [ngIf]="book.genres.length<=3" [ngIfElse]="manyGenresEllipsis">
-                                    <strong *ngFor="let genre of book.genres;let i = index">
-                                      <ng-template [ngIf]="i!=0">,</ng-template>
-                                      {{genre.name}}
-                                    </strong>
+                                  <ng-template #manyAuthors>Authors:</ng-template>
+                                  <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
+                                      <ng-template  [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
+                                                        book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength"
+                                                        [ngIfElse]="manyAuthorsEllipsis">
+                                        <strong *ngFor="let author of book.authors; let i = index">
+                                        <ng-template [ngIf]="i != 0">,</ng-template>
+                                          {{author.firstName}} {{author.lastName}}
+                                        </strong>
+                                      </ng-template>
                                   </ng-template>
-                                  <ng-template #manyGenresEllipsis>
-                                    <strong style="word-wrap: normal;" *ngFor="let genre of book.genres | slice:0:2;let i = index">
-                                      <ng-template [ngIf]="i!=0">,</ng-template>
-                                      {{genre.name}}
-                                    </strong>
+                                  <ng-template #manyAuthorsEllipsis>
                                     <strong>
-                                      <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':2"
-                                            matTooltipClass="mat-tooltip"
-                                            matTooltipPosition="right"
-                                            class="text-primary">...</span>
+                                      <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':0"
+                                          matTooltipClass="mat-tooltip"
+                                          matTooltipPosition="right">
+                                          <strong *ngFor="let author of book.authors | slice:0:1; let i = index">
+                                            <ng-template [ngIf]="i!=0">,</ng-template>
+                                            {{author.firstName}} {{author.lastName}}
+                                          </strong>...
+                                        </span>
                                     </strong>
                                   </ng-template>
-                                    <br>
-                                    <span>
-                                      Language: {{ book?.language?.name }}
-                                    </span>
-                                    <br>
-                                    <span>
-                                      Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
-                                    </span>
-                                    <br>
-                                    <span>
-                                      Status:
-                                    </span>
-                                    <span [ngSwitch]="book?.state">
-                                      <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
-                                        <br>
-                                        <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated()" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
-                                      </ng-template>
-                                      <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
+                                </ng-template>
+                                <br>
+                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
+                                <ng-template #manyGenres>Categories:</ng-template>
+
+                                <ng-template [ngIf]="book.genres.length<=3" [ngIfElse]="manyGenresEllipsis">
+                                  <strong *ngFor="let genre of book.genres;let i = index">
+                                    <ng-template [ngIf]="i!=0">,</ng-template>
+                                    {{genre.name}}
+                                  </strong>
+                                </ng-template>
+                                <ng-template #manyGenresEllipsis>
+                                  <strong style="word-wrap: normal;" *ngFor="let genre of book.genres | slice:0:2;let i = index">
+                                    <ng-template [ngIf]="i!=0">,</ng-template>
+                                    {{genre.name}}
+                                  </strong>
+                                  <strong>
+                                    <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':2"
+                                          matTooltipClass="mat-tooltip"
+                                          matTooltipPosition="right"
+                                          class="text-primary">...</span>
+                                  </strong>
+                                </ng-template>
+                                  <br>
+                                  <span>
+                                    Language: {{ book?.language?.name }}
+                                  </span>
+                                  <br>
+                                  <span>
+                                    Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
+                                  </span>
+                                  <br>
+                                  <span>
+                                    Status:
+                                  </span>
+                                  <span [ngSwitch]="book?.state">
+                                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
                                       <br>
-                                      <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
-                                      </ng-template>
-                                      <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
-                                      </ng-template>
-                                      <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
-                                      </ng-template>
-                                    </span>
-                              </p>
-                            </div>
+                                      <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated()" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
+                                    </ng-template>
+                                    <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
+                                    <br>
+                                    <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
+                                    </ng-template>
+                                    <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
+                                    </ng-template>
+                                    <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
+                                    </ng-template>
+                                  </span>
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -149,110 +154,116 @@
                   </div>
                 </div>
               </div>
-            </section>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template #tableView>
-        <div class="card m-3" *ngFor="let book of books; let key = index">
-          <div class="row no-gutters">
-            <div class="col-auto">
-              <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-              <ng-template #thenBlock>
-                <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
-              </ng-template>
-              <ng-template #elseBlock>
-                <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
-              </ng-template>
             </div>
-            <div class="col m-2">
-              <div class="card-block px-2">
-                <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
-                <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
-                <p class="card-text">
-                  <ng-template [ngIf]="book.authors.length > 0">
-                    <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                    Author:
-                  </ng-template>
-  
-                  <ng-template #manyAuthors>Authors:</ng-template>
-                  <ng-template [ngIf]="book.authors.length<=5" [ngIfElse]="manyAuthorsEllipsis">
-                    <span *ngFor="let author of book.authors; let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{author.firstName}} {{author.lastName}}
-                    </span>
-                  </ng-template>
-                  <ng-template #manyAuthorsEllipsis>
-                    <strong *ngFor="let author of book.authors | slice:0:5; let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{author.firstName}} {{author.lastName}}
-                    </strong>
-                    <strong>
-                      <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5"
-                            matTooltipClass="mat-tooltip"
-                            matTooltipPosition="right"
-                            class="text-primary">...</span>
-                    </strong>
-                    </ng-template>
-                  </ng-template>
-                  <br>
-                  <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
-                  <ng-template #manyGenres>Categories:</ng-template>
-  
-                  <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
-                    <span *ngFor="let genre of book.genres;let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{genre.name}}
-                    </span>
-                  </ng-template>
-                  <ng-template #manyGenresEllipsis>
-                    <strong *ngFor="let genre of book.genres | slice:0:7;let i = index">
-                      <ng-template [ngIf]="i!=0">,</ng-template>
-                      {{genre.name}}
-                    </strong>
-                    <strong>
-                      <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':7"
-                            matTooltipClass="mat-tooltip"
-                            matTooltipPosition="right"
-                            class="text-primary">...</span>
-                    </strong>
-                  </ng-template>
-                  <br>
-                  <span>
-                    Language: {{ book?.language?.name }}
-                  </span>
-                  <br>
-                  <span>
-                    Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
-                  </span>
-                  <br>
-                  <span>Status: </span>
-                  <span [ngSwitch]="book?.state">
-                <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
-                  <br>
-                  <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated()" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
-                </ng-template>
-                <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
-                <br>
-                <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
-                </ng-template>
-                <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
-                </ng-template>
-                <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
-                </ng-template>
-              </span>
-  
-                </p>
-  
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
-      </ng-template>
+      </div>
     </ng-template>
-  
-    <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
-                    [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
-    </app-pagination>
-  </div>
-  
+    <ng-template #tableView>
+      <div class="card m-3" *ngFor="let book of books; let key = index">
+        <div class="row no-gutters">
+          <div class="col-auto">
+            <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock>
+              <img src="{{apiUrl}}/{{book.imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
+            </ng-template>
+            <ng-template #elseBlock>
+              <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
+            </ng-template>
+          </div>
+          <ng-template [ngIf]="isAuthenticated()">
+            <button class="heartbox" aria-hidden="true" target="_blank"  change type="default" mat-fab color="warn" (click)=changeWishList(book,key)>
+              <mat-icon *ngIf="isWisher[key]" class="heart">favorite</mat-icon>
+              <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
+            </button> 
+          </ng-template>  
+          <div class="col m-2">
+            <div class="card-block px-2">
+              <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
+              <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
+              <p class="card-text">
+                <ng-template [ngIf]="book.authors.length > 0">
+                  <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
+                  Author:
+                </ng-template>
+
+                <ng-template #manyAuthors>Authors:</ng-template>
+                <ng-template [ngIf]="book.authors.length<=5" [ngIfElse]="manyAuthorsEllipsis">
+                  <span *ngFor="let author of book.authors; let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{author.firstName}} {{author.lastName}}
+                  </span>
+                </ng-template>
+                <ng-template #manyAuthorsEllipsis>
+                  <strong *ngFor="let author of book.authors | slice:0:5; let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{author.firstName}} {{author.lastName}}
+                  </strong>
+                  <strong>
+                    <span matTooltipHideDelay="1000" [matTooltip]="book.authors | Ellipsis:'authors':5"
+                          matTooltipClass="mat-tooltip"
+                          matTooltipPosition="right"
+                          class="text-primary">...</span>
+                  </strong>
+                  </ng-template>
+                </ng-template>
+                <br>
+                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
+                <ng-template #manyGenres>Categories:</ng-template>
+
+                <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
+                  <span *ngFor="let genre of book.genres;let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{genre.name}}
+                  </span>
+                </ng-template>
+                <ng-template #manyGenresEllipsis>
+                  <strong *ngFor="let genre of book.genres | slice:0:7;let i = index">
+                    <ng-template [ngIf]="i!=0">,</ng-template>
+                    {{genre.name}}
+                  </strong>
+                  <strong>
+                    <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':7"
+                          matTooltipClass="mat-tooltip"
+                          matTooltipPosition="right"
+                          class="text-primary">...</span>
+                  </strong>
+                </ng-template>
+                <br>
+                <span>
+                  Language: {{ book?.language?.name }}
+                </span>
+                <br>
+                <span>
+                  Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
+                </span>
+                <br>
+                <span>Status: </span>
+                <span [ngSwitch]="book?.state">
+              <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
+                <br>
+                <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated()" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
+              </ng-template>
+              <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
+              <br>
+              <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
+              </ng-template>
+              <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
+              </ng-template>
+              <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
+              </ng-template>
+            </span>
+
+              </p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+
+  <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
+                  [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+  </app-pagination>
+</div>

@@ -49,13 +49,11 @@
                           </ng-template>
                         </div>
                             <ng-template [ngIf]="isAuthenticated()">
-                
                                 <button class="heartbox" aria-hidden="true" change type="default" mat-fab color="warn" (click)=changeWishList(book,key)>
                                   <mat-icon *ngIf="isWisher[key]" class="heart">favorite</mat-icon>
                                   <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
                                 </button> 
                               </ng-template>          
-                            
                         <div class="col-lg-8 m2" >
                           <div class="card-block m-2 px-2">
                             <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
@@ -174,7 +172,6 @@
             </ng-template>
           </div>
           <ng-template [ngIf]="isAuthenticated()">
-             
             <button class="heartbox" aria-hidden="true" target="_blank"  change type="default" mat-fab color="warn" (click)=changeWishList(book,key)>
               <mat-icon *ngIf="isWisher[key]" class="heart">favorite</mat-icon>
               <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>

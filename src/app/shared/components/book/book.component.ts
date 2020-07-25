@@ -20,6 +20,7 @@ import { RefDirective } from '../../directives/ref.derictive';
 import { IBookPut } from 'src/app/core/models/bookPut';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-book',
@@ -35,7 +36,7 @@ export class BookComponent implements OnInit {
   bookId: number;
   isRequester: boolean;
   isBookOwner: boolean;
-  isWished;
+  isWished: boolean;
   readCount: number = null;
   currentOwner: IUser = null;
   userWhoRequested: IUser = null;
@@ -71,7 +72,8 @@ export class BookComponent implements OnInit {
       if (value.state !== bookState.available) {
         this.getUserWhoRequested();
       }
-      this.isWished = this.wishListService.isWished(this.bookId);
+      this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
+        if(value) this.isWished = true;});
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
