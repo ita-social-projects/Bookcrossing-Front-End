@@ -58,8 +58,8 @@ export class AddBookComponent implements OnInit {
   newAuthor: IAuthor;
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
-  outerBook:IOuterBook;
-  hideErrorInterval:NodeJS.Timeout;
+  outerBook: IOuterBook;
+  hideErrorInterval: NodeJS.Timeout;
 
 
   ngOnInit(): void{
@@ -89,35 +89,28 @@ export class AddBookComponent implements OnInit {
       );
     }
 
-    this.activeroute.queryParams.subscribe((params)=>{
-      if(params['outerBookId']){
-        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook=>{ this.outerBook=outerBook;
+    this.activeroute.queryParams.subscribe((params) => {
+      if (params['outerBookId']) {
+        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook => { this.outerBook = outerBook;
         this.autoFill();
         });
       }
     })
-
   }
 
-  autoFill(){
+  autoFill() {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('description').setValue(this.outerBook.description);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
-    for(var i=0;i<this.outerBook.authors.length;i++){
+    for (var i=0; i<this.outerBook.authors.length; i++) {
       this.addBookForm.get('authorFirstname').setValue(this.outerBook.authors[i].fullName);
       }
   }
 
-  testFunction(event){
-    const file = event.target.files
-    let formData: FormData = new FormData();
-    formData.append("image", file);
- }
+  setSearchTerm(searchTerm: string) {
 
-  setSearchTerm(searchTerm:string){
-
-    this.router.navigate(['found-books'],{queryParams:{'searchTerm':searchTerm}});
+    this.router.navigate(['found-books'], {queryParams: {'searchTerm' : searchTerm}});
   }
 
   isAuthenticated() {

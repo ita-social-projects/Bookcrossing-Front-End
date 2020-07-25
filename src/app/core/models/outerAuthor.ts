@@ -1,3 +1,3 @@
-export interface IOuterAuthor{
-    fullName:string;
-    }
+export interface IOuterAuthor {
+    fullName: string;
+}
