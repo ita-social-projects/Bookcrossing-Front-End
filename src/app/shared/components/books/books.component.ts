@@ -66,10 +66,6 @@ export class BooksComponent implements OnInit,OnDestroy {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
       this.populateDataFromQuery();
-      for(let i = 0; i < 8; i++)
-    {
-      this.isWisher[i] = false;
-    }
       this.getBooks(this.queryParams);
     });
     this.router.events.subscribe((val) => {
@@ -214,16 +210,16 @@ export class BooksComponent implements OnInit,OnDestroy {
         relativeTo: this.routeActive,
         queryParams: this.queryParams,
       });
-    for(let i = 0; i < 8; i++)
-    {
-      this.isWisher[i] = false;
-    }
     this.getBooks(this.queryParams);
   }
 
 
   //get
   getBooks(params: BookQueryParams): void{
+    for(let i = 0; i < 8; i++)
+    {
+      this.isWisher[i] = false;
+    }
     switch(this.filter) { 
       case "registered": { 
          this.getRegisteredBooks(params) ;

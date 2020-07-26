@@ -195,6 +195,7 @@ export class WishListComponent implements OnInit,OnDestroy {
       (data) => { this.routeActive.queryParams.subscribe((params: Params) => {
         this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
         this.getBooks(this.queryParams);
+        this.pageChanged(this.queryParams.page);
       });},
       (error) => {
         this.notificationService.error(

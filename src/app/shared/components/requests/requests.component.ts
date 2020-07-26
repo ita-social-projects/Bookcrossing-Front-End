@@ -82,6 +82,10 @@ export class RequestsComponent implements OnInit {
           books.push(item.book)
         })
         this.books = books;
+        for(let i = 0; i < 8; i++)
+        {
+          this.isWisher[i] = false;
+        }
         for(var i = 0; i < this.books.length; i++){
           this.getWhichBooksWished(this.books[i], i);
         }
@@ -176,6 +180,7 @@ export class RequestsComponent implements OnInit {
         relativeTo: this.routeActive,
         queryParams: this.queryParams,
       });
+      this.getUserRequests(this.queryParams);
   }
   onViewModeChange(viewModeChanged: string) {
     if(viewModeChanged === 'block'){
