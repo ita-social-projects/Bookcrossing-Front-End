@@ -59,7 +59,6 @@ import { GenreService } from './core/services/genre/genre';
 import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { RegisteredBookComponent } from './shared/components/registered-book/registered-book.component';
 import { DialogService } from './core/services/dialog/dialog.service';
 import { LanguagesComponent } from './shared/components/languages/languages.component';
 import { AvatarModule } from 'ngx-avatar';
@@ -67,7 +66,6 @@ import { SearchBarComponent } from './shared/components/search-bar/search-bar.co
 import { ProfileAvatarComponent } from './shared/components/profile-avatar/profile-avatar.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { BookFilterBarComponent } from './shared/components/book-filter-bar/book-filter-bar.component';
-import { CurrentOwnedBooksComponent } from './shared/components/current-owned-books/current-owned-books.component';
 import { CommentComponent } from './shared/components/comment/comment.component';
 import { ChildcommentComponent } from './shared/components/comment/childcomment/childcomment.component';
 import {AdminTableComponent} from './shared/components/admin/admin-table/admin-table.component';
@@ -76,7 +74,6 @@ import { LocationsComponent } from './shared/components/admin/locations/location
 import { GenreFormComponent } from './shared/components/admin/genre-form/genre-form.component';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
-import { ReadBooksComponent } from './shared/components/read-books/read-books.component';
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
 import { ProfileEditComponent } from './shared/components/profile-edit/profile-edit.component';
@@ -102,6 +99,8 @@ import { ForbidEmailComponent } from './shared/components/email-notification-for
 import { EmailNotificationService } from './core/services/emailnotification/emailnotification.service';
 import { InputTrimModule } from 'ng2-trim-directive';
 import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
+import { WishListComponent } from './shared/components/wish-list/wish-list.component';
+import { WishListService } from './core/services/wishlist/wishlist.service';
 
 @NgModule({
   declarations: [
@@ -135,17 +134,14 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
     ContentFilterPipe,
     HomeComponent,
     RulesComponent,
-    RegisteredBookComponent,
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
     ProfileAvatarComponent,
     BookFilterBarComponent,
-    CurrentOwnedBooksComponent,
     CommentComponent,
     ChildcommentComponent,
     ContactsComponent,
-    ReadBooksComponent,
     AdminTableComponent,
     GenresComponent,
     LocationsComponent,
@@ -163,7 +159,8 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
     BookLanguagesComponent,
     LanguageFormComponent,
     FoundBooksComponent,
-    ForbidEmailComponent
+    ForbidEmailComponent,
+    WishListComponent
   ],
   imports: [
     InputTrimModule,
@@ -227,7 +224,8 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
     UserService,
     DatePipe,
     BookLanguageService,
-    EmailNotificationService
+    EmailNotificationService,
+    WishListService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

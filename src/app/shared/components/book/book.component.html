@@ -13,7 +13,9 @@
 <div class="container my-3 py-5 z-depth-1">
     <section class="text-center">
       <div class="row">
+        
         <div class="col-lg-4">
+         
             <div class="carousel-inner text-center text-md-left" role="listbox">
               <div class="size carousel-item active zoom">
                 <div class="mask flex-center waves-effect waves-light">
@@ -49,6 +51,12 @@
             </div>
         </div>
         <div class="col-lg-7 text-center text-md-left">
+          <ng-template [ngIf]="isAuthenticated()">
+            <button class="heartbox" aria-hidden="true" target="_blank"  change type="default" mat-fab color="warn" (click)=changeWishList(book)>
+              <mat-icon *ngIf="isWished" class="heart">favorite</mat-icon>
+              <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
+            </button> 
+          </ng-template> 
           <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
           <div class="row">
             <div class="col-3" >
