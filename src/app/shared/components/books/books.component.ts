@@ -210,11 +210,16 @@ export class BooksComponent implements OnInit,OnDestroy {
         relativeTo: this.routeActive,
         queryParams: this.queryParams,
       });
+    this.getBooks(this.queryParams);
   }
 
 
   //get
   getBooks(params: BookQueryParams): void{
+    for(let i = 0; i < 8; i++)
+    {
+      this.isWisher[i] = false;
+    }
     switch(this.filter) { 
       case "registered": { 
          this.getRegisteredBooks(params) ;
