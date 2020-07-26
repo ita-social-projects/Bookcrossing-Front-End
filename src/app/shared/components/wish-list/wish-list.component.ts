@@ -29,7 +29,6 @@ export class WishListComponent implements OnInit,OnDestroy {
   isBlockView: boolean = false;
   userId: number;
   isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
-  isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   requestIds: Object = {};
   disabledButton: boolean = false;
   books: IBook[];
@@ -89,13 +88,6 @@ export class WishListComponent implements OnInit,OnDestroy {
         }
       });
     }
-  }
-  
-
-  getWichBooksWished(book: IBook, key: number) {
-    this.wishListService.isWished(book.id).subscribe((value: boolean) => {
-      if(value) this.isWisher[key] = true;
-    });
   }
 
   async cancelRequest(bookId: number) {
@@ -179,7 +171,6 @@ export class WishListComponent implements OnInit,OnDestroy {
           this.books = pageData.page;
           if(this.isAuthenticated()){
             for(var i = 0; i<pageData.page.length; i++){
-              this.getWichBooksWished(pageData.page[i], i);
               this.getUserWhoRequested(pageData.page[i], i);
             }
           }
@@ -201,7 +192,10 @@ export class WishListComponent implements OnInit,OnDestroy {
   removeFromWishList(bookId:number):void
   {
     this.wishListService.removeFromWishList(bookId).subscribe(
-      (data) => { this.pageChanged(this.booksPage)},
+      (data) => { this.routeActive.queryParams.subscribe((params: Params) => {
+        this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+        this.getBooks(this.queryParams);
+      });},
       (error) => {
         this.notificationService.error(
           this.translate.instant('Something went wrong'),
