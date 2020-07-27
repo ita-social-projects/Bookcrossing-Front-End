@@ -2,6 +2,7 @@ import { UserService } from '../../../core/services/user/user.service';
 import { Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { switchMap } from 'rxjs/operators';
+import { MatIconModule } from '@angular/material/icon';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { ActivatedRoute, Router, GuardsCheckStart } from '@angular/router';

@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import {IRequest} from 'src/app/core/models/request';
+import {BookService} from 'src/app/core/services/book/book.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {NotificationService} from '../../../core/services/notification/notification.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -30,7 +32,7 @@ export class RequestsComponent implements OnInit {
   disabledButton: boolean = false;
   viewMode: string;
   requests: IRequest[];
-  booksPage: booksPage = booksPage.requested;
+  booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
   queryParams: BookQueryParams = new BookQueryParams;
@@ -50,7 +52,8 @@ export class RequestsComponent implements OnInit {
     private router : Router,
     private dialogService: DialogService,
     private authentication: AuthenticationService,
-    private wishListService: WishListService
+    private wishListService: WishListService,
+    private bookService: BookService
   ) {}
 
   ngOnInit() {

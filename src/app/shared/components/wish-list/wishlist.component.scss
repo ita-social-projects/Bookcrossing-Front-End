@@ -106,3 +106,11 @@
     }
   }
 
+  .heartbox
+  {
+    position: absolute;
+    z-index: 1;
+    top:18px;
+    right:18px;
+    outline:none; 
+  }

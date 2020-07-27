@@ -34,7 +34,7 @@ export class BooksComponent implements OnInit,OnDestroy {
   disabledButton: boolean = false;
   books: IBook[];
   totalSize: number;
-  booksPage: booksPage = booksPage.list;
+  booksPage: booksPage = booksPage.List;
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];
@@ -222,18 +222,22 @@ export class BooksComponent implements OnInit,OnDestroy {
     }
     switch(this.filter) { 
       case "registered": { 
+        this.booksPage = booksPage.Registered;
          this.getRegisteredBooks(params) ;
          break; 
       } 
       case "current": { 
+        this.booksPage= booksPage.CurrentOwned;
          this.getCurrentOwnedBooks(params); 
          break; 
       } 
       case "read": { 
         this.getReadBooks(params); 
+        this.booksPage = booksPage.Read;
         break; 
      }
       default: { 
+        this.booksPage = booksPage.List;
          this.getAllBooks(params); 
          break; 
       } 
