@@ -29,7 +29,6 @@ export class RequestsComponent implements OnInit {
   userId: number;
   isRequester: boolean[] = [true, true, true, true, true ,true, true, true];
   isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
-  isOwner: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   disabledButton: boolean = false;
   viewMode: string;
   requests: IRequest[];
@@ -88,15 +87,10 @@ export class RequestsComponent implements OnInit {
         this.books = books;
         for(let i = 0; i < 8; i++)
         {
-          this.isOwner[i] = false;
-        }
-        for(let i = 0; i < 8; i++)
-        {
           this.isWisher[i] = false;
         }
         for(var i = 0; i < this.books.length; i++){
           this.getWhichBooksWished(this.books[i], i);
-          this.getWhichBooksOwned(this.books[i], i);
         }
       if(pageData.totalCount){
         this.totalSize = pageData.totalCount;
@@ -108,12 +102,6 @@ export class RequestsComponent implements OnInit {
   getWhichBooksWished(book: IBook, key: number) {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
       if(value) this.isWisher[key] = true;
-    });
-  }
-
-  getWhichBooksOwned(book: IBook, key: number):void {
-    this.bookService.isBookOwned(book.id).subscribe((value: boolean) => {
-      if(value) this.isOwner[key] = true;
     });
   }
 

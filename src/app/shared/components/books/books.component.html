@@ -48,7 +48,7 @@
                             <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="img-fluid img-height img-width" height="200px" width="200px">
                           </ng-template>
                         </div>
-                            <ng-template [ngIf]="isAuthenticated() && !isOwner[key]">
+                            <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
                                 <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)=changeWishList(book,key)>
                                   <mat-icon *ngIf="isWisher[key]">favorite</mat-icon>
                                   <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
@@ -135,7 +135,7 @@
                                     <span [ngSwitch]="book?.state">
                                       <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
                                         <br>
-                                        <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && isOwner[key]" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
+                                        <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && book.userId == userId" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
                                       </ng-template>
                                       <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
                                       <br>
@@ -171,7 +171,7 @@
               <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
             </ng-template>
           </div>
-          <ng-template [ngIf]="isAuthenticated() && !isOwner[key]">
+          <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
             <button mat-icon-button class="heartbox" change type="default"  aria-hidden="true" target="_blank"  color="warn" (click)=changeWishList(book,key)>
               <mat-icon *ngIf="isWisher[key]">favorite</mat-icon>
               <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
@@ -242,7 +242,7 @@
                       <span [ngSwitch]="book?.state">
                     <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
                       <br>
-                      <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && isOwner[key]" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
+                      <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && book.userId == userId" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
                     </ng-template>
                     <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
                     <br>

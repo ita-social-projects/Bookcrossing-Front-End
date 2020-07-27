@@ -59,8 +59,4 @@ export class BookService {
   activateBook(bookId: number):Observable<Object>{
     return this.http.put(this.apiUrl + bookId + '/activate', undefined);
   }
-
-  isBookOwned(bookId: number):Observable<boolean>{
-    return this.http.get<boolean>(this.apiUrl + bookId + '/is-owned');
-  }
 }
