@@ -1,9 +1,6 @@
 <section class="backdrop">
 
-  <form
-    [formGroup]="editUserForm"
-    #ngForm="ngForm"
-    (ngSubmit)="onSubmit()"
+  <form [formGroup]="editUserForm" #ngForm="ngForm" (ngSubmit)="onSubmit()"
     class="form-popup text-center border border-light p-5">
 
     <!--First Name-->
@@ -19,13 +16,9 @@
           <p class="input-label padding-left">First name :<span class="asterisk"> *</span></p>
         </div>
         <div class="col-3">
-          <input
-            formControlName="firstName"
-            type="text"
-            class="form-control"
-            [ngClass]="{
+          <input formControlName="firstName" type="text" class="form-control" [ngClass]="{
             'is-invalid': submitted && editUserForm.controls.firstName.errors
-          }"/>
+          }" />
         </div>
         <div class="col-2"></div>
       </div>
@@ -43,14 +36,9 @@
         <p class="input-label padding-left">Last name:<span class="asterisk"> *</span></p>
       </div>
       <div class="col-3">
-        <input
-          formControlName="lastName"
-          type="text"
-          class="form-control"
-          [ngClass]="{
+        <input formControlName="lastName" type="text" class="form-control" [ngClass]="{
             'is-invalid': submitted && editUserForm.controls.lastName.errors
-          }"
-        />
+          }" />
       </div>
       <div class="col-2"></div>
     </div>
@@ -88,9 +76,11 @@
       </div>
       <div class="col-3">
         <mat-select class="form-control select-dropdown"
-                    placeholder="{{user.userLocation.location.city}} {{user.userLocation.location.officeName}}{{user.userLocation.location.street}}"  >
-          <mat-option *ngFor="let location of locations" (click)="newLocation(location)" [value]="location.id" [matTooltip]="location.city
-                                    + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">{{location.city}}
+          [placeholder]="user?.userLocation?.location ? (user.userLocation.location.city+' '+user.userLocation.location.officeName+user.userLocation.location.street):'Please choose location'">
+          <mat-option *ngFor="let location of locations" (click)="newLocation(location)" [value]="location.id"
+            [matTooltip]="location.city
+                                    + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">
+            {{location.city}}
             {{location.officeName}}, {{location.street}}</mat-option>
         </mat-select>
       </div>
@@ -112,14 +102,9 @@
           <p class="input-label padding-left">Room number:<span class="asterisk"> *</span></p>
         </div>
         <div class="col-3">
-          <input
-            formControlName="room"
-            type="text"
-            class="form-control"
-            maxlength="7"
-            [ngClass]="{
+          <input formControlName="room" type="text" class="form-control" maxlength="7" [ngClass]="{
             'is-invalid': submitted && editUserForm.controls.room.errors
-          }"/>
+          }" />
         </div>
         <div class="col-2"></div>
       </div>
@@ -132,11 +117,8 @@
         </div>
         <div class="col-3">
           <label class="switch">
-            <input #isEmail type="checkbox"
-            formControlName="isEmail" 
-            (change)="onIsEmailChange(isEmail.checked)"
-            *ngIf="editUserForm.controls.isEmail" checked
-            class="form-control">
+            <input #isEmail type="checkbox" formControlName="isEmail" (change)="onIsEmailChange(isEmail.checked)"
+              *ngIf="editUserForm.controls.isEmail" checked class="form-control">
             <span class="slider round"></span>
           </label>
         </div>

@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {IUser} from '../../../core/models/user';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {LocationService} from '../../../core/services/location/location.service';
-import {ILocation} from '../../../core/models/location';
-import {DialogService} from '../../../core/services/dialog/dialog.service';
-import {TranslateService} from '@ngx-translate/core';
-import {UserService} from '../../../core/services/user/user.service';
-import {NotificationService} from '../../../core/services/notification/notification.service';
-import {IUserPut} from '../../../core/models/userPut';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IUser } from '../../../core/models/user';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { LocationService } from '../../../core/services/location/location.service';
+import { ILocation } from '../../../core/models/location';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { UserService } from '../../../core/services/user/user.service';
+import { NotificationService } from '../../../core/services/notification/notification.service';
+import { IUserPut } from '../../../core/models/userPut';
 
 @Component({
   selector: 'app-profile-edit',
@@ -60,11 +60,11 @@ export class ProfileEditComponent implements OnInit {
 
   buildForm() {
     this.editUserForm = new FormGroup({
-      firstName: new FormControl({value: this.user.firstName, disabled: false}, Validators.required),
-      lastName: new FormControl({value: this.user.lastName, disabled: false}, Validators.required),
-      birthDate: new FormControl({value: this.user.birthDate, disabled: false}),
-      isEmail: new FormControl({value: this.user.isEmailAllowed, disabled: false}),
-      room: new FormControl((this.user.userLocation.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
+      firstName: new FormControl({ value: this.user.firstName, disabled: false }, Validators.required),
+      lastName: new FormControl({ value: this.user.lastName, disabled: false }, Validators.required),
+      birthDate: new FormControl({ value: this.user.birthDate, disabled: false }),
+      isEmail: new FormControl({ value: this.user.isEmailAllowed, disabled: false }),
+      room: new FormControl((this.user?.userLocation?.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
         [Validators.required, Validators.maxLength(7)])
     });
   }
@@ -91,8 +91,15 @@ export class ProfileEditComponent implements OnInit {
       fieldMasks: this.fieldMasks
     };
     user.birthDate.setHours(12);
-    user.userLocation.roomNumber = this.editUserForm.get('room').value;
-    this.changeLocation();
+
+    if (this.changingLocation) {
+      user.userLocation = {
+        location: this.location,
+        roomNumber: this.editUserForm.get('room').value
+      }
+    }else if(user?.userLocation?.location){
+      user.userLocation.roomNumber = this.editUserForm.get('room').value
+    }
 
     this.userService.editUser(user.id, user).subscribe(
       (data: boolean) => {
@@ -110,13 +117,6 @@ export class ProfileEditComponent implements OnInit {
   newLocation(location: ILocation) {
     this.location = location;
     this.changingLocation = true;
-  }
-
-  changeLocation() {
-    if (this.changingLocation) {
-      this.user.userLocation.location = this.location;
-      this.changingLocation = false;
-    }
   }
 
   async cancel() {
