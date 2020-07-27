@@ -19,7 +19,7 @@
     <td>Birthday</td>
     <td>{{user.birthDate | date }}</td>
   </tr>
-  <tr>
+  <tr *ngIf="user?.userLocation?.location">
     <td>Location</td>
     <td class ="location"><span>{{user.userLocation.location.city}}</span><span>{{user.userLocation.location.street}}</span>
       <span>{{user.userLocation.location.rooms}}</span>
