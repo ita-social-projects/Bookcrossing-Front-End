@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Language} from "src/app/core/models/languages.enum";
 import {CookieService} from "ngx-cookie-service";
 
@@ -7,6 +7,7 @@ import {CookieService} from "ngx-cookie-service";
 })
 export class LanguageService {
   public defaultLang: Language = Language.en;
+  public languageUpdated = new EventEmitter<Language>();
 
   public languages: Language[];
 
@@ -30,12 +31,14 @@ export class LanguageService {
     return Language[this.cookieService.get("lang")]
   }
 
-  setLanguage(lang: Language): void{
-    if(this.cookieService.check("lang")){
-      this.cookieService.delete("lang");
+  setLanguage(lang: Language): void {
+    if (this.cookieService.check('lang')){
+      this.cookieService.delete('lang');
     }
-    const exp:Date = new Date(Date.now().valueOf() + 14400000); // 4 Hours
-    this.cookieService.set("lang",this.langToString(lang),exp)
+
+    const exp: Date = new Date(Date.now().valueOf() + 14400000); // 4 Hours
+    this.cookieService.set('lang', this.langToString(lang), exp);
+    this.languageUpdated.emit(lang);
   }
 
   setIfNotExists(): string {
