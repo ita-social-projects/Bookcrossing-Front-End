@@ -6,7 +6,7 @@ import {environment} from 'src/environments/environment';
 import {booksPage} from 'src/app/core/models/booksPage.enum';
 import { HttpClient } from '@angular/common/http';
 import { OuterServiceService } from 'src/app/core/services/outerService/outer-service.service';
-import { OuterBook } from 'src/app/core/models/outerBook';
+import { IOuterBook } from 'src/app/core/models/outerBook';
 import { IPage } from 'src/app/core/models/page';
 import { CompletePaginationParams } from 'src/app/core/models/Pagination/completePaginationParameters';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -27,39 +27,36 @@ export class FoundBooksComponent implements OnInit {
   books: IBook[];
   totalSize: number;
   booksPage: booksPage = booksPage.List;
-  queryParams: OuterBookQueryParams=new OuterBookQueryParams()
+  queryParams: OuterBookQueryParams = new OuterBookQueryParams();
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];
   selectedLanguages: number[];
   route = this.router.url;
-  foundBooks:IPage<OuterBook>;
+  foundBooks: IPage<IOuterBook>;
 
-
-  
-  constructor(private routeActive: ActivatedRoute,
+  constructor(
+    private routeActive: ActivatedRoute,
     private router: Router,
     private outerService: OuterServiceService,
     private notificationService: NotificationService,
-    private translate : TranslateService
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
-   
     this.router.events.subscribe(() => {
-      if( this.router.url != ''){
+      if ( this.router.url != '') {
         this.route =  this.router.url;
-      } 
+      }
     });
 
-    this.routeActive.queryParams.subscribe((params: Params)=>{
+    this.routeActive.queryParams.subscribe((params: Params) => {
       console.log(params);
-     this.queryParams=OuterBookQueryParams.mapFromQuery(params);
+      this.queryParams = OuterBookQueryParams.mapFromQuery(params);
       console.log(this.queryParams);
       this.getOuterBooks(this.queryParams);
-      
     })
   }
-  
+
   getOuterBooks(params: OuterBookQueryParams): void {
     this.outerService.getBooks(params)
       .subscribe( {
@@ -73,7 +70,7 @@ export class FoundBooksComponent implements OnInit {
       });
   }
 
-  autoFill(bookId:number){
+  autoFill(bookId: number){
     this.router.navigate(['/book'],{queryParams:{outerBookId:bookId}});
   }
 
@@ -85,7 +82,7 @@ export class FoundBooksComponent implements OnInit {
     this.changeUrl();
     window.scrollTo({
       top: 0,
-      behavior:'smooth'
+      behavior: 'smooth'
     });
   }
 

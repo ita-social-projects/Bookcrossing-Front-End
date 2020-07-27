@@ -1,11 +1,13 @@
 import { Input } from '@angular/core'
+import { IOuterAuthor} from './outerAuthor';
 
-export interface OuterBook{
-    id:number,
-    title: string,
-    imageUrl:string,
-    authorsFullNames:string,
-    publisher:string,
-    languageCode:string,
-    description:string
+export interface IOuterBook {
+    id: number;
+    title: string;
+    imageUrl: string;
+    authors: IOuterAuthor[];
+    author: IOuterAuthor;
+    publisher: string;
+    languageCode: string;
+    description: string;
     }
