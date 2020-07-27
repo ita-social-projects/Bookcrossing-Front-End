@@ -5,16 +5,18 @@ import { booksPage } from 'src/app/core/models/booksPage.enum';
 export class BreadcrumbValuePipe implements PipeTransform {
     transform(value: booksPage): string {
         switch (value) {
-            case booksPage.list:
+            case booksPage.List:
                 return "Books";
-            case booksPage.read:
+            case booksPage.Read:
                 return "Read";
-            case booksPage.registered:
+            case booksPage.Registered:
                 return "Registered";
-            case booksPage.requested:
+            case booksPage.Requested:
                 return "Requested";
-            case booksPage.currentOwned:
+            case booksPage.CurrentOwned:
                 return "Currently Owned";
+            case booksPage.WishList:
+                return "Wish List";
         }
     }
 }

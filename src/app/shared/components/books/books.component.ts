@@ -30,11 +30,12 @@ export class BooksComponent implements OnInit,OnDestroy {
   userId: number;
   isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
+  isOwner: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   requestIds: Object = {};
   disabledButton: boolean = false;
   books: IBook[];
   totalSize: number;
-  booksPage: booksPage = booksPage.list;
+  booksPage: booksPage = booksPage.List;
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];
@@ -104,6 +105,12 @@ export class BooksComponent implements OnInit,OnDestroy {
   getWhichBooksWished(book: IBook, key: number):void {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
       if(value) this.isWisher[key] = true;
+    });
+  }
+
+  getWhichBooksOwned(book: IBook, key: number):void {
+    this.bookService.isBookOwned(book.id).subscribe((value: boolean) => {
+      if(value) this.isOwner[key] = true;
     });
   }
 
@@ -220,20 +227,28 @@ export class BooksComponent implements OnInit,OnDestroy {
     {
       this.isWisher[i] = false;
     }
+    for(let i = 0; i < 8; i++)
+    {
+      this.isOwner[i] = false;
+    }
     switch(this.filter) { 
       case "registered": { 
+        this.booksPage = booksPage.Registered;
          this.getRegisteredBooks(params) ;
          break; 
       } 
       case "current": { 
+        this.booksPage= booksPage.CurrentOwned;
          this.getCurrentOwnedBooks(params); 
          break; 
       } 
       case "read": { 
         this.getReadBooks(params); 
+        this.booksPage = booksPage.Read;
         break; 
      }
       default: { 
+        this.booksPage = booksPage.List;
          this.getAllBooks(params); 
          break; 
       } 
@@ -250,6 +265,7 @@ export class BooksComponent implements OnInit,OnDestroy {
             for(var i = 0; i<pageData.page.length; i++){
               this.getWhichBooksWished(pageData.page[i], i);
               this.getUserWhoRequested(pageData.page[i], i);
+              this.getWhichBooksOwned(pageData.page[i], i);
             }
           }
           if (pageData.totalCount) {
@@ -271,6 +287,7 @@ export class BooksComponent implements OnInit,OnDestroy {
           for(var i = 0; i<pageData.page.length; i++){
             this.getWhichBooksWished(pageData.page[i], i);
             this.getUserWhoRequested(pageData.page[i], i);
+            this.getWhichBooksOwned(pageData.page[i], i);
           }
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;
@@ -291,6 +308,7 @@ export class BooksComponent implements OnInit,OnDestroy {
           for(var i = 0; i<pageData.page.length; i++){
             this.getWhichBooksWished(pageData.page[i], i);
             this.getUserWhoRequested(pageData.page[i], i);
+            this.getWhichBooksOwned(pageData.page[i], i);
           }
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;
@@ -310,6 +328,7 @@ export class BooksComponent implements OnInit,OnDestroy {
           for(var i = 0; i<pageData.page.length; i++){
             this.getWhichBooksWished(pageData.page[i], i);
             this.getUserWhoRequested(pageData.page[i], i);
+            this.getWhichBooksOwned(pageData.page[i], i);
           }
           if (pageData.totalCount) {
             this.totalSize = pageData.totalCount;

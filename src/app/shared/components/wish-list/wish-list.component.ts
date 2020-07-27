@@ -33,7 +33,7 @@ export class WishListComponent implements OnInit,OnDestroy {
   disabledButton: boolean = false;
   books: IBook[];
   totalSize: number;
-  booksPage: booksPage = booksPage.list;
+  booksPage: booksPage = booksPage.WishList;
   queryParams: BookQueryParams = new BookQueryParams;
   apiUrl: string = environment.apiUrl;
   route = this.router.url;

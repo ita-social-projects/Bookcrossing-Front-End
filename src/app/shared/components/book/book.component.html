@@ -51,9 +51,9 @@
             </div>
         </div>
         <div class="col-lg-7 text-center text-md-left">
-          <ng-template [ngIf]="isAuthenticated()">
-            <button class="heartbox" aria-hidden="true" target="_blank"  change type="default" mat-fab color="warn" (click)=changeWishList(book)>
-              <mat-icon *ngIf="isWished" class="heart">favorite</mat-icon>
+          <ng-template [ngIf]="isAuthenticated() && !isBookOwner">
+            <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank"  change type="default" color="warn" (click)=changeWishList(book)>
+              <mat-icon *ngIf="isWished">favorite</mat-icon>
               <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
             </button> 
           </ng-template> 

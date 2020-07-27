@@ -44,20 +44,23 @@ export class BookService {
     return this.http.get<IBook>(this.apiUrl + id);
   }
 
-  postBook(book: FormData) {
+  postBook(book: FormData):Observable<IBook> {
     return this.http.post<IBook>(this.apiUrl, book);
   }
 
-  putBook(bookId: number, book: FormData){
+  putBook(bookId: number, book: FormData):Observable<Object>{
     return this.http.put(this.apiUrl + bookId, book);
   }
 
-  deactivateBook(bookId: number){
+  deactivateBook(bookId: number):Observable<Object>{
     return this.http.put(this.apiUrl + bookId + '/deactivate', undefined);
   }
 
-  activateBook(bookId: number){
+  activateBook(bookId: number):Observable<Object>{
     return this.http.put(this.apiUrl + bookId + '/activate', undefined);
   }
 
+  isBookOwned(bookId: number):Observable<boolean>{
+    return this.http.get<boolean>(this.apiUrl + bookId + '/is-owned');
+  }
 }

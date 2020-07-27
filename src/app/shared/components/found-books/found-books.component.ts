@@ -26,7 +26,7 @@ export class FoundBooksComponent implements OnInit {
   disabledButton: boolean = false;
   books: IBook[];
   totalSize: number;
-  booksPage: booksPage = booksPage.list;
+  booksPage: booksPage = booksPage.List;
   queryParams: OuterBookQueryParams=new OuterBookQueryParams()
   apiUrl: string = environment.apiUrl;
   selectedGenres: number[];

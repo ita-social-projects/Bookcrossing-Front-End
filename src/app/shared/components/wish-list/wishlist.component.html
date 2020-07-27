@@ -1,7 +1,7 @@
 <div class="container my-4">
     <div>
       <mdb-breadcrumb>
-        <mdb-breadcrumb-item class="active">Wish List</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
       </mdb-breadcrumb>
     </div>
   
@@ -29,6 +29,9 @@
                 <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left" height="240px" width="200px">
               </ng-template>
             </div>
+            <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)="removeFromWishList(book.id)">
+              <mat-icon>favorite</mat-icon>
+            </button>
             <div class="col m-2">
               <div class="card-block px-2">
                 <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
@@ -105,12 +108,7 @@
                 <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
                 </ng-template>
               </span>
-        
-                <span>
-                    <button role="button" class="btn btn-primary ml-0" (click)="removeFromWishList(book.id)">Remove</button>
-                </span>
                 </p>
-  
               </div>
             </div>
           </div>

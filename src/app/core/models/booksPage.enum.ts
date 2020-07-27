@@ -1,7 +1,8 @@
 export enum booksPage {
-  list = 1,
-  requested = 2,
-  currentOwned = 3,
-  registered = 4,
-  read = 5
+  List = 1,
+  Requested = 2,
+  CurrentOwned = 3,
+  Registered = 4,
+  Read = 5,
+  WishList = 6
 }

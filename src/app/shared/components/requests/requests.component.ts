@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import {IRequest} from 'src/app/core/models/request';
+import {BookService} from 'src/app/core/services/book/book.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {NotificationService} from '../../../core/services/notification/notification.service';
 import {TranslateService} from '@ngx-translate/core';
@@ -27,10 +29,11 @@ export class RequestsComponent implements OnInit {
   userId: number;
   isRequester: boolean[] = [true, true, true, true, true ,true, true, true];
   isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
+  isOwner: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   disabledButton: boolean = false;
   viewMode: string;
   requests: IRequest[];
-  booksPage: booksPage = booksPage.requested;
+  booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
   queryParams: BookQueryParams = new BookQueryParams;
@@ -50,7 +53,8 @@ export class RequestsComponent implements OnInit {
     private router : Router,
     private dialogService: DialogService,
     private authentication: AuthenticationService,
-    private wishListService: WishListService
+    private wishListService: WishListService,
+    private bookService: BookService
   ) {}
 
   ngOnInit() {
@@ -84,10 +88,15 @@ export class RequestsComponent implements OnInit {
         this.books = books;
         for(let i = 0; i < 8; i++)
         {
+          this.isOwner[i] = false;
+        }
+        for(let i = 0; i < 8; i++)
+        {
           this.isWisher[i] = false;
         }
         for(var i = 0; i < this.books.length; i++){
           this.getWhichBooksWished(this.books[i], i);
+          this.getWhichBooksOwned(this.books[i], i);
         }
       if(pageData.totalCount){
         this.totalSize = pageData.totalCount;
@@ -99,6 +108,12 @@ export class RequestsComponent implements OnInit {
   getWhichBooksWished(book: IBook, key: number) {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
       if(value) this.isWisher[key] = true;
+    });
+  }
+
+  getWhichBooksOwned(book: IBook, key: number):void {
+    this.bookService.isBookOwned(book.id).subscribe((value: boolean) => {
+      if(value) this.isOwner[key] = true;
     });
   }
 
