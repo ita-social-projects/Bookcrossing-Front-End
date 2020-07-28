@@ -1,6 +1,6 @@
 input, textarea, mat-select {
   &.ng-invalid.ng-touched {
-    border: 1px solid red !important;
+    border: 1px solid #FF3547 !important;
   }
   &.ng-valid.ng-touched {
     border: 1px solid green;
@@ -51,7 +51,7 @@ li{
 }
 
 .asterisk {
-    color: red;
+    color: #FF3547;
 }
 
 .close {
@@ -65,7 +65,7 @@ li{
 .validation-error {
   width: 100%;
   font-size: 80%;
-  color: #dc3545;
+  color: #FF3547;
 }
 
 .center {
