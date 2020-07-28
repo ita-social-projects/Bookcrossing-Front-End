@@ -44,7 +44,7 @@
                       <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <button [hidden]="!isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> Make available</button>
                   </ng-template>
                 </span>

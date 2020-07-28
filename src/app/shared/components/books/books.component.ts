@@ -58,7 +58,7 @@ export class BooksComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe(query => {
       this.filter = query.filter;})
-      if (!this.isAuthenticated() && (this.filter == "registered" || "read" || "current"))
+      if (!this.isAuthenticated() && (this.filter == "registered" || this.filter == "read" || this.filter == "current"))
       {
         this.router.navigate(['/login']);
       }
