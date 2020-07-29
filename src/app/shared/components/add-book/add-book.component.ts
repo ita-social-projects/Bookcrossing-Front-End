@@ -22,13 +22,13 @@ import { OuterServiceService } from 'src/app/core/services/outerService/outer-se
 import { IOuterBook } from 'src/app/core/models/outerBook';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 
+
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
   styleUrls: ['./add-book.component.scss'],
 })
 export class AddBookComponent implements OnInit {
-  
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
@@ -40,8 +40,8 @@ export class AddBookComponent implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private bookLanguageService: BookLanguageService,
-    private outerService:OuterServiceService,
-    private activeroute:ActivatedRoute
+    private outerService: OuterServiceService,
+    private activeroute: ActivatedRoute
   ) { }
 
   addBookForm: FormGroup;
@@ -50,7 +50,7 @@ export class AddBookComponent implements OnInit {
   genres: IGenre[] = [];
   selectedAuthors: IAuthor[] = [];
   authors: IAuthor[] = [];
-  selectedFile = null;
+  selectedFile: File = null;
   authorsSubscription: SubscriptionLike;
   submitted = false;
   submittedValid = false;
@@ -98,14 +98,21 @@ export class AddBookComponent implements OnInit {
     })
   }
 
-  autoFill() {
+ async autoFill() {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('description').setValue(this.outerBook.description);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
-    for (var i=0; i<this.outerBook.authors.length; i++) {
+    for (var i=0; i<this.outerBook.authors.length; i++)
+    {
       this.addBookForm.get('authorFirstname').setValue(this.outerBook.authors[i].fullName);
-      }
+    }
+    fetch(this.outerBook.imageUrl)
+    .then(response => response.blob())
+    .then(blob => {
+    this.selectedFile = new File([blob], this.outerBook.imageUrl.substring(this.outerBook.imageUrl.lastIndexOf('/')+1));
+    console.log(this.selectedFile);
+    });
   }
 
   setSearchTerm(searchTerm: string) {
@@ -138,7 +145,7 @@ export class AddBookComponent implements OnInit {
       title: new FormControl('', Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
-
+      isbn: new FormControl(null),
       // authorLastname: new FormControl(null),
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
@@ -319,6 +326,7 @@ export class AddBookComponent implements OnInit {
 
   onFileSelected(event) {
     this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile);
   }
 
   onAuthorSelect(event) {
@@ -427,16 +435,16 @@ export class AddBookComponent implements OnInit {
     const input = (element as HTMLInputElement) != null ? (element as HTMLInputElement) : (element as HTMLTextAreaElement);
 
     if (input.value.length > maxLength) {
-      const fieldName = input.attributes['formControlName'].value;
+      const fieldName = input.attributes['formControlName']?.value;
       input.value = input.value.substr(0, maxLength);
 
-      this.addBookForm.controls[fieldName].setErrors({ maxlength: {requiredLength: maxLength}});
-      this.addBookForm.controls[fieldName].markAsTouched();
+      this.addBookForm.controls[fieldName]?.setErrors({ maxlength: {requiredLength: maxLength}});
+      this.addBookForm.controls[fieldName]?.markAsTouched();
 
       clearInterval(this.hideErrorInterval);
       this.hideErrorInterval = setTimeout(() => {
-        this.addBookForm.controls[fieldName].setErrors(null);
-        this.addBookForm.controls[fieldName].markAsTouched();
+        this.addBookForm.controls[fieldName]?.setErrors(null);
+        this.addBookForm.controls[fieldName]?.markAsTouched();
       }, 2000);
     }
   }
