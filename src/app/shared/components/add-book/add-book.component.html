@@ -242,11 +242,15 @@
           <div class="col-4" >
             <input
            #searchTerm
+           formControlName="isbn"
             class="form-control"
             trim="blur"
             type="text"
+            (input)="checkLength(searchTerm, 150)"
             />
-            
+            <div *ngIf="addBookForm.get('isbn').errors?.maxlength" class="validation-error">
+              {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('isbn').errors?.maxlength?.requiredLength} }}
+            </div>
           </div>
         </div>
     
