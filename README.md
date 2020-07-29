@@ -10,15 +10,15 @@ All features must be merged into develop branch!!!
 Only the release should merge into the main branch!!!
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes using docker containers.
 
 ### Prerequisites
 [Docker](https://www.docker.com) version 17.05 or higher
 
 ### Installing
-1. Clone it from git hub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Front-End.git
+1. Clone repository from GitHub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Front-End.git
 2. Move to the Bookcrossing-Front-End and run "docker build -t web ."
-3. Execute "docker run -d -p 80:80 --name web web"
+3. Next run "docker run -d -p 80:80 --name web web"
 4. Go to the [localhost](http://localhost/) in your browser
   
 **Note! Contribution rules:**  
