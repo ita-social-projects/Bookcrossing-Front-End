@@ -28,7 +28,6 @@ import { AutofillMonitor } from '@angular/cdk/text-field';
   styleUrls: ['./add-book.component.scss'],
 })
 export class AddBookComponent implements OnInit {
-  
   constructor(
     private http: HttpClient,
     private translate: TranslateService,
@@ -138,7 +137,6 @@ export class AddBookComponent implements OnInit {
       title: new FormControl('', Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl(null),
-
       // authorLastname: new FormControl(null),
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
