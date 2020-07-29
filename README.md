@@ -13,12 +13,12 @@ Only the release should merge into the main branch!!!
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ### Prerequisites
-[Angular CLI](https://angular.io/guide/setup-local) 
+[Docker](https://www.docker.com) version 17.05 or higher
 
 ### Installing
 1. Clone it from git hub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Front-End.git
-2. *npm install*
-3. *ng serve*
+2. Move to the folder and run "docker build -t web ."
+3. Execute "docker run -d -p 80:80 --name web web"
   
 **Note! Contribution rules:**  
 1. All Pull Requests should start from prefix *#xxx-yyy* where *xxx* - task number and and *yyy* - short description 
