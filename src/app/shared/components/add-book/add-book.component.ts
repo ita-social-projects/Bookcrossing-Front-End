@@ -101,7 +101,6 @@ export class AddBookComponent implements OnInit {
  async autoFill() {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
-    this.addBookForm.get('description').setValue(this.outerBook.description);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
     for (var i=0; i<this.outerBook.authors.length; i++)
     {
