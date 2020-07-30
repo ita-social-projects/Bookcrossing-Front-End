@@ -25,6 +25,7 @@ export class LanguageFormComponent implements OnInit {
   submitButtonText: string;
   form: FormGroup;
   hideErrorInterval: NodeJS.Timeout;
+  submitted: boolean = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -71,9 +72,10 @@ export class LanguageFormComponent implements OnInit {
 
   submit(): void {
     this.form.markAllAsTouched();
-    if (this.form.invalid) {
+    if (this.form.invalid || this.submitted) {
       return;
     }
+    this.submitted = true;
     this.language = {
       name: this.form.get('name').value,
     };
@@ -103,6 +105,7 @@ export class LanguageFormComponent implements OnInit {
           .instant('components.admin.languages.add-success'), 'X');
       },
       (error) => {
+        this.submitted = false
         this.notificationService.error(this.translate
           .instant('common-errors.error-message'), 'X');
       },
@@ -118,6 +121,7 @@ export class LanguageFormComponent implements OnInit {
           .instant('components.admin.languages.update-success'), 'X');
       },
       (error) => {
+        this.submitted = false;
         this.notificationService.error(this.translate
           .instant('common-errors.error-message'), 'X');
       },
