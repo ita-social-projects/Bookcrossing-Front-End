@@ -55,7 +55,7 @@ const routes: Routes = [
   },
 
   {path: 'book/:id', component: BookComponent},
-  {path: 'book', component: AddBookComponent, canActivate: [LocationGuard]},
+  {path: 'book', component: AddBookComponent, canActivate: [AuthGuard, LocationGuard]},
   {path: 'found-books', component: FoundBooksComponent},
   {path: 'books/requests', component: RequestsComponent, canActivate: [AuthGuard]},
   {path: 'books', component: BooksComponent},

@@ -172,7 +172,7 @@
             </ng-template>
           </div>
           <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
-            <button class="heartbox" aria-hidden="true" target="_blank"  change type="default" mat-fab color="warn" (click)=changeWishList(book,key)>
+            <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank"  change type="default" color="warn" (click)=changeWishList(book,key)>
               <mat-icon *ngIf="isWisher[key]">favorite</mat-icon>
               <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
             </button> 
