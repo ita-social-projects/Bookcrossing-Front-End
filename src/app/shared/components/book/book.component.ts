@@ -70,11 +70,15 @@ export class BookComponent implements OnInit {
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
       this.book = value;
       this.getOwners(this.book.userId);
-      if (value.state !== bookState.available) {
+      if (value.state !== bookState.available)
+      {
         this.getUserWhoRequested();
       }
-      this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
-        if(value) this.isWished = true;});
+        if (this.isAuthenticated())
+      {
+        this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
+          if(value) this.isWished = true;});
+      }
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
