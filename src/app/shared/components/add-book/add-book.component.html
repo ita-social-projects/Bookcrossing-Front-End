@@ -64,6 +64,9 @@
                   'ng-invalid': addBookForm.get('authorFirstname').touched &&
                        !selectedAuthors.length &&
                        !addBookForm.controls.authorFirstname.value?.trim() &&
+                       !withoutAuthorChecked,
+                  'not-confirmed': addBookForm.controls.authorFirstname.dirty &&
+                       addBookForm.controls.authorFirstname.value!='' &&
                        !withoutAuthorChecked
                 }"
               />
@@ -246,10 +249,10 @@
             trim="blur"
             type="text"
             />
-            
+
           </div>
         </div>
-    
+
       <div class="form-row mb-4">
         <button type="button" class="btn btn-info" (click)="fileInput.click()">
           Add image
