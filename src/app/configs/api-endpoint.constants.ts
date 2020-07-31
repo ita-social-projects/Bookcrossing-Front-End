@@ -16,6 +16,7 @@ export const refreshTokenUrl = loginUrl + '/refresh';
 export const dashboardUrl = baseUrl + 'admin/dashboard';
 export const languageUrl = baseUrl + 'language/';
 export const outerBookUrl = baseUrl + 'OuterBooksSource/';
+export const outerBookIdUrl = baseUrl + 'OuterBooksSource/';
 export const wishListUrl = baseUrl + 'WishList/';
 
 export const registrationUrl = window.location.origin + '/registration/';
