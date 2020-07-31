@@ -44,17 +44,15 @@ export class FoundBooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.events.subscribe(() => {
-      if ( this.router.url != '') {
+      if ( this.router.url !== '') {
         this.route =  this.router.url;
       }
     });
 
     this.routeActive.queryParams.subscribe((params: Params) => {
-      console.log(params);
       this.queryParams = OuterBookQueryParams.mapFromQuery(params);
-      console.log(this.queryParams);
       this.getOuterBooks(this.queryParams);
-    })
+    });
   }
 
   getOuterBooks(params: OuterBookQueryParams): void {
@@ -71,12 +69,11 @@ export class FoundBooksComponent implements OnInit {
   }
 
   autoFill(bookId: number){
-    this.router.navigate(['/book'],{queryParams:{outerBookId:bookId}});
+    this.router.navigate(['/book'], {queryParams: {outerBookId: bookId}});
   }
 
   //Navigation
   pageChanged(currentPage: number): void {
-    console.log(currentPage);
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();

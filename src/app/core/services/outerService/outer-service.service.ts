@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IOuterBook } from '../../models/outerBook';
 import { IPage } from '../../models/page';
-import { outerBookUrl, outerBookIdUrl } from 'src/app/configs/api-endpoint.constants';
+import { outerBookUrl } from 'src/app/configs/api-endpoint.constants';
 import { PaginationService } from '../pagination/pagination.service';
 import { OuterBookQueryParams } from '../../models/outerBookQueryParams';
 
@@ -11,18 +11,14 @@ import { OuterBookQueryParams } from '../../models/outerBookQueryParams';
 })
 export class OuterServiceService {
 
-
-
-  constructor( private http: HttpClient,
-    private pagination: PaginationService,
-    ) { }
+  constructor(private http: HttpClient,
+              private pagination: PaginationService) { }
 
   getBooks(paginationParameters: OuterBookQueryParams){
-    return this.pagination.getOuterBookPage<IOuterBook>(outerBookUrl + "books", paginationParameters);
+    return this.pagination.getOuterBookPage<IOuterBook>(outerBookUrl + 'books', paginationParameters);
   }
 
-  getBooksById(bookId:number){
-    return this.http.get<IOuterBook>(outerBookIdUrl + "book/" + bookId);
+  getBooksById(bookId: number){
+    return this.http.get<IOuterBook>(`${outerBookUrl}book/${bookId}`);
   }
-
 }

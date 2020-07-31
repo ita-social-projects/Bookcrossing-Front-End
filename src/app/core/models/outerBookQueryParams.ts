@@ -9,8 +9,7 @@ export class OuterBookQueryParams extends PageableParameters {
     const book = new OuterBookQueryParams();
     book.page = params.page ? +params.page : defaultPage;
     book.pageSize = params.pageSize ? +params.pageSize : defaultPageSize;
-    book.searchTerm=params.searchTerm;
-    console.log(book);
+    book.searchTerm = params.searchTerm;
     return book;
   }
 
