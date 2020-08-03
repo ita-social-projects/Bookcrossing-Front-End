@@ -20,3 +20,34 @@
   border-bottom:1px dashed #efefef;
   margin-bottom:25px;
 }
+
+
+.arrow-down {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.arrow-up {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+}
+
+a[aria-expanded=false] .hidden,
+a[aria-expanded=true] .shown{
+  display: block;
+  transition: all 3s;
+}
+
+a[aria-expanded=true] .hidden,
+a[aria-expanded=false] .shown{
+  display: none;
+  transition: all 3s;
+}

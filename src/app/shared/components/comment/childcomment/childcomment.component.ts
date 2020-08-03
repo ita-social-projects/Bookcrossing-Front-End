@@ -91,11 +91,10 @@ export class ChildcommentComponent implements OnInit {
     this.commentservice.updateChildComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
-  PostComment() {
-    let postComment: IChildInsertComment = {
-      ids: this.ids, ownerId: this.user.id, text: this.text
-
-    }
+  PostComment(ids: string[]) {
+    const postComment: IChildInsertComment = {
+      ids: ids, ownerId: this.user.id, text: this.text
+    };
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
   }
