@@ -11,6 +11,7 @@ import {IRootInsertComment} from '../../../core/models/comments/root-comment/roo
 import {IRootDeleteComment} from '../../../core/models/comments/root-comment/rootDelete';
 import {IRootUpdateComment} from '../../../core/models/comments/root-comment/rootUpdate';
 import {element} from 'protractor';
+import {IChildInsertComment} from '../../../core/models/comments/child-comment/childInsert';
 
 @Component({
   selector: 'app-comment',
@@ -38,7 +39,7 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.updateComments();
+    this.UpdateComments();
     this.getUser()
   }
 
@@ -102,7 +103,7 @@ export class CommentComponent implements OnInit {
     return ids;
   }
 
-  updateComments() {
+  UpdateComments() {
     this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[])=> {
       this.comments = value;
       this.comments.sort((a, b) => {
@@ -116,7 +117,16 @@ export class CommentComponent implements OnInit {
     let postComment: IRootInsertComment = {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
     }
-    this.commentservice.postComment(postComment).subscribe(() => this.updateComments());
+    this.commentservice.postComment(postComment).subscribe(() => this.UpdateComments());
+    this.text = '';
+  }
+
+  PostChildComment(ids: string[]) {
+    const postComment: IChildInsertComment = {
+      ids: ids, ownerId: this.user.id, text: this.text
+    };
+
+    this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
   }
 
@@ -125,17 +135,17 @@ export class CommentComponent implements OnInit {
       id: id, ownerId: this.user.id
 
     }
-    this.commentservice.deleteComment(deleteComment).subscribe(() => this.updateComments());
+    this.commentservice.deleteComment(deleteComment).subscribe(() => this.UpdateComments());
   }
 
   updateComment(id, text, rating) {
     if(typeof this.updateRating === 'undefined'){
       this.updateRating = rating;
     }
-    let updateComment: IRootUpdateComment = {
+    const updateComment: IRootUpdateComment = {
       id: id, ownerId: this.user.id, rating: this.updateRating, text: text
-    }
-    this.commentservice.updateComment(updateComment).subscribe(() => this.updateComments());
+    };
+    this.commentservice.updateComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
   onRatingSet($event: number) {
