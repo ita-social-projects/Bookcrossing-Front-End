@@ -13,7 +13,7 @@ export class RegisteredBooksComponent extends BooksComponent {
 
     booksPage = booksPage.Registered;
 
-    getBooks(params: BookQueryParams): void {
+    public getBooks(params: BookQueryParams): void {
         this.bookService.getRegisteredBooks(params)
           .subscribe( {
             next: pageData => {

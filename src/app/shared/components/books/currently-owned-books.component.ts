@@ -13,7 +13,7 @@ export class CurrentlyOwnedBooksComponent extends BooksComponent {
 
     booksPage = booksPage.CurrentOwned;
 
-    getBooks(params: BookQueryParams): void {
+    public getBooks(params: BookQueryParams): void {
         this.bookService.getCurrentOwnedBooks(params)
           .subscribe( {
             next: pageData => {

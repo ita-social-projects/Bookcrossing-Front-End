@@ -13,7 +13,7 @@ export class ReadBooksComponent extends BooksComponent {
 
     booksPage = booksPage.Read;
 
-    getBooks(params: BookQueryParams): void {
+    public getBooks(params: BookQueryParams): void {
         this.bookService.getReadBooks(params)
           .subscribe( {
             next: pageData => {
