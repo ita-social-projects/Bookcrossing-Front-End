@@ -49,9 +49,9 @@
                           </ng-template>
                         </div>
                             <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
-                                <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)=changeWishList(book,key)>
-                                  <mat-icon *ngIf="isWisher[key]">favorite</mat-icon>
-                                  <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
+                                <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)=changeWishList(book)>
+                                  <mat-icon *ngIf="book.isWished">favorite</mat-icon>
+                                  <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
                                 </button> 
                               </ng-template>          
                         <div class="col-lg-8 m2" >
@@ -172,9 +172,9 @@
             </ng-template>
           </div>
           <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
-            <button mat-icon-button class="heartbox" change type="default"  aria-hidden="true" target="_blank"  color="warn" (click)=changeWishList(book,key)>
-              <mat-icon *ngIf="isWisher[key]">favorite</mat-icon>
-              <mat-icon *ngIf="!isWisher[key]" class="heart">favorite_border</mat-icon>
+            <button mat-icon-button class="heartbox" change type="default"  aria-hidden="true" target="_blank"  color="warn" (click)=changeWishList(book)>
+              <mat-icon *ngIf="book.isWished">favorite</mat-icon>
+              <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
             </button> 
           </ng-template>  
           <div class="col m-2">

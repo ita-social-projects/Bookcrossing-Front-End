@@ -25,6 +25,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie-service";
 import { BookComponent } from './shared/components/book/book.component';
+import { CurrentlyOwnedBooksComponent } from './shared/components/books/currently-owned-books.component';
+import { RegisteredBooksComponent } from './shared/components/books/registered-books.component';
+import { ReadBooksComponent } from './shared/components/books/read-books.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -113,6 +116,9 @@ import { WishListService } from './core/services/wishlist/wishlist.service';
     NavbarComponent,
     FooterComponent,
     BooksComponent,
+    RegisteredBooksComponent,
+    CurrentlyOwnedBooksComponent,
+    ReadBooksComponent,
     LocationFormComponent,
     MapboxComponent,
     AuthorsComponent,

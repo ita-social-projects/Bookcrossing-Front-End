@@ -77,7 +77,10 @@ export class BookComponent implements OnInit {
         if (this.isAuthenticated())
       {
         this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
-          if(value) this.isWished = true;});
+          if (value) {
+            this.isWished = true;
+          }
+        });
       }
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
@@ -322,20 +325,14 @@ export class BookComponent implements OnInit {
 
   changeWishList(book:IBook):void
   {
-      if(this.isWished) 
-      {
-        this.wishListService.removeFromWishList(book.id).subscribe(
-          (data) => { this.isWished = false; },
-          (error) => {
-            this.notificationService.error(
-              this.translate.instant('Something went wrong'),
-              'X'
-            );
-          }
-        );
-      }
-      else
-      {
+    if(this.isWished) {
+      this.wishListService.removeFromWishList(book.id).subscribe(
+        (data) => { this.isWished = false; },
+        (error) => {
+          this.notificationService.error(
+            this.translate.instant('Something went wrong'), 'X');
+          } );
+      } else {
         this.wishListService.addToWishList(book.id).subscribe(
         (data) => { this.isWished = true; },
           (error) => {
