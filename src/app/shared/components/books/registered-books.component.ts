@@ -31,5 +31,5 @@ export class RegisteredBooksComponent extends BooksComponent {
                 .instant('Something went wrong!'), 'X');
             }
           });
-      };
+      }
 }

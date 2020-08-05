@@ -26,20 +26,20 @@ import { WishListService } from 'src/app/core/services/wishlist/wishlist.service
 })
 export class BooksComponent implements OnInit, OnDestroy {
 
-  isBlockView = false;
-  userId: number;
-  isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
-  requestIds: object = {};
-  disabledButton = false;
-  books: IBook[];
-  totalSize: number;
-  booksPage: booksPage = booksPage.List;
-  queryParams: BookQueryParams = new BookQueryParams();
-  apiUrl: string = environment.apiUrl;
-  selectedGenres: number[];
-  selectedLanguages: number[];
-  route = this.router.url;
-  constructor(protected routeActive: ActivatedRoute,
+  public isBlockView = false;
+  public userId: number;
+  public isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+  public requestIds: object = {};
+  public disabledButton = false;
+  public books: IBook[];
+  public totalSize: number;
+  public booksPage: booksPage = booksPage.List;
+  public queryParams: BookQueryParams = new BookQueryParams();
+  public apiUrl: string = environment.apiUrl;
+  public selectedGenres: number[];
+  public selectedLanguages: number[];
+  public route = this.router.url;
+  public constructor(protected routeActive: ActivatedRoute,
               protected router: Router,
               protected bookService: BookService,
               protected searchBarService: SearchBarService,
@@ -51,7 +51,7 @@ export class BooksComponent implements OnInit, OnDestroy {
               protected wishListService: WishListService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
     this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
@@ -65,11 +65,11 @@ export class BooksComponent implements OnInit, OnDestroy {
     });
   }
 
-  isAuthenticated(): boolean {
+  public isAuthenticated(): boolean {
     return this.authentication.isAuthenticated();
   }
 
-  getUserId(): void {
+  public getUserId(): void {
     if (this.isAuthenticated()) {
       this.authentication.getUserId().subscribe((value: number) => {
         this.userId = value;
@@ -77,7 +77,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  getUserWhoRequested(book: IBook, key: number): void {
+  protected getUserWhoRequested(book: IBook, key: number): void {
     if (book.state === bookState.requested) {
       const query = new RequestQueryParams();
       query.first = false;
@@ -91,7 +91,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  getWhichBooksWished(book: IBook): void {
+  protected getWhichBooksWished(book: IBook): void {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
       if (value) {
         book.isWished = true;
@@ -99,7 +99,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     });
   }
 
-  async cancelRequest(bookId: number): Promise<void> {
+  public async cancelRequest(bookId: number): Promise<void> {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancellation.').toPromise()
@@ -122,7 +122,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       });
   }
 
-  async requestBook(bookId: number): Promise<void> {
+  public async requestBook(bookId: number): Promise<void> {
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
     if (!userHasValidLocation) {
       return;
@@ -147,9 +147,9 @@ export class BooksComponent implements OnInit, OnDestroy {
           });
         }
       });
-
   }
-  onFilterChange(filterChanged: boolean): void {
+
+  public onFilterChange(filterChanged: boolean): void {
     this.queryParams.genres = this.selectedGenres;
     this.queryParams.languages = this.selectedLanguages;
     if (filterChanged) {
@@ -185,7 +185,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
  // Navigation
-  pageChanged(currentPage: number): void {
+  public pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
@@ -194,10 +194,12 @@ export class BooksComponent implements OnInit, OnDestroy {
       behavior: 'smooth'
     });
   }
+
   private resetPageIndex(): void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;
   }
+
   private changeUrl(): void {
     this.router.navigate(['.'],
       {
@@ -209,7 +211,7 @@ export class BooksComponent implements OnInit, OnDestroy {
 
 
  // get
-  getBooks(params: BookQueryParams): void {
+  public getBooks(params: BookQueryParams): void {
     this.bookService.getBooksPage(params)
     .subscribe( {
       next: pageData => {
@@ -231,11 +233,11 @@ export class BooksComponent implements OnInit, OnDestroy {
     });
 }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.searchBarService.changeSearchTerm(null);
   }
 
-  onViewModeChange(viewModeChanged: string): void {
+  public onViewModeChange(viewModeChanged: string): void {
     if (viewModeChanged === 'block') {
       this.isBlockView = true;
     } else {
@@ -243,7 +245,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeWishList(book: IBook): void {
+  public changeWishList(book: IBook): void {
       if (book.isWished) {
         this.wishListService.removeFromWishList(book.id).subscribe(
           (data) => { book.isWished = false; },
