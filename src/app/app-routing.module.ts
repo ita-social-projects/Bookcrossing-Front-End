@@ -32,6 +32,7 @@ import {LanguageFormComponent} from './shared/components/admin/language-form/lan
 import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 import {ForbidEmailComponent} from './shared/components/email-notification-forbid/email-notification-forbid.component'
 import {WishListComponent} from './shared/components/wish-list/wish-list.component'
+import { UsersComponent } from './shared/components/admin/users/users.component';
 
 // @ts-ignore
 const routes: Routes = [
@@ -50,7 +51,8 @@ const routes: Routes = [
         {path: 'location-form', component: LocationFormComponent},
         {path: 'author-form', component: AuthorFormComponent},
         {path: 'languages', component: BookLanguagesComponent},
-        {path: 'language-form', component: LanguageFormComponent}
+        {path: 'language-form', component: LanguageFormComponent},
+        {path: 'users', component: UsersComponent}
       ]
   },
 

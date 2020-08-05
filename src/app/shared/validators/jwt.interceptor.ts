@@ -7,7 +7,7 @@ import { AuthenticationService } from '../../core/services/authentication/authen
 import {catchError, filter, switchMap, take, tap} from "rxjs/operators";
 import {error} from "@angular/compiler/src/util";
 
-import {IUser} from "../../core/models/user";
+import {IUserInfo} from "../../core/models/userInfo";
 
 
 @Injectable()
@@ -44,12 +44,12 @@ export class JwtInterceptor implements HttpInterceptor {
    }));
   }
 
- private handle401error(request:HttpRequest<any>,next:HttpHandler,currentUser : IUser){
+ private handle401error(request:HttpRequest<any>,next:HttpHandler,currentUser : IUserInfo){
      if(!this.isRefreshing) {
        console.log('Token is not refreshing, so can be refreshed');
        this.isRefreshing = true;
        this.refreshTokenSubject.next(null);
-       return this.authenticationService.refresh(currentUser.token).pipe(switchMap((token: IUser) => {
+       return this.authenticationService.refresh(currentUser.token).pipe(switchMap((token: IUserInfo) => {
          console.log('in handle 401 error i got', token);
          this.refreshTokenSubject.next(token.token.jwt);
          this.isRefreshing = false;

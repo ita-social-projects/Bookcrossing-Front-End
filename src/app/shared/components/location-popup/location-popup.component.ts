@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LocationService } from 'src/app/core/services/location/location.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ILocation } from 'src/app/core/models/location';
-import { IUser } from 'src/app/core/models/user';
+import { IUserInfo } from 'src/app/core/models/userInfo';
 import { IUserPut } from 'src/app/core/models/userPut';
 import { IRoomLocation } from 'src/app/core/models/roomLocation';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +28,7 @@ export class LocationPopupComponent implements OnInit {
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) private user: IUser) {
+    @Inject(MAT_DIALOG_DATA) private user: IUserInfo) {
       this.locationForm = this.formBuilder.group({
         location: ['', Validators.required],
         roomNumber: ['', [Validators.required, Validators.maxLength(7), Validators.pattern(/^[^\s]{1,7}$/)]]
@@ -54,11 +54,11 @@ export class LocationPopupComponent implements OnInit {
   onSubmit(): void {
     if(this.locationForm.invalid) return;
     if(!this.user) return;
-    
+
     const newLocation: IRoomLocation = {
       roomNumber: this.roomNumber.value,
       location: this.location.value
-    } 
+    }
 
     const userPut: IUserPut = {
       id: this.user.id,

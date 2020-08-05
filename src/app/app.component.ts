@@ -3,7 +3,7 @@ import {NavbarComponent} from './shared/components/navbar/navbar.component';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../app/core/services/authentication/authentication.service';
 import {Role} from './core/models/role.enum';
-import {IUser} from '../app/core/models/user';
+import {IUserInfo} from './core/models/userInfo';
 import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from './core/services/language/language.service';
 
@@ -16,7 +16,7 @@ import {LanguageService} from './core/services/language/language.service';
 })
 export class AppComponent {
 
-  currentUser: IUser;
+  currentUser: IUserInfo;
   title = 'BookCrossingFrontEnd';
 
   constructor(

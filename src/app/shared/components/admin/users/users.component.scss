@@ -1,0 +1,38 @@
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.table thead th {
+  font-size: .95rem;
+  font-weight: 500;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+  vertical-align: bottom;
+  border-bottom: 2px solid rgba(0,0,0,.06);
+}
+.table tbody td {
+  font-size: 1rem;
+}
+.active-header{
+  background-color: #eceff1;
+}
+.validation-error{
+  width: 100%;
+  font-size: 80%;
+  color: #dc3545;
+}
+table {
+  width: 100%;
+}
+@media (max-width: 800px) {
+  .action{
+    width:auto;
+  }
+  .card-header.d-flex {
+    display: block !important;
+  }
+  ul {
+    justify-content: center;
+    margin: 8px;
+  }
+}

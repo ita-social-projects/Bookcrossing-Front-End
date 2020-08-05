@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
-import {IUser} from '../../../../core/models/user';
+import {IUserInfo} from '../../../../core/models/userInfo';
 import {CommentService} from '../../../../core/services/commment/comment.service';
 import {IChildDeleteComment} from '../../../../core/models/comments/child-comment/childDelete';
 import {IChildUpdateComment} from '../../../../core/models/comments/child-comment/childUpdate';
@@ -16,7 +16,7 @@ import {IChildInsertComment} from '../../../../core/models/comments/child-commen
 export class ChildcommentComponent implements OnInit {
   @Input() comments;
   @Input() level;
-  @Input() user: IUser;
+  @Input() user: IUserInfo;
   @Input() ids;
   @Output() update = new EventEmitter();
   @Input() isAuthorized;

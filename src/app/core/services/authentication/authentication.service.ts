@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map, take, tap } from 'rxjs/operators';
 import { loginUrl, refreshTokenUrl } from '../../../configs/api-endpoint.constants';
 import { userUrl } from '../../../configs/api-endpoint.constants';
-import { IUser } from '../../models/user';
+import { IUserInfo } from '../../models/userInfo';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { IToken } from "../../models/token";
 import { UserService } from '../user/user.service';
@@ -21,8 +21,8 @@ export class AuthenticationService {
   readonly userUrl = userUrl;
   readonly refreshUrl = refreshTokenUrl;
 
-  private currentUserSubject: BehaviorSubject<IUser>;
-  public currentUser: Observable<IUser>;
+  private currentUserSubject: BehaviorSubject<IUserInfo>;
+  public currentUser: Observable<IUserInfo>;
 
   getLoginEmitter() {
     return this.loginEvent;
@@ -36,16 +36,16 @@ export class AuthenticationService {
     private jwtHelper: JwtHelperService,
     private dialogService: DialogService,
     private userService: UserService) {
-    this.currentUserSubject = new BehaviorSubject<IUser>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<IUserInfo>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): IUser {
+  public get currentUserValue(): IUserInfo {
     return this.currentUserSubject.value;
   }
 
   login(form) {
-    return this.http.post<IUser>(this.baseUrl, form)
+    return this.http.post<IUserInfo>(this.baseUrl, form)
       .pipe(map(user => {
         if (user && user.token) {
           localStorage.setItem('RememberMe', form.RememberMe);
@@ -72,7 +72,7 @@ export class AuthenticationService {
   }
 
   refresh(Token: IToken) {
-    return this.http.post<IUser>(this.refreshUrl, Token).pipe(tap(user => {
+    return this.http.post<IUserInfo>(this.refreshUrl, Token).pipe(tap(user => {
       console.log('received refresh ', user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.currentUserSubject.next(user);

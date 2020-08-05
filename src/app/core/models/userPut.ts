@@ -1,17 +1,8 @@
-import {IRoomLocation} from './roomLocation';
+import { IUser } from './user';
 
-export interface IUserPut {
-  id: number;
-  firstName?: string;
-  lastName?: string;
-  middleName?: string;
-  email: string;
-  isEmailAllowed: boolean;
+export interface IUserPut extends IUser {
   password: string;
   roleId: number;
-  birthDate: Date;
-  registeredDate: Date;
-  userLocation?: IRoomLocation;
   fieldMasks?: string[];
 }
 
