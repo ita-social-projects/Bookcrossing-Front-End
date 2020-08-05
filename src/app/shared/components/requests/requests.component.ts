@@ -28,7 +28,6 @@ export class RequestsComponent implements OnInit {
   isBlockView: boolean = false;
   userId: number;
   isRequester: boolean[] = [true, true, true, true, true ,true, true, true];
-  isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
   disabledButton: boolean = false;
   viewMode: string;
   requests: IRequest[];
@@ -85,12 +84,8 @@ export class RequestsComponent implements OnInit {
           books.push(item.book)
         })
         this.books = books;
-        for(let i = 0; i < 8; i++)
-        {
-          this.isWisher[i] = false;
-        }
         for(var i = 0; i < this.books.length; i++){
-          this.getWhichBooksWished(this.books[i], i);
+          this.getWhichBooksWished(this.books[i]);
         }
       if(pageData.totalCount){
         this.totalSize = pageData.totalCount;
@@ -99,9 +94,9 @@ export class RequestsComponent implements OnInit {
    });
   };
 
-  getWhichBooksWished(book: IBook, key: number) {
+  getWhichBooksWished(book: IBook) {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
-      if(value) this.isWisher[key] = true;
+      if(value) book.isWished = true;
     });
   }
 
@@ -194,12 +189,12 @@ export class RequestsComponent implements OnInit {
     }
   }
 
-  changeWishList(book:IBook, key:number):void
+  changeWishList(book:IBook):void
   {
-      if(this.isWisher[key]) 
+      if(book.isWished) 
       {
         this.wishListService.removeFromWishList(book.id).subscribe(
-          (data) => { this.isWisher[key] = false; },
+          (data) => { book.isWished = false; },
           (error) => {
             this.notificationService.error(
               this.translate.instant('Something went wrong'),
@@ -211,7 +206,7 @@ export class RequestsComponent implements OnInit {
       else
       {
         this.wishListService.addToWishList(book.id).subscribe(
-        (data) => { this.isWisher[key] = true; },
+        (data) => { book.isWished = true; },
           (error) => {
             this.notificationService.error(
               this.translate.instant('Cannot add own book to the wish list'),
