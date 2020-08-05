@@ -1,4 +1,3 @@
-import { Input } from '@angular/core'
 import { IOuterAuthor} from './outerAuthor';
 
 export interface IOuterBook {

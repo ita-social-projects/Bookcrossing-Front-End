@@ -62,7 +62,7 @@ export class AddBookComponent implements OnInit {
   hideErrorInterval: NodeJS.Timeout;
 
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.buildForm();
     this.getAllGenres();
     this.getAllLanguages();
@@ -91,25 +91,25 @@ export class AddBookComponent implements OnInit {
 
     this.activeroute.queryParams.subscribe((params) => {
       if (params['outerBookId']) {
-        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook => { this.outerBook = outerBook;
+        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook => {
+        this.outerBook = outerBook;
         this.autoFill();
         });
       }
-    })
+    });
   }
 
  async autoFill() {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
-    for (var i=0; i<this.outerBook.authors.length; i++)
-    {
-      this.addBookForm.get('authorFirstname').setValue(this.outerBook.authors[i].fullName);
+    for (const author of this.outerBook.authors) {
+      this.addBookForm.get('authorFirstname').setValue(author.fullName);
     }
     fetch(this.outerBook.imageUrl)
     .then(response => response.blob())
     .then(blob => {
-    this.selectedFile = new File([blob], this.outerBook.imageUrl.substring(this.outerBook.imageUrl.lastIndexOf('/')+1));
+    this.selectedFile = new File([blob], this.outerBook.imageUrl.substring(this.outerBook.imageUrl.lastIndexOf('/') + 1));
     console.log(this.selectedFile);
     });
   }
@@ -291,7 +291,7 @@ export class AddBookComponent implements OnInit {
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id == id)?.name : '';
+    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
   }
 
   getAllGenres() {
