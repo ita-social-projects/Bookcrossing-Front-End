@@ -8,8 +8,8 @@
       <div class="col-12">
         <div class="card card-list">
           <div class="card-header white row no-gutters align-items-center py-3">
-            <p class="h5-responsive font-weight-bold mb-1 mr-2 col-1">
-              Users
+            <p class="h5-responsive font-weight-bold mb-1 mr-2 col-2">
+              {{ "components.admin.users.users" | translate }}
             </p>
 
             <!-- header search -->
@@ -55,7 +55,10 @@
             </div>
 
             <small class="ml-auto mt-2 text-muted">
-              Number of found users: {{ totalSize || 0 }}
+              {{
+                "components.admin.users.found-number"
+                  | translate: { value: totalSize || 0 }
+              }}
             </small>
           </div>
 
@@ -67,7 +70,10 @@
               [dataProperties]="usersProperties"
               [displayColumns]="usersDisplayColumns"
               [(selectedHeader)]="queryParams.sort.orderByField"
+              [canView]="true"
+              [canEdit]="false"
               [canDelete]="false"
+              (viewClicked)="onViewButtonClicked($event)"
               (selectedHeaderChange)="onSortHeaderChanged($event)"
             >
             </app-admin-table>

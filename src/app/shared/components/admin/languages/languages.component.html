@@ -45,6 +45,7 @@
               [displayColumns]="languagesDisplayColumns"
               [(selectedHeader)]="queryParams.sort.orderByField"
               (editClicked)="editLanguage($event)"
+              [canEdit]="true"
               [canDelete]="true"
               (deleteClicked)="deleteLanguage($event)"
               (selectedHeaderChange)="changeSort($event)">
