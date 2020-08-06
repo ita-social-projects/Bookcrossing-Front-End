@@ -5,5 +5,6 @@ export interface IChildComment {
   text: string;
   date: Date;
   owner: IBookOwner;
+  isDeleted: boolean;
   comments: IChildComment[];
 }

@@ -51,3 +51,21 @@ a[aria-expanded=false] .shown{
   display: none;
   transition: all 3s;
 }
+
+.btn-text {
+  background-color: transparent;
+  border: none;
+  font-weight: 200;
+  cursor: pointer;
+  text-decoration: none;
+  color: #007bff;
+  padding: 0;
+}
+
+.btn-text:focus {
+  outline: none;
+}
+
+.text-deleted {
+  color: #969090;
+}

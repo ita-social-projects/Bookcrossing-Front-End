@@ -8,5 +8,6 @@ export interface IRootComment {
   rating: number;
   bookId: number;
   owner: IBookOwner;
+  isDeleted: boolean;
   comments: IChildComment[];
 }
