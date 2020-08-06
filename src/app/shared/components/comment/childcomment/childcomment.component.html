@@ -14,26 +14,42 @@
                 <a class="pull-left">
                   <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
                 </a>
-                <div class="media-body pad">
-                                <span class="text-muted pull-right">
-                                    <small class="text-muted">{{formatDate(comment.date)}}  </small>
-                                </span>
-                  <strong class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <a *ngIf="CanEditCommnet(comment.owner)" data-toggle="collapse" href="#child_{{level}}_{{i}}" role="button"
-                     aria-expanded="false" aria-controls="collapseExample">
-                    edit
+                <div class="media-body pad">
+
+                  <span class="text-muted pull-right">
+                      <small class="text-muted">{{formatDate(comment.date)}}  </small>
+                  </span>
+                  <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
+
+                  <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                     data-toggle="collapse"
+                     href="#child_{{level}}_{{i}}"
+                     role="button"
+                     aria-expanded="false"
+                     aria-controls="collapseExample"
+                  >
+                    Edit
                   </a>
-                  <button *ngIf="CanEditCommnet(comment.owner)" (click)="deleateComment(comment.id)" type="button" class="close"
-                          aria-label="Close">
-                    <span aria-hidden="true">×</span>
+
+                  <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                          (click)="onDeleteComment(comment.id)"
+                          role="button"
+                          class="btn-text"
+                  >
+                    Delete
                   </button>
 
-                  <p>
+                  <p *ngIf="!comment.isDeleted; else DeletedMessage">
                     {{comment.text}}
                   </p>
+                  <ng-template #DeletedMessage>
+                    <p class="text-deleted">
+                      [The comment was deleted]
+                    </p>
+                  </ng-template>
 
-                  <small class="text-muted">
+                  <small *ngIf="!comment.isDeleted" class="text-muted">
                     <a data-toggle="collapse" href="#child_{{i}}_reply" role="button"
                        aria-expanded="false" aria-controls="collapseExample">
                       Reply

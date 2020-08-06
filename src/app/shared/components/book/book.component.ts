@@ -77,7 +77,10 @@ export class BookComponent implements OnInit {
         if (this.isAuthenticated())
       {
         this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
-          if(value) this.isWished = true;});
+          if (value) {
+            this.isWished = true;
+          }
+        });
       }
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);

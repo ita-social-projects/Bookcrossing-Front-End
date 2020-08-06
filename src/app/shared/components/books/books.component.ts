@@ -24,62 +24,52 @@ import { WishListService } from 'src/app/core/services/wishlist/wishlist.service
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss']
 })
-export class BooksComponent implements OnInit,OnDestroy {
+export class BooksComponent implements OnInit, OnDestroy {
 
-  isBlockView: boolean = false;
-  userId: number;
-  isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
-  isWisher: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
-  requestIds: Object = {};
-  disabledButton: boolean = false;
-  books: IBook[];
-  totalSize: number;
-  booksPage: booksPage = booksPage.List;
-  queryParams: BookQueryParams = new BookQueryParams;
-  apiUrl: string = environment.apiUrl;
-  selectedGenres: number[];
-  selectedLanguages: number[];
-  route = this.router.url;
+  public isBlockView = false;
+  public userId: number;
+  public isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+  public requestIds: object = {};
+  public disabledButton = false;
+  public books: IBook[];
+  public totalSize: number;
+  public booksPage: booksPage = booksPage.List;
+  public queryParams: BookQueryParams = new BookQueryParams();
+  public apiUrl: string = environment.apiUrl;
+  public selectedGenres: number[];
+  public selectedLanguages: number[];
+  public route = this.router.url;
+  public constructor(protected routeActive: ActivatedRoute,
+              protected router: Router,
+              protected bookService: BookService,
+              protected searchBarService: SearchBarService,
+              protected authentication: AuthenticationService,
+              protected dialogService: DialogService,
+              protected translate: TranslateService,
+              protected notificationService: NotificationService,
+              protected requestService: RequestService,
+              protected wishListService: WishListService) {
+  }
 
-  filter: string;
-  
-  constructor(private routeActive: ActivatedRoute,
-    private router: Router,
-    private bookService: BookService,
-    private searchBarService : SearchBarService,
-    private authentication: AuthenticationService,
-    private dialogService: DialogService,
-    private translate: TranslateService,
-    private notificationService: NotificationService,
-    private requestService: RequestService,
-    private wishListService: WishListService
-  ) { }
-
-  ngOnInit(): void {
-    this.routeActive.queryParams.subscribe(query => {
-      this.filter = query.filter;})
-      if (!this.isAuthenticated() && (this.filter == "registered" || this.filter == "read" || this.filter == "current"))
-      {
-        this.router.navigate(['/login']);
-      }
-    this.getUserId()
+  public ngOnInit(): void {
+    this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
-      this.populateDataFromQuery();
-      this.getBooks(this.queryParams);
+    this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+    this.populateDataFromQuery();
+    this.getBooks(this.queryParams);
     });
     this.router.events.subscribe((val) => {
-      if( this.router.url != ''){
-        this.route =  this.router.url;
-      } 
+      if ( this.router.url !== '' ) {
+        this.route = this.router.url;
+      }
     });
   }
 
-  isAuthenticated(): boolean{
+  public isAuthenticated(): boolean {
     return this.authentication.isAuthenticated();
   }
 
-  getUserId():void{
+  public getUserId(): void {
     if (this.isAuthenticated()) {
       this.authentication.getUserId().subscribe((value: number) => {
         this.userId = value;
@@ -87,30 +77,32 @@ export class BooksComponent implements OnInit,OnDestroy {
     }
   }
 
-  getUserWhoRequested(book: IBook, key: number):void {
+  protected getUserWhoRequested(book: IBook, key: number): void {
     if (book.state === bookState.requested) {
       const query = new RequestQueryParams();
       query.first = false;
       query.last = true;
       this.requestService.getRequestForBook(book.id, query).subscribe((value: IRequest) => {
         if (this.userId === value.user.id) {
-          this.requestIds[book.id] = value.id
+          this.requestIds[book.id] = value.id;
           this.isRequester[key] = true;
         }
       });
     }
   }
 
-  getWhichBooksWished(book: IBook, key: number):void {
+  protected getWhichBooksWished(book: IBook): void {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
-      if(value) this.isWisher[key] = true;
+      if (value) {
+        book.isWished = true;
+      }
     });
   }
 
-  async cancelRequest(bookId: number):Promise<void> {
+  public async cancelRequest(bookId: number): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get("Do you want to cancel request? Current owner will be notified about your cancellation.").toPromise()
+        await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancellation.').toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
@@ -120,90 +112,94 @@ export class BooksComponent implements OnInit,OnDestroy {
             this.disabledButton = false;
             this.ngOnInit();
             this.notificationService.success(this.translate
-              .instant("Request is cancelled."), "X");
+              .instant('Request is cancelled.'), 'X');
           }, err => {
             this.disabledButton = false;
             this.notificationService.error(this.translate
-              .instant("Something went wrong!"), "X");
+              .instant('Something went wrong!'), 'X');
           });
         }
       });
   }
 
-  async requestBook(bookId: number):Promise<void> {
+  public async requestBook(bookId: number): Promise<void> {
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
-    if(!userHasValidLocation) return;
+    if (!userHasValidLocation) {
+      return;
+    }
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get("Do you want to request this book? Current owner will be notified about your request.").toPromise()
+        await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
         if (res) {
           this.disabledButton = true;
           this.requestService.requestBook(bookId).subscribe((value: IRequest) => {
+          this.disabledButton = false;
+          this.ngOnInit();
+          this.notificationService.success(this.translate
+            .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
+          }, err => {
             this.disabledButton = false;
-            this.ngOnInit();
-            this.notificationService.success(this.translate
-              .instant("Book is successfully requested. Please contact with current owner to receive a book"), "X");
-            }, err => {
-            this.disabledButton = false;
-              this.notificationService.error(this.translate
-                .instant("Something went wrong!"), "X");
-            });
+            this.notificationService.error(this.translate
+            .instant('Something went wrong!'), 'X');
+          });
         }
       });
-
   }
-  onFilterChange(filterChanged : boolean):void{
-    this.queryParams.genres = this.selectedGenres
-    this.queryParams.languages = this.selectedLanguages
-    if(filterChanged){
-      this.resetPageIndex()
+
+  public onFilterChange(filterChanged: boolean): void {
+    this.queryParams.genres = this.selectedGenres;
+    this.queryParams.languages = this.selectedLanguages;
+    if (filterChanged) {
+      this.resetPageIndex();
       this.changeUrl();
     }
   }
-  private populateDataFromQuery():void {
-    if(this.queryParams.searchTerm){
-      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
+  private populateDataFromQuery(): void {
+    if (this.queryParams.searchTerm) {
+      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
-    if(typeof this.queryParams.showAvailable === "undefined"){
+    if (typeof this.queryParams.showAvailable === 'undefined') {
       this.queryParams.showAvailable = true;
     }
-    if(this.queryParams.genres){
+    if (this.queryParams.genres) {
       let genres: number[];
-      if(Array.isArray(this.queryParams.genres))
-       genres = this.queryParams.genres.map(v=>+v);
-       else{
-         genres = [+this.queryParams.genres];
-       }
-        this.selectedGenres =  genres;
+      if (Array.isArray(this.queryParams.genres)) {
+        genres = this.queryParams.genres.map(v => +v);
+      } else {
+        genres = [+this.queryParams.genres];
+      }
+      this.selectedGenres =  genres;
     }
-    if(this.queryParams.languages){
+    if (this.queryParams.languages) {
       let languages: number[];
-      if(Array.isArray(this.queryParams.languages))
-       languages = this.queryParams.languages.map(v=>+v);
-       else{
-         languages = [+this.queryParams.languages];
-       }
-        this.selectedLanguages =  languages;
+      if (Array.isArray(this.queryParams.languages)) {
+        languages = this.queryParams.languages.map(v => +v);
+      } else {
+        languages = [+this.queryParams.languages];
+      }
+      this.selectedLanguages =  languages;
     }
   }
 
-  //Navigation
-  pageChanged(currentPage: number): void {
+ // Navigation
+  public pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
-    window.scrollTo({
+    window.scrollTo( {
       top: 0,
-      behavior:'smooth'
+      behavior: 'smooth'
     });
   }
-  private resetPageIndex() : void {
+
+  private resetPageIndex(): void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;
   }
+
   private changeUrl(): void {
     this.router.navigate(['.'],
       {
@@ -214,137 +210,45 @@ export class BooksComponent implements OnInit,OnDestroy {
   }
 
 
-  //get
-  getBooks(params: BookQueryParams): void{
-    for(let i = 0; i < 8; i++)
-    {
-      this.isWisher[i] = false;
-    }
-    switch(this.filter) { 
-      case "registered": { 
-        this.booksPage = booksPage.Registered;
-         this.getRegisteredBooks(params) ;
-         break; 
-      } 
-      case "current": { 
-        this.booksPage= booksPage.CurrentOwned;
-         this.getCurrentOwnedBooks(params); 
-         break; 
-      } 
-      case "read": { 
-        this.getReadBooks(params); 
-        this.booksPage = booksPage.Read;
-        break; 
-     }
-      default: { 
-        this.booksPage = booksPage.List;
-         this.getAllBooks(params); 
-         break; 
-      } 
-   } 
-  }
-
-
-  getAllBooks(params: BookQueryParams): void {
+ // get
+  public getBooks(params: BookQueryParams): void {
     this.bookService.getBooksPage(params)
-      .subscribe({
-        next: pageData => {
-          this.books = pageData.page;
-          if(this.isAuthenticated()){
-            for(var i = 0; i<pageData.page.length; i++){
-              this.getWhichBooksWished(pageData.page[i], i);
-              this.getUserWhoRequested(pageData.page[i], i);
-            }
-          }
-          if (pageData.totalCount) {
-            this.totalSize = pageData.totalCount;
-          }
-        },
-        error: err => {
-          this.notificationService.error(this.translate
-            .instant("Something went wrong!"), "X");
-        }
-      });
-  };
-
-  getCurrentOwnedBooks(params: BookQueryParams): void {
-    this.bookService.getCurrentOwnedBooks(params)
-      .subscribe({
-        next: pageData => {
-          this.books = pageData.page;
-          for(var i = 0; i<pageData.page.length; i++){
-            this.getWhichBooksWished(pageData.page[i], i);
+    .subscribe( {
+      next: pageData => {
+        this.books = pageData.page;
+        if (this.isAuthenticated()) {
+          for (let i = 0; i < pageData.page.length; i++) {
+            this.getWhichBooksWished(pageData.page[i]);
             this.getUserWhoRequested(pageData.page[i], i);
           }
-          if (pageData.totalCount) {
-            this.totalSize = pageData.totalCount;
-          }
-        },
-        error: err => {
-          this.notificationService.error(this.translate
-            .instant("Something went wrong!"), "X");
         }
-      });
-  };
+        if (pageData.totalCount) {
+          this.totalSize = pageData.totalCount;
+        }
+      },
+      error: err => {
+        this.notificationService.error(this.translate
+          .instant('Something went wrong!'), 'X');
+      }
+    });
+}
 
-  getReadBooks(params: BookQueryParams): void {
-    this.bookService.getReadBooks(params)
-      .subscribe({
-        next: pageData => {
-          this.books = pageData.page;
-          for(var i = 0; i<pageData.page.length; i++){
-            this.getWhichBooksWished(pageData.page[i], i);
-            this.getUserWhoRequested(pageData.page[i], i);
-          }
-          if (pageData.totalCount) {
-            this.totalSize = pageData.totalCount;
-          }
-        },
-        error: error => {
-          alert('An error has occured, please try again');
-        }
-      });
+  public ngOnDestroy(): void {
+    this.searchBarService.changeSearchTerm(null);
   }
 
-  getRegisteredBooks(params: BookQueryParams): void {
-    this.bookService.getRegisteredBooks(params)
-      .subscribe({
-        next: pageData => {
-          this.books = pageData.page;
-          for(var i = 0; i<pageData.page.length; i++){
-            this.getWhichBooksWished(pageData.page[i], i);
-            this.getUserWhoRequested(pageData.page[i], i);
-          }
-          if (pageData.totalCount) {
-            this.totalSize = pageData.totalCount;
-          }
-        },
-        error: err => {
-          this.notificationService.error(this.translate
-            .instant("Something went wrong!"), "X");
-        }
-      });
-  };
-
-  ngOnDestroy():void{
-    this.searchBarService.changeSearchTerm(null)
-  }
-
-  onViewModeChange(viewModeChanged: string):void {
-    if(viewModeChanged === 'block'){
+  public onViewModeChange(viewModeChanged: string): void {
+    if (viewModeChanged === 'block') {
       this.isBlockView = true;
-    }
-    else {
+    } else {
       this.isBlockView = false;
     }
   }
 
-  changeWishList(book:IBook, key:number):void
-  {
-      if(this.isWisher[key]) 
-      {
+  public changeWishList(book: IBook): void {
+      if (book.isWished) {
         this.wishListService.removeFromWishList(book.id).subscribe(
-          (data) => { this.isWisher[key] = false; },
+          (data) => { book.isWished = false; },
           (error) => {
             this.notificationService.error(
               this.translate.instant('Something went wrong'),
@@ -352,11 +256,9 @@ export class BooksComponent implements OnInit,OnDestroy {
             );
           }
         );
-      }
-      else
-      {
+      } else {
         this.wishListService.addToWishList(book.id).subscribe(
-        (data) => { this.isWisher[key] = true; },
+        (data) => { book.isWished = true; },
           (error) => {
             this.notificationService.error(
               this.translate.instant('Cannot add own book to the wish list'),

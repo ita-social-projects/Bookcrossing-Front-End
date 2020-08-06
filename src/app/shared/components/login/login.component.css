@@ -1,0 +1,30 @@
+p{
+    color: rgb(255, 53, 71) !important;
+    font-family: Roboto;
+    font-size: 12.8px;
+    text-align: left;
+    padding-bottom: 20 !important;
+    margin-bottom: 5 !important;
+}
+
+.underheader
+{
+    margin-top: 4% !important;
+}
+
+.password
+{
+    margin-bottom: 0.5% !important;
+}
+
+.margintop
+{
+    padding-top: 2.5% !important;
+    margin-top: 2.5% !important;
+}
+
+.margintop2
+{
+    padding-top: 1% !important;
+    margin-top: 1% !important;
+}

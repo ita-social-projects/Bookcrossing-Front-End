@@ -14,11 +14,11 @@ export class OuterServiceService {
   constructor(private http: HttpClient,
               private pagination: PaginationService) { }
 
-  getBooks(paginationParameters: OuterBookQueryParams){
+  getBooks(paginationParameters: OuterBookQueryParams) {
     return this.pagination.getOuterBookPage<IOuterBook>(outerBookUrl + 'books', paginationParameters);
   }
 
-  getBooksById(bookId: number){
+  getBooksById(bookId: number) {
     return this.http.get<IOuterBook>(`${outerBookUrl}book/${bookId}`);
   }
 }

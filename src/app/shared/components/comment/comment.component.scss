@@ -60,3 +60,21 @@ a[aria-expanded=false] .shown{
   -moz-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
+.btn-text {
+  background-color: transparent;
+  border: none;
+  font-weight: 200;
+  cursor: pointer;
+  text-decoration: none;
+  color: #007bff;
+  padding: 0;
+}
+
+.btn-text:focus {
+  outline: none;
+}
+
+.text-deleted {
+  color: #969090;
+}

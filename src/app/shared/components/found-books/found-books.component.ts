@@ -19,18 +19,10 @@ import { OuterBookQueryParams } from 'src/app/core/models/outerBookQueryParams';
   styleUrls: ['./found-books.component.scss']
 })
 export class FoundBooksComponent implements OnInit {
-  isBlockView: boolean = false;
-  userId: number;
-  isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined ,undefined, undefined, undefined];
-  requestIds: Object = {};
   disabledButton: boolean = false;
   books: IBook[];
-  totalSize: number;
   booksPage: booksPage = booksPage.List;
   queryParams: OuterBookQueryParams = new OuterBookQueryParams();
-  apiUrl: string = environment.apiUrl;
-  selectedGenres: number[];
-  selectedLanguages: number[];
   route = this.router.url;
   foundBooks: IPage<IOuterBook>;
 
@@ -68,11 +60,11 @@ export class FoundBooksComponent implements OnInit {
       });
   }
 
-  autoFill(bookId: number){
+  autoFill(bookId: number) {
     this.router.navigate(['/book'], {queryParams: {outerBookId: bookId}});
   }
 
-  //Navigation
+  // Navigation
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
