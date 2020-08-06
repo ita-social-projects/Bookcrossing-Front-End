@@ -6,6 +6,9 @@ import {CommentService} from '../../../../core/services/commment/comment.service
 import {IChildDeleteComment} from '../../../../core/models/comments/child-comment/childDelete';
 import {IChildUpdateComment} from '../../../../core/models/comments/child-comment/childUpdate';
 import {IChildInsertComment} from '../../../../core/models/comments/child-comment/childInsert';
+import {DialogService} from '../../../../core/services/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
+import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
 
 
 @Component({
@@ -30,7 +33,9 @@ export class ChildcommentComponent implements OnInit {
     return this.level++;
   }
 
-  constructor(private  commentservice: CommentService) {
+  constructor(private commentservice: CommentService,
+              private dialogService: DialogService,
+              private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -75,12 +80,21 @@ export class ChildcommentComponent implements OnInit {
     return newids;
   }
 
-  async deleateComment(id) {
-    let newids = this.returnID(id);
-    let deleteComment: IChildDeleteComment = {
-      ids: newids, ownerId: this.user.id
-    }
-    this.commentservice.deleteChildComment(deleteComment).subscribe(() => this.UpdateComments());
+  public async onDeleteComment(id: string): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('Do you want to delete the comment?').toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          const newids = this.returnID(id);
+          const deleteComment: IChildDeleteComment = {
+            ids: newids, ownerId: this.user.id
+          };
+          this.commentservice.deleteChildComment(deleteComment).subscribe(() => this.UpdateComments());
+        }
+      });
   }
 
   updateComment(id, text) {

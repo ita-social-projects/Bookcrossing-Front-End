@@ -25,29 +25,40 @@
 
                 <a class="pull-left">
                   <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
-
                 </a>
+
                 <div class="media-body pad">
-                                <span class="text-muted pull-right">
-                                    <small class="text-muted">{{formatDate(comment.date)}}  </small>
-                                </span>
-                  <strong class="text-success">by {{getUserName(comment.owner)}}</strong>
 
+                  <span class="text-muted pull-right">
+                        <small class="text-muted">{{formatDate(comment.date)}}  </small>
+                    </span>
+                  <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <a *ngIf="CanEditCommnet(comment.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
+                  <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
                      aria-expanded="false" aria-controls="collapseExample">
-                    edit
+                    Edit
                   </a>
-                  <button *ngIf="CanEditCommnet(comment.owner)" (click)="deleateComment(comment.id)" type="button" class="close"
-                          aria-label="Close">
-                    <span aria-hidden="true">×</span>
+
+                  <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                          (click)="onDeleteComment(comment.id)"
+                          role="button"
+                          class="btn-text"
+                  >
+                    Delete
                   </button>
-                  <ngx-star-rating *ngIf="comment.rating !== 0" [filledColor]="'#FF8800'" [rating]="comment.rating" readonly="true"></ngx-star-rating>
-                  <p>
+
+                  <ngx-star-rating *ngIf="!comment.isDeleted && comment.rating !== 0" [filledColor]="'#FF8800'" [rating]="comment.rating" readonly="true"></ngx-star-rating>
+                  <p *ngIf="!comment.isDeleted; else DeletedMessage">
                     {{comment.text}}
                   </p>
+                  <ng-template #DeletedMessage>
+                    <p class="text-deleted">
+                      [The comment was deleted]
+                    </p>
+                  </ng-template>
 
-                  <small class="text-muted">
+
+                  <small *ngIf="!comment.isDeleted" class="text-muted">
                     <a data-toggle="collapse" href="#root_{{i}}_reply" role="button"
                        aria-expanded="false" aria-controls="collapseExample">
                       Reply

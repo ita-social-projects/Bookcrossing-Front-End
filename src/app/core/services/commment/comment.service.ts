@@ -23,16 +23,15 @@ export class CommentService {
   constructor(private http: HttpClient) {
   }
 
-  getComments(id) : Observable<IRootComment[]>{
+  public getComments(id): Observable<IRootComment[]> {
     return this.http.get<IRootComment[]>(this.rootUrl + id);
   }
 
-
-  postComment(comment: IRootInsertComment): Observable<number> {
+  public postComment(comment: IRootInsertComment): Observable<number> {
     return this.http.post<number>(this.rootUrl, comment);
   }
 
-  deleteComment(comment: IRootDeleteComment): Observable<number> {
+  public deleteComment(comment: IRootDeleteComment): Observable<number> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'

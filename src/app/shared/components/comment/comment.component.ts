@@ -12,6 +12,8 @@ import {IRootDeleteComment} from '../../../core/models/comments/root-comment/roo
 import {IRootUpdateComment} from '../../../core/models/comments/root-comment/rootUpdate';
 import {element} from 'protractor';
 import {IChildInsertComment} from '../../../core/models/comments/child-comment/childInsert';
+import {DialogService} from '../../../core/services/dialog/dialog.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-comment',
@@ -28,10 +30,11 @@ export class CommentComponent implements OnInit {
   updateRating = undefined;
   level = 0;
 
-
-  constructor(private  commentservice: CommentService, private authenticationService: AuthenticationService,
-              private userService: UserService
-  ) {
+  constructor(private commentservice: CommentService,
+              private authenticationService: AuthenticationService,
+              private userService: UserService,
+              private dialogService: DialogService,
+              private translate: TranslateService) {
   }
 
   increment() {
@@ -130,12 +133,20 @@ export class CommentComponent implements OnInit {
     this.text = '';
   }
 
-  deleateComment(id) {
-    let deleteComment: IRootDeleteComment = {
-      id: id, ownerId: this.user.id
-
-    }
-    this.commentservice.deleteComment(deleteComment).subscribe(() => this.UpdateComments());
+  public async onDeleteComment(id): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('Do you want to delete the comment?').toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          const deleteComment: IRootDeleteComment = {
+            id, ownerId: this.user.id
+          };
+          this.commentservice.deleteComment(deleteComment).subscribe(() => this.UpdateComments());
+        }
+      });
   }
 
   updateComment(id, text, rating) {
