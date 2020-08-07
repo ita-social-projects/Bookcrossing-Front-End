@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Renderer2} from '@angular/core';
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -14,6 +14,7 @@ import {element} from 'protractor';
 import {IChildInsertComment} from '../../../core/models/comments/child-comment/childInsert';
 import {DialogService} from '../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
+import {max} from 'rxjs/operators';
 
 @Component({
   selector: 'app-comment',
@@ -29,12 +30,14 @@ export class CommentComponent implements OnInit {
   rating = 0;
   updateRating = undefined;
   level = 0;
+  hideErrorInterval: NodeJS.Timeout;
 
   constructor(private commentservice: CommentService,
               private authenticationService: AuthenticationService,
               private userService: UserService,
               private dialogService: DialogService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private renderer: Renderer2) {
   }
 
   increment() {
@@ -164,6 +167,44 @@ export class CommentComponent implements OnInit {
   }
   onEditRatingSet($event: number) {
     this.updateRating = $event;
+  }
+
+  public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
+
+    if (input.value.length <= maxLength) {
+      this.changeTextAreaHeight(input);
+      this.text = input.value;
+      return;
+    }
+
+    // set values
+    input.value = input.value.substr(0, maxLength);
+    this.text = input.value;
+    this.changeTextAreaHeight(input);
+
+    // return if already is shown
+    if (this.hideErrorInterval) {
+      return;
+    }
+
+    input.classList.add('invalid');
+    const div = this.renderer.createElement('div');
+    this.renderer.addClass(div, 'validation-error');
+    div.append(this.translate.instant('common-errors.validation-max-length', {value: maxLength}));
+    input.parentElement.appendChild(div);
+
+    this.hideErrorInterval = setTimeout(() => {
+      input.classList.remove('invalid');
+      input.parentElement.removeChild(div);
+      this.hideErrorInterval = null;
+    }, 2000);
+  }
+
+  private changeTextAreaHeight(input: HTMLTextAreaElement): void {
+    if (input.scrollHeight > 0) {
+      input.style.height = 'auto';
+      input.style.height = `${input.scrollHeight}px`;
+    }
   }
 
 }

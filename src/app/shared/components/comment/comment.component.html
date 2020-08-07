@@ -4,16 +4,20 @@
   <div class="row bootstrap snippets">
     <div class=" col-md-offset-2 col-sm-12">
       <div class="comment-wrapper">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            Comment panel
-          </div>
-          <ngx-star-rating [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
-          <div class="">
-            <textarea class="form-control width-40" [(ngModel)]='text' placeholder="write a comment..."
-                      rows="3"></textarea>
-            <br>
-            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right">
+        <div class="panel panel-info ">
+          <ngx-star-rating class="rating" [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
+          <div>
+            <div>
+                <textarea class="form-control main-comment"
+                          placeholder="Write a comment up to 500 characters"
+                          #Text
+                          [ngModel]="text"
+                          (input)="onCommentInput(Text, 500)"
+                >
+                </textarea>
+            </div>
+
+            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right comment-post-btn">
               Post
             </button>
             <a *ngIf="!isAuthenticated()" [routerLink]="['/login']">login to comment</a>
@@ -79,7 +83,8 @@
                       <textarea [(ngModel)]="comment.text" name="text"></textarea>
                       <br>
                       <button type="button" (click)="updateComment(comment.id,updateFrom.value.text, comment.rating)"
-                              class="btn btn-primary btn-sm">Post
+                              class="btn btn-primary btn-sm">
+                        Post
                       </button>
                     </form>
 
