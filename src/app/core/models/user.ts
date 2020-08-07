@@ -1,8 +1,4 @@
-import {IRoomLocation} from './roomLocation';
-import { IRole } from './role';
-import { Role } from './role.enum';
-import {Token} from "@angular/compiler";
-import {IToken} from "./token";
+import { IRoomLocation } from './roomLocation';
 
 export interface IUser {
   id: number;
@@ -10,10 +6,8 @@ export interface IUser {
   middleName?: string;
   lastName?: string;
   email: string;
-  role: IRole;
   isEmailAllowed: boolean;
-  userLocation: IRoomLocation;
+  userLocation?: IRoomLocation;
   birthDate: Date;
   registeredDate: Date;
-  token: IToken;
 }

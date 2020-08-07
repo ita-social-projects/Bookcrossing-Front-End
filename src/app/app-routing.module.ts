@@ -20,7 +20,7 @@ import { HomeComponent } from './shared/components/home/home.component';
 import { RulesComponent } from './shared/components/rules/rules.component';
 import { CommentComponent } from './shared/components/comment/comment.component';
 import { ChildcommentComponent } from './shared/components/comment/childcomment/childcomment.component';
-import { NgContentAst } from "@angular/compiler";
+import { NgContentAst } from '@angular/compiler';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
 import { LocationsComponent } from './shared/components/admin/locations/locations.component';
 import { GenresComponent } from './shared/components/admin/genres/genres.component';
@@ -33,69 +33,90 @@ import { LocationGuard } from './core/guards/location.guard';
 import { BookLanguagesComponent } from './shared/components/admin/languages/languages.component';
 import { LanguageFormComponent } from './shared/components/admin/language-form/language-form.component';
 import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
-import { ForbidEmailComponent } from './shared/components/email-notification-forbid/email-notification-forbid.component'
-import { WishListComponent } from './shared/components/wish-list/wish-list.component'
+import { ForbidEmailComponent } from './shared/components/email-notification-forbid/email-notification-forbid.component';
+import { WishListComponent } from './shared/components/wish-list/wish-list.component';
+import { UsersComponent } from './shared/components/admin/users/users.component';
 
 // @ts-ignore
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'registration', component: RegistrationComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
 
-  {path: 'admin', component: AdminComponent,
+  {
+    path: 'admin',
+    component: AdminComponent,
     canActivate: [AuthGuard],
-    data: {roles: Role.Admin},
-    children:
-      [
-        {path: 'dashboard', component: DashboardComponent},
-        {path: 'authors', component: AuthorsComponent},
-        {path: 'locations', component: LocationsComponent},
-        {path: 'genres', component: GenresComponent},
-        {path: 'location-form', component: LocationFormComponent},
-        {path: 'author-form', component: AuthorFormComponent},
-        {path: 'languages', component: BookLanguagesComponent},
-        {path: 'language-form', component: LanguageFormComponent}
-      ]
+    data: { roles: Role.Admin },
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'authors', component: AuthorsComponent },
+      { path: 'locations', component: LocationsComponent },
+      { path: 'genres', component: GenresComponent },
+      { path: 'location-form', component: LocationFormComponent },
+      { path: 'author-form', component: AuthorFormComponent },
+      { path: 'languages', component: BookLanguagesComponent },
+      { path: 'language-form', component: LanguageFormComponent },
+      { path: 'users', component: UsersComponent },
+    ],
   },
 
-  {path: 'book/:id', component: BookComponent},
-  {path: 'book', component: AddBookComponent, canActivate: [AuthGuard, LocationGuard]},
-  {path: 'found-books', component: FoundBooksComponent},
-  {path: 'books/requests', component: RequestsComponent, canActivate: [AuthGuard]},
-  {path: 'books/read', component: ReadBooksComponent, canActivate: [AuthGuard]},
-  {path: 'books/registered', component: RegisteredBooksComponent, canActivate: [AuthGuard]},
-  {path: 'books/current', component: CurrentlyOwnedBooksComponent, canActivate: [AuthGuard]},
-  {path: 'books', component: BooksComponent},
-  {path: 'location-form', component: LocationFormComponent },
-  {path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard]},
-  {path: '', component: HomeComponent},
-  {path: 'email', component: ForbidEmailComponent},
-  {path: 'rules', component: RulesComponent},
-  {path: 'demo', component: DemoComponent},
+  { path: 'book/:id', component: BookComponent },
   {
-    path: 'comment', component: CommentComponent, children: [
-
-      {path: 'subcomment', component: ChildcommentComponent}
-    ]
+    path: 'book',
+    component: AddBookComponent,
+    canActivate: [AuthGuard, LocationGuard],
   },
-  {path: 'contacts', component: ContactsComponent},
-  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'password', children:
-      [
-        {path: 'forgot', component: ForgotPasswordComponent},
-        {path: 'reset', component: ResetPasswordComponent},
-      ]
+  { path: 'found-books', component: FoundBooksComponent },
+  {
+    path: 'books/requests',
+    component: RequestsComponent,
+    canActivate: [AuthGuard],
   },
   {
-    path: "**",
+    path: 'books/read',
+    component: ReadBooksComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'books/registered',
+    component: RegisteredBooksComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'books/current',
+    component: CurrentlyOwnedBooksComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'books', component: BooksComponent },
+  { path: 'location-form', component: LocationFormComponent },
+  { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent },
+  { path: 'email', component: ForbidEmailComponent },
+  { path: 'rules', component: RulesComponent },
+  { path: 'demo', component: DemoComponent },
+  {
+    path: 'comment',
+    component: CommentComponent,
+    children: [{ path: 'subcomment', component: ChildcommentComponent }],
+  },
+  { path: 'contacts', component: ContactsComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  {
+    path: 'password',
+    children: [
+      { path: 'forgot', component: ForgotPasswordComponent },
+      { path: 'reset', component: ResetPasswordComponent },
+    ],
+  },
+  {
+    path: '**',
     component: NotFoundComponent,
-    pathMatch: "full"
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

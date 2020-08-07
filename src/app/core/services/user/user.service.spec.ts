@@ -2,7 +2,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { userUrl } from '../../../configs/api-endpoint.constants';
-import { IUser } from "../../models/User";
+import { IUserInfo } from "../../models/userInfo";
 import { IUserPut } from "../../models/UserPut";
 import { ILocation } from '../../models/location'
 import { IRoomLocation } from '../../models/roomLocation';
@@ -32,15 +32,15 @@ describe('#UserService.getUserById(id), UserService.editUser(id, IUserPut)', () 
   afterEach(() => {
     httpTestingController.verify(); //Verifies that no requests are outstanding.
   });
-  
+
   //Test case 1
   it('should send user id and get it GET method', () => {
-    const newUser: IUser = 
+    const newUser: IUserInfo =
     {
-         id: 1, 
-         firstName: 'Andriy', 
-         lastName: 'Oleksiuk', 
-         email:'qwerty@gmail.com', 
+         id: 1,
+         firstName: 'Andriy',
+         lastName: 'Oleksiuk',
+         email:'qwerty@gmail.com',
          isEmailAllowed: true,
          userLocation: null,
          role: null,
@@ -62,12 +62,12 @@ describe('#UserService.getUserById(id), UserService.editUser(id, IUserPut)', () 
 
   //Test case 2
   it('should send edited user and their id PUT method', () => {
-    const newUser: IUserPut = 
+    const newUser: IUserPut =
     {
-         id: 1, 
-         firstName: 'Andriy', 
-         lastName: 'Oleksiuk', 
-         email:'qwerty@gmail.com', 
+         id: 1,
+         firstName: 'Andriy',
+         lastName: 'Oleksiuk',
+         email:'qwerty@gmail.com',
          password: '1234',
          isEmailAllowed: true,
          userLocation: null,
@@ -89,5 +89,5 @@ describe('#UserService.getUserById(id), UserService.editUser(id, IUserPut)', () 
   });
 
 
-}); 
+});
 

@@ -48,6 +48,7 @@
               [dataProperties]="locationProperties"
               [displayColumns]="locationDisplayColumns"
               [(selectedHeader)]="queryParams.sort.orderByField"
+              [canEdit]="true"
               (editClicked)="EditLocation($event)"
               (selectedHeaderChange)="changeSort($event)">
             </app-admin-table>

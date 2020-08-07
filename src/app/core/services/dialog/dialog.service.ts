@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dial
 import { ConfirmDialogComponent } from "../../../shared/components/confirm-dialog/confirm-dialog.component";
 import {DonateDialogComponent} from '../../../shared/components/donate-dialog/donate-dialog.component';
 import { LocationPopupComponent } from 'src/app/shared/components/location-popup/location-popup.component';
-import { IUser } from 'src/app/core/models/user';
+import { IUserInfo } from 'src/app/core/models/userInfo';
 
 @Injectable({
   providedIn: "root"
@@ -40,7 +40,7 @@ export class DialogService {
     this.dialog.open(formComponent, dialogConfig);
   }
 
-  openLocationDialog(user: IUser): MatDialogRef<LocationPopupComponent>{
+  openLocationDialog(user: IUserInfo): MatDialogRef<LocationPopupComponent>{
     return this.dialog.open(LocationPopupComponent, {
       ariaLabelledBy: "#locationPopupTitle",
       maxWidth: "512px",

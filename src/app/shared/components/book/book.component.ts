@@ -14,7 +14,7 @@ import { IRequest } from 'src/app/core/models/request';
 import { bookState } from 'src/app/core/models/bookState.enum';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
-import { IUser } from 'src/app/core/models/user';
+import { IUserInfo } from 'src/app/core/models/userInfo';
 import { environment } from 'src/environments/environment';
 import { BookEditFormComponent } from '../book-edit-form/book-edit-form.component';
 import { RefDirective } from '../../directives/ref.derictive';
@@ -39,9 +39,9 @@ export class BookComponent implements OnInit {
   isBookOwner: boolean;
   isWished: boolean;
   readCount: number = null;
-  currentOwner: IUser = null;
-  userWhoRequested: IUser = null;
-  firstOwner: IUser = null;
+  currentOwner: IUserInfo = null;
+  userWhoRequested: IUserInfo = null;
+  firstOwner: IUserInfo = null;
   imagePath: string;
   disabledButton: boolean = false;
   previousBooksPage: booksPage;
@@ -102,7 +102,7 @@ export class BookComponent implements OnInit {
 
   getOwners(userId: number) {
     this.userService.getUserById(userId)
-      .subscribe((value: IUser) => {
+      .subscribe((value: IUserInfo) => {
         this.currentOwner = value;
         if (this.isAuthenticated()) {
           this.authentication.getUserId().subscribe((value: number) => {
@@ -325,14 +325,20 @@ export class BookComponent implements OnInit {
 
   changeWishList(book:IBook):void
   {
-    if(this.isWished) {
-      this.wishListService.removeFromWishList(book.id).subscribe(
-        (data) => { this.isWished = false; },
-        (error) => {
-          this.notificationService.error(
-            this.translate.instant('Something went wrong'), 'X');
-          } );
-      } else {
+      if(this.isWished)
+      {
+        this.wishListService.removeFromWishList(book.id).subscribe(
+          (data) => { this.isWished = false; },
+          (error) => {
+            this.notificationService.error(
+              this.translate.instant('Something went wrong'),
+              'X'
+            );
+          }
+        );
+      }
+      else
+      {
         this.wishListService.addToWishList(book.id).subscribe(
         (data) => { this.isWished = true; },
           (error) => {

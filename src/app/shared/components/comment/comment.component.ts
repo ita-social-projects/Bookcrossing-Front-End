@@ -2,7 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
-import {IUser} from '../../../core/models/user';
+import {IUserInfo} from '../../../core/models/userInfo';
 import {__await} from 'tslib';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {UserService} from '../../../core/services/user/user.service';
@@ -24,7 +24,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class CommentComponent implements OnInit {
   @Input() bookId = 0;
   comments: IRootComment[];
-  user: IUser;
+  user: IUserInfo;
   text = '';
   rating = 0;
   updateRating = undefined;
@@ -53,7 +53,7 @@ export class CommentComponent implements OnInit {
   getUser(){
     if(this.isAuthenticated()){
       this.authenticationService.getUserId().subscribe((value: number)=> {
-        this.userService.getUserById(value).subscribe((value: IUser)=>{
+        this.userService.getUserById(value).subscribe((value: IUserInfo)=>{
           this.user = value;
         })
       })

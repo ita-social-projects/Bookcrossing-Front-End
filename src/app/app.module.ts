@@ -104,6 +104,7 @@ import { InputTrimModule } from 'ng2-trim-directive';
 import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { WishListService } from './core/services/wishlist/wishlist.service';
+import { UsersComponent } from './shared/components/admin/users/users.component';
 
 @NgModule({
   declarations: [
@@ -166,7 +167,8 @@ import { WishListService } from './core/services/wishlist/wishlist.service';
     LanguageFormComponent,
     FoundBooksComponent,
     ForbidEmailComponent,
-    WishListComponent
+    WishListComponent,
+    UsersComponent
   ],
   imports: [
     InputTrimModule,

@@ -58,6 +58,7 @@
               [(selectedRows)]="selectedRows"
               [(selectedHeader)]="queryParams.sort.orderByField"
               booleanButtonText="{{'components.admin.authors.approve' | translate}}"
+              [canEdit]="true"
               (editClicked)="editAuthor($event)"
               (selectedHeaderChange)="changeSort($event)"
               (booleanButtonClicked)="approveAuthor($event)">
