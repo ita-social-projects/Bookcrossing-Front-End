@@ -1,12 +1,10 @@
-.my-comment{margin-top:20px;}
+.my-comment {
+  margin-top: 5px;
+}
 
 .comment-wrapper .panel-body {
   max-height:650px;
   overflow:auto;
-
-}
-.width-40{
-  width:40%;
 }
 
 .pad{
@@ -77,4 +75,34 @@ a[aria-expanded=false] .shown{
 
 .text-deleted {
   color: #969090;
+}
+
+.main-comment {
+  width: 450px;
+  min-height: 90px;
+  margin-top: 5px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.comment-post-btn {
+  width: 60px;
+  height: 30px;
+  margin: 0;
+  margin-top: 12px;
+  border-radius: 0;
+  box-sizing: content-box;
+  padding: 3px 6px;
+}
+
+
+textarea.invalid {
+  border: 1px solid #FF3547 !important;
+}
+
+.validation-error {
+  content: "{{'common-errors.validation-max-length' | translate:{value: 500}}}";
+  font-size: 80%;
+  color: #FF3547;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
