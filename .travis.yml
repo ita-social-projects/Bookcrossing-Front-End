@@ -1,6 +1,9 @@
 ﻿dist: trusty
 sudo: false
 
+git:
+   depth: 9999999
+
 language: node_js
 node_js:
   - '12.16.3'
@@ -23,9 +26,6 @@ script:
   
 deploy:
     provider: azure_web_apps
-    username: $username
-    password: $password
-    site: $site_name
     verbose: true
     on:
         develop
