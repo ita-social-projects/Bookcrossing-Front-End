@@ -33,17 +33,17 @@
 
                 <div class="media-body pad">
 
-                  <span class="text-muted pull-right">
-                        <small class="text-muted">{{formatDate(comment.date)}}  </small>
+                  <span class="time-value pull-right">
+                        {{ formatDate(comment.date) }}
                     </span>
                   <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
-                     aria-expanded="false" aria-controls="collapseExample">
+                  <a *ngIf="!comment.isDeleted && canEditComment(comment.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
+                     aria-expanded="false" [attr.aria-controls]="'root_' + i">
                     Edit
                   </a>
 
-                  <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                  <button *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
                           (click)="onDeleteComment(comment.id)"
                           role="button"
                           class="btn-text"
@@ -62,9 +62,10 @@
                   </ng-template>
 
 
-                  <small *ngIf="!comment.isDeleted" class="text-muted">
+                  <small *ngIf="!comment.isDeleted">
                     <a data-toggle="collapse" href="#root_{{i}}_reply" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                       aria-expanded="false" [attr.aria-controls]="'root_' + i + '_reply'"
+                       class="reply-btn">
                       Reply
                     </a>
                   </small>
@@ -92,7 +93,7 @@
 
                   <ng-template [ngIf]="comment.comments.length > 0">
                     <a data-toggle="collapse" href="#root_subcomments_{{i}}" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                       aria-expanded="false" [attr.aria-controls]="'root_subcomments_' + i">
                       <div class="hidden">
                         View all {{comment.comments.length}} replies
                         <i class="arrow-down"></i>
@@ -102,7 +103,6 @@
                         Hide all {{comment.comments.length}} replies
                         <i class="arrow-up"></i>
                       </div>
-
                     </a>
 
                     <div class="collapse" id="root_subcomments_{{i}}">
