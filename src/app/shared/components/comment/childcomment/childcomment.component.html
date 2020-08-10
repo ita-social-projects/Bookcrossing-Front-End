@@ -5,8 +5,7 @@
       <div class="comment-wrapper">
         <div class="panel panel-info">
 
-          <div class="">
-            <a *ngIf="!isAuthorized" [routerLink]="['/login']">login to comment</a>
+          <div>
             <ul class="media-list">
 
               <li *ngFor="let comment of comments;let i = index" [attr.data-index]="i" class="media">

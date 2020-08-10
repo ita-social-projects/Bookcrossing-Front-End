@@ -15,6 +15,7 @@ import {IChildInsertComment} from '../../../core/models/comments/child-comment/c
 import {DialogService} from '../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
 import {max} from 'rxjs/operators';
+import {IBookOwner} from '../../../core/models/comments/owner';
 
 @Component({
   selector: 'app-comment',
@@ -46,21 +47,24 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
     this.UpdateComments();
-    this.getUser()
+    this.getUser();
   }
 
   isAuthenticated(){
     return this.authenticationService.isAuthenticated()
   }
 
-  getUser(){
-    if(this.isAuthenticated()){
-      this.authenticationService.getUserId().subscribe((value: number)=> {
-        this.userService.getUserById(value).subscribe((value: IUserInfo)=>{
-          this.user = value;
-        })
-      })
+  private getUser(): void {
+    if (this.isAuthenticated()) {
+      this.authenticationService.getUserId().subscribe((userId: number) => {
+        this.userService.getUserById(userId).subscribe((userInfo: IUserInfo) => {
+          this.user = userInfo;
+          return;
+        });
+      });
     }
+
+    this.user = null;
   }
 
 
@@ -72,27 +76,24 @@ export class CommentComponent implements OnInit {
     return text;
   }
 
-
-  getUserName(owner) {
+  public getUserName(owner): string {
     if (owner === null) {
       return 'deleted user';
-    } else {
-      if ((this.user !== null) && (this.user.id === owner.id)) {
-        return 'Me';
-
-      } else {
-        return owner.firstName + ' ' + owner.lastName;
-      }
-
     }
+
+    if ((this.user !== null) && (this.user.id === owner.id)) {
+      return 'Me';
+    }
+
+    return `${owner.firstName} ${owner.lastName}`.trim();
   }
 
-  CanEditCommnet(owner) {
-    if (owner === null || typeof this.user === 'undefined') {
+  public canEditComment(owner: IBookOwner): boolean {
+    if (owner === null || this.user === null) {
       return false;
-    } else {
-      return owner.id === this.user.id;
     }
+
+    return owner.id === this.user.id;
   }
 
   formatDate(date) {

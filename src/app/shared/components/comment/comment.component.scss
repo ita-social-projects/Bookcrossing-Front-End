@@ -1,3 +1,7 @@
+p {
+  margin: 0;
+}
+
 .my-comment {
   margin-top: 5px;
 }
@@ -45,12 +49,14 @@ a[aria-expanded=false] .hidden,
 a[aria-expanded=true] .shown{
   display: block;
   transition: all 3s;
+  font-size: 10px;
 }
 
 a[aria-expanded=true] .hidden,
 a[aria-expanded=false] .shown{
   display: none;
   transition: all 3s;
+  font-size: 10px;
 }
 
 .panel-heading.active a:before {
@@ -95,7 +101,6 @@ a[aria-expanded=false] .shown{
   padding: 3px 6px;
 }
 
-
 textarea.invalid {
   border: 1px solid #FF3547 !important;
 }
@@ -105,4 +110,16 @@ textarea.invalid {
   font-size: 80%;
   color: #FF3547;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+hr {
+  margin: 15px 0;
+}
+
+.time-value,
+.reply-btn {
+  font-size: 10px;
+  opacity: 50%;
+  color: black;
+  font-weight: 400;
 }
