@@ -3,7 +3,7 @@ sudo: false
 
 language: node_js
 node_js:
-  - '13.7.0'
+  - '12.16.3'
 
 addons:
     chrome: stable
@@ -19,10 +19,13 @@ before_script:
   - npm install -g @angular/cli
   
 script:
-  - npm run-script build --prod --base-href $base_href 
+  - npm run-script build --base-href $base_href 
   
 deploy:
-  provider: heroku
-  api_key: $API_Key
-  app: book-crossing-dev
-  on: develop
+    provider: azure_web_apps
+    username: $username
+    password: $password
+    site: $site_name
+    verbose: true
+    on:
+        develop
