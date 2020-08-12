@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, Renderer2} from '@angular/core';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUserInfo} from '../../../../core/models/userInfo';
@@ -23,7 +23,9 @@ export class ChildcommentComponent implements OnInit {
   @Input() ids;
   @Output() update = new EventEmitter();
   @Input() isAuthorized;
+  @Input() rootIteratorNum;
   text = '';
+  hideErrorInterval: NodeJS.Timeout;
 
 
   UpdateComments() {
@@ -35,7 +37,8 @@ export class ChildcommentComponent implements OnInit {
 
   constructor(private commentservice: CommentService,
               private dialogService: DialogService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
@@ -111,5 +114,40 @@ export class ChildcommentComponent implements OnInit {
     };
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
+  }
+
+  public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
+    if (input.value.length <= maxLength) {
+      this.changeTextAreaHeight(input);
+      return;
+    }
+
+    // set values
+    input.value = input.value.substr(0, maxLength);
+    this.changeTextAreaHeight(input);
+
+    // return if already is shown
+    if (this.hideErrorInterval) {
+      return;
+    }
+
+    input.classList.add('invalid');
+    const div = this.renderer.createElement('div');
+    this.renderer.addClass(div, 'validation-error');
+    div.append(this.translate.instant('common-errors.validation-max-length', {value: maxLength}));
+    input.parentElement.appendChild(div);
+
+    this.hideErrorInterval = setTimeout(() => {
+      input.classList.remove('invalid');
+      input.parentElement.removeChild(div);
+      this.hideErrorInterval = null;
+    }, 2000);
+  }
+
+  private changeTextAreaHeight(input: HTMLTextAreaElement): void {
+    if (input.scrollHeight > 0) {
+      input.style.height = 'auto';
+      input.style.height = `${input.scrollHeight}px`;
+    }
   }
 }
