@@ -49,14 +49,14 @@ a[aria-expanded=false] .hidden,
 a[aria-expanded=true] .shown{
   display: block;
   transition: all 3s;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 a[aria-expanded=true] .hidden,
 a[aria-expanded=false] .shown{
   display: none;
   transition: all 3s;
-  font-size: 10px;
+  font-size: 14px;
 }
 
 .panel-heading.active a:before {
@@ -118,8 +118,16 @@ hr {
 
 .time-value,
 .reply-btn {
-  font-size: 10px;
+  font-size: 14px;
   opacity: 50%;
   color: black;
   font-weight: 400;
+}
+
+.sub-comment {
+  width: 360px;
+  min-height: 90px;
+  margin-top: 5px;
+  border-radius: 0;
+  overflow: hidden;
 }

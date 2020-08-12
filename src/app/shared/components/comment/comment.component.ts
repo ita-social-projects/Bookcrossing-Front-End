@@ -67,8 +67,7 @@ export class CommentComponent implements OnInit {
     this.user = null;
   }
 
-
-  canCommit() {
+  public canCommit(): boolean {
     return this.isAuthenticated() && (this.text !== '');
   }
 
@@ -96,16 +95,15 @@ export class CommentComponent implements OnInit {
     return owner.id === this.user.id;
   }
 
-  formatDate(date) {
-
+  public formatDate(date): string {
     TimeAgo.addLocale(en);
     const d = new Date(date);
     const timeAgo = new TimeAgo('en-US');
     return timeAgo.format(d);
   }
 
-  returnID(id) {
-    let ids = [];
+  public returnID(id: number): string[] {
+    const ids = [];
     ids.push(id);
     return ids;
   }
@@ -128,13 +126,12 @@ export class CommentComponent implements OnInit {
     this.text = '';
   }
 
-  PostChildComment(ids: string[]) {
+  public PostChildComment(subcomment: string, ids: string[]): void {
     const postComment: IChildInsertComment = {
-      ids: ids, ownerId: this.user.id, text: this.text
+      ids: ids, ownerId: this.user.id, text: subcomment
     };
 
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
-    this.text = '';
   }
 
   public async onDeleteComment(id): Promise<void> {
@@ -171,16 +168,13 @@ export class CommentComponent implements OnInit {
   }
 
   public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
-
     if (input.value.length <= maxLength) {
       this.changeTextAreaHeight(input);
-      this.text = input.value;
       return;
     }
 
     // set values
     input.value = input.value.substr(0, maxLength);
-    this.text = input.value;
     this.changeTextAreaHeight(input);
 
     // return if already is shown
