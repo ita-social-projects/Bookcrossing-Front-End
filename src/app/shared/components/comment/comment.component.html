@@ -1,19 +1,22 @@
 <div class="my-comment">
 
-
   <div class="row bootstrap snippets">
     <div class=" col-md-offset-2 col-sm-12">
       <div class="comment-wrapper">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            Comment panel
-          </div>
-          <ngx-star-rating [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
-          <div class="">
-            <textarea class="form-control width-40" [(ngModel)]='text' placeholder="write a comment..."
-                      rows="3"></textarea>
-            <br>
-            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right">
+        <div class="panel panel-info ">
+          <ngx-star-rating class="rating" [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
+          <div>
+            <div>
+                <textarea class="form-control main-comment"
+                          placeholder="Write a comment up to 500 characters"
+                          #Text
+                          [(ngModel)]="text"
+                          (input)="onCommentInput(Text, 500)"
+                >
+                </textarea>
+            </div>
+
+            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right comment-post-btn">
               Post
             </button>
             <a *ngIf="!isAuthenticated()" [routerLink]="['/login']">login to comment</a>
@@ -29,17 +32,23 @@
 
                 <div class="media-body pad">
 
-                  <span class="text-muted pull-right">
-                        <small class="text-muted">{{formatDate(comment.date)}}  </small>
-                    </span>
+                  <span class="time-value pull-right">
+                        {{ formatDate(comment.date) }}
+                  </span>
                   <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)" data-toggle="collapse" href="#root_{{i}}" role="button"
-                     aria-expanded="false" aria-controls="collapseExample">
+                  <a *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
+                     [attr.data-target]="'#root_'+ i + '_edit'"
+                     [attr.aria-controls]="'root_'+ i + '_edit'"
+                     aria-expanded="false"
+                     data-toggle="collapse"
+                     role="button"
+                     class="btn-text"
+                     href="#">
                     Edit
                   </a>
 
-                  <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                  <button *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
                           (click)="onDeleteComment(comment.id)"
                           role="button"
                           class="btn-text"
@@ -57,37 +66,67 @@
                     </p>
                   </ng-template>
 
-
-                  <small *ngIf="!comment.isDeleted" class="text-muted">
-                    <a data-toggle="collapse" href="#root_{{i}}_reply" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                  <small *ngIf="!comment.isDeleted">
+                    <a data-toggle="collapse" [attr.data-target]="'#root_'+ i + '_reply'" aria-expanded="true" [attr.aria-controls]="'root_'+ i + '_reply'"
+                       class="reply-btn">
                       Reply
                     </a>
                   </small>
 
-                  <div class="collapse" id="root_{{i}}_reply">
-                    <textarea class="form-control width-40" [(ngModel)]='text' placeholder="write a comment..." rows="3"></textarea>
-                    <br>
-                    <button [disabled]="!canCommit()" type="button" (click)="PostChildComment(returnID(comment.id))" class="btn btn-info pull-right">
-                      Post
-                    </button>
-                  </div>
+                  <div class="accordion" id="accordionExample_{{i}}">
 
-                  <div class="collapse" id="root_{{i}}">
-                    <form #updateFrom="ngForm">
-                      <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating" (rated)="onEditRatingSet($event)"></ngx-star-rating>
-                      <textarea [(ngModel)]="comment.text" name="text"></textarea>
-                      <br>
-                      <button type="button" (click)="updateComment(comment.id,updateFrom.value.text, comment.rating)"
-                              class="btn btn-primary btn-sm">Post
+                    <div [attr.id]="'root_'+ i + '_reply'" class="collapse" [attr.data-parent]="'#accordionExample_' + i">
+
+                      <!--Reply form-->
+                      <div>
+                        <textarea class="form-control sub-comment"
+                                  placeholder="Write a reply up to 500 characters"
+                                  #Subcomment
+                                  (input)="onCommentInput(Subcomment, 500)"
+                        ></textarea>
+                      </div>
+
+                      <button [disabled]="Subcomment.value.length === 0"
+                              (click)="PostChildComment(Subcomment.value, returnID(comment.id))"
+                              type="button"
+                              class="btn btn-info pull-right comment-post-btn">
+                        Post
                       </button>
-                    </form>
+                    </div>
 
+                    <div [attr.id]="'root_'+ i + '_edit'" class="collapse" [attr.data-parent]="'#accordionExample_' + i">
+
+                      <!--Edit form-->
+                      <form #updateFrom="ngForm">
+                        <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating" (rated)="onEditRatingSet($event)"></ngx-star-rating>
+                        <div>
+                        <textarea class="form-control sub-comment"
+                                  placeholder="Write a reply up to 500 characters"
+                                  [ngModel]="comment.text"
+                                  name="text"
+                                  #EditComment
+                                  (input)="onCommentInput(EditComment, 500)"
+                        ></textarea>
+                        </div>
+
+                        <button [disabled]="EditComment.value.length === 0"
+                                (click)="updateComment(comment.id,updateFrom.value.text, comment.rating)"
+                                type="button"
+                                class="btn btn-info pull-right comment-post-btn">
+                          Post
+                        </button>
+                      </form>
+
+                    </div>
                   </div>
+
+
+
+
 
                   <ng-template [ngIf]="comment.comments.length > 0">
                     <a data-toggle="collapse" href="#root_subcomments_{{i}}" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                       aria-expanded="false" [attr.aria-controls]="'root_subcomments_' + i">
                       <div class="hidden">
                         View all {{comment.comments.length}} replies
                         <i class="arrow-down"></i>
@@ -97,12 +136,15 @@
                         Hide all {{comment.comments.length}} replies
                         <i class="arrow-up"></i>
                       </div>
-
                     </a>
 
                     <div class="collapse" id="root_subcomments_{{i}}">
-                      <app-childcomment (update)="UpdateComments()" [comments]="comment.comments" [level]="level + 1"
-                                        [user]="user" [ids]="returnID(comment.id)"
+                      <app-childcomment (update)="UpdateComments()"
+                                        [comments]="comment.comments"
+                                        [level]="level + 1"
+                                        [rootIteratorNum]="i"
+                                        [user]="user"
+                                        [ids]="returnID(comment.id)"
                                         [isAuthorized]="isAuthenticated()"></app-childcomment>
 
                     </div>

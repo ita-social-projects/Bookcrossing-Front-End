@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { userUrl } from '../../../configs/api-endpoint.constants';
 import { IUserInfo } from "../../models/userInfo";
-import { IUserPut } from "../../models/UserPut";
+import { IUserPut } from "../../models/userPut";
 import { ILocation } from '../../models/location'
 import { IRoomLocation } from '../../models/roomLocation';
 import { UserService } from './user.service';
