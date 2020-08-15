@@ -20,3 +20,4 @@ export const wishListUrl = baseUrl + 'WishList/';
 export const registrationUrl = window.location.origin + '/registration/';
 export const bookRegistrationUrl = window.location.origin + '/book/';
 export const booksUrl = window.location.origin + '/books/';
+export const notificationUrl = baseUrl + 'notifications/';

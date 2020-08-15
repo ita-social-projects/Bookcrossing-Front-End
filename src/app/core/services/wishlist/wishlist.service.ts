@@ -15,19 +15,19 @@ export class WishListService {
     private pagination: PaginationService
     ) {}
 
-    getWishList(pageableParams: PageableParameters):Observable<IPage<IBook>>{
+    getWishList(pageableParams: PageableParameters): Observable<IPage<IBook>> {
       return this.pagination.getPage<IBook>(this.apiUrl, pageableParams);
     }
 
-    addToWishList(bookId: number):Observable<Object>{
+    addToWishList(bookId: number): Observable<Object> {
       return this.http.post(this.apiUrl + "add", bookId);
     }
 
-    removeFromWishList(bookId: number):Observable<Object>{
+    removeFromWishList(bookId: number): Observable<Object> {
       return this.http.delete(this.apiUrl + bookId);
     }
 
-    isWished(bookId:number):Observable<boolean>{
+    isWished(bookId:number): Observable<boolean> {
       return this.http.get<boolean>(this.apiUrl + bookId + '/is-wished');
     }
 }

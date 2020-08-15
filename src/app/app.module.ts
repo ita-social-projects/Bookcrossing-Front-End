@@ -105,6 +105,9 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { WishListService } from './core/services/wishlist/wishlist.service';
 import { UsersComponent } from './shared/components/admin/users/users.component';
+import { NotificationBellComponent } from './shared/components/notification-bell/notification-bell.component';
+import { NotificationBellService } from './core/services/notification-bell/notification-bell.service';
+import { SignalRService } from './core/services/signal-r/signalr.service';
 
 @NgModule({
   declarations: [
@@ -168,7 +171,8 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
     FoundBooksComponent,
     ForbidEmailComponent,
     WishListComponent,
-    UsersComponent
+    UsersComponent,
+    NotificationBellComponent
   ],
   imports: [
     InputTrimModule,
@@ -233,7 +237,9 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
     DatePipe,
     BookLanguageService,
     EmailNotificationService,
-    WishListService
+    WishListService,
+    NotificationBellService,
+    SignalRService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]
