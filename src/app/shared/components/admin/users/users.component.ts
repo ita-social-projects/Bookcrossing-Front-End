@@ -151,6 +151,11 @@ export class UsersComponent implements OnInit {
     this.userService.getUsers(params).subscribe({
       next: (pageData) => {
         this.users = pageData.page;
+        for(let user of this.users) {
+          user.registeredDate = new Date(user.registeredDate);
+          user.registeredDate.toString = Date.prototype.toLocaleDateString;
+        }
+
         this.totalSize = pageData.totalCount;
         this.usersLoaded = true;
       },
