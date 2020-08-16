@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import { Router} from '@angular/router';
 import { NotifyAction } from 'src/app/core/models/notifyAction.enum';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -156,7 +156,7 @@ export class NotificationBellComponent implements OnInit {
       return action.valueOf() === 2;
   }
 
-  public getNewNotifications() {
+  public getNewNotifications(): void {
     this.signalRService.hubConnection.on('Notify', (data: INotification) => {
       this.getNotifications();
     });

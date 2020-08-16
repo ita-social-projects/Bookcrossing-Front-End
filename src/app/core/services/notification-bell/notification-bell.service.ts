@@ -10,7 +10,6 @@ import { INotification } from '../../models/notification';
 
 export class NotificationBellService {
   public readonly baseUrl = notificationUrl;
-  private notifications: INotification[];
 
   public constructor(private http: HttpClient) {
   }
@@ -19,19 +18,19 @@ export class NotificationBellService {
     return this.http.get<INotification[]>(this.baseUrl);
   }
 
-  public deleteNotification(id: number) {
+  public deleteNotification(id: number): Observable<object> {
     return this.http.delete(this.baseUrl + 'remove/' + id);
   }
 
-  public deleteAllNotifications() {
+  public deleteAllNotifications(): Observable<object> {
     return this.http.delete(this.baseUrl + 'remove/all');
   }
 
-  public makeNotificationSeen(id: number) {
+  public makeNotificationSeen(id: number): Observable<object> {
     return this.http.put(this.baseUrl + 'read/' + id, id);
   }
 
-  public makeAllNotificationsSeen() {
+  public makeAllNotificationsSeen(): Observable<object> {
     return this.http.put(this.baseUrl + 'read/all', 0);
   }
 }
