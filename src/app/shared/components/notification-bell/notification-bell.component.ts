@@ -48,9 +48,9 @@ export class NotificationBellComponent implements OnInit {
   }
 
   private getNotifications(): void {
-    this.notificationBellService.getNotifications().subscribe( n => {
-      this.notifications = n;
-      this.getNotificationsCount(n);
+    this.notificationBellService.getNotifications().subscribe( notifications => {
+      this.notifications = notifications;
+      this.getNotificationsCount(notifications);
     } );
   }
 
@@ -157,8 +157,9 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public getNewNotifications(): void {
-    this.signalRService.hubConnection.on('Notify', (data: INotification) => {
-      this.getNotifications();
+    this.signalRService.hubConnection.on('Notify', (notification: INotification) => {
+      this.notifications.unshift(notification);
+      this.numberOfNotifications++;
     });
   }
 }
