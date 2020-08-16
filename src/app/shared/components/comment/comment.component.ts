@@ -1,20 +1,19 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import {Component, OnInit, Input, Renderer2, HostListener, ViewChildren, QueryList} from '@angular/core';
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUserInfo} from '../../../core/models/userInfo';
-import {__await} from 'tslib';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {UserService} from '../../../core/services/user/user.service';
 import {IRootComment} from '../../../core/models/comments/root-comment/root';
 import {IRootInsertComment} from '../../../core/models/comments/root-comment/rootInsert';
 import {IRootDeleteComment} from '../../../core/models/comments/root-comment/rootDelete';
 import {IRootUpdateComment} from '../../../core/models/comments/root-comment/rootUpdate';
-import {element} from 'protractor';
 import {IChildInsertComment} from '../../../core/models/comments/child-comment/childInsert';
 import {DialogService} from '../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
-import {max} from 'rxjs/operators';
+import {IBookOwner} from '../../../core/models/comments/owner';
+import {ChildcommentComponent} from './childcomment/childcomment.component';
 
 @Component({
   selector: 'app-comment',
@@ -23,6 +22,7 @@ import {max} from 'rxjs/operators';
 
 })
 export class CommentComponent implements OnInit {
+  @ViewChildren('childComment') subcomments: QueryList<ChildcommentComponent>;
   @Input() bookId = 0;
   comments: IRootComment[];
   user: IUserInfo;
@@ -31,6 +31,7 @@ export class CommentComponent implements OnInit {
   updateRating = undefined;
   level = 0;
   hideErrorInterval: NodeJS.Timeout;
+  lastUpdatedArea: HTMLTextAreaElement;
 
   constructor(private commentservice: CommentService,
               private authenticationService: AuthenticationService,
@@ -46,25 +47,27 @@ export class CommentComponent implements OnInit {
 
   ngOnInit() {
     this.UpdateComments();
-    this.getUser()
+    this.getUser();
   }
 
-  isAuthenticated(){
-    return this.authenticationService.isAuthenticated()
+  isAuthenticated() {
+    return this.authenticationService.isAuthenticated();
   }
 
-  getUser(){
-    if(this.isAuthenticated()){
-      this.authenticationService.getUserId().subscribe((value: number)=> {
-        this.userService.getUserById(value).subscribe((value: IUserInfo)=>{
-          this.user = value;
-        })
-      })
+  private getUser(): void {
+    if (this.isAuthenticated()) {
+      this.authenticationService.getUserId().subscribe((userId: number) => {
+        this.userService.getUserById(userId).subscribe((userInfo: IUserInfo) => {
+          this.user = userInfo;
+          return;
+        });
+      });
     }
+
+    this.user = null;
   }
 
-
-  canCommit() {
+  public canCommit(): boolean {
     return this.isAuthenticated() && (this.text !== '');
   }
 
@@ -72,39 +75,35 @@ export class CommentComponent implements OnInit {
     return text;
   }
 
-
-  getUserName(owner) {
+  public getUserName(owner): string {
     if (owner === null) {
       return 'deleted user';
-    } else {
-      if ((this.user !== null) && (this.user.id === owner.id)) {
-        return 'Me';
-
-      } else {
-        return owner.firstName + ' ' + owner.lastName;
-      }
-
     }
+
+    if ((this.user !== null) && (this.user.id === owner.id)) {
+      return 'Me';
+    }
+
+    return `${owner.firstName} ${owner.lastName}`.trim();
   }
 
-  CanEditCommnet(owner) {
-    if (owner === null || typeof this.user === 'undefined') {
+  public canEditComment(owner: IBookOwner): boolean {
+    if (owner === null || this.user === null) {
       return false;
-    } else {
-      return owner.id === this.user.id;
     }
+
+    return owner.id === this.user.id;
   }
 
-  formatDate(date) {
-
+  public formatDate(date): string {
     TimeAgo.addLocale(en);
     const d = new Date(date);
     const timeAgo = new TimeAgo('en-US');
     return timeAgo.format(d);
   }
 
-  returnID(id) {
-    let ids = [];
+  public returnID(id: number): string[] {
+    const ids = [];
     ids.push(id);
     return ids;
   }
@@ -127,13 +126,12 @@ export class CommentComponent implements OnInit {
     this.text = '';
   }
 
-  PostChildComment(ids: string[]) {
+  public PostChildComment(subcomment: string, ids: string[]): void {
     const postComment: IChildInsertComment = {
-      ids: ids, ownerId: this.user.id, text: this.text
+      ids: ids, ownerId: this.user.id, text: subcomment
     };
 
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
-    this.text = '';
   }
 
   public async onDeleteComment(id): Promise<void> {
@@ -170,16 +168,15 @@ export class CommentComponent implements OnInit {
   }
 
   public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
+    this.lastUpdatedArea = input;
 
-    if (input.value.length <= maxLength) {
+    if (input.textLength <= maxLength) {
       this.changeTextAreaHeight(input);
-      this.text = input.value;
       return;
     }
 
     // set values
     input.value = input.value.substr(0, maxLength);
-    this.text = input.value;
     this.changeTextAreaHeight(input);
 
     // return if already is shown
@@ -207,4 +204,40 @@ export class CommentComponent implements OnInit {
     }
   }
 
+  // For handling refreshing and closing page
+  @HostListener('window:beforeunload', ['$event'])
+  public canLeave(): boolean {
+
+    if (this.text !== '') {
+      return false;
+    }
+
+    let hasUnsavedSub = false;
+    this.subcomments.forEach((child) => {
+      if (child.canLeave() === false) {
+        hasUnsavedSub = true;
+      }
+    });
+    if (hasUnsavedSub) {
+      return false;
+    }
+
+    if (this.lastUpdatedArea === undefined) {
+      return true;
+    }
+
+    // Check if edit form
+    const editFormOldValue = this.lastUpdatedArea.getAttribute('data-old-value');
+    if (editFormOldValue && this.lastUpdatedArea.value !== editFormOldValue) {
+      return false;
+    }
+
+    // Check if reply form
+    if (editFormOldValue === null && this.lastUpdatedArea.textLength > 0) {
+      return false;
+    }
+
+    return true;
+  }
 }
+
