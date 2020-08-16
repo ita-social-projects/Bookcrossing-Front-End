@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, EventEmitter, Output, Renderer2} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, Renderer2, HostListener, ViewChildren, QueryList} from '@angular/core';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUserInfo} from '../../../../core/models/userInfo';
@@ -17,15 +17,17 @@ import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/
   styleUrls: ['./childcomment.component.scss']
 })
 export class ChildcommentComponent implements OnInit {
+  @ViewChildren('childComment') subcomments: QueryList<ChildcommentComponent>;
   @Input() comments;
   @Input() level;
   @Input() user: IUserInfo;
   @Input() ids;
   @Output() update = new EventEmitter();
   @Input() isAuthorized;
-  @Input() rootIteratorNum;
+  @Input() root;
   text = '';
   hideErrorInterval: NodeJS.Timeout;
+  lastUpdatedArea: HTMLTextAreaElement;
 
 
   UpdateComments() {
@@ -117,6 +119,7 @@ export class ChildcommentComponent implements OnInit {
   }
 
   public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
+    this.lastUpdatedArea = input;
     if (input.value.length <= maxLength) {
       this.changeTextAreaHeight(input);
       return;
@@ -149,5 +152,40 @@ export class ChildcommentComponent implements OnInit {
       input.style.height = 'auto';
       input.style.height = `${input.scrollHeight}px`;
     }
+  }
+
+  // For handling refreshing and closing page
+  @HostListener('window:beforeunload', ['$event'])
+  public canLeave(): boolean {
+    if (this.text !== '') {
+      return false;
+    }
+
+    let hasUnsavedSub = false;
+    this.subcomments.forEach((child) => {
+      if (child.canLeave() === false) {
+        hasUnsavedSub = true;
+      }
+    });
+    if (hasUnsavedSub) {
+      return false;
+    }
+
+    if (this.lastUpdatedArea === undefined) {
+      return true;
+    }
+
+    // Check if edit form
+    const editFormOldValue = this.lastUpdatedArea.getAttribute('data-old-value');
+    if (editFormOldValue && this.lastUpdatedArea.value !== editFormOldValue) {
+      return false;
+    }
+
+    // Check if reply form
+    if (editFormOldValue === null && this.lastUpdatedArea.textLength > 0) {
+      return false;
+    }
+
+    return true;
   }
 }

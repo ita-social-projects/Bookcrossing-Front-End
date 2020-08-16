@@ -13,9 +13,9 @@
 <div class="container my-3 py-5 z-depth-1">
     <section class="text-center">
       <div class="row">
-        
+
         <div class="col-lg-4">
-         
+
             <div class="carousel-inner text-center text-md-left" role="listbox">
               <div class="size carousel-item active zoom">
                 <div class="mask flex-center waves-effect waves-light">
@@ -55,8 +55,8 @@
             <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank"  change type="default" color="warn" (click)=changeWishList(book)>
               <mat-icon *ngIf="isWished">favorite</mat-icon>
               <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
-            </button> 
-          </ng-template> 
+            </button>
+          </ng-template>
           <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
           <div class="row">
             <div class="col-3" >
@@ -107,7 +107,7 @@
                 </tr>
                 <tr *ngIf="firstOwner !== null">
                   <th scope="row">
-                    <strong>Registered by: </strong> 
+                    <strong>Registered by: </strong>
                   </th>
                   <td class="align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
                     <span>
@@ -124,7 +124,7 @@
                 </tr>
                 <tr *ngIf="book?.publisher != null">
                   <th scope="row">
-                    <strong>{{ 'components.book.publisher' | translate }}:</strong> 
+                    <strong>{{ 'components.book.publisher' | translate }}:</strong>
                   </th>
                   <td class="align-middle">{{ book?.publisher }} </td>
                 </tr>
@@ -147,7 +147,7 @@
                 </tr>
               </tbody>
             </table>
-            
+
           </div>
 
         </div>
@@ -160,6 +160,6 @@
       </div>
 
     </section>
-  <app-comment [bookId]="bookId"></app-comment>
+  <app-comment [bookId]="bookId" #comment></app-comment>
   </div>
 </div>

@@ -106,7 +106,6 @@ textarea.invalid {
 }
 
 .validation-error {
-  content: "{{'common-errors.validation-max-length' | translate:{value: 500}}}";
   font-size: 80%;
   color: #FF3547;
   font-family: Roboto, "Helvetica Neue", sans-serif;

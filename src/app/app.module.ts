@@ -105,6 +105,7 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { WishListService } from './core/services/wishlist/wishlist.service';
 import { UsersComponent } from './shared/components/admin/users/users.component';
+import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
 
 @NgModule({
   declarations: [
@@ -233,7 +234,8 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
     DatePipe,
     BookLanguageService,
     EmailNotificationService,
-    WishListService
+    WishListService,
+    BookCanDeactivateGuard
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

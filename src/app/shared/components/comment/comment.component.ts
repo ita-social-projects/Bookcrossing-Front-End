@@ -1,21 +1,19 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import {Component, OnInit, Input, Renderer2, HostListener, ViewChildren, QueryList} from '@angular/core';
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {IUserInfo} from '../../../core/models/userInfo';
-import {__await} from 'tslib';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {UserService} from '../../../core/services/user/user.service';
 import {IRootComment} from '../../../core/models/comments/root-comment/root';
 import {IRootInsertComment} from '../../../core/models/comments/root-comment/rootInsert';
 import {IRootDeleteComment} from '../../../core/models/comments/root-comment/rootDelete';
 import {IRootUpdateComment} from '../../../core/models/comments/root-comment/rootUpdate';
-import {element} from 'protractor';
 import {IChildInsertComment} from '../../../core/models/comments/child-comment/childInsert';
 import {DialogService} from '../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
-import {max} from 'rxjs/operators';
 import {IBookOwner} from '../../../core/models/comments/owner';
+import {ChildcommentComponent} from './childcomment/childcomment.component';
 
 @Component({
   selector: 'app-comment',
@@ -24,6 +22,7 @@ import {IBookOwner} from '../../../core/models/comments/owner';
 
 })
 export class CommentComponent implements OnInit {
+  @ViewChildren('childComment') subcomments: QueryList<ChildcommentComponent>;
   @Input() bookId = 0;
   comments: IRootComment[];
   user: IUserInfo;
@@ -32,6 +31,7 @@ export class CommentComponent implements OnInit {
   updateRating = undefined;
   level = 0;
   hideErrorInterval: NodeJS.Timeout;
+  lastUpdatedArea: HTMLTextAreaElement;
 
   constructor(private commentservice: CommentService,
               private authenticationService: AuthenticationService,
@@ -50,8 +50,8 @@ export class CommentComponent implements OnInit {
     this.getUser();
   }
 
-  isAuthenticated(){
-    return this.authenticationService.isAuthenticated()
+  isAuthenticated() {
+    return this.authenticationService.isAuthenticated();
   }
 
   private getUser(): void {
@@ -168,7 +168,9 @@ export class CommentComponent implements OnInit {
   }
 
   public onCommentInput(input: HTMLTextAreaElement, maxLength: number): void {
-    if (input.value.length <= maxLength) {
+    this.lastUpdatedArea = input;
+
+    if (input.textLength <= maxLength) {
       this.changeTextAreaHeight(input);
       return;
     }
@@ -202,4 +204,40 @@ export class CommentComponent implements OnInit {
     }
   }
 
+  // For handling refreshing and closing page
+  @HostListener('window:beforeunload', ['$event'])
+  public canLeave(): boolean {
+
+    if (this.text !== '') {
+      return false;
+    }
+
+    let hasUnsavedSub = false;
+    this.subcomments.forEach((child) => {
+      if (child.canLeave() === false) {
+        hasUnsavedSub = true;
+      }
+    });
+    if (hasUnsavedSub) {
+      return false;
+    }
+
+    if (this.lastUpdatedArea === undefined) {
+      return true;
+    }
+
+    // Check if edit form
+    const editFormOldValue = this.lastUpdatedArea.getAttribute('data-old-value');
+    if (editFormOldValue && this.lastUpdatedArea.value !== editFormOldValue) {
+      return false;
+    }
+
+    // Check if reply form
+    if (editFormOldValue === null && this.lastUpdatedArea.textLength > 0) {
+      return false;
+    }
+
+    return true;
+  }
 }
+

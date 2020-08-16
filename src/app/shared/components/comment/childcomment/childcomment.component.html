@@ -22,9 +22,7 @@
                   <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
                   <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
-                     [attr.data-target]="'#child_' + rootIteratorNum + '_' + i + '_edit'"
-                     [attr.aria-controls]="'child_' + rootIteratorNum + '_' + i + '_edit'"
-                     aria-expanded="false"
+                     [attr.data-target]="'#child_' + root + '_' + i + '_edit'"
                      data-toggle="collapse"
                      role="button"
                      href="#">
@@ -49,10 +47,8 @@
                   </ng-template>
 
                   <small *ngIf="!comment.isDeleted">
-                    <a data-toggle="collapse"
-                       [attr.data-target]="'#child_' + rootIteratorNum + '_' + i + '_reply'"
-                       aria-expanded="true"
-                       [attr.aria-controls]="'child_' + rootIteratorNum + '_' + i + '_reply'"
+                    <a [attr.data-target]="'#child_' + root + '_' + i + '_reply'"
+                       data-toggle="collapse"
                        role="button"
                        class="reply-btn">
                       Reply
@@ -60,9 +56,9 @@
                   </small>
 
 
-                  <div class="accordion" id="accordionExample_{{i}}_{{rootIteratorNum}}">
+                  <div id="child_{{root}}_{{i}}_reply" class="collapse" data-parent="#comments-block">
 
-                    <div [attr.id]="'child_' + rootIteratorNum + '_' + i + '_reply'" class="collapse" [attr.data-parent]="'#accordionExample_' + i + '_' + rootIteratorNum">
+                    <ng-container *ngIf="isAuthorized; else ReplyNotAllowed">
                       <!-- Reply form -->
                       <textarea class="form-control sub-comment"
                                 [(ngModel)]='text'
@@ -77,32 +73,32 @@
                               class="btn btn-info pull-right comment-post-btn">
                         Post
                       </button>
-                    </div>
+                    </ng-container>
+                    <ng-template #ReplyNotAllowed>
+                      <p class="validation-error">Please, log in to reply to comments/sub-comments</p>
+                    </ng-template>
+                  </div>
 
-                    <div [attr.id]="'child_' + rootIteratorNum + '_' + i + '_edit'" class="collapse" [attr.data-parent]="'#accordionExample_' + i + '_' + rootIteratorNum">
-                      <!-- Edit form -->
-                      <form #updateFrom="ngForm">
+                  <div id="child_{{root}}_{{i}}_edit" class="collapse" data-parent="#comments-block">
+                    <!-- Edit form -->
+                    <form #updateFrom="ngForm">
                        <textarea name="text"
                                  class="form-control sub-comment"
-                                 placeholder="Write a reply up to 500 characters"
+                                 placeholder="Edit your comment..."
                                  [ngModel]="comment.text"
+                                 [attr.data-old-value]="comment.text"
                                  #EditComment
                                  (input)="onCommentInput(EditComment, 500)"
                        ></textarea>
 
-                        <button type="button"
-                                class="btn btn-info comment-post-btn"
-                                [disabled]="EditComment.value.length === 0"
-                                (click)="updateComment(comment.id,updateFrom.value.text)">
-                          Post
-                        </button>
-                      </form>
-                    </div>
+                      <button type="button"
+                              class="btn btn-info comment-post-btn"
+                              [disabled]="EditComment.value.length === 0"
+                              (click)="updateComment(comment.id,updateFrom.value.text)">
+                        Post
+                      </button>
+                    </form>
                   </div>
-
-
-
-
 
 
                   <ng-template [ngIf]="comment.comments.length > 0">
@@ -121,10 +117,11 @@
                     </a>
 
                     <div class="collapse" id="child_subcomments_{{level}}_{{i}}">
-                      <app-childcomment (update)="UpdateComments()"
+                      <app-childcomment #childComment
+                                        (update)="UpdateComments()"
                                         [comments]="comment.comments"
                                         [level]="level + 1"
-                                        [rootIteratorNum]="rootIteratorNum + '_' + i"
+                                        [root]="root + '_' + i"
                                         [user]="user"
                                         [ids]="returnID(comment.id)"
                                         [isAuthorized]="isAuthorized" ></app-childcomment>

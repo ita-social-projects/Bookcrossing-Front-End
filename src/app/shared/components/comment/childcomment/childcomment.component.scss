@@ -48,12 +48,14 @@ a[aria-expanded=false] .hidden,
 a[aria-expanded=true] .shown{
   display: block;
   transition: all 3s;
+  font-size: 14px;
 }
 
 a[aria-expanded=true] .hidden,
 a[aria-expanded=false] .shown{
   display: none;
   transition: all 3s;
+  font-size: 14px;
 }
 
 .btn-text {
@@ -98,4 +100,10 @@ a[aria-expanded=false] .shown{
   border-radius: 0;
   box-sizing: content-box;
   padding: 3px 6px;
+}
+
+.validation-error {
+  font-size: 80%;
+  color: #FF3547;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
