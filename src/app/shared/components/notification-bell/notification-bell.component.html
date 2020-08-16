@@ -2,7 +2,6 @@
     <div class = "notification">
         <div class = "notBtn" href = "#">
             <div *ngIf="notifications !== undefined">
-                <ng-template *ngIf="signalRService.data">{{updateNotifications()}}</ng-template>
                 <div *ngIf="numberOfNotifications != 0">
                     <div class = "number">{{numberOfNotifications}}</div>
                 </div>

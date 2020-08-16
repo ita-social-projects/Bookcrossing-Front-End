@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import{ NotifyAction } from 'src/app/core/models/notifyAction.enum';
+import { NotifyAction } from 'src/app/core/models/notifyAction.enum';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { bookState } from 'src/app/core/models/bookState.enum';
@@ -27,8 +27,9 @@ export class NotificationBellComponent implements OnInit {
   public numberOfNotifications: number;
   public notifications: INotification[];
   private isOpened: boolean;
+  private signalRHubUrl = '/notifications/hub';
 
-  public constructor( 
+  public constructor(
                     public signalRService: SignalRService,
                     private router: Router,
                     private bookService: BookService,
@@ -42,33 +43,31 @@ export class NotificationBellComponent implements OnInit {
 
   public ngOnInit(): void {
     this.getNotifications();
-    this.signalRService.startConnection();
-    this.signalRService.addTransferDataListener();
-    this.signalRService.addBroadcastDataListener();
+    this.signalRService.startConnection(this.signalRHubUrl);
+    this.getNewNotifications();
   }
 
   private getNotifications(): void {
     this.notificationBellService.getNotifications().subscribe( n => {
       this.notifications = n;
       this.getNotificationsCount(n);
-    } ); 
+    } );
   }
 
   public showOrHideNotificationBar(): void {
-    if (document.getElementById("box").style.height == "60vh") {
-      document.getElementById("box").style.height = "0vh";
+    if (document.getElementById('box').style.height === '60vh') {
+      document.getElementById('box').style.height = '0vh';
       this.makeAllSeen();
       this.isOpened = false;
-    }
-    else {
-      document.getElementById("box").style.height="60vh";
+    } else {
+      document.getElementById('box').style.height = '60vh';
       this.isOpened = true;
     }
   }
 
   @HostListener('document:click', ['$event']) onDocumentClick(event): void {
     if (this.isOpened) {
-      document.getElementById("box").style.height="0vh";
+      document.getElementById('box').style.height = '0vh';
       this.makeAllSeen();
       this.isOpened = false;
     }
@@ -95,17 +94,17 @@ export class NotificationBellComponent implements OnInit {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          this.notificationBellService.deleteAllNotifications().subscribe(res => this.getNotifications());
+          this.notificationBellService.deleteAllNotifications().subscribe(() => this.getNotifications());
         }
       });
   }
-  
+
   public makeAllSeen(): void {
-    this.notificationBellService.makeAllNotificationsSeen().subscribe(res => this.getNotifications());
+    this.notificationBellService.makeAllNotificationsSeen().subscribe(() => this.getNotifications());
   }
 
   public deleteNotification(id: number): void {
-    this.notificationBellService.deleteNotification(id).subscribe(res => this.getNotifications());
+    this.notificationBellService.deleteNotification(id).subscribe(() => this.getNotifications());
   }
 
   public formatDate(date: Date): string {
@@ -117,13 +116,14 @@ export class NotificationBellComponent implements OnInit {
 
   public navigateToBook(bookId: number): void {
     this.router.navigate(['/book/' + bookId]);
+    document.getElementById('box').style.height = '0vh';
   }
 
   public checkIfBookIsAvailable(bookId: number) {
     this.bookService.getBookById(bookId).subscribe((book: IBook) => {
-      return book.state == bookState.available;
+      return book.state === bookState.available;
     } );
-  } 
+  }
 
   public async requestBook(bookId: number): Promise<void> {
     const userHasValidLocation: boolean = await this.authenticationService.validateLocation();
@@ -149,16 +149,16 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public checkIfOpen(action: NotifyAction): boolean {
-    let res = action.valueOf() == 1;
-    return res;
+    return action.valueOf() === 1;
   }
 
   public checkIfRequest(action: NotifyAction): boolean {
-      return action.valueOf() == 2;
+      return action.valueOf() === 2;
   }
 
-  public updateNotifications(): void {
-    this.signalRService.data = null;
-    this.getNotifications();
+  public getNewNotifications() {
+    this.signalRService.hubConnection.on('Notify', (data: INotification) => {
+      this.getNotifications();
+    });
   }
 }
