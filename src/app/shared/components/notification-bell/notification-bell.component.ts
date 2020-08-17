@@ -132,6 +132,11 @@ export class NotificationBellComponent implements OnInit {
     if (!userHasValidLocation) {
       return;
     }
+    if (!this.checkIfBookIsAvailable(bookId)) {
+      this.notificationService.error(this.translateService
+        .instant('Book is unavailable for request!'), 'X');
+      return;
+    }
     this.dialogService
       .openConfirmDialog(
         await this.translateService.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
