@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms'; 
-import {IUserReg} from '../../../core/models/UserReg';
+import { FormControl, FormGroup, Validators, NgModel, NgForm} from '@angular/forms';
+import {IUserReg} from '../../../core/models/userReg';
 import {Router} from '@angular/router';
 import {RegistrationService} from '../../../core/services/registration/registration.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -23,7 +23,7 @@ export class RegistrationComponent implements OnInit {
   fieldTextType: boolean;
   repeatFieldTextType: boolean;
   clicked = false;
-  
+
   ngOnInit(): void {
     this.buildForm();
   }
@@ -72,7 +72,7 @@ export class RegistrationComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  buildForm() 
+  buildForm()
   {
     this.RegistrationForm = new FormGroup({
       name: new FormControl(null),
@@ -87,7 +87,7 @@ export class RegistrationComponent implements OnInit {
   {
     RegistrationForm.clicked = true;
     RegistrationForm.value.password = RegistrationForm.value.password.trim();
-    if(!this.checkPassword(RegistrationForm.value.password)){ 
+    if(!this.checkPassword(RegistrationForm.value.password)){
        (<HTMLInputElement>document.getElementById('defaultRegisterFormPassword')).value = RegistrationForm.value.password;
        (<HTMLInputElement>document.getElementById('defaultRegisterFormConfirmPassword')).value = "";
        RegistrationForm.clicked = false;
@@ -112,7 +112,7 @@ export class RegistrationComponent implements OnInit {
       }
     );
   }
-    
+
 
   getFormData(user: IUserReg): FormData {
     const formData = new FormData();

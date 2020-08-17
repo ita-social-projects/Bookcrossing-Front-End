@@ -25,6 +25,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CookieService } from "ngx-cookie-service";
 import { BookComponent } from './shared/components/book/book.component';
+import { CurrentlyOwnedBooksComponent } from './shared/components/books/currently-owned-books.component';
+import { RegisteredBooksComponent } from './shared/components/books/registered-books.component';
+import { ReadBooksComponent } from './shared/components/books/read-books.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -101,6 +104,8 @@ import { InputTrimModule } from 'ng2-trim-directive';
 import { FoundBooksComponent } from './shared/components/found-books/found-books.component';
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { WishListService } from './core/services/wishlist/wishlist.service';
+import { UsersComponent } from './shared/components/admin/users/users.component';
+import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
 
 @NgModule({
   declarations: [
@@ -113,6 +118,9 @@ import { WishListService } from './core/services/wishlist/wishlist.service';
     NavbarComponent,
     FooterComponent,
     BooksComponent,
+    RegisteredBooksComponent,
+    CurrentlyOwnedBooksComponent,
+    ReadBooksComponent,
     LocationFormComponent,
     MapboxComponent,
     AuthorsComponent,
@@ -160,7 +168,8 @@ import { WishListService } from './core/services/wishlist/wishlist.service';
     LanguageFormComponent,
     FoundBooksComponent,
     ForbidEmailComponent,
-    WishListComponent
+    WishListComponent,
+    UsersComponent
   ],
   imports: [
     InputTrimModule,
@@ -225,7 +234,8 @@ import { WishListService } from './core/services/wishlist/wishlist.service';
     DatePipe,
     BookLanguageService,
     EmailNotificationService,
-    WishListService
+    WishListService,
+    BookCanDeactivateGuard
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

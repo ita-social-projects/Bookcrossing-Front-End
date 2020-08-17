@@ -325,7 +325,6 @@ export class AddBookComponent implements OnInit {
 
   onFileSelected(event) {
     this.selectedFile = event.target.files[0];
-    console.log(this.selectedFile);
   }
 
   onAuthorSelect(event) {
@@ -356,6 +355,7 @@ export class AddBookComponent implements OnInit {
 
   onFileClear() {
     this.selectedFile = null;
+    this.addBookForm.get('image').setValue('');
   }
 
   async onCancel() {

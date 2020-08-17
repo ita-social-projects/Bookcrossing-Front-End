@@ -1,5 +1,5 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
-import {IUser} from '../../../core/models/user';
+import {IUserInfo} from '../../../core/models/userInfo';
 import {UserService} from '../../../core/services/user/user.service';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {ILocation} from '../../../core/models/location';
@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
               private locationService: LocationService,
               private resolver: ComponentFactoryResolver) { }
 
-  user: IUser;
+  user: IUserInfo;
   id: number;
   isEditing = false;
   locations: ILocation[];
@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit {
   });
   }
 
-  showEditForm(user: IUser) {
+  showEditForm(user: IUserInfo) {
     this.isEditing = true;
     let formFactory = this.resolver.resolveComponentFactory(ProfileEditComponent);
     let instance = this.refDir.containerRef.createComponent(formFactory).instance;

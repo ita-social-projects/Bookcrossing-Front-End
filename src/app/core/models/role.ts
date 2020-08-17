@@ -1,7 +1,7 @@
-import { IUser } from './user';
+import { IUserInfo } from './userInfo';
 
 export interface IRole {
     id : number;
     name : string;
-    user: IUser[];
+    user: IUserInfo[];
 }

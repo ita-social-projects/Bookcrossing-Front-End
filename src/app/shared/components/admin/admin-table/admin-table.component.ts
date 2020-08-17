@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 export class AdminTableComponent implements OnInit {
   @Output() selectedRowsChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() viewClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() booleanButtonClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() deleteClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -16,45 +17,57 @@ export class AdminTableComponent implements OnInit {
   @Input() data: any[];
   @Input() dataProperties: string[];
   @Input() displayColumns: string[];
-  @Input() canDelete: false;
+  @Input() canDelete: boolean = false;
+  @Input() canEdit: boolean = false;
+  @Input() canView: boolean = false;
 
   @Input() selectedHeader: string;
   @Input() selectedRows: number[];
 
   @Input() booleanButtonText: string;
+
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
-  onSelectedRowChange(selectedItem: any) {
+
+  public onSelectedRowChange(selectedItem: any): void {
     if (this.selectedRows) {
       this.selectedRows = _.xorBy(this.selectedRows, [selectedItem], this.dataProperties[0]);
       this.selectedRowsChange.emit(this.selectedRows);
     }
   }
-  onEdit(item: any, $event) {
+
+  public onView(item: any, $event): void {
+    $event.stopPropagation();
+    this.viewClicked.emit(item);
+  }
+
+  public onEdit(item: any, $event): void {
     $event.stopPropagation();
     this.editClicked.emit(item);
   }
 
-  onDelete(item: any, $event) {
+  public onDelete(item: any, $event): void {
     $event.stopPropagation();
     this.deleteClicked.emit(item);
   }
 
-  onHeaderClicked(headerName: string) {
+  public onHeaderClicked(headerName: string): void {
     this.selectedHeader = headerName;
     this.selectedHeaderChange.emit(headerName);
   }
 
-  onBooleanButtonClick(item: any, $event) {
+  public onBooleanButtonClick(item: any, $event): void {
     $event.stopPropagation();
     this.booleanButtonClicked.emit(item);
   }
-  isNotBoolean(value: any): boolean {
+
+  public isNotBoolean(value: any): boolean {
     return !(typeof value === 'boolean');
   }
-  isBooleanHeader(index: number): string {
+
+  public isBooleanHeader(index: number): string {
     if (this.data && this.data[0] && typeof(this.data[0][this.dataProperties[index]]) === 'boolean') {
       return 'text-center';
     }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IUser } from '../../../core/models/user';
+import { IUserInfo } from '../../../core/models/userInfo';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocationService } from '../../../core/services/location/location.service';
 import { ILocation } from '../../../core/models/location';
@@ -17,7 +17,7 @@ import { IUserPut } from '../../../core/models/userPut';
 export class ProfileEditComponent implements OnInit {
 
   @Output() onCancel: EventEmitter<void> = new EventEmitter<void>();
-  @Input() user: IUser;
+  @Input() user: IUserInfo;
 
   password: string;
 

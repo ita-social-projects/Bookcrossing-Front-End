@@ -1,5 +1,5 @@
 import { UserService } from '../../../core/services/user/user.service';
-import { Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
+import {Component, ComponentFactoryResolver, HostListener, OnInit, ViewChild} from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,7 @@ import { IRequest } from 'src/app/core/models/request';
 import { bookState } from 'src/app/core/models/bookState.enum';
 import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
-import { IUser } from 'src/app/core/models/user';
+import { IUserInfo } from 'src/app/core/models/userInfo';
 import { environment } from 'src/environments/environment';
 import { BookEditFormComponent } from '../book-edit-form/book-edit-form.component';
 import { RefDirective } from '../../directives/ref.derictive';
@@ -22,15 +22,17 @@ import { IBookPut } from 'src/app/core/models/bookPut';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 import { Observable } from 'rxjs/internal/Observable';
+import {CommentComponent} from '../comment/comment.component';
 
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
-  providers: [RequestService, BookService]
+  providers: [RequestService, BookService],
 })
 export class BookComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
+  @ViewChild('comment') comment: CommentComponent;
 
   readonly baseUrl = bookUrl;
   book: IBook;
@@ -39,9 +41,9 @@ export class BookComponent implements OnInit {
   isBookOwner: boolean;
   isWished: boolean;
   readCount: number = null;
-  currentOwner: IUser = null;
-  userWhoRequested: IUser = null;
-  firstOwner: IUser = null;
+  currentOwner: IUserInfo = null;
+  userWhoRequested: IUserInfo = null;
+  firstOwner: IUserInfo = null;
   imagePath: string;
   disabledButton: boolean = false;
   previousBooksPage: booksPage;
@@ -77,7 +79,10 @@ export class BookComponent implements OnInit {
         if (this.isAuthenticated())
       {
         this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
-          if(value) this.isWished = true;});
+          if (value) {
+            this.isWished = true;
+          }
+        });
       }
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
@@ -99,7 +104,7 @@ export class BookComponent implements OnInit {
 
   getOwners(userId: number) {
     this.userService.getUserById(userId)
-      .subscribe((value: IUser) => {
+      .subscribe((value: IUserInfo) => {
         this.currentOwner = value;
         if (this.isAuthenticated()) {
           this.authentication.getUserId().subscribe((value: number) => {
@@ -322,7 +327,7 @@ export class BookComponent implements OnInit {
 
   changeWishList(book:IBook):void
   {
-      if(this.isWished) 
+      if(this.isWished)
       {
         this.wishListService.removeFromWishList(book.id).subscribe(
           (data) => { this.isWished = false; },
@@ -346,5 +351,9 @@ export class BookComponent implements OnInit {
           }
         );
       }
+  }
+
+  public canLeave(): boolean {
+    return this.comment.canLeave();
   }
 }

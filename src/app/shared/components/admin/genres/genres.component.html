@@ -44,6 +44,7 @@
               [dataProperties]="genresProperties"
               [displayColumns]="genresDisplayColumns"
               [(selectedHeader)]="queryParams.sort.orderByField"
+              [canEdit]="true";
               (selectedHeaderChange)="changeSort($event)">
             </app-admin-table>
 

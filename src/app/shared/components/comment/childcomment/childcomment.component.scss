@@ -1,15 +1,20 @@
+p {
+  margin: 0;
+}
+
 .comment-wrapper .panel-body {
   max-height:650px;
-
   overflow:auto;
 }
+
 .width-40{
   width:40%;
 }
+
 .pad{
   padding-left: 10px;
-
 }
+
 .comment-wrapper .media-list .media img {
   width:64px;
   height:64px;
@@ -19,4 +24,85 @@
 .comment-wrapper .media-list .media {
   border-bottom:1px dashed #efefef;
   margin-bottom:25px;
+}
+
+.arrow-down {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.arrow-up {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+}
+
+a[aria-expanded=false] .hidden,
+a[aria-expanded=true] .shown{
+  display: block;
+  transition: all 3s;
+  font-size: 14px;
+}
+
+a[aria-expanded=true] .hidden,
+a[aria-expanded=false] .shown{
+  display: none;
+  transition: all 3s;
+  font-size: 14px;
+}
+
+.btn-text {
+  background-color: transparent;
+  border: none;
+  font-weight: 200;
+  cursor: pointer;
+  text-decoration: none;
+  color: #007bff;
+  padding: 0;
+}
+
+.btn-text:focus {
+  outline: none;
+}
+
+.text-deleted {
+  color: #969090;
+}
+
+.time-value,
+.reply-btn {
+  font-size: 14px;
+  color: rgba(0,0,0,.5);
+  font-weight: 400;
+}
+
+.sub-comment {
+  width: 360px;
+  min-height: 90px;
+  margin-top: 5px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.comment-post-btn {
+  width: 60px;
+  height: 30px;
+  margin: 0;
+  margin-top: 12px;
+  border-radius: 0;
+  box-sizing: content-box;
+  padding: 3px 6px;
+}
+
+.validation-error {
+  font-size: 80%;
+  color: #FF3547;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
