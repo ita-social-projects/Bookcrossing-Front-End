@@ -1,5 +1,5 @@
 import { UserService } from '../../../core/services/user/user.service';
-import { Component, ComponentFactoryResolver, OnInit, ViewChild } from '@angular/core';
+import {Component, ComponentFactoryResolver, HostListener, OnInit, ViewChild} from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,15 +22,17 @@ import { IBookPut } from 'src/app/core/models/bookPut';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 import { Observable } from 'rxjs/internal/Observable';
+import {CommentComponent} from '../comment/comment.component';
 
 @Component({
   selector: 'app-book',
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
-  providers: [RequestService, BookService]
+  providers: [RequestService, BookService],
 })
 export class BookComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
+  @ViewChild('comment') comment: CommentComponent;
 
   readonly baseUrl = bookUrl;
   book: IBook;
@@ -349,5 +351,9 @@ export class BookComponent implements OnInit {
           }
         );
       }
+  }
+
+  public canLeave(): boolean {
+    return this.comment.canLeave();
   }
 }

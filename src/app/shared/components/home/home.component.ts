@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
+import { AphorismService } from 'src/app/core/services/aphorism/aphorism.service';
+import { IAphorism } from 'src/app/core/models/aphorism';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,13 +10,23 @@ import {AuthenticationService} from '../../../core/services/authentication/authe
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private authentication: AuthenticationService) { }
+  aphorism: IAphorism;
 
-  ngOnInit(): void {}
+  constructor(
+    private authentication: AuthenticationService,
+    private aphorismService: AphorismService
+    ) { }
 
-  isAuthenticated() {
-    return this.authentication.isAuthenticated();
+  ngOnInit(): void {
+    this.load();
   }
 
+  public load(): void {
+    this.aphorismService.getAphorism().subscribe((data: IAphorism) => this.aphorism = data);
+  }
+
+  public isAuthenticated(): boolean {
+    return this.authentication.isAuthenticated();
+  }
 }
 

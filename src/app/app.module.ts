@@ -108,6 +108,7 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
 import { NotificationBellComponent } from './shared/components/notification-bell/notification-bell.component';
 import { NotificationBellService } from './core/services/notification-bell/notification-bell.service';
 import { SignalRService } from './core/services/signal-r/signalr.service';
+import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
 
 @NgModule({
   declarations: [
@@ -239,7 +240,8 @@ import { SignalRService } from './core/services/signal-r/signalr.service';
     EmailNotificationService,
     WishListService,
     NotificationBellService,
-    SignalRService
+    SignalRService,
+    BookCanDeactivateGuard
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent]

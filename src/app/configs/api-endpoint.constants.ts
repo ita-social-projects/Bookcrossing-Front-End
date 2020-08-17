@@ -17,6 +17,7 @@ export const dashboardUrl = baseUrl + 'admin/dashboard';
 export const languageUrl = baseUrl + 'language/';
 export const outerBookUrl = baseUrl + 'OuterBooksSource/';
 export const wishListUrl = baseUrl + 'WishList/';
+export const aphorismUrl = baseUrl + 'Aphorism';
 export const registrationUrl = window.location.origin + '/registration/';
 export const bookRegistrationUrl = window.location.origin + '/book/';
 export const booksUrl = window.location.origin + '/books/';

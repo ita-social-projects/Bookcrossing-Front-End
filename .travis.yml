@@ -1,9 +1,12 @@
 ﻿dist: trusty
 sudo: false
 
+git:
+   depth: 9999999
+
 language: node_js
 node_js:
-  - '13.7.0'
+  - '12.16.3'
 
 addons:
     chrome: stable
@@ -16,13 +19,17 @@ install:
   - npm install
 
 before_script:
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
   - npm install -g @angular/cli
   
 script:
-  - npm run-script build --prod --base-href $base_href 
+  - npm run-script build --base-href $base_href
+  - ng test --watch=false
   
 deploy:
-  provider: heroku
-  api_key: $API_Key
-  app: book-crossing-dev
-  on: develop
+    provider: azure_web_apps
+    verbose: true
+    on:
+        develop
