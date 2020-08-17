@@ -2,87 +2,88 @@
 
   <div class="row bootstrap snippets">
     <div class=" col-md-offset-2 col-sm-12">
-      <div class="comment-wrapper">
+      <div>
         <div class="panel panel-info">
 
           <div>
             <ul class="media-list">
 
-              <li *ngFor="let comment of comments;let i = index" [attr.data-index]="i" class="media">
+              <li *ngFor="let comment of comments;let i = index" [attr.data-index]="i" class="comment-wrapper">
 
-                <a class="pull-left">
-                  <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
-                </a>
+                <div class="media">
+                  <a class="pull-left avatar">
+                    <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
+                  </a>
 
-                <div class="media-body pad">
+                  <div class="media-body pad">
 
                   <span class="time-value pull-right">
                         {{ formatDate(comment.date) }}
                   </span>
-                  <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
+                    <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
-                     [attr.data-target]="'#child_' + root + '_' + i + '_edit'"
-                     data-toggle="collapse"
-                     role="button"
-                     href="#">
-                    Edit
-                  </a>
-
-                  <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
-                          (click)="onDeleteComment(comment.id)"
-                          role="button"
-                          class="btn-text"
-                  >
-                    Delete
-                  </button>
-
-                  <p *ngIf="!comment.isDeleted; else DeletedMessage">
-                    {{comment.text}}
-                  </p>
-                  <ng-template #DeletedMessage>
-                    <p class="text-deleted">
-                      [The comment was deleted]
-                    </p>
-                  </ng-template>
-
-                  <small *ngIf="!comment.isDeleted">
-                    <a [attr.data-target]="'#child_' + root + '_' + i + '_reply'"
+                    <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                       [attr.data-target]="'#child_' + root + '_' + i + '_edit'"
                        data-toggle="collapse"
                        role="button"
-                       class="reply-btn"
                        href="#">
-                      Reply
+                      Edit
                     </a>
-                  </small>
 
+                    <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                            (click)="onDeleteComment(comment.id)"
+                            role="button"
+                            class="btn-text"
+                    >
+                      Delete
+                    </button>
 
-                  <div id="child_{{root}}_{{i}}_reply" class="collapse" data-parent="#comments-block">
-
-                    <ng-container *ngIf="isAuthorized; else ReplyNotAllowed">
-                      <!-- Reply form -->
-                      <textarea class="form-control sub-comment"
-                                [(ngModel)]='text'
-                                placeholder="Write a reply up to 500 characters"
-                                #Subcomment
-                                (input)="onCommentInput(Subcomment, 500)"
-                      ></textarea>
-
-                      <button [disabled]="Subcomment.value.length === 0"
-                              (click)="PostComment(Subcomment.value, returnID(comment.id))"
-                              type="button"
-                              class="btn btn-info pull-right comment-post-btn">
-                        Post
-                      </button>
-                    </ng-container>
-                    <ng-template #ReplyNotAllowed>
-                      <p class="validation-error">Please, log in to reply to comments/sub-comments</p>
+                    <p *ngIf="!comment.isDeleted; else DeletedMessage">
+                      {{comment.text}}
+                    </p>
+                    <ng-template #DeletedMessage>
+                      <p class="text-deleted">
+                        [The comment was deleted]
+                      </p>
                     </ng-template>
-                  </div>
 
-                  <div id="child_{{root}}_{{i}}_edit" class="collapse" data-parent="#comments-block">
-                    <!-- Edit form -->
-                    <form #updateFrom="ngForm">
+                    <small *ngIf="!comment.isDeleted">
+                      <a [attr.data-target]="'#child_' + root + '_' + i + '_reply'"
+                         data-toggle="collapse"
+                         role="button"
+                         class="reply-btn"
+                         href="#">
+                        Reply
+                      </a>
+                    </small>
+
+
+                    <div id="child_{{root}}_{{i}}_reply" class="collapse text-area" data-parent="#comments-block">
+
+                      <ng-container *ngIf="isAuthorized; else ReplyNotAllowed">
+                        <!-- Reply form -->
+                        <textarea class="form-control sub-comment"
+                                  [(ngModel)]='text'
+                                  placeholder="Write a reply up to 500 characters"
+                                  #Subcomment
+                                  (input)="onCommentInput(Subcomment, 500)"
+                        ></textarea>
+
+                        <button [disabled]="Subcomment.value.length === 0"
+                                (click)="PostComment(Subcomment.value, returnID(comment.id))"
+                                type="button"
+                                class="btn btn-info pull-right comment-post-btn">
+                          Post
+                        </button>
+                      </ng-container>
+                      <ng-template #ReplyNotAllowed>
+                        <p class="validation-error">Please, log in to reply to comments/sub-comments</p>
+                      </ng-template>
+                    </div>
+
+                    <div id="child_{{root}}_{{i}}_edit" class="collapse text-area" data-parent="#comments-block">
+                      <!-- Edit form -->
+                      <form #updateFrom="ngForm">
                        <textarea name="text"
                                  class="form-control sub-comment"
                                  placeholder="Edit your comment..."
@@ -92,19 +93,22 @@
                                  (input)="onCommentInput(EditComment, 500)"
                        ></textarea>
 
-                      <button type="button"
-                              class="btn btn-info comment-post-btn"
-                              [disabled]="EditComment.value.length === 0"
-                              (click)="updateComment(comment.id,EditComment.value)">
-                        Post
-                      </button>
-                    </form>
+                        <button type="button"
+                                class="btn btn-info comment-post-btn"
+                                [disabled]="EditComment.value.length === 0"
+                                (click)="updateComment(comment.id,EditComment.value)">
+                          Post
+                        </button>
+                      </form>
+                    </div>
                   </div>
+                </div>
 
-
+                <div>
                   <ng-template [ngIf]="comment.comments.length > 0">
-                    <a data-toggle="collapse" href="#child_subcomments_{{level}}_{{i}}" role="button"
-                       aria-expanded="false" aria-controls="collapseExample">
+                    <a data-toggle="collapse" href="#child_subcomments_{{root}}_{{i}}" role="button"
+                       aria-expanded="false" aria-controls="collapseExample"
+                       class="show-subcomments">
 
                       <div class="hidden">
                         View all {{comment.comments.length}} replies
@@ -117,7 +121,7 @@
                       </div>
                     </a>
 
-                    <div class="collapse" id="child_subcomments_{{level}}_{{i}}">
+                    <div class="collapse" id="child_subcomments_{{root}}_{{i}}">
                       <app-childcomment #childComment
                                         (update)="UpdateComments()"
                                         [comments]="comment.comments"
@@ -125,11 +129,10 @@
                                         [root]="root + '_' + i"
                                         [user]="user"
                                         [ids]="returnID(comment.id)"
-                                        [isAuthorized]="isAuthorized" ></app-childcomment>
+                                        [isAuthorized]="isAuthorized"></app-childcomment>
 
                     </div>
                   </ng-template>
-
                 </div>
               </li>
 
