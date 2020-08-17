@@ -72,83 +72,83 @@
             <table class="table borderless">
               <tbody>
                 <tr *ngIf="book?.authors != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>Author: </strong></ng-template>
-                    <ng-template #manyAuthors><strong>Authors: </strong></ng-template>
+                    <ng-template #manyAuthors><strong >Authors: </strong></ng-template>
                   </th>
-                  <td class="align-middle"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
+                  <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
                 </tr>
                 <tr *ngIf="book?.genres != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>Category: </strong></ng-template>
                     <ng-template #manyGenres><strong>Categories: </strong></ng-template>
                   </th>
-                  <td class="align-middle"><span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0"> , </ng-template>{{genre?.name }}</span></td>
+                  <td class="align-middle" class="fontsize"><span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0"> , </ng-template>{{genre?.name }}</span></td>
                 </tr>
                 <tr *ngIf="book?.language != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Language: </strong>
                   </th>
-                  <td class="align-middle">{{ book?.language?.name }}</td>
+                  <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
                 </tr>
                 <tr *ngIf="book?.location != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Location: </strong>
                   </th>
-                  <td class="align-middle"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                  <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
                 </tr>
                 <tr *ngIf="currentOwner !== null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Current owner: </strong>
                   </th>
-                  <td class="align-middle">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <span>
+                  <td class="align-middle" class="fontsize">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <span>
                     (<a [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
                   </span></td>
                 </tr>
                 <tr *ngIf="firstOwner !== null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Registered by: </strong> 
                   </th>
-                  <td class="align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
+                  <td class="align-middle" class="fontsize">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
                     <span>
                       (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
                     </span></td>
                 </tr>
                 <tr *ngIf="userWhoRequested != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Requested by: </strong>
                   </th>
-                  <td class="align-middle">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}<span>
+                  <td class="align-middle" class="fontsize">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}<span>
                     (<a [href]="'mailto:'.concat(userWhoRequested?.email)">{{ userWhoRequested?.email | UserName }}</a>)
                   </span></td>
                 </tr>
                 <tr *ngIf="book?.publisher != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>{{ 'components.book.publisher' | translate }}:</strong> 
                   </th>
-                  <td class="align-middle">{{ book?.publisher }} </td>
+                  <td class="align-middle" class="fontsize">{{ book?.publisher }} </td>
                 </tr>
                 <tr *ngIf="book?.state != null">
-                  <th scope="row">
+                  <th scope="row" class="fontsize">
                     <strong>Status: </strong>
                   </th>
-                  <td class="align-middle"><span [ngSwitch]="book?.state">
+                  <td class="align-middle" class="fontsize"><span [ngSwitch]="book?.state">
                     <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span></ng-template>
                     <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span></ng-template>
                     <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span></ng-template>
                     <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span></ng-template>
                   </span></td>
                 </tr>
-                <tr *ngIf="book?.notice != null">
-                  <th scope="row">
-                    <strong>Notice: </strong>
-                  </th>
-                  <td class="align-middle">{{ book?.notice }} </td>
-                </tr>
+               
               </tbody>
             </table>
-            
           </div>
+          <tr *ngIf="book?.notice != null">
+            <th scope="row" class="fontsize">
+              <strong style="margin-left: 11px;">Notice: </strong>
+            </th>
+            <td class="fontsize" ><p style="margin-left: 65px; word-wrap: break-word;">{{ book?.notice }}</p> </td>
+          </tr>
 
         </div>
         <div class="col-lg-1">
