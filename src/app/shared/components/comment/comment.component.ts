@@ -150,12 +150,12 @@ export class CommentComponent implements OnInit {
       });
   }
 
-  updateComment(id, text, rating) {
-    if(typeof this.updateRating === 'undefined'){
+  public updateComment(id, text, rating): void {
+    if (typeof this.updateRating === 'undefined') {
       this.updateRating = rating;
     }
     const updateComment: IRootUpdateComment = {
-      id: id, ownerId: this.user.id, rating: this.updateRating, text: text
+      id, ownerId: this.user.id, rating: this.updateRating, text
     };
     this.commentservice.updateComment(updateComment).subscribe(() => this.UpdateComments());
   }

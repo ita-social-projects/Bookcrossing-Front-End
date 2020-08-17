@@ -50,7 +50,8 @@
                     <a [attr.data-target]="'#child_' + root + '_' + i + '_reply'"
                        data-toggle="collapse"
                        role="button"
-                       class="reply-btn">
+                       class="reply-btn"
+                       href="#">
                       Reply
                     </a>
                   </small>
@@ -68,7 +69,7 @@
                       ></textarea>
 
                       <button [disabled]="Subcomment.value.length === 0"
-                              (click)="PostComment(returnID(comment.id))"
+                              (click)="PostComment(Subcomment.value, returnID(comment.id))"
                               type="button"
                               class="btn btn-info pull-right comment-post-btn">
                         Post
@@ -94,7 +95,7 @@
                       <button type="button"
                               class="btn btn-info comment-post-btn"
                               [disabled]="EditComment.value.length === 0"
-                              (click)="updateComment(comment.id,updateFrom.value.text)">
+                              (click)="updateComment(comment.id,EditComment.value)">
                         Post
                       </button>
                     </form>
