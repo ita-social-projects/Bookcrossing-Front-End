@@ -2,9 +2,10 @@
 
   <div class="row bootstrap snippets">
     <div class=" col-md-offset-2 col-sm-12">
-      <div class="comment-wrapper">
+      <div>
         <div class="panel panel-info ">
-          <ngx-star-rating class="rating" [filledColor]="'#FF8800'" (rated)="onRatingSet($event)" [rating]="rating"></ngx-star-rating>
+          <ngx-star-rating class="rating" [filledColor]="'#FF8800'" (rated)="onRatingSet($event)"
+                           [rating]="rating"></ngx-star-rating>
           <div>
             <div>
                 <textarea class="form-control main-comment"
@@ -16,7 +17,8 @@
                 </textarea>
             </div>
 
-            <button [disabled]="!canCommit()" type="button" (click)="PostComment()" class="btn btn-info pull-right comment-post-btn">
+            <button [disabled]="!canCommit()" type="button" (click)="PostComment()"
+                    class="btn btn-info pull-right comment-post-btn">
               Post
             </button>
             <a *ngIf="!isAuthenticated()" [routerLink]="['/login']">login to comment</a>
@@ -24,82 +26,86 @@
             <hr>
             <ul class="media-list" id="comments-block">
 
-              <li *ngFor="let comment of comments; let i = index" [attr.data-index]="i" class="media">
+              <li *ngFor="let comment of comments; let i = index" [attr.data-index]="i" class="comment-wrapper">
 
-                <a class="pull-left">
-                  <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
-                </a>
 
-                <div class="media-body pad">
-
-                  <span class="time-value pull-right">
-                        {{ formatDate(comment.date) }}
-                  </span>
-                  <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
-
-                  <a *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
-                     [attr.data-target]="'#root_'+ i + '_edit'"
-                     data-toggle="collapse"
-                     role="button"
-                     class="btn-text"
-                     href="#">
-                    Edit
+                <div class="media">
+                  <a class="pull-left">
+                    <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
                   </a>
 
-                  <button *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
-                          (click)="onDeleteComment(comment.id)"
-                          role="button"
-                          class="btn-text"
-                  >
-                    Delete
-                  </button>
+                  <div class="media-body pad">
+                    <span class="time-value pull-right">
+                          {{ formatDate(comment.date) }}
+                    </span>
+                    <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
 
-                  <ngx-star-rating *ngIf="!comment.isDeleted && comment.rating !== 0" [filledColor]="'#FF8800'" [rating]="comment.rating" readonly="true"></ngx-star-rating>
-                  <p *ngIf="!comment.isDeleted; else DeletedMessage">
-                    {{comment.text}}
-                  </p>
-                  <ng-template #DeletedMessage>
-                    <p class="text-deleted">
-                      [The comment was deleted]
-                    </p>
-                  </ng-template>
-
-                  <small *ngIf="!comment.isDeleted">
-                    <a [attr.data-target]="'#root_'+ i + '_reply'"
+                    <a *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
+                       [attr.data-target]="'#root_'+ i + '_edit'"
                        data-toggle="collapse"
-                       class="reply-btn">
-                      Reply
+                       role="button"
+                       class="btn-text"
+                       href="#">
+                      Edit
                     </a>
-                  </small>
 
-                  <!--Reply form-->
-                  <div id="root_{{i}}_reply" class="collapse" data-parent="#comments-block">
-                    <ng-container *ngIf="isAuthenticated(); else ReplyNotAllowed">
-                      <div>
+                    <button *ngIf="!comment.isDeleted && canEditComment(comment.owner)"
+                            (click)="onDeleteComment(comment.id)"
+                            role="button"
+                            class="btn-text"
+                    >
+                      Delete
+                    </button>
+
+                    <ngx-star-rating *ngIf="!comment.isDeleted && comment.rating !== 0" [filledColor]="'#FF8800'"
+                                     [rating]="comment.rating" readonly="true"></ngx-star-rating>
+                    <p *ngIf="!comment.isDeleted; else DeletedMessage">
+                      {{comment.text}}
+                    </p>
+                    <ng-template #DeletedMessage>
+                      <p class="text-deleted">
+                        [The comment was deleted]
+                      </p>
+                    </ng-template>
+
+                    <small *ngIf="!comment.isDeleted">
+                      <a [attr.data-target]="'#root_'+ i + '_reply'"
+                         data-toggle="collapse"
+                         class="reply-btn"
+                         href="#">
+                        Reply
+                      </a>
+                    </small>
+
+                    <!--Reply form-->
+                    <div id="root_{{i}}_reply" class="collapse" data-parent="#comments-block">
+                      <ng-container *ngIf="isAuthenticated(); else ReplyNotAllowed">
+                        <div>
                           <textarea class="form-control sub-comment"
                                     placeholder="Write a reply up to 500 characters"
                                     #Subcomment
                                     (input)="onCommentInput(Subcomment, 500)"
                           ></textarea>
-                      </div>
+                        </div>
 
-                      <button [disabled]="Subcomment.value.length === 0"
-                              (click)="PostChildComment(Subcomment.value, returnID(comment.id))"
-                              type="button"
-                              class="btn btn-info pull-right comment-post-btn">
-                        Post
-                      </button>
-                    </ng-container>
-                    <ng-template #ReplyNotAllowed>
-                      <p class="validation-error">Please, log in to reply to comments/sub-comments</p>
-                    </ng-template>
-                  </div>
+                        <button [disabled]="Subcomment.value.length === 0"
+                                (click)="PostChildComment(Subcomment.value, returnID(comment.id))"
+                                type="button"
+                                class="btn btn-info pull-right comment-post-btn">
+                          Post
+                        </button>
+                      </ng-container>
+                      <ng-template #ReplyNotAllowed>
+                        <p class="validation-error">Please, log in to reply to comments/sub-comments</p>
+                      </ng-template>
+                    </div>
 
-                  <!--Edit form-->
-                  <div id="root_{{i}}_edit" class="collapse" data-parent="#comments-block">
-                    <form #updateFrom="ngForm">
-                      <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating" (rated)="onEditRatingSet($event)"></ngx-star-rating>
-                      <div>
+                    <!--Edit form-->
+                    <div id="root_{{i}}_edit" class="collapse" data-parent="#comments-block">
+                      <form #updateFrom="ngForm">
+                        <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating"
+                                         (rated)="onEditRatingSet($event)"></ngx-star-rating>
+                        <div>
                           <textarea class="form-control sub-comment"
                                     placeholder="Edit your comment..."
                                     [ngModel]="comment.text"
@@ -108,20 +114,25 @@
                                     #EditComment
                                     (input)="onCommentInput(EditComment, 500)"
                           ></textarea>
-                      </div>
+                        </div>
 
-                      <button [disabled]="EditComment.value.length === 0"
-                              (click)="updateComment(comment.id, EditComment.value, comment.rating)"
-                              type="button"
-                              class="btn btn-info pull-right comment-post-btn">
-                        Post
-                      </button>
-                    </form>
+                        <button [disabled]="EditComment.value.length === 0"
+                                (click)="updateComment(comment.id, EditComment.value, comment.rating)"
+                                type="button"
+                                class="btn btn-info pull-right comment-post-btn">
+                          Post
+                        </button>
+                      </form>
+                    </div>
                   </div>
+                </div>
 
+
+                <div>
                   <ng-template [ngIf]="comment.comments.length > 0">
                     <a data-toggle="collapse" href="#root_subcomments_{{i}}" role="button"
-                       aria-expanded="false" [attr.aria-controls]="'root_subcomments_' + i">
+                       aria-expanded="false" [attr.aria-controls]="'root_subcomments_' + i"
+                       class="show-subcomments">
                       <div class="hidden">
                         View all {{comment.comments.length}} replies
                         <i class="arrow-down"></i>
@@ -145,7 +156,6 @@
 
                     </div>
                   </ng-template>
-
                 </div>
               </li>
 

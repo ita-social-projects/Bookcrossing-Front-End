@@ -2,9 +2,9 @@ p {
   margin: 0;
 }
 
-.comment-wrapper .panel-body {
-  max-height:650px;
-  overflow:auto;
+.comment-wrapper {
+  list-style-type: none;
+  padding-bottom: 5px;
 }
 
 .width-40{
@@ -15,16 +15,26 @@ p {
   padding-left: 10px;
 }
 
-.comment-wrapper .media-list .media img {
-  width:64px;
-  height:64px;
-  border:2px solid #e5e7e8;
+.avatar {
+  margin-top: 10px;
 }
 
-.comment-wrapper .media-list .media {
-  border-bottom:1px dashed #efefef;
-  margin-bottom:25px;
+.media {
+  border-top: 1px dashed #0000002b;
 }
+
+.show-subcomments {
+  display: block;
+  margin-left: 60px;
+}
+
+.media-list {
+  padding: 0;
+  margin-left: 49px;
+  margin-top: 5px;
+}
+
+
 
 .arrow-down {
   border: solid black;
@@ -66,6 +76,10 @@ a[aria-expanded=false] .shown{
   text-decoration: none;
   color: #007bff;
   padding: 0;
+}
+
+.text-area {
+  margin-bottom: 8px;
 }
 
 .btn-text:focus {
