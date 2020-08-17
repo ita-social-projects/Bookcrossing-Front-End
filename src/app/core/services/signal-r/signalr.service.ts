@@ -8,16 +8,26 @@ import { environment } from 'src/environments/environment';
 })
 
 export class SignalRService {
-  public hubConnection;
+  public hubConnection: signalR.HubConnection;
 
   public startConnection = (url: string) => {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-                            .withUrl(environment.apiUrl + url, 
-                            { accessTokenFactory: () => JSON.parse(localStorage.getItem('currentUser')).token.jwt })
-                            .build();
+    this.createHubConnection(url);
+
     this.hubConnection
       .start()
       .then(() => {})
       .catch(err => console.log('Error while starting connection: ' + err));
+
+    this.hubConnection.serverTimeoutInMilliseconds = 100000;
+    this.hubConnection.keepAliveIntervalInMilliseconds = 50000;
+    this.hubConnection.onclose(() => { this.createHubConnection(url);  this.hubConnection.start() } );
+  }
+
+  private createHubConnection(url: string) {
+    this.hubConnection = new signalR.HubConnectionBuilder()
+                            .configureLogging(signalR.LogLevel.None)
+                            .withUrl(environment.apiUrl + url, 
+                            { accessTokenFactory: () => JSON.parse(localStorage.getItem('currentUser')).token.jwt })
+                            .build();
   }
 }
