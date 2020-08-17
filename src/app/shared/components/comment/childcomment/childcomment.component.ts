@@ -102,17 +102,17 @@ export class ChildcommentComponent implements OnInit {
       });
   }
 
-  updateComment(id, text) {
-    let newids = this.returnID(id);
-    let updateComment: IChildUpdateComment = {
-      ids: newids, ownerId: this.user.id, text: text
-    }
+  public updateComment(id, text): void {
+    const newids = this.returnID(id);
+    const updateComment: IChildUpdateComment = {
+      ids: newids, ownerId: this.user.id, text
+    };
     this.commentservice.updateChildComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
-  PostComment(ids: string[]) {
+  public PostComment(text: string, ids: string[]): void {
     const postComment: IChildInsertComment = {
-      ids: ids, ownerId: this.user.id, text: this.text
+      ids, ownerId: this.user.id, text
     };
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';

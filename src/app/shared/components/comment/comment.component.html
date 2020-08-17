@@ -111,7 +111,7 @@
                       </div>
 
                       <button [disabled]="EditComment.value.length === 0"
-                              (click)="updateComment(comment.id,updateFrom.value.text, comment.rating)"
+                              (click)="updateComment(comment.id, EditComment.value, comment.rating)"
                               type="button"
                               class="btn btn-info pull-right comment-post-btn">
                         Post
