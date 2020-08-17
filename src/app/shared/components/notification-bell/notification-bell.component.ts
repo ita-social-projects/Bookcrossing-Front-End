@@ -119,10 +119,12 @@ export class NotificationBellComponent implements OnInit {
     document.getElementById('box').style.height = '0vh';
   }
 
-  public checkIfBookIsAvailable(bookId: number) {
+  public checkIfBookIsAvailable(bookId: number): boolean {
+    let res;
     this.bookService.getBookById(bookId).subscribe((book: IBook) => {
-      return book.state === bookState.available;
+      res = book.state === bookState.available;
     } );
+    return res;
   }
 
   public async requestBook(bookId: number): Promise<void> {

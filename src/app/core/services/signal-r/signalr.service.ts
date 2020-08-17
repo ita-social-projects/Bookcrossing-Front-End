@@ -12,11 +12,12 @@ export class SignalRService {
 
   public startConnection = (url: string) => {
     this.hubConnection = new signalR.HubConnectionBuilder()
-                            .withUrl(environment.apiUrl + url, { accessTokenFactory: () => JSON.parse(localStorage.getItem("currentUser")).token.jwt})
+                            .withUrl(environment.apiUrl + url, 
+                            { accessTokenFactory: () => JSON.parse(localStorage.getItem('currentUser')).token.jwt })
                             .build();
     this.hubConnection
       .start()
       .then(() => {})
-      .catch(err => console.log('Error while starting connection: ' + err))
+      .catch(err => console.log('Error while starting connection: ' + err));
   }
 }
