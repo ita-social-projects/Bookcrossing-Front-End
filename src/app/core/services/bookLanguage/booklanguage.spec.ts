@@ -2,18 +2,18 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { languageUrl } from '../../../configs/api-endpoint.constants';
-import { ILanguage } from '../../models/language'
+import { ILanguage } from '../../models/language';
 import { BookLanguageService } from './bookLanguage';
 
-//Testing of BookLanguageService
-describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguage(location), .deleteLanguage(id), .editLanguage(language)', 
+// Testing of BookLanguageService
+describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguage(location), .deleteLanguage(id), .editLanguage(language)',
     () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let languageService: BookLanguageService;
 
   beforeEach(() => {
-    //Configures testing app module
+    // Configures testing app module
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -21,19 +21,21 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
       ]
     });
 
-    //Instantaites HttpClient, HttpTestingController and BookLanguageService
+    // Instantaites HttpClient, HttpTestingController and BookLanguageService
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
     languageService = TestBed.inject(BookLanguageService);
   });
 
   afterEach(() => {
-    httpTestingController.verify(); //Verifies that no requests are outstanding.
+    httpTestingController.verify(); // Verifies that no requests are outstanding.
   });
-  
-  //Test case 1
+
+  // Test case 1
   it('should be GET method and get List of ILanguage objects', () => {
+    /* tslint:disable */
     let languages: ILanguage[];
+    /* tslint:enable */
 
 
     languageService.getLanguage().subscribe(
@@ -45,16 +47,15 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
     const req = httpTestingController.expectOne(languageUrl);
     expect(req.request.method).toEqual('GET');
   });
-  
 
-  //Test case 2
+
+  // Test case 2
   it('should send id and get language GET method', () => {
-    const language: ILanguage = 
-    {
+    const language: ILanguage = {
          id: 1,
-         name: 'English' 
+         name: 'English'
     };
-    let id: 1;
+    const id = 1;
 
     languageService.getLanguageById(id).subscribe(
       data => expect(data).toEqual(language, 'should send id and get language'),
@@ -66,13 +67,12 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
     expect(req.request.method).toEqual('GET');
   });
 
-  
-  //Test case 3
+
+  // Test case 3
   it('should send language and get it back POST method', () => {
-    const newLanguage: ILanguage = 
-    {
+    const newLanguage: ILanguage = {
          id: 1,
-         name: 'English' 
+         name: 'English'
     };
 
     languageService.postLanguage(newLanguage).subscribe(
@@ -87,9 +87,9 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
   });
 
 
-   //Test case 4
-   it('should send id DELETE method', () => {
-    let id: 1;
+   // Test case 4
+  it('should send id DELETE method', () => {
+    const id = 1;
 
     languageService.deleteLanguage(id).subscribe(
       data => expect(data).toEqual(Object, 'should send id and return'),
@@ -102,12 +102,11 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
   });
 
 
-  //Test case 5
+  // Test case 5
   it('should send location PUT method', () => {
-    const newLanguage: ILanguage = 
-    {
+    const newLanguage: ILanguage = {
          id: 1,
-         name: 'English' 
+         name: 'English'
     };
 
 
@@ -121,5 +120,5 @@ describe('#BookLanguageService.getLanguage(), .getLanguageById(id), .postLanguag
     expect(req.request.method).toEqual('PUT');
     expect(req.request.body).toEqual(newLanguage);
   });
-}); 
+});
 

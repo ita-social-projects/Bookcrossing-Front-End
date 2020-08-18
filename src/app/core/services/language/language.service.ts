@@ -1,6 +1,6 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {Language} from "src/app/core/models/languages.enum";
-import {CookieService} from "ngx-cookie-service";
+import {Language} from 'src/app/core/models/languages.enum';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,24 +15,24 @@ export class LanguageService {
     private cookieService: CookieService
   ) {
     this.languages = Object.keys(Language)
-      .filter((elem) => !Number.isInteger(parseInt(elem)))
+      .filter((elem) => !Number.isInteger(parseInt(elem, 10)))
       .map(val => Language[val]);
   }
 
   langToString(lang: Language): string {
-    const stringLang:string = Language[lang];
-    if(Number.isNaN(parseInt(stringLang))){
+    const stringLang: string = Language[lang];
+    if (Number.isNaN(parseInt(stringLang, 10))) {
       return stringLang;
     }
     return Language[stringLang];
   }
 
-  getCurrentLang(): Language{
-    return Language[this.cookieService.get("lang")]
+  getCurrentLang(): Language {
+    return Language[this.cookieService.get('lang')];
   }
 
   setLanguage(lang: Language): void {
-    if (this.cookieService.check('lang')){
+    if (this.cookieService.check('lang')) {
       this.cookieService.delete('lang');
     }
 

@@ -27,7 +27,7 @@ export class AuthorService {
   getAuthorsPage(paginationParameters: CompletePaginationParams): Observable<IPage<IAuthor>> {
     return this.pagination.getPaginatedPage<IAuthor>(authorUrl + '/paginated', paginationParameters);
   }
-  getAuthorById(authorId: number){
+  getAuthorById(authorId: number) {
      return this.http.get<IAuthor>(authorUrl + `/${authorId}`);
   }
   mergeAuthors(author: IAuthor, authorIds: number[]) {

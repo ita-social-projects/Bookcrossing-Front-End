@@ -9,23 +9,22 @@ import { Location } from '@angular/common';
 
 enum FormAction {
   Edit = 'edit',
-  Add = 'add'
+  Add = 'add',
 }
 
 @Component({
   selector: 'app-language-form',
   templateUrl: './language-form.component.html',
-  styleUrls: ['./language-form.component.scss']
+  styleUrls: ['./language-form.component.scss'],
 })
 export class LanguageFormComponent implements OnInit {
-
   language: ILanguage;
   action: FormAction = FormAction.Add;
   title: string;
   submitButtonText: string;
   form: FormGroup;
   hideErrorInterval: NodeJS.Timeout;
-  submitted: boolean = false;
+  submitted = false;
 
   constructor(
     private router: ActivatedRoute,
@@ -33,20 +32,20 @@ export class LanguageFormComponent implements OnInit {
     private languageService: BookLanguageService,
     private translate: TranslateService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getRequestType();
     this.buildForm();
   }
 
-  getRequestType(): void {
+  public getRequestType(): void {
     if (this.languageService.formLanguage?.id) {
       this.language = this.languageService.formLanguage;
       this.action = FormAction.Edit;
     } else {
       const newLanguage: ILanguage = {
-        name: ''
+        name: '',
       };
       this.action = FormAction.Add;
       this.language = newLanguage;
@@ -54,23 +53,27 @@ export class LanguageFormComponent implements OnInit {
     this.translateText();
   }
 
-  private translateText() {
+  private translateText(): void {
     this.title = 'components.admin.languages-form.' + this.action + '-title';
-    this.submitButtonText = 'components.admin.languages-form.' + this.action + '-button';
+    this.submitButtonText =
+      'components.admin.languages-form.' + this.action + '-button';
   }
 
-  buildForm(): void {
+  public buildForm(): void {
     this.form = new FormGroup({
-      id : new FormControl({value: this.language.id, disabled: true}),
-      name : new FormControl(this.language.name, [
+      id: new FormControl({ value: this.language.id, disabled: true }),
+      name: new FormControl(this.language.name, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(20),
-        Validators.pattern('^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)\'-]+)$')])
+        /* tslint:disable */
+        Validators.pattern("^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)'-]+)$"),
+        /* tslint:enable */
+      ]),
     });
   }
 
-  submit(): void {
+  public submit(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid || this.submitted) {
       return;
@@ -92,45 +95,55 @@ export class LanguageFormComponent implements OnInit {
     }
   }
 
-  cancel(): void {
+  public cancel(): void {
     this.location.back();
   }
 
-  addLanguage(language: ILanguage) {
+  public addLanguage(language: ILanguage): void {
     this.languageService.addLanguage(language).subscribe(
       (data: ILanguage) => {
         this.languageService.submitLanguage(language);
         this.cancel();
-        this.notificationService.success(this.translate
-          .instant('components.admin.languages.add-success'), 'X');
+        this.notificationService.success(
+          this.translate.instant('components.admin.languages.add-success'),
+          'X'
+        );
       },
-      (error) => {
-        this.submitted = false
-        this.notificationService.error(this.translate
-          .instant('common-errors.error-message'), 'X');
-      },
+      () => {
+        this.submitted = false;
+        this.notificationService.error(
+          this.translate.instant('common-errors.error-message'),
+          'X'
+        );
+      }
     );
   }
 
-  updateLanguage(language: ILanguage) {
+  public updateLanguage(language: ILanguage): void {
     this.languageService.updateLanguage(language).subscribe(
       (data: ILanguage) => {
         this.languageService.submitLanguage(language);
         this.cancel();
-        this.notificationService.success(this.translate
-          .instant('components.admin.languages.update-success'), 'X');
+        this.notificationService.success(
+          this.translate.instant('components.admin.languages.update-success'),
+          'X'
+        );
       },
-      (error) => {
+      () => {
         this.submitted = false;
-        this.notificationService.error(this.translate
-          .instant('common-errors.error-message'), 'X');
-      },
+        this.notificationService.error(
+          this.translate.instant('common-errors.error-message'),
+          'X'
+        );
+      }
     );
   }
 
   public checkLength(input: HTMLInputElement, maxLength): void {
     if (input.value.length > maxLength) {
-      this.form.controls[input.name].setErrors({ maxlength: {requiredLength: maxLength}});
+      this.form.controls[input.name].setErrors({
+        maxlength: { requiredLength: maxLength },
+      });
       this.form.controls[input.name].markAsTouched();
       input.value = input.value.substr(0, maxLength);
 

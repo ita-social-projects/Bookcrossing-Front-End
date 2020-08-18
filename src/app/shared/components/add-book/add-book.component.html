@@ -22,11 +22,27 @@
             trim="blur"
           />
           <div *ngIf="addBookForm.get('title').errors">
-            <div *ngIf="addBookForm.get('title').errors?.required && addBookForm.get('title').touched" class="validation-error">
+            <div
+              *ngIf="
+                addBookForm.get('title').errors?.required &&
+                addBookForm.get('title').touched
+              "
+              class="validation-error"
+            >
               This field is required.
             </div>
-            <div *ngIf="addBookForm.get('title').errors?.maxlength" class="validation-error">
-              {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('title').errors?.maxlength?.requiredLength} }}
+            <div
+              *ngIf="addBookForm.get('title').errors?.maxlength"
+              class="validation-error"
+            >
+              {{
+                "common-errors.validation-max-length"
+                  | translate
+                    : {
+                        value: addBookForm.get("title").errors?.maxlength
+                          ?.requiredLength
+                      }
+              }}
             </div>
           </div>
         </div>
@@ -61,38 +77,61 @@
                 (blur)="authorFocused = false"
                 (input)="checkLength(firstnameInput, 100)"
                 [ngClass]="{
-                  'ng-invalid': addBookForm.get('authorFirstname').touched &&
-                       !selectedAuthors.length &&
-                       !addBookForm.controls.authorFirstname.value?.trim() &&
-                       !withoutAuthorChecked,
-                  'not-confirmed': addBookForm.controls.authorFirstname.dirty &&
-                       addBookForm.controls.authorFirstname.value!='' &&
-                       !withoutAuthorChecked
+                  'ng-invalid':
+                    addBookForm.get('authorFirstname').touched &&
+                    !selectedAuthors.length &&
+                    !addBookForm.controls.authorFirstname.value?.trim() &&
+                    !withoutAuthorChecked,
+                  'not-confirmed':
+                    addBookForm.controls.authorFirstname.dirty &&
+                    addBookForm.controls.authorFirstname.value != '' &&
+                    !withoutAuthorChecked
                 }"
               />
               <div
-                *ngIf=" addBookForm.get('authorFirstname').touched &&
-                       !selectedAuthors.length &&
-                       !addBookForm.controls.authorFirstname.value?.trim() &&
-                       !withoutAuthorChecked"
-                class="validation-error">
+                *ngIf="
+                  addBookForm.get('authorFirstname').touched &&
+                  !selectedAuthors.length &&
+                  !addBookForm.controls.authorFirstname.value?.trim() &&
+                  !withoutAuthorChecked
+                "
+                class="validation-error"
+              >
                 This field is required.
               </div>
               <div
-                *ngIf="submitted &&
-                       !checkAuthorLastName(addBookForm.controls.authorFirstname.value) &&
-                       !withoutAuthorChecked"
-                class="validation-error">
+                *ngIf="
+                  submitted &&
+                  !checkAuthorLastName(
+                    addBookForm.controls.authorFirstname.value
+                  ) &&
+                  !withoutAuthorChecked
+                "
+                class="validation-error"
+              >
                 Lastname is required.
               </div>
-              <div *ngIf="addBookForm.get('authorFirstname').errors?.maxlength" class="validation-error">
-                {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('authorFirstname').errors?.maxlength?.requiredLength} }}
+              <div
+                *ngIf="addBookForm.get('authorFirstname').errors?.maxlength"
+                class="validation-error"
+              >
+                {{
+                  "common-errors.validation-max-length"
+                    | translate
+                      : {
+                          value: addBookForm.get("authorFirstname").errors
+                            ?.maxlength?.requiredLength
+                        }
+                }}
               </div>
             </div>
           </div>
-          <div *ngIf="addBookForm.controls.authorFirstname.dirty &&
-                      addBookForm.controls.authorFirstname.value!='' &&
-                      !withoutAuthorChecked"
+          <div
+            *ngIf="
+              addBookForm.controls.authorFirstname.dirty &&
+              addBookForm.controls.authorFirstname.value != '' &&
+              !withoutAuthorChecked
+            "
             class="new-author-warning"
           >
             <span>Entered author is saved as 'not confirmed'</span>
@@ -167,9 +206,17 @@
                 }})
               </span>
             </mat-select-trigger>
-            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
+            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
+              genre.name
+            }}</mat-option>
           </mat-select>
-          <div *ngIf="addBookForm.get('genres').touched && addBookForm.get('genres').errors" class="validation-error">
+          <div
+            *ngIf="
+              addBookForm.get('genres').touched &&
+              addBookForm.get('genres').errors
+            "
+            class="validation-error"
+          >
             <div *ngIf="addBookForm.get('genres').errors.required">
               This field is required.
             </div>
@@ -186,10 +233,21 @@
           <mat-select
             class="form-control"
             formControlName="languageId"
-            placeholder="Select">
-            <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.name }}</mat-option>
+            placeholder="Select"
+          >
+            <mat-option
+              *ngFor="let language of languages"
+              [value]="language.id"
+              >{{ language.name }}</mat-option
+            >
           </mat-select>
-          <div *ngIf="addBookForm.get('languageId').touched && addBookForm.get('languageId').errors" class="validation-error">
+          <div
+            *ngIf="
+              addBookForm.get('languageId').touched &&
+              addBookForm.get('languageId').errors
+            "
+            class="validation-error"
+          >
             <div *ngIf="addBookForm.get('languageId').errors.required">
               This field is required.
             </div>
@@ -211,8 +269,18 @@
             (input)="checkLength(Publisher, 150)"
             trim="blur"
           />
-          <div *ngIf="addBookForm.get('publisher').errors?.maxlength" class="validation-error">
-            {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('publisher').errors?.maxlength?.requiredLength} }}
+          <div
+            *ngIf="addBookForm.get('publisher').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("publisher").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
           </div>
         </div>
       </div>
@@ -228,35 +296,61 @@
             type="text"
             class="form-control"
             (input)="checkLength(Description, 250)"
-            trim="blur">
+            trim="blur"
+          >
           </textarea>
-          <div *ngIf="addBookForm.get('description').errors?.maxlength" class="validation-error">
-            {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('description').errors?.maxlength?.requiredLength} }}
+          <div
+            *ngIf="addBookForm.get('description').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("description").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
           </div>
         </div>
       </div>
 
-      <div class="form-row mb-4 ">
+      <div class="form-row mb-4">
         <div class="col-3" style="text-align: left;">
-          <button type="button" [disabled]="!searchTerm.value" (click)="setSearchTerm(searchTerm.value)"  class="btn btn-info"  >
+          <button
+            type="button"
+            [disabled]="!searchTerm.value"
+            (click)="setSearchTerm(searchTerm.value)"
+            class="btn btn-info"
+          >
             Find by ISBN/BookTitle/Author
           </button>
         </div>
-          <div class="col-4" >
-            <input
-           #searchTerm
-           formControlName="isbn"
+        <div class="col-4">
+          <input
+            #searchTerm
+            formControlName="isbn"
             class="form-control"
             trim="blur"
             type="text"
             (input)="checkLength(searchTerm, 150)"
-            />
-            
-            <div *ngIf="addBookForm.get('isbn').errors?.maxlength" class="validation-error">
-              {{'common-errors.validation-max-length' | translate:{value:addBookForm.get('isbn').errors?.maxlength?.requiredLength} }}
-            </div>
+          />
+
+          <div
+            *ngIf="addBookForm.get('isbn').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("isbn").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
           </div>
         </div>
+      </div>
 
       <div class="form-row mb-4">
         <button type="button" class="btn btn-info" (click)="fileInput.click()">
@@ -279,9 +373,9 @@
           />
         </div>
         <div class="col-4">
-          <div *ngIf="selectedFile" >
+          <div *ngIf="selectedFile">
             <span
-            >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
+              >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
             >
             <span
               *ngIf="selectedFile"

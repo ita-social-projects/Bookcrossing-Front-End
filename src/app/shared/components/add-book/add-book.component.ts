@@ -22,7 +22,6 @@ import { OuterServiceService } from 'src/app/core/services/outerService/outer-se
 import { IOuterBook } from 'src/app/core/models/outerBook';
 import { AutofillMonitor } from '@angular/cdk/text-field';
 
-
 @Component({
   selector: 'app-add-book',
   templateUrl: './add-book.component.html',
@@ -42,7 +41,7 @@ export class AddBookComponent implements OnInit {
     private bookLanguageService: BookLanguageService,
     private outerService: OuterServiceService,
     private activeroute: ActivatedRoute
-  ) { }
+  ) {}
 
   addBookForm: FormGroup;
 
@@ -61,8 +60,7 @@ export class AddBookComponent implements OnInit {
   outerBook: IOuterBook;
   hideErrorInterval: NodeJS.Timeout;
 
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
     this.getAllGenres();
     this.getAllLanguages();
@@ -83,23 +81,29 @@ export class AddBookComponent implements OnInit {
         (response: number) => {
           this.userId = response;
         },
-        (error) => {
+        () => {
           console.log('fetching userId error');
         }
       );
     }
 
     this.activeroute.queryParams.subscribe((params) => {
+      /* tslint:disable:no-string-literal */
       if (params['outerBookId']) {
-        this.outerService.getBooksById(params['outerBookId']).subscribe(outerBook => {
-        this.outerBook = outerBook;
-        this.autoFill();
-        });
+      /* tslint:enable:no-string-literal */
+        this.outerService
+          /* tslint:disable:no-string-literal */
+          .getBooksById(params['outerBookId'])
+          /* tslint:enable:no-string-literal */
+          .subscribe((outerBook) => {
+            this.outerBook = outerBook;
+            this.autoFill();
+          });
       }
     });
   }
 
- async autoFill() {
+  public async autoFill(): Promise<void> {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
@@ -107,23 +111,31 @@ export class AddBookComponent implements OnInit {
       this.addBookForm.get('authorFirstname').setValue(author.fullName);
     }
     fetch(this.outerBook.imageUrl)
-    .then(response => response.blob())
-    .then(blob => {
-    this.selectedFile = new File([blob], this.outerBook.imageUrl.substring(this.outerBook.imageUrl.lastIndexOf('/') + 1));
-    console.log(this.selectedFile);
+      .then((response) => response.blob())
+      .then((blob) => {
+        this.selectedFile = new File(
+          [blob],
+          this.outerBook.imageUrl.substring(
+            this.outerBook.imageUrl.lastIndexOf('/') + 1
+          )
+        );
+        console.log(this.selectedFile);
+      });
+  }
+
+  public setSearchTerm(searchTerm: string): void {
+    /* tslint:disable:no-string-literal */
+    this.router.navigate(['found-books'], {
+    /* tslint:enable:no-string-literal */
+      queryParams: { searchTerm },
     });
   }
 
-  setSearchTerm(searchTerm: string) {
-
-    this.router.navigate(['found-books'], {queryParams: {'searchTerm' : searchTerm}});
-  }
-
-  isAuthenticated() {
+  public isAuthenticated(): boolean {
     return this.authenticationService.isAuthenticated();
   }
 
-  filterAuthors(input: string) {
+  public filterAuthors(input: string): void {
     if (input?.length <= 2) {
       this.authors = [];
     }
@@ -139,7 +151,7 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  buildForm() {
+  public buildForm(): void {
     this.addBookForm = new FormGroup({
       title: new FormControl('', Validators.required),
       genres: new FormControl(null, Validators.required),
@@ -149,11 +161,11 @@ export class AddBookComponent implements OnInit {
       authorFirstname: new FormControl(null),
       description: new FormControl(null),
       languageId: new FormControl(null, Validators.required),
-      image: new FormControl('')
+      image: new FormControl(''),
     });
   }
 
-  async onSubmit() {
+  public async onSubmit(): Promise<void> {
     if (this.submittedValid) {
       return;
     }
@@ -167,8 +179,7 @@ export class AddBookComponent implements OnInit {
 
     // parse selected genres
     const selectedGenres: IGenre[] = [];
-    for (let i = 0; i < this.addBookForm.get('genres').value?.length; i++) {
-      const id = this.addBookForm.get('genres').value[i];
+    for (const id of this.addBookForm.get('genres').value) {
       selectedGenres.push({ id, name: this.getGenreById(id) });
     }
 
@@ -185,8 +196,8 @@ export class AddBookComponent implements OnInit {
       (x) => x.isConfirmed === false
     );
 
-    for (let i = 0; i < newAuthors.length; i++) {
-      const author = await this.addNewAuthor(newAuthors[i]);
+    for (const newAuthor of newAuthors) {
+      const author = await this.addNewAuthor(newAuthor);
       bookAuthors.push(author);
     }
 
@@ -199,7 +210,7 @@ export class AddBookComponent implements OnInit {
       state: bookState.available,
       userId: this.userId,
       languageId: this.addBookForm.get('languageId').value,
-      image: this.addBookForm.get('image').value
+      image: this.addBookForm.get('image').value,
     };
 
     if (this.withoutAuthorChecked) {
@@ -248,7 +259,7 @@ export class AddBookComponent implements OnInit {
   }
 
   // returns true is invalid
-  validateForm(form: FormGroup): boolean {
+  public validateForm(form: FormGroup): boolean {
     if (!this.userId) {
       this.notificationService.error(
         this.translate.instant('You have to be logged in to register book'),
@@ -273,12 +284,12 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  async addNewAuthor(newAuthor) {
+  public async addNewAuthor(newAuthor): Promise<IAuthor> {
     const author = await this.authorService.addAuthor(newAuthor).toPromise();
     return author;
   }
 
-  addAuthor(authors, author: IAuthor) {
+  public addAuthor(authors, author: IAuthor): void {
     const index = this.authors.findIndex((elem) => {
       return (
         elem?.firstName?.toLowerCase() === author.firstName?.toLowerCase() &&
@@ -290,11 +301,13 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+  public getGenreById(id: number): string {
+    return this.genres
+      ? this.genres.find((genre) => genre.id === id)?.name
+      : '';
   }
 
-  getAllGenres() {
+  public getAllGenres(): void {
     this.genreService.getGenre().subscribe(
       (data) => {
         this.genres = data;
@@ -305,7 +318,7 @@ export class AddBookComponent implements OnInit {
     );
   }
 
-  getAllLanguages() {
+  public getAllLanguages(): void {
     this.bookLanguageService.getLanguage().subscribe(
       (data) => {
         this.languages = data;
@@ -316,33 +329,33 @@ export class AddBookComponent implements OnInit {
     );
   }
 
-  onDeleteAuthor(author: IAuthor) {
+  public onDeleteAuthor(author: IAuthor): void {
     const index = this.selectedAuthors.indexOf(author);
     if (index > -1) {
       this.selectedAuthors.splice(index, 1);
     }
   }
 
-  onFileSelected(event) {
+  public onFileSelected(event): void {
     this.selectedFile = event.target.files[0];
   }
 
-  onAuthorSelect(event) {
+  public onAuthorSelect(event): void {
     this.addBookForm.get('authorFirstname').setValue('');
     this.addAuthor(this.selectedAuthors, event.option.value);
   }
 
   // redirecting method
-  goToPage(pageName: string, id?: number) {
+  public goToPage(pageName: string, id?: number): void {
     this.router.navigate([`${pageName}/${id ? id : ''}`]);
   }
 
-  getFormData(book: IBookPost): FormData {
+  public getFormData(book: IBookPost): FormData {
     const formData = new FormData();
-    Object.keys(book).forEach((key, index) => {
+    Object.keys(book).forEach((key) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
-          book[key].forEach((i, index) => {
+          book[key].forEach((index) => {
             formData.append(`${key}[${index}][id]`, book[key][index].id);
           });
         } else {
@@ -353,12 +366,12 @@ export class AddBookComponent implements OnInit {
     return formData;
   }
 
-  onFileClear() {
+  public onFileClear(): void {
     this.selectedFile = null;
     this.addBookForm.get('image').setValue('');
   }
 
-  async onCancel() {
+  public async onCancel(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Are you sure want to cancel?').toPromise()
@@ -371,18 +384,18 @@ export class AddBookComponent implements OnInit {
       });
   }
 
-  filterConfirmedAuthors() {
+  public filterConfirmedAuthors(): IAuthor[] {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
 
-  isAuthorTyped(authorString: string): boolean {
+  public isAuthorTyped(authorString: string): boolean {
     if (/(\s*[a-zA-Z]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
       return true;
     }
     return false;
   }
 
-  parseAuthors(authorString: string) {
+  public parseAuthors(authorString: string): void {
     const delim = /(\s+|,+|;+)/g;
     authorString = authorString.replace(delim, ' ').trim();
 
@@ -406,7 +419,7 @@ export class AddBookComponent implements OnInit {
     this.addBookForm.patchValue({ authorFirstname: '' });
   }
 
-  changeAuthorInput() {
+  public changeAuthorInput(): void {
     if (this.withoutAuthorChecked) {
       this.addBookForm.get('authorFirstname').enable();
     } else {
@@ -418,7 +431,7 @@ export class AddBookComponent implements OnInit {
   }
 
   // returns false if less than 2 words
-  checkAuthorLastName(input: string): boolean {
+  public checkAuthorLastName(input: string): boolean {
     if (!input) {
       return true;
     }
@@ -429,15 +442,21 @@ export class AddBookComponent implements OnInit {
     return words.length >= 2;
   }
 
-  checkLength(element: HTMLElement, maxLength: number) {
-
-    const input = (element as HTMLInputElement) != null ? (element as HTMLInputElement) : (element as HTMLTextAreaElement);
+  public checkLength(element: HTMLElement, maxLength: number): void {
+    const input =
+      (element as HTMLInputElement) != null
+        ? (element as HTMLInputElement)
+        : (element as HTMLTextAreaElement);
 
     if (input.value.length > maxLength) {
+      /* tslint:disable:no-string-literal */
       const fieldName = input.attributes['formControlName']?.value;
+      /* tslint:enable:no-string-literal */
       input.value = input.value.substr(0, maxLength);
 
-      this.addBookForm.controls[fieldName]?.setErrors({ maxlength: {requiredLength: maxLength}});
+      this.addBookForm.controls[fieldName]?.setErrors({
+        maxlength: { requiredLength: maxLength },
+      });
       this.addBookForm.controls[fieldName]?.markAsTouched();
 
       clearInterval(this.hideErrorInterval);

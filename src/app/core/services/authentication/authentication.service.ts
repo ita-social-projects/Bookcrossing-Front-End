@@ -6,7 +6,7 @@ import { loginUrl, refreshTokenUrl } from '../../../configs/api-endpoint.constan
 import { userUrl } from '../../../configs/api-endpoint.constants';
 import { IUserInfo } from '../../models/userInfo';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { IToken } from "../../models/token";
+import { IToken } from '../../models/token';
 import { UserService } from '../user/user.service';
 import { DialogService } from '../dialog/dialog.service';
 
@@ -33,9 +33,9 @@ export class AuthenticationService {
   }
 
   constructor(private http: HttpClient,
-    private jwtHelper: JwtHelperService,
-    private dialogService: DialogService,
-    private userService: UserService) {
+              private jwtHelper: JwtHelperService,
+              private dialogService: DialogService,
+              private userService: UserService) {
     this.currentUserSubject = new BehaviorSubject<IUserInfo>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -100,7 +100,7 @@ export class AuthenticationService {
     const userId = this.currentUserValue.id;
     const userInfo = await this.userService.getUserById(userId).toPromise();
 
-    let hasActiveLocation = userInfo.userLocation?.location?.isActive;
+    const hasActiveLocation = userInfo.userLocation?.location?.isActive;
     if (!hasActiveLocation) {
       return this.dialogService.openLocationDialog(userInfo)
         .afterClosed().toPromise();
@@ -110,12 +110,12 @@ export class AuthenticationService {
   }
 
   isAuthenticated() {
-    const token: string = localStorage.getItem("currentUser");
+    const token: string = localStorage.getItem('currentUser');
     return token !== null;
   }
 
   getUserId() {
-    return this.http.get(`${this.userUrl}/id/`)
+    return this.http.get(`${this.userUrl}/id/`);
   }
 
   isAdmin() {

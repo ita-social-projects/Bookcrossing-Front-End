@@ -13,7 +13,7 @@ export class SearchBarService {
         this.currentTerm = this.currentTermSubject.asObservable();
     }
 
-  changeSearchTerm(term : string) {
+  changeSearchTerm(term: string) {
     this.currentTermSubject.next(term);
   }
 }

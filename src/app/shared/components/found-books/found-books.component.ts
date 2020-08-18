@@ -19,7 +19,7 @@ import { OuterBookQueryParams } from 'src/app/core/models/outerBookQueryParams';
   styleUrls: ['./found-books.component.scss']
 })
 export class FoundBooksComponent implements OnInit {
-  disabledButton: boolean = false;
+  disabledButton = false;
   books: IBook[];
   booksPage: booksPage = booksPage.List;
   queryParams: OuterBookQueryParams = new OuterBookQueryParams();

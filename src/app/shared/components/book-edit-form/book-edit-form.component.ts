@@ -24,21 +24,21 @@ import {BookLanguageService} from '../../../core/services/bookLanguage/bookLangu
 })
 export class BookEditFormComponent implements OnInit {
 
-@Output() onCancel : EventEmitter<void> = new EventEmitter<void>()
-@Input() book : IBook
-@Input() isAdmin: boolean
+@Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+@Input() book: IBook;
+@Input() isAdmin: boolean;
 
 editBookForm: FormGroup;
 
   userId: number;
-  isInActive: boolean = false;
+  isInActive = false;
   genres: IGenre[] = [];
   selectedAuthors: IAuthor[] = [];
   authors: IAuthor[] = [];
   selectedFile = null;
   authorsSubscription: SubscriptionLike;
   submitted = false;
-  authorFocused: boolean = false;
+  authorFocused = false;
   withoutAuthorChecked = false;
   newAuthor: IAuthor;
   selectedGenres = [];
@@ -63,21 +63,21 @@ constructor(
     this.authorsSubscription = this.editBookForm
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
-        if (typeof input === "string") {
+        if (typeof input === 'string') {
           this.filterAuthors(input?.trim());
         }
         if (this.isAuthorTyped(input)) {
           this.parseAuthors(input);
-          input = "";
+          input = '';
         }
       });
-      if (this.isAuthenticated()) {
+    if (this.isAuthenticated()) {
         this.authenticationService.getUserId().subscribe(
           (response: number) => {
             this.userId = response;
           },
           (error) => {
-            console.log("fetching userId error");
+            console.log('fetching userId error');
           }
         );
       }
@@ -103,33 +103,33 @@ constructor(
 
   buildForm() {
     this.editBookForm = new FormGroup({
-      title: new FormControl({value:this.book.name, disabled: false}, Validators.required),
+      title: new FormControl({value: this.book.name, disabled: false}, Validators.required),
       genres: new FormControl(null, Validators.required),
-      publisher: new FormControl({value:this.book.publisher, disabled: false}),
+      publisher: new FormControl({value: this.book.publisher, disabled: false}),
       authorFirstname: new FormControl(null),
-      description: new FormControl({value:this.book.notice, disabled: false}),
-      image: new FormControl({value:this.book.imagePath, disabled: false}),
+      description: new FormControl({value: this.book.notice, disabled: false}),
+      image: new FormControl({value: this.book.imagePath, disabled: false}),
       inactive: new FormControl(false),
       languageId: new FormControl({value: this.book.language.id, disabled: false})
     });
-    if(this.book.state === bookState.inActive){
+    if (this.book.state === bookState.inActive) {
       this.isInActive = true;
     }
-    if(this.book.authors){
+    if (this.book.authors) {
       this.book.authors.forEach(element => {
         this.addAuthor(this.selectedAuthors, element);
       });
     }
-    if(this.book.genres){
+    if (this.book.genres) {
       this.book.genres.forEach(element => {
-        this.selectedGenres.push(element.id)
+        this.selectedGenres.push(element.id);
       });
     }
   }
 
-  isFileExists(){
-    if(this.book.imagePath){
-      if(!this.selectedFile){
+  isFileExists() {
+    if (this.book.imagePath) {
+      if (!this.selectedFile) {
         return true;
       }
     }
@@ -144,87 +144,84 @@ constructor(
     }
     // parse selected genres
     const selectedGenres: IGenre[] = [];
-    for (let i = 0; i < this.editBookForm.get('genres').value?.length; i++) {
-      const id = this.editBookForm.get('genres').value[i];
-      selectedGenres.push({ id: id, name: this.getGenreById(id) });
+    for (const genre of this.editBookForm.get('genres').value) {
+      const id = genre.value;
+      selectedGenres.push({ id, name: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
 
-    if(this.editBookForm.get("authorFirstname").value !== null){
-      const authorInput = this.editBookForm.get("authorFirstname").value.trim();
+    if (this.editBookForm.get('authorFirstname').value !== null) {
+      const authorInput = this.editBookForm.get('authorFirstname').value.trim();
       if (authorInput) {
         this.parseAuthors(authorInput);
         this.newAuthor = undefined;
       }
 
-       bookAuthors = this.selectedAuthors
+      bookAuthors = this.selectedAuthors
         .slice()
         .filter((x) => x.isConfirmed === true);
-      let newAuthors = this.selectedAuthors.filter(
+      const newAuthors = this.selectedAuthors.filter(
         (x) => x.isConfirmed === false
       );
 
-      for (let i = 0; i < newAuthors.length; i++) {
-        const author = await this.addNewAuthor(newAuthors[i]);
+      for (const newAuthor of newAuthors) {
+        const author = await this.addNewAuthor(newAuthor);
         bookAuthors.push(author);
       }
-    }
-    else {
-      bookAuthors = this.selectedAuthors
+    } else {
+      bookAuthors = this.selectedAuthors;
     }
 
-    let book: IBookPut = {
+    const book: IBookPut = {
       id: this.book.id,
       fieldMasks: []
     };
-    if(JSON.stringify(selectedGenres) !== JSON.stringify(this.book.genres)){
-      book.fieldMasks.push("BookGenre");
+    if (JSON.stringify(selectedGenres) !== JSON.stringify(this.book.genres)) {
+      book.fieldMasks.push('BookGenre');
       book.bookGenre = selectedGenres;
     }
-    if(!this.withoutAuthorChecked){
-      if(JSON.stringify(bookAuthors) !== JSON.stringify(this.book.authors)){
-        book.fieldMasks.push("BookAuthor");
+    if (!this.withoutAuthorChecked) {
+      if (JSON.stringify(bookAuthors) !== JSON.stringify(this.book.authors)) {
+        book.fieldMasks.push('BookAuthor');
         book.bookAuthor = bookAuthors;
       }
-    }
-    else {
-      book.fieldMasks.push("BookAuthor");
+    } else {
+      book.fieldMasks.push('BookAuthor');
       book.bookAuthor = [];
     }
-    if(this.editBookForm.get('title').value !== this.book.name){
-      book.fieldMasks.push("Name");
+    if (this.editBookForm.get('title').value !== this.book.name) {
+      book.fieldMasks.push('Name');
       book.name = this.editBookForm.get('title').value;
     }
-    if(this.editBookForm.get('publisher').value !== this.book.publisher){
-      book.fieldMasks.push("Publisher");
+    if (this.editBookForm.get('publisher').value !== this.book.publisher) {
+      book.fieldMasks.push('Publisher');
       book.publisher = this.editBookForm.get('publisher').value;
     }
-    if(this.editBookForm.get('description').value !== this.book.notice){
-      book.fieldMasks.push("Notice");
+    if (this.editBookForm.get('description').value !== this.book.notice) {
+      book.fieldMasks.push('Notice');
       book.notice = this.editBookForm.get('description').value;
     }
-    if(this.editBookForm.get('languageId').value !== this.book.language.id) {
-      book.fieldMasks.push("LanguageId");
+    if (this.editBookForm.get('languageId').value !== this.book.language.id) {
+      book.fieldMasks.push('LanguageId');
       book.languageId = this.editBookForm.get('languageId').value;
     }
     if (this.selectedFile) {
-      book.fieldMasks.push("Image");
+      book.fieldMasks.push('Image');
       book.image = this.selectedFile;
     }
-    if(book.fieldMasks.length < 1){
-      this.chengeInActiveIfNeed()
-      this.cancel()
-    }
-    else {
+    if (book.fieldMasks.length < 1) {
+      this.chengeInActiveIfNeed();
+      this.Cancel();
+    } else {
       const formData: FormData = this.getFormData(book);
       this.bookService.putBook(book.id, formData).subscribe(
-        (data: boolean) => {
-          this.chengeInActiveIfNeed()
-          this.notificationService.success(this.translate.instant("Book is edited successfully"), "X");
-          this.onCancel.emit();
+        () => {
+          this.chengeInActiveIfNeed();
+          this.notificationService.success(this.translate.instant('Book is edited successfully'), 'X');
+          this.cancel.emit();
         },
         (error) => {
-          this.notificationService.error(this.translate.instant("Please edit something!"), "X");
+          this.notificationService.error(this.translate.instant('Please edit something!'), 'X');
         }
       );
     }
@@ -234,41 +231,41 @@ constructor(
     this.authorsSubscription = this.editBookForm
       .get('authorFirstname')
       .valueChanges.subscribe((input) => {
-        if (typeof input === "string") {
+        if (typeof input === 'string') {
           this.filterAuthors(input?.trim());
         }
         if (this.isAuthorTyped(input)) {
           this.parseAuthors(input);
-          input = "";
+          input = '';
         }
       });
   }
-  chengeInActiveIfNeed(){
-    if(this.editBookForm.get('inactive').value !== this.isInActive){
-      switch(this.book.state) {
+  chengeInActiveIfNeed() {
+    if (this.editBookForm.get('inactive').value !== this.isInActive) {
+      switch (this.book.state) {
         case bookState.inActive:
           this.bookService.activateBook(this.book.id).subscribe(() => {
-            this.onCancel.emit();
-            this.notificationService.success(this.translate.instant("Book is edited successfully"), "X");
-          })
-          break
+            this.cancel.emit();
+            this.notificationService.success(this.translate.instant('Book is edited successfully'), 'X');
+          });
+          break;
         default: this.bookService.deactivateBook(this.book.id).subscribe(() => {
-          this.onCancel.emit();
-          this.notificationService.success(this.translate.instant("Book is edited successfully"), "X");
-        })
-          break
+          this.cancel.emit();
+          this.notificationService.success(this.translate.instant('Book is edited successfully'), 'X');
+        });
+                 break;
       }
     }
   }
   validateForm(form: FormGroup): boolean {
     if (!this.userId) {
       this.notificationService.error(
-        this.translate.instant("You have to be logged in to edit book"),
-        "X"
+        this.translate.instant('You have to be logged in to edit book'),
+        'X'
       );
       return true;
     } else if (
-      !form.get("authorFirstname").value?.trim() &&
+      !form.get('authorFirstname').value?.trim() &&
       !this.selectedAuthors.length &&
       !this.withoutAuthorChecked
     ) {
@@ -277,16 +274,16 @@ constructor(
       return true;
     } else if (
       !this.withoutAuthorChecked &&
-      form.get("authorFirstname").value?.trim()
+      form.get('authorFirstname').value?.trim()
     ) {
-      return !this.checkAuthorLastName(form.get("authorFirstname").value);
+      return !this.checkAuthorLastName(form.get('authorFirstname').value);
     } else {
       return false;
     }
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id == id)?.name : '';
+    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
   }
 
   getAllGenres() {
@@ -353,8 +350,8 @@ constructor(
       lastName = words[words.length - 1];
     }
     const author: IAuthor = {
-      firstName: firstName,
-      lastName: lastName,
+      firstName,
+      lastName,
       isConfirmed: false
     };
     console.log(author);
@@ -362,21 +359,20 @@ constructor(
   }
 
   onAuthorSelect(event) {
-    this.editBookForm.get("authorFirstname").setValue("");
+    this.editBookForm.get('authorFirstname').setValue('');
     this.addAuthor(this.selectedAuthors, event.option.value);
   }
 
   getFormData(book: IBookPut): FormData {
     const formData = new FormData();
-    Object.keys(book).forEach((key, index) => {
+    Object.keys(book).forEach((key, _) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
-          book[key].forEach((i, index) => {
-            if(key == "fieldMasks"){
+          book[key].forEach((index) => {
+            if (key === 'fieldMasks') {
               formData.append(`${key}[${index}]`, book[key][index]);
-            }
-            else{
-            formData.append(`${key}[${index}][id]`, book[key][index]['id']);
+            } else {
+            formData.append(`${key}[${index}][id]`, book[key][index].id);
             }
           });
         } else {
@@ -390,8 +386,8 @@ constructor(
   onFileClear() {
     this.selectedFile = null;
   }
-  cancel() {
-    this.onCancel.emit();
+  Cancel() {
+    this.cancel.emit();
   }
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
@@ -405,10 +401,10 @@ constructor(
 
   parseAuthors(authorString: string) {
     const delim = /(\s+|,+|;+)/g;
-    authorString = authorString.replace(delim, " ").trim();
+    authorString = authorString.replace(delim, ' ').trim();
 
-    const words: string[] = authorString.split(" ");
-    let count = words.length;
+    const words: string[] = authorString.split(' ');
+    const count = words.length;
     for (let i = 0; i < count / 2; i++) {
       if (words[0] && words[1]) {
         const author: IAuthor = {
@@ -424,26 +420,26 @@ constructor(
       }
     }
 
-    this.editBookForm.patchValue({ authorFirstname: " " });
+    this.editBookForm.patchValue({ authorFirstname: ' ' });
   }
 
   changeAuthorInput() {
     if (this.withoutAuthorChecked) {
-      this.editBookForm.get("authorFirstname").enable();
+      this.editBookForm.get('authorFirstname').enable();
     } else {
-      this.editBookForm.get("authorFirstname").disable();
+      this.editBookForm.get('authorFirstname').disable();
     }
     this.withoutAuthorChecked = !this.withoutAuthorChecked;
     this.selectedAuthors = [];
-    this.editBookForm.patchValue({ authorFirstname: " " });
+    this.editBookForm.patchValue({ authorFirstname: ' ' });
   }
 
-  //returns false if less than 2 words
+  // returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
 
     const delim = /(\s+|,+|;+)/g;
-    input = input.replace(delim, " ").trim();
-    const words: string[] = input.split(" ");
+    input = input.replace(delim, ' ').trim();
+    const words: string[] = input.split(' ');
     if (words.length < 2) {
       return false;
     }

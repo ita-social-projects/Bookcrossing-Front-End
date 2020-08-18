@@ -1,11 +1,11 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: "contentFilter",
+  name: 'contentFilter',
 })
 export class ContentFilterPipe implements PipeTransform {
   // itemFound: boolean = false;
-  transform(items: any[], keyword: any, properties: string[]): any[] {
+  public transform(items: any[], keyword: any, properties: string[]): any[] {
     if (!items) {
       return [];
     }
@@ -13,11 +13,10 @@ export class ContentFilterPipe implements PipeTransform {
       return items;
     }
     return items.filter((item) => {
-      let itemFound: Boolean;
-      for (let i = 0; i < properties.length; i++) {
+      let itemFound: boolean;
+      for (const property of properties) {
         if (
-          item[properties[i]]?.toLowerCase().indexOf(keyword.toLowerCase()) !==
-          -1
+          item[property]?.toLowerCase().indexOf(keyword.toLowerCase()) !== -1
         ) {
           itemFound = true;
           break;

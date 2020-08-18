@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -7,17 +7,15 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit, OnDestroy {
+  public isSideBarOpened = false;
+  public showTableManagement = false;
+  constructor(private router: Router, private routeActive: ActivatedRoute) {}
 
-  isSideBarOpened = false;
-  showTableManagement = false;
-  constructor(private router: Router, private routeActive: ActivatedRoute) { }
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     const activeChild = this.routeActive.children.length;
     if (activeChild === 0) {
-      this.router.navigate(['dashboard'], {relativeTo: this.routeActive});
+      this.router.navigate(['dashboard'], { relativeTo: this.routeActive });
     }
   }
-  ngOnDestroy() {
-  }
+  public ngOnDestroy(): void {}
 }

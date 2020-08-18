@@ -40,15 +40,15 @@ export class BooksComponent implements OnInit, OnDestroy {
   public selectedLanguages: number[];
   public route = this.router.url;
   public constructor(protected routeActive: ActivatedRoute,
-              protected router: Router,
-              protected bookService: BookService,
-              protected searchBarService: SearchBarService,
-              protected authentication: AuthenticationService,
-              protected dialogService: DialogService,
-              protected translate: TranslateService,
-              protected notificationService: NotificationService,
-              protected requestService: RequestService,
-              protected wishListService: WishListService) {
+                     protected router: Router,
+                     protected bookService: BookService,
+                     protected searchBarService: SearchBarService,
+                     protected authentication: AuthenticationService,
+                     protected dialogService: DialogService,
+                     protected translate: TranslateService,
+                     protected notificationService: NotificationService,
+                     protected requestService: RequestService,
+                     protected wishListService: WishListService) {
   }
 
   public ngOnInit(): void {
