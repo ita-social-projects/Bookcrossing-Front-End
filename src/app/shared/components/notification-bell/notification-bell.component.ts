@@ -15,31 +15,30 @@ import { IRequest } from 'src/app/core/models/request';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { IBook } from 'src/app/core/models/book';
 import { SignalRService } from 'src/app/core/services/signal-r/signalr.service';
+import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 
 @Component({
   selector: 'app-notification-bell',
   templateUrl: './notification-bell.component.html',
-  styleUrls: ['./notification-bell.component.scss']
+  styleUrls: ['./notification-bell.component.scss'],
 })
-
 export class NotificationBellComponent implements OnInit {
-
   public numberOfNotifications: number;
   public notifications: INotification[];
   private isOpened: boolean;
   private signalRHubUrl = '/notifications/hub';
 
   public constructor(
-                    public signalRService: SignalRService,
-                    private router: Router,
-                    private bookService: BookService,
-                    private notificationService: NotificationService,
-                    private translateService: TranslateService,
-                    private dialogService: DialogService,
-                    private requestService: RequestService,
-                    private notificationBellService: NotificationBellService,
-                    private authenticationService: AuthenticationService) {
-  }
+    public signalRService: SignalRService,
+    private router: Router,
+    private bookService: BookService,
+    private notificationService: NotificationService,
+    private translateService: TranslateService,
+    private dialogService: DialogService,
+    private requestService: RequestService,
+    private notificationBellService: NotificationBellService,
+    private authenticationService: AuthenticationService
+  ) {}
 
   public ngOnInit(): void {
     this.getNotifications();
@@ -48,10 +47,12 @@ export class NotificationBellComponent implements OnInit {
   }
 
   private getNotifications(): void {
-    this.notificationBellService.getNotifications().subscribe( notifications => {
-      this.notifications = notifications;
-      this.getNotificationsCount(notifications);
-    } );
+    this.notificationBellService
+      .getNotifications()
+      .subscribe((notifications) => {
+        this.notifications = notifications;
+        this.getNotificationsCount(notifications);
+      });
   }
 
   public showOrHideNotificationBar(): void {
@@ -75,36 +76,46 @@ export class NotificationBellComponent implements OnInit {
 
   private getNotificationsCount(notifications: INotification[]): void {
     this.numberOfNotifications = 0;
-    notifications.forEach(notification => {
-    if (!notification.isSeen) {
-      this.numberOfNotifications++;
-    }
+    notifications.forEach((notification) => {
+      if (!notification.isSeen) {
+        this.numberOfNotifications++;
+      }
     });
   }
 
   public makeNotificationSeen(id: number): void {
-    this.notificationBellService.makeNotificationSeen(id).subscribe(res => this.getNotifications());
+    this.notificationBellService
+      .makeNotificationSeen(id)
+      .subscribe((res) => this.getNotifications());
   }
 
   public async deleteAll(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translateService.get('Do you really want to delete all notifications?').toPromise()
+        await this.translateService
+          .get('Do you really want to delete all notifications?')
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
-          this.notificationBellService.deleteAllNotifications().subscribe(() => this.getNotifications());
+          this.notificationBellService
+            .deleteAllNotifications()
+            .subscribe(() => this.getNotifications());
         }
       });
   }
 
   public makeAllSeen(): void {
-    this.notificationBellService.makeAllNotificationsSeen().subscribe(() => this.getNotifications());
+    this.notificationBellService
+      .makeAllNotificationsSeen()
+      .subscribe(() => this.getNotifications());
   }
 
   public deleteNotification(id: number): void {
-    this.notificationBellService.deleteNotification(id).subscribe(() => this.getNotifications());
+    this.notificationBellService
+      .deleteNotification(id)
+      .subscribe(() => this.getNotifications());
   }
 
   public formatDate(date: Date): string {
@@ -123,7 +134,7 @@ export class NotificationBellComponent implements OnInit {
     let res;
     this.bookService.getBookById(bookId).subscribe((book: IBook) => {
       res = book.state === bookState.available;
-    } );
+    });
     return res;
   }
 
@@ -133,26 +144,116 @@ export class NotificationBellComponent implements OnInit {
       return;
     }
     if (!this.checkIfBookIsAvailable(bookId)) {
-      this.notificationService.error(this.translateService
-        .instant('Book is unavailable for request!'), 'X');
+      this.notificationService.error(
+        this.translateService.instant('Book is unavailable for request!'),
+        'X'
+      );
       return;
     }
     this.dialogService
       .openConfirmDialog(
-        await this.translateService.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
+        await this.translateService
+          .get(
+            'Do you want to request this book? Current owner will be notified about your request.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
-          this.requestService.requestBook(bookId).subscribe((value: IRequest) => {
-          this.notificationService.success(this.translateService
-            .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
-          }, err => {
-            this.notificationService.error(this.translateService
-            .instant('Something went wrong!'), 'X');
-          });
+          this.requestService.requestBook(bookId).subscribe(
+            (value: IRequest) => {
+              this.notificationService.success(
+                this.translateService.instant(
+                  'Book is successfully requested. Please contact with current owner to receive a book'
+                ),
+                'X'
+              );
+            },
+            (err) => {
+              this.notificationService.error(
+                this.translateService.instant('Something went wrong!'),
+                'X'
+              );
+            }
+          );
         }
       });
+  }
+
+  public async startReadingBook(bookId: number): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translateService
+          .get(
+            'Do you want to start reading? You will be shown as current owner.'
+          )
+          .toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          const query = new RequestQueryParams();
+          query.last = true;
+          this.requestService
+            .getRequestForBook(bookId, query)
+            .subscribe((value: IRequest) => {
+              this.bookService.getBookById(bookId).subscribe((book: IBook) => {
+                if (
+                  book.state !== bookState.available &&
+                  book.state !== bookState.inActive &&
+                  book.state !== bookState.reading &&
+                  this.isRequester(bookId)
+                ) {
+                  this.requestService.approveReceive(value.id).subscribe(
+                    () => {
+                      this.notificationService.success(
+                        this.translateService.instant(
+                          'Book’s owner has been changed.'
+                        ),
+                        'X'
+                      );
+                    },
+                    () => {
+                      this.notificationService.error(
+                        this.translateService.instant(
+                          'You cannot start reading this book!'
+                        ),
+                        'X'
+                      );
+                    }
+                  );
+                } else {
+                  this.notificationService.error(
+                    this.translateService.instant(
+                      'You cannot start reading this book!'
+                    ),
+                    'X'
+                  );
+                }
+              });
+            });
+        }
+      });
+  }
+
+  public isRequester(bookId: number): boolean {
+    const query = new RequestQueryParams();
+    query.first = false;
+    query.last = true;
+    let res = false;
+    this.requestService
+      .getRequestForBook(bookId, query)
+      .subscribe((request: IRequest) => {
+        const userWhoRequested = request.user;
+        this.authenticationService.getUserId().subscribe((id: number) => {
+          if (id === userWhoRequested.id) {
+            res = true;
+          }
+        });
+      });
+
+    return res;
   }
 
   public checkIfOpen(action: NotifyAction): boolean {
@@ -160,13 +261,20 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public checkIfRequest(action: NotifyAction): boolean {
-      return action.valueOf() === 2;
+    return action.valueOf() === 2;
+  }
+
+  public checkIfStartReading(action: NotifyAction): boolean {
+    return action.valueOf() === 3;
   }
 
   public getNewNotifications(): void {
-    this.signalRService.hubConnection.on('Notify', (notification: INotification) => {
-      this.notifications.unshift(notification);
-      this.numberOfNotifications++;
-    });
+    this.signalRService.hubConnection.on(
+      'Notify',
+      (notification: INotification) => {
+        this.notifications.unshift(notification);
+        this.numberOfNotifications++;
+      }
+    );
   }
 }

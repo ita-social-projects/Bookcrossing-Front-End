@@ -23,7 +23,7 @@ export class SignalRService {
     this.hubConnection.onclose(() => { this.createHubConnection(url);  this.hubConnection.start() } );
   }
 
-  private createHubConnection(url: string) {
+  private createHubConnection(url: string): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
                             .configureLogging(signalR.LogLevel.None)
                             .withUrl(environment.apiUrl + url, 

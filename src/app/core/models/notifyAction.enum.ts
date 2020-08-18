@@ -1,5 +1,6 @@
 export enum NotifyAction {
     None,
     Open,
-    Request
+    Request,
+    StartReading
 }
