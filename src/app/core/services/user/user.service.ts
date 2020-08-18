@@ -3,9 +3,9 @@ import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {authorUrl, userUrl} from 'src/app/configs/api-endpoint.constants';
 import { IUserInfo } from 'src/app/core/models/userInfo';
-import {ILocation} from "../../models/location";
-import {IAuthor} from "../../models/author";
-import {IUserPut} from "../../models/userPut";
+import {ILocation} from '../../models/location';
+import {IAuthor} from '../../models/author';
+import {IUserPut} from '../../models/userPut';
 import { CompletePaginationParams } from '../../models/Pagination/completePaginationParameters';
 import { PaginationService } from '../../services/pagination/pagination.service';
 import { IPage } from '../../models/page';
@@ -16,8 +16,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private paginationService: PaginationService
-  )
-  {
+  ) {
   }
 
   readonly baseUrl = userUrl;
@@ -30,7 +29,7 @@ export class UserService {
     return this.http.get<IUserInfo>(this.baseUrl + `/${userId}`);
   }
 
-  public editUser(userId: number, user: IUserPut): Observable<Object> {
+  public editUser(userId: number, user: IUserPut): Observable<object> {
     return this.http.put(this.baseUrl + `/${user.id}`, user);
   }
 

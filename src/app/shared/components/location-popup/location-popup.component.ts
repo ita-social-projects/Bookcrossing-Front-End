@@ -14,7 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 @Component({
   selector: 'app-location-popup',
   templateUrl: './location-popup.component.html',
-  styleUrls: ['./location-popup.component.scss']
+  styleUrls: ['./location-popup.component.scss'],
 })
 export class LocationPopupComponent implements OnInit {
   locations: ILocation[] = [];
@@ -22,21 +22,34 @@ export class LocationPopupComponent implements OnInit {
   locationForm: FormGroup;
   private locationFormMasks: string[] = ['UserRoomId'];
 
-  constructor(public dialogRef: MatDialogRef<LocationPopupComponent>,
+  constructor(
+    public dialogRef: MatDialogRef<LocationPopupComponent>,
     private locationService: LocationService,
     private userService: UserService,
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) private user: IUserInfo) {
-      this.locationForm = this.formBuilder.group({
-        location: ['', Validators.required],
-        roomNumber: ['', [Validators.required, Validators.maxLength(7), Validators.pattern(/^[^\s]{1,7}$/)]]
-      });
-     }
+    @Inject(MAT_DIALOG_DATA) private user: IUserInfo
+  ) {
+    this.locationForm = this.formBuilder.group({
+      location: ['', Validators.required],
+      roomNumber: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(7),
+          Validators.pattern(/^[^\s]{1,7}$/),
+        ],
+      ],
+    });
+  }
 
-  get location() { return this.locationForm.get('location'); }
-  get roomNumber() { return this.locationForm.get('roomNumber'); }
+  get location() {
+    return this.locationForm.get('location');
+  }
+  get roomNumber() {
+    return this.locationForm.get('roomNumber');
+  }
 
   ngOnInit(): void {
     this.locationService.getLocation().subscribe(
@@ -46,19 +59,30 @@ export class LocationPopupComponent implements OnInit {
       (error) => {
         console.log(error);
       }
-    )
+    );
 
-    if(!this.user) this.notificationService.info("This is test version of dialog for design testing. You can't modify your location there.", "X");
+    if (!this.user) {
+      this.notificationService.info(
+        /* tslint:disable */
+        "This is test version of dialog for design testing. You can't modify your location there.",
+        /* tslint:enable */
+        'X'
+      );
+    }
   }
 
   onSubmit(): void {
-    if(this.locationForm.invalid) return;
-    if(!this.user) return;
+    if (this.locationForm.invalid) {
+      return;
+    }
+    if (!this.user) {
+      return;
+    }
 
     const newLocation: IRoomLocation = {
       roomNumber: this.roomNumber.value,
-      location: this.location.value
-    }
+      location: this.location.value,
+    };
 
     const userPut: IUserPut = {
       id: this.user.id,
@@ -72,14 +96,18 @@ export class LocationPopupComponent implements OnInit {
       password: localStorage.getItem('password'),
       registeredDate: this.user.registeredDate,
       roleId: this.user.role.id,
-      fieldMasks: this.locationFormMasks
-    }
+      fieldMasks: this.locationFormMasks,
+    };
 
     this.userService.editUser(this.user.id, userPut).subscribe(
       () => this.dialogRef.close(true),
       (error) => {
         console.log(error);
-        this.notificationService.error(this.translateService.instant('Something went wrong'), 'X');
-      });
+        this.notificationService.error(
+          this.translateService.instant('Something went wrong'),
+          'X'
+        );
+      }
+    );
   }
 }

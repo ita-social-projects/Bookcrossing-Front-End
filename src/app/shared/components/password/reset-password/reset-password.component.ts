@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { NotificationService } from "src/app/core/services/notification/notification.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import {FormBuilder, Validators} from "@angular/forms";
-import { AuthenticationService } from "src/app/core/services/authentication/authentication.service";
+import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import {FormBuilder, Validators} from '@angular/forms';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 @Component({
-  selector: "app-reset-password",
-  templateUrl: "./reset-password.component.html",
-  styleUrls: ["./reset-password.component.scss"]
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
   confirmed: boolean;
@@ -26,11 +26,11 @@ export class ResetPasswordComponent implements OnInit {
 
   confirmPasswordForm = this.fb.group({
     Password: [
-      "",
+      '',
       [Validators.required, Validators.minLength(6), Validators.maxLength(50)]
     ],
     ConfirmPassword: [
-      "",
+      '',
       [Validators.required, Validators.minLength(6), Validators.maxLength(50)]
     ]
   });
@@ -50,10 +50,10 @@ export class ResetPasswordComponent implements OnInit {
       this.email,
       this.code
     ).subscribe(() => {
-      this.router.navigateByUrl("/login");
+      this.router.navigateByUrl('/login');
     }, err => {
       this.notificationService.error(this.translate
-        .instant("components.password.reset-error"), "X");
+        .instant('components.password.reset-error'), 'X');
     });
   }
 }

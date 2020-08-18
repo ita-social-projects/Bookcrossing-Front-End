@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {NavbarComponent} from './shared/components/navbar/navbar.component';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../app/core/services/authentication/authentication.service';
@@ -14,7 +14,7 @@ import {LanguageService} from './core/services/language/language.service';
   styleUrls: ['./app.component.css']
 
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   currentUser: IUserInfo;
   title = 'BookCrossingFrontEnd';
@@ -27,7 +27,8 @@ export class AppComponent {
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
-  ngOnInit(): void {
+
+  public ngOnInit(): void {
     const lang: string = this.languageService.setIfNotExists();
     this.translate.setDefaultLang(lang);
     this.translate.use(lang);

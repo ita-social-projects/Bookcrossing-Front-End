@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.redirectUrl = params['returnUrl'];
+      this.redirectUrl = params.returnUrl;
     });
     /*    this.loginForm = this.formBuilder.group({
           username: ['', Validators.required],
@@ -50,10 +50,9 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          if(typeof this.redirectUrl !== 'undefined'){
+          if (typeof this.redirectUrl !== 'undefined') {
             this.router.navigate([`${this.redirectUrl}`]);
-          }
-          else{
+          } else {
             this.router.navigate(['/']);
           }
         },

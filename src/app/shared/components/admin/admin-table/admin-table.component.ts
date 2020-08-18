@@ -1,14 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as _ from 'lodash';
 
 @Component({
   selector: 'app-admin-table',
   templateUrl: './admin-table.component.html',
-  styleUrls: ['./admin-table.component.scss']
+  styleUrls: ['./admin-table.component.scss'],
 })
 export class AdminTableComponent implements OnInit {
-  @Output() selectedRowsChange: EventEmitter<number[]> = new EventEmitter<number[]>();
-  @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedRowsChange: EventEmitter<number[]> = new EventEmitter<
+    number[]
+  >();
+  @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<
+    string
+  >();
   @Output() viewClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() booleanButtonClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -17,23 +21,26 @@ export class AdminTableComponent implements OnInit {
   @Input() data: any[];
   @Input() dataProperties: string[];
   @Input() displayColumns: string[];
-  @Input() canDelete: boolean = false;
-  @Input() canEdit: boolean = false;
-  @Input() canView: boolean = false;
+  @Input() canDelete = false;
+  @Input() canEdit = false;
+  @Input() canView = false;
 
   @Input() selectedHeader: string;
   @Input() selectedRows: number[];
 
   @Input() booleanButtonText: string;
 
-  constructor() { }
+  constructor() {}
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
   public onSelectedRowChange(selectedItem: any): void {
     if (this.selectedRows) {
-      this.selectedRows = _.xorBy(this.selectedRows, [selectedItem], this.dataProperties[0]);
+      this.selectedRows = _.xorBy(
+        this.selectedRows,
+        [selectedItem],
+        this.dataProperties[0]
+      );
       this.selectedRowsChange.emit(this.selectedRows);
     }
   }
@@ -68,7 +75,11 @@ export class AdminTableComponent implements OnInit {
   }
 
   public isBooleanHeader(index: number): string {
-    if (this.data && this.data[0] && typeof(this.data[0][this.dataProperties[index]]) === 'boolean') {
+    if (
+      this.data &&
+      this.data[0] &&
+      typeof this.data[0][this.dataProperties[index]] === 'boolean'
+    ) {
       return 'text-center';
     }
   }

@@ -27,7 +27,7 @@ export class LocationService {
   getLocation() {
     return this.http.get<ILocation[]>(this.apiUrl);
   }
-  getLocationsPage(paginationParameters: CompletePaginationParams): Observable<IPage<ILocation>>{
+  getLocationsPage(paginationParameters: CompletePaginationParams): Observable<IPage<ILocation>> {
     return this.pagination.getPaginatedPage<ILocation>(locationUrl + 'paginated', paginationParameters);
   }
   getLocationById(id: number) {

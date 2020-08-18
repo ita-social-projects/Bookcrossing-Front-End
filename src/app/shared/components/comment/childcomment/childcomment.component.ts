@@ -80,7 +80,7 @@ export class ChildcommentComponent implements OnInit {
     return this.isAuthorized && (this.text !== '');
   }
   returnID(id) {
-    let newids = this.ids.slice();
+    const newids = this.ids.slice();
     newids.push(id);
     return newids;
   }

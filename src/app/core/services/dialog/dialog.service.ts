@@ -1,20 +1,20 @@
-import { Injectable } from "@angular/core";
-import { MatDialog, MatDialogConfig, MatDialogRef } from "@angular/material/dialog";
-import { ConfirmDialogComponent } from "../../../shared/components/confirm-dialog/confirm-dialog.component";
+import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import {DonateDialogComponent} from '../../../shared/components/donate-dialog/donate-dialog.component';
 import { LocationPopupComponent } from 'src/app/shared/components/location-popup/location-popup.component';
 import { IUserInfo } from 'src/app/core/models/userInfo';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DialogService {
   constructor(private dialog: MatDialog) {}
 
   openConfirmDialog(msg) {
     return this.dialog.open(ConfirmDialogComponent, {
-      width: "390px",
-      panelClass: "confirm-dialog-container",
+      width: '390px',
+      panelClass: 'confirm-dialog-container',
       disableClose: true,
       data: {
         message: msg
@@ -23,8 +23,8 @@ export class DialogService {
   }
   openDonateDialog(msg) {
     return this.dialog.open(DonateDialogComponent, {
-      width: "390px",
-      panelClass: "confirm-dialog-container",
+      width: '390px',
+      panelClass: 'confirm-dialog-container',
       disableClose: true,
       data: {
         message: msg
@@ -35,17 +35,17 @@ export class DialogService {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    dialogConfig.panelClass = "form";
+    dialogConfig.width = '60%';
+    dialogConfig.panelClass = 'form';
     this.dialog.open(formComponent, dialogConfig);
   }
 
-  openLocationDialog(user: IUserInfo): MatDialogRef<LocationPopupComponent>{
+  openLocationDialog(user: IUserInfo): MatDialogRef<LocationPopupComponent> {
     return this.dialog.open(LocationPopupComponent, {
-      ariaLabelledBy: "#locationPopupTitle",
-      maxWidth: "512px",
+      ariaLabelledBy: '#locationPopupTitle',
+      maxWidth: '512px',
       data: user
-    })
+    });
   }
 
   closeDialogs() {

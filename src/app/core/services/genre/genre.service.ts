@@ -18,7 +18,7 @@ export class GenreService {
     return this.http.get<IGenre[]>(genreUrl);
   }
   getGenrePage(paginationParameters: CompletePaginationParams): Observable<IPage<IGenre>> {
-    return this.pagination.getPaginatedPage<IGenre>(genreUrl + "paginated", paginationParameters);
+    return this.pagination.getPaginatedPage<IGenre>(genreUrl + 'paginated', paginationParameters);
   }
   getGenreById(genreId: number) {
     return this.http.get<IGenre[]>( genreUrl + `/${genreId}`);

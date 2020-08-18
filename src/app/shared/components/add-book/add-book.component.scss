@@ -1,6 +1,8 @@
-input, textarea, mat-select {
+input,
+textarea,
+mat-select {
   &.ng-invalid.ng-touched {
-    border: 1px solid #FF3547 !important;
+    border: 1px solid #ff3547 !important;
   }
   &.ng-valid.ng-touched {
     border: 1px solid green;
@@ -8,64 +10,63 @@ input, textarea, mat-select {
 }
 
 form {
-    margin: 0% 10%;
+  margin: 0% 10%;
 }
 
 .additional-selection {
-    opacity: 0.75;
-    font-size: 0.75em;
+  opacity: 0.75;
+  font-size: 0.75em;
 }
-mat-select{
-    text-align: left;
+mat-select {
+  text-align: left;
 }
 
-mat-select-trigger{
-    color: #495057;
+mat-select-trigger {
+  color: #495057;
 }
 
 .authors-list {
-    list-style-type:none;
-    text-align: left;
-li{
+  list-style-type: none;
+  text-align: left;
+  li {
     padding: 1%;
-    span{
-        margin-left: 2px;
-        margin-right: 5px;
+    span {
+      margin-left: 2px;
+      margin-right: 5px;
     }
+  }
 }
 
+.title {
+  text-align: left;
+  font-size: 24pt;
 }
 
-.title{
-    text-align: left;
-    font-size: 24pt;
+.input-label {
+  text-align: left;
+  font-size: 16pt;
 }
 
-.input-label{
-    text-align: left;
-    font-size: 16pt;
-}
-
-.new-author-warning{
-    font-size: 0.8em;
+.new-author-warning {
+  font-size: 0.8em;
 }
 
 .asterisk {
-    color: #FF3547;
+  color: #ff3547;
 }
 
 .close {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
-.hide-input{
-    display: none;
+.hide-input {
+  display: none;
 }
 
 .validation-error {
   width: 100%;
   font-size: 80%;
-  color: #FF3547;
+  color: #ff3547;
 }
 
 .center {

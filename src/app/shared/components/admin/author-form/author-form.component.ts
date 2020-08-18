@@ -2,49 +2,48 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { IAuthor } from 'src/app/core/models/author';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthorService } from 'src/app/core/services/author/authors.service';
-import {TranslateService} from '@ngx-translate/core';
-import {NotificationService} from '../../../../core/services/notification/notification.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
-import {merge} from 'rxjs';
-import {min} from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from '../../../../core/services/notification/notification.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { merge } from 'rxjs';
+import { min } from 'rxjs/operators';
 
 enum FormAction {
   Edit = 'edit',
   Add = 'add',
-  Merge = 'merge'
+  Merge = 'merge',
 }
-
 
 @Component({
   selector: 'app-author-form',
   templateUrl: './author-form.component.html',
-  styleUrls: ['./author-form.component.scss']
+  styleUrls: ['./author-form.component.scss'],
 })
 export class AuthorFormComponent implements OnInit {
+  author: IAuthor;
+  authorsMerge: IAuthor[];
 
-author: IAuthor;
-authorsMerge: IAuthor[];
+  action: FormAction = FormAction.Add;
 
-action: FormAction = FormAction.Add;
-
-title: string;
-submitButtonText: string;
-form: FormGroup;
+  title: string;
+  submitButtonText: string;
+  form: FormGroup;
 
   constructor(
     private router: ActivatedRoute,
     private location: Location,
     private authorService: AuthorService,
     private translate: TranslateService,
-    private notificationService: NotificationService) { }
+    private notificationService: NotificationService
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getRequestType();
     this.buildForm();
   }
 
-  changeMergeAuthor(author: IAuthor) {
+  public changeMergeAuthor(author: IAuthor): void {
     this.author = author;
     this.buildForm();
   }
@@ -61,15 +60,18 @@ form: FormGroup;
     });
     return authors;
   }
+
   private selectMergeAuthor(): IAuthor {
-    const confirmedAuthors = this.authorsMerge.filter(a => a.isConfirmed === null || a.isConfirmed === true);
+    const confirmedAuthors = this.authorsMerge.filter(
+      (a) => a.isConfirmed === null || a.isConfirmed === true
+    );
     if (confirmedAuthors?.length > 0) {
       return confirmedAuthors[0];
     }
     return this.authorsMerge[0];
   }
 
-  getRequestType(): void {
+  public getRequestType(): void {
     if (this.authorService.formMergeAuthors?.length > 1) {
       this.authorsMerge = this.getSortedMergeAuthors();
       this.author = this.selectMergeAuthor();
@@ -87,33 +89,43 @@ form: FormGroup;
     }
     this.translateText();
   }
-  private translateText() {
+
+  private translateText(): void {
     this.title = 'components.admin.authors-form.' + this.action + '-title';
-    this.submitButtonText = 'components.admin.authors-form.' + this.action + '-button';
+    this.submitButtonText =
+      'components.admin.authors-form.' + this.action + '-button';
   }
-  buildForm(): void {
+
+  public buildForm(): void {
     this.form = new FormGroup({
-      id : new FormControl({value: this.author.id, disabled: true}),
-      firstName : new FormControl(this.author.firstName, [
+      id: new FormControl({ value: this.author.id, disabled: true }),
+      firstName: new FormControl(this.author.firstName, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(100),
-        Validators.pattern('^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)\'-]+)$')]),
-      lastName : new FormControl(this.author.lastName, [
+        /* tslint:disable */
+        Validators.pattern("^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)'-]+)$"),
+        /* tslint:enable */
+      ]),
+      lastName: new FormControl(this.author.lastName, [
         Validators.required,
         Validators.minLength(2),
         Validators.maxLength(100),
-        Validators.pattern('^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)\'-]+)$')])
+        /* tslint:disable */
+        Validators.pattern("^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)'-]+)$"),
+        /* tslint:enable */
+      ]),
     });
   }
-  submit(): void {
+
+  public submit(): void {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       return;
     }
     this.author = {
       firstName: this.form.get('firstName').value,
-      lastName: this.form.get('lastName').value
+      lastName: this.form.get('lastName').value,
     };
     if (this.action !== FormAction.Add) {
       this.author.id = this.form.get('id').value;
@@ -124,58 +136,75 @@ form: FormGroup;
         this.updateAuthor(this.author);
         break;
       case FormAction.Merge:
-        this.mergeAuthors(this.author, this.authorsMerge.map(a => a.id));
+        this.mergeAuthors(
+          this.author,
+          this.authorsMerge.map((a) => a.id)
+        );
         break;
       default:
         this.addAuthor(this.author);
         break;
     }
   }
-  cancel(): void {
+
+  public cancel(): void {
     this.location.back();
   }
 
-  mergeAuthors(author: IAuthor, authorIds: number[]) {
-    console.log(authorIds);
+  public mergeAuthors(author: IAuthor, authorIds: number[]): void {
     this.authorService.mergeAuthors(author, authorIds).subscribe(
       () => {
         this.authorService.submitAuthor(author);
         this.cancel();
-        this.notificationService.success(this.translate
-          .instant('components.admin.authors.merge-success'), 'X');
+        this.notificationService.success(
+          this.translate.instant('components.admin.authors.merge-success'),
+          'X'
+        );
       },
-      (error) => {
-        this.notificationService.error(this.translate
-          .instant('common-errors.error-message'), 'X');
-      },
+      () => {
+        this.notificationService.error(
+          this.translate.instant('common-errors.error-message'),
+          'X'
+        );
+      }
     );
   }
-  addAuthor(author: IAuthor) {
+
+  public addAuthor(author: IAuthor): void {
     this.authorService.addAuthor(author).subscribe(
       (data: IAuthor) => {
         this.authorService.submitAuthor(author);
         this.cancel();
-        this.notificationService.success(this.translate
-          .instant('components.admin.authors.add-success'), 'X');
+        this.notificationService.success(
+          this.translate.instant('components.admin.authors.add-success'),
+          'X'
+        );
       },
-      (error) => {
-        this.notificationService.error(this.translate
-          .instant('common-errors.error-message'), 'X');
-      },
+      () => {
+        this.notificationService.error(
+          this.translate.instant('common-errors.error-message'),
+          'X'
+        );
+      }
     );
   }
-  updateAuthor(author: IAuthor) {
+
+  public updateAuthor(author: IAuthor): void {
     this.authorService.updateAuthor(author).subscribe(
       (data: IAuthor) => {
         this.authorService.submitAuthor(author);
         this.cancel();
-        this.notificationService.success(this.translate
-          .instant('components.admin.authors.update-success'), 'X');
+        this.notificationService.success(
+          this.translate.instant('components.admin.authors.update-success'),
+          'X'
+        );
       },
-      (error) => {
-        this.notificationService.error(this.translate
-          .instant('common-errors.error-message'), 'X');
-      },
+      () => {
+        this.notificationService.error(
+          this.translate.instant('common-errors.error-message'),
+          'X'
+        );
+      }
     );
   }
 }

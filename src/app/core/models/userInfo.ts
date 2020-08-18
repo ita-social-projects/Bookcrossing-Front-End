@@ -1,6 +1,6 @@
-import { IRole } from "./role";
-import { IToken } from "./token";
-import { IUser } from "./user";
+import { IRole } from './role';
+import { IToken } from './token';
+import { IUser } from './user';
 
 export interface IUserInfo extends IUser {
   numberOfBooksOwned?: number;

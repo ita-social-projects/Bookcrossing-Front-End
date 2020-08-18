@@ -36,12 +36,14 @@ export class UsersComponent implements OnInit {
   public totalSize: number;
 
   public searchForm: FormGroup;
+
   public get searchField(): AbstractControl {
     return this.searchForm.get('searchField');
   }
+
   private errorTimeout: NodeJS.Timeout;
 
-  public usersLoaded: boolean = false;
+  public usersLoaded = false;
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -106,7 +108,9 @@ export class UsersComponent implements OnInit {
 
   public onViewButtonClicked(user: IUserInfo) {
     this.notificationService.info(
+      /* tslint:disable */
       "This action must redirect admin to user's details page. User id = " +
+        /* tslint:ensable */
         user.id,
       'X'
     );
@@ -151,7 +155,7 @@ export class UsersComponent implements OnInit {
     this.userService.getUsers(params).subscribe({
       next: (pageData) => {
         this.users = pageData.page;
-        for(let user of this.users) {
+        for (let user of this.users) {
           user.registeredDate = new Date(user.registeredDate);
           user.registeredDate.toString = Date.prototype.toLocaleDateString;
         }

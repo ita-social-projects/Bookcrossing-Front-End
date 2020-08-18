@@ -2,25 +2,34 @@ import { PageableParameters } from './Pagination/pageableParameters';
 import { HttpParams } from '@angular/common/http';
 
 export class BookQueryParams extends PageableParameters {
-
   showAvailable?: boolean;
   searchTerm?: string;
   location?: number;
   genres?: number[];
   languages?: number[];
-  orderByField?:string;
-  orderByAscending?:boolean;
-  static mapFromQuery(params: any, defaultPage: number = 1, defaultPageSize: number = 8): BookQueryParams {
+  orderByField?: string;
+  orderByAscending?: boolean;
+  static mapFromQuery(
+    params: any,
+    defaultPage: number = 1,
+    defaultPageSize: number = 8
+  ): BookQueryParams {
     const book = new BookQueryParams();
     book.page = params.page ? +params.page : defaultPage;
     book.pageSize = params.pageSize ? +params.pageSize : defaultPageSize;
     book.location = params.location ? +params.location : undefined;
     book.searchTerm = params.searchTerm ? params.searchTerm : undefined;
-    book.showAvailable = typeof params.showAvailable === 'undefined' ? undefined : JSON.parse(params.showAvailable);
+    book.showAvailable =
+      typeof params.showAvailable === 'undefined'
+        ? undefined
+        : JSON.parse(params.showAvailable);
     book.genres = params.genres ? params.genres : undefined;
     book.languages = params.languages ? params.languages : undefined;
     book.orderByField = params.orderByField ? params.orderByField : undefined;
-    book.orderByAscending = typeof params.orderByAscending==='undefined' ? undefined : JSON.parse(params.orderByAscending)
+    book.orderByAscending =
+      typeof params.orderByAscending === 'undefined'
+        ? undefined
+        : JSON.parse(params.orderByAscending);
     return book;
   }
 
@@ -46,10 +55,13 @@ export class BookQueryParams extends PageableParameters {
         params = params.append('languages', id.toString());
       }
     }
-    if(this.orderByField){
-      params = params.set('SortableParams.OrderByField',this.orderByField);
-      if(typeof this.orderByAscending!=='undefined'){
-        params = params.set('SortableParams.orderByAscending',this.orderByAscending.toString());
+    if (this.orderByField) {
+      params = params.set('SortableParams.OrderByField', this.orderByField);
+      if (typeof this.orderByAscending !== 'undefined') {
+        params = params.set(
+          'SortableParams.orderByAscending',
+          this.orderByAscending.toString()
+        );
       }
     }
 

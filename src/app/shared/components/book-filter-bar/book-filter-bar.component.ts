@@ -21,9 +21,9 @@ export class BookFilterBarComponent implements OnInit {
   @Output() selectedLanguagesChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedLocationChange: EventEmitter<number> = new EventEmitter<number>();
   @Output() availableSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() viewMode: EventEmitter<string> = new EventEmitter<string>()
-  @Output() orderByFieldChange:EventEmitter<string> = new EventEmitter<string>();
-  @Output() orderByFieldAscendingChange:EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() viewMode: EventEmitter<string> = new EventEmitter<string>();
+  @Output() orderByFieldChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() orderByFieldAscendingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   genres: IGenre[];
   languages: ILanguage[];
   selectedMode: string;
@@ -32,9 +32,9 @@ export class BookFilterBarComponent implements OnInit {
   @Input() selectedLanguages: number[];
   @Input() selectedLocation: number;
   @Input() availableSelected?: boolean;
-  @Input() showAvailable: boolean = true;
-  @Input() orderByField:string;
-  @Input() orderByFieldAscending: boolean = true;
+  @Input() showAvailable = true;
+  @Input() orderByField: string;
+  @Input() orderByFieldAscending = true;
   constructor(
     private genreService: GenreService,
     private bookLanguageService: BookLanguageService,
@@ -51,7 +51,7 @@ export class BookFilterBarComponent implements OnInit {
   notifyFilterChange() {
     this.filterChange.emit(true);
   }
-  //Categories
+  // Categories
   onCategoriesChange(isOpened: boolean) {
     if (!isOpened) {
       this.selectedGenresChange.emit(this.selectedGenres);
@@ -62,7 +62,7 @@ export class BookFilterBarComponent implements OnInit {
     this.selectedGenresChange.emit([]);
     this.notifyFilterChange();
   }
-  //Languages
+  // Languages
   onLanguagesChange(isOpened: boolean) {
     if (!isOpened) {
       this.selectedLanguagesChange.emit(this.selectedLanguages);
@@ -73,7 +73,7 @@ export class BookFilterBarComponent implements OnInit {
     this.selectedLanguagesChange.emit([]);
     this.notifyFilterChange();
   }
-  //Location
+  // Location
   onLocationChange() {
     this.selectedLocationChange.emit(this.selectedLocation);
     this.notifyFilterChange();
@@ -83,7 +83,7 @@ export class BookFilterBarComponent implements OnInit {
     this.notifyFilterChange();
   }
 
-  //Available
+  // Available
   toggleAvailable(selected) {
     this.availableSelected = selected;
     this.availableSelectedChange.emit(selected);
@@ -92,12 +92,12 @@ export class BookFilterBarComponent implements OnInit {
 
   getLocation() {
     this.locationService.getLocation().subscribe({
-      next:(data) => {
+      next: (data) => {
         this.locations = data;
       },
       error: () => {
         this.notificationService.error(this.translate
-          .instant("An error has occured, please try again later!"), "X")
+          .instant('An error has occured, please try again later!'), 'X');
       }
     }
     );
@@ -109,7 +109,7 @@ export class BookFilterBarComponent implements OnInit {
       },
       error: () => {
         this.notificationService.error(this.translate
-          .instant("An error has occured, please try again later!"), "X")
+          .instant('An error has occured, please try again later!'), 'X');
       }
     }
     );
@@ -122,25 +122,24 @@ export class BookFilterBarComponent implements OnInit {
       },
       error: () => {
         this.notificationService.error(this.translate
-          .instant("An error has occured, please try again later!"), "X")
+          .instant('An error has occured, please try again later!'), 'X');
       }
     }
     );
   }
 
   onViewModeChange(value: any) {
-    localStorage.setItem("viewMode", value);
-    this.getViewMode()
+    localStorage.setItem('viewMode', value);
+    this.getViewMode();
   }
 
   getViewMode() {
-    if (localStorage.hasOwnProperty("viewMode")) {
-      this.selectedMode = localStorage.getItem("viewMode");
-      this.viewMode.emit(localStorage.getItem("viewMode"))
-    }
-    else{
-      this.selectedMode = 'list'
-      this.viewMode.emit("list")
+    if (localStorage.hasOwnProperty('viewMode')) {
+      this.selectedMode = localStorage.getItem('viewMode');
+      this.viewMode.emit(localStorage.getItem('viewMode'));
+    } else {
+      this.selectedMode = 'list';
+      this.viewMode.emit('list');
     }
   }
 
@@ -156,7 +155,7 @@ export class BookFilterBarComponent implements OnInit {
   }
 
   onOrderByAscendingChange() {
-    this.orderByFieldAscending= !this.orderByFieldAscending;
+    this.orderByFieldAscending = !this.orderByFieldAscending;
     this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
     this.notifyFilterChange();
   }

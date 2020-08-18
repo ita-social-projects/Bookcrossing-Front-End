@@ -25,16 +25,16 @@ import { WishListService } from 'src/app/core/services/wishlist/wishlist.service
 })
 export class RequestsComponent implements OnInit {
 
-  isBlockView: boolean = false;
+  isBlockView = false;
   userId: number;
-  isRequester: boolean[] = [true, true, true, true, true ,true, true, true];
-  disabledButton: boolean = false;
+  isRequester: boolean[] = [true, true, true, true, true , true, true, true];
+  disabledButton = false;
   viewMode: string;
   requests: IRequest[];
   booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
-  queryParams: BookQueryParams = new BookQueryParams;
+  queryParams: BookQueryParams = new BookQueryParams();
   selectedGenres: number[];
   selectedLanguages: number[];
   apiUrl: string = environment.apiUrl;
@@ -47,8 +47,8 @@ export class RequestsComponent implements OnInit {
     private notificationService: NotificationService,
     private routeActive: ActivatedRoute,
     private requestService: RequestService,
-    private searchBarService : SearchBarService,
-    private router : Router,
+    private searchBarService: SearchBarService,
+    private router: Router,
     private dialogService: DialogService,
     private authentication: AuthenticationService,
     private wishListService: WishListService,
@@ -57,78 +57,78 @@ export class RequestsComponent implements OnInit {
 
   ngOnInit() {
     this.routeActive.queryParams.subscribe(query => {
-      this.filter = query.filter;})
+      this.filter = query.filter; });
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8)
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
       this.populateDataFromQuery();
       this.getUserRequests(this.queryParams);
-    })
+    });
     this.router.events.subscribe((val) => {
-      if( this.router.url != ''){
+      if ( this.router.url !== '') {
         this.route =  this.router.url;
-      } 
+      }
     });
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     return this.authentication.isAuthenticated();
   }
 
-  getUserRequests(params: BookQueryParams) : void {
+  getUserRequests(params: BookQueryParams): void {
     this.requestService.getUserRequestsPage(params)
     .subscribe( {
       next: pageData => {
         this.requests = pageData.page;
-        let books = [];
-        pageData.page.forEach(function(item) {
-          books.push(item.book)
-        })
+        const books = [];
+        pageData.page.forEach((item: IRequest) => {
+          books.push(item.book);
+        });
         this.books = books;
-        for(var i = 0; i < this.books.length; i++){
-          this.getWhichBooksWished(this.books[i]);
+        for (const book of this.books) {
+          this.getWhichBooksWished(book);
         }
-      if(pageData.totalCount){
+        if (pageData.totalCount) {
         this.totalSize = pageData.totalCount;
       }
     }
    });
-  };
+  }
 
   getWhichBooksWished(book: IBook) {
     this.wishListService.isWished(book.id).subscribe((value: boolean) => {
-      if(value) book.isWished = true;
+      if (value) { book.isWished = true; }
     });
   }
 
   async cancelRequest(bookId: number) {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get("Do you want to cancel request? Current owner will be notified about your cancellation.").toPromise()
+        await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancellation.').toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
         if (res) {
           this.disabledButton = true;
-          let request = this.requests.find(x=>x.book.id === bookId)
+          const request = this.requests.find(x => x.book.id === bookId);
           this.requestService.deleteRequest(request.id).subscribe(() => {
             this.disabledButton = false;
             this.ngOnInit();
-              this.notificationService.success(this.translate
-                .instant("Request is cancelled."), "X");
+            this.notificationService.success(this.translate
+                .instant('Request is cancelled.'), 'X');
             }, err => {
             this.disabledButton = false;
-              this.notificationService.error(this.translate
-                .instant("Something went wrong!"), "X");
+            this.notificationService.error(this.translate
+                .instant('Something went wrong!'), 'X');
             });
         }
       });
   }
 
-  onFilterChange(filterChanged : boolean){
-    this.queryParams.genres = this.selectedGenres
-    this.queryParams.languages = this.selectedLanguages
-    if(filterChanged){
-      this.resetPageIndex()
+  onFilterChange(filterChanged: boolean) {
+    this.queryParams.genres = this.selectedGenres;
+    this.queryParams.languages = this.selectedLanguages;
+    if (filterChanged) {
+      this.resetPageIndex();
       this.changeUrl();
     }
   }
@@ -136,27 +136,27 @@ export class RequestsComponent implements OnInit {
   async requestBook(bookId: number) {}
 
   private populateDataFromQuery() {
-    if(this.queryParams.searchTerm){
-      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm)
+    if (this.queryParams.searchTerm) {
+      this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
     this.queryParams.showAvailable = false;
-    if(this.queryParams.genres){
+    if (this.queryParams.genres) {
       let genres: number[];
-      if(Array.isArray(this.queryParams.genres))
-       genres = this.queryParams.genres.map(v=>+v);
-       else{
+      if (Array.isArray(this.queryParams.genres)) {
+       genres = this.queryParams.genres.map(v => +v);
+      } else {
          genres = [+this.queryParams.genres];
        }
-        this.selectedGenres =  genres;
+      this.selectedGenres =  genres;
     }
-    if(this.queryParams.languages){
+    if (this.queryParams.languages) {
       let languages: number[];
-      if(Array.isArray(this.queryParams.languages))
-       languages = this.queryParams.languages.map(v=>+v);
-       else{
+      if (Array.isArray(this.queryParams.languages)) {
+       languages = this.queryParams.languages.map(v => +v);
+      } else {
          languages = [+this.queryParams.languages];
        }
-        this.selectedLanguages =  languages;
+      this.selectedLanguages =  languages;
     }
   }
   pageChanged(currentPage: number): void {
@@ -165,10 +165,10 @@ export class RequestsComponent implements OnInit {
     this.changeUrl();
     window.scrollTo({
       top: 0,
-      behavior:'smooth'
+      behavior: 'smooth'
     });
   }
-  private resetPageIndex() : void {
+  private resetPageIndex(): void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;
   }
@@ -178,21 +178,18 @@ export class RequestsComponent implements OnInit {
         relativeTo: this.routeActive,
         queryParams: this.queryParams,
       });
-      this.getUserRequests(this.queryParams);
+    this.getUserRequests(this.queryParams);
   }
   onViewModeChange(viewModeChanged: string) {
-    if(viewModeChanged === 'block'){
+    if (viewModeChanged === 'block') {
       this.isBlockView = true;
-    }
-    else {
+    } else {
       this.isBlockView = false;
     }
   }
 
-  changeWishList(book:IBook):void
-  {
-      if(book.isWished) 
-      {
+  changeWishList(book: IBook): void {
+      if (book.isWished) {
         this.wishListService.removeFromWishList(book.id).subscribe(
           (data) => { book.isWished = false; },
           (error) => {
@@ -202,9 +199,7 @@ export class RequestsComponent implements OnInit {
             );
           }
         );
-      }
-      else
-      {
+      } else {
         this.wishListService.addToWishList(book.id).subscribe(
         (data) => { book.isWished = true; },
           (error) => {
