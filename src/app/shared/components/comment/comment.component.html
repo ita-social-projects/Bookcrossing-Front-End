@@ -31,7 +31,7 @@
 
                 <div class="media">
                   <a class="pull-left">
-                    <ngx-avatar [name]="comment.owner.firstName + ' ' + comment.owner.lastName"></ngx-avatar>
+                    <ngx-avatar [name]="getUserInitials(comment.owner)"></ngx-avatar>
                   </a>
 
                   <div class="media-body pad">

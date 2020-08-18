@@ -87,6 +87,14 @@ export class CommentComponent implements OnInit {
     return `${owner.firstName} ${owner.lastName}`.trim();
   }
 
+  public getUserInitials(owner): string {
+    if (owner === null) {
+      return 'deleted user';
+    }
+
+    return `${owner.firstName} ${owner.lastName}`.trim();
+  }
+
   public canEditComment(owner: IBookOwner): boolean {
     if (owner === null || this.user === null) {
       return false;
