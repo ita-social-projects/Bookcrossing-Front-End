@@ -368,7 +368,7 @@ constructor(
     Object.keys(book).forEach((key, _) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
-          book[key].forEach((index) => {
+          book[key].forEach((i, index) => {
             if (key === 'fieldMasks') {
               formData.append(`${key}[${index}]`, book[key][index]);
             } else {

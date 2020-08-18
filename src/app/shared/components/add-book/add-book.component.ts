@@ -352,10 +352,10 @@ export class AddBookComponent implements OnInit {
 
   public getFormData(book: IBookPost): FormData {
     const formData = new FormData();
-    Object.keys(book).forEach((key) => {
+    Object.keys(book).forEach((key, _) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
-          book[key].forEach((index) => {
+          book[key].forEach((i, index) => {
             formData.append(`${key}[${index}][id]`, book[key][index].id);
           });
         } else {
