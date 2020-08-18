@@ -12,7 +12,7 @@
 
                 <div class="media">
                   <a class="pull-left avatar">
-                    <ngx-avatar [name]="getUserName(comment.owner)"></ngx-avatar>
+                    <ngx-avatar [name]="comment.owner.firstName + ' ' + comment.owner.lastName"></ngx-avatar>
                   </a>
 
                   <div class="media-body pad">
@@ -30,7 +30,7 @@
                       Edit
                     </a>
 
-                    <button *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)"
+                    <button *ngIf="!comment.isDeleted && canDeleteComment(comment.owner)"
                             (click)="onDeleteComment(comment.id)"
                             role="button"
                             class="btn-text"

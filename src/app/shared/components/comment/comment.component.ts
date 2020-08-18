@@ -95,6 +95,18 @@ export class CommentComponent implements OnInit {
     return owner.id === this.user.id;
   }
 
+  public canDeleteComment(owner: IBookOwner): boolean {
+    if (this.authenticationService.isAdmin()) {
+      return true;
+    }
+
+    if (owner === null || this.user === null) {
+      return false;
+    }
+
+    return owner.id === this.user.id;
+  }
+
   public formatDate(date): string {
     TimeAgo.addLocale(en);
     const d = new Date(date);

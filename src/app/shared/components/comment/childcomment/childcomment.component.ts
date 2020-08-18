@@ -9,6 +9,8 @@ import {IChildInsertComment} from '../../../../core/models/comments/child-commen
 import {DialogService} from '../../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
 import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
+import {IBookOwner} from '../../../../core/models/comments/owner';
+import {AuthenticationService} from '../../../../core/services/authentication/authentication.service';
 
 
 @Component({
@@ -40,7 +42,8 @@ export class ChildcommentComponent implements OnInit {
   constructor(private commentservice: CommentService,
               private dialogService: DialogService,
               private translate: TranslateService,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -61,6 +64,18 @@ export class ChildcommentComponent implements OnInit {
     } else {
       return owner.id === this.user.id;
     }
+  }
+
+  public canDeleteComment(owner: IBookOwner): boolean {
+    if (this.authenticationService.isAdmin()) {
+      return true;
+    }
+
+    if (owner === null || this.user === null) {
+      return false;
+    }
+
+    return owner.id === this.user.id;
   }
 
   getUserName(owner) {
