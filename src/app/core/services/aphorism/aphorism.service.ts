@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
     private http: HttpClient
     ) { }
 
-    public getAphorism(): Observable<IAphorism> {
-      return this.http.get<IAphorism>(aphorismUrl);
+    public getAphorism(isCurrent: boolean): Observable<IAphorism> {
+      return this.http.get<IAphorism>(aphorismUrl + '/' + isCurrent);
     }
   }
