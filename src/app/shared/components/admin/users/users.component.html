@@ -69,12 +69,12 @@
               [data]="users"
               [dataProperties]="usersProperties"
               [displayColumns]="usersDisplayColumns"
-              [(selectedHeader)]="queryParams.sort.orderByField"
+              [(sortParams)]="queryParams.sort"
               [canView]="true"
               [canEdit]="false"
               [canDelete]="false"
               (viewClicked)="onViewButtonClicked($event)"
-              (selectedHeaderChange)="onSortHeaderChanged($event)"
+              (selectedHeaderChange)="onSortHeaderChanged()"
             >
             </app-admin-table>
 

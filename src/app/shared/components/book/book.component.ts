@@ -45,7 +45,7 @@ export class BookComponent implements OnInit {
   userWhoRequested: IUserInfo = null;
   firstOwner: IUserInfo = null;
   imagePath: string;
-  disabledButton: boolean = false;
+  disabledButton = false;
   previousBooksPage: booksPage;
 
   constructor(
@@ -62,7 +62,7 @@ export class BookComponent implements OnInit {
     private wishListService: WishListService
   ) { }
 
-  ngOnInit() {
+  public ngOnInit(): void {
 
     this.routeActive.paramMap.pipe(
       switchMap(params => params.getAll('id'))
@@ -72,14 +72,12 @@ export class BookComponent implements OnInit {
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
       this.book = value;
       this.getOwners(this.book.userId);
-      if (value.state !== bookState.available)
-      {
+      if (value.state !== bookState.available) {
         this.getUserWhoRequested();
       }
-        if (this.isAuthenticated())
-      {
-        this.wishListService.isWished(this.book.id).subscribe((value: boolean) => {
-          if (value) {
+      if (this.isAuthenticated()) {
+        this.wishListService.isWished(this.book.id).subscribe((isWished: boolean) => {
+          if (isWished) {
             this.isWished = true;
           }
         });
@@ -90,25 +88,25 @@ export class BookComponent implements OnInit {
     this.previousBooksPage = history.state.booksPage;
   }
 
-  navigate() {
+  public navigate(): void {
     this.router.navigateByUrl(history.state.previousRoute);
   }
 
-  isAuthenticated() {
+  public isAuthenticated(): boolean {
     return this.authentication.isAuthenticated();
   }
 
-  isAdmin() {
+  public isAdmin(): boolean {
     return this.authentication.isAdmin();
   }
 
-  getOwners(userId: number) {
+  public getOwners(userId: number): void {
     this.userService.getUserById(userId)
       .subscribe((value: IUserInfo) => {
         this.currentOwner = value;
         if (this.isAuthenticated()) {
-          this.authentication.getUserId().subscribe((value: number) => {
-            if (value === this.currentOwner.id) {
+          this.authentication.getUserId().subscribe((id: number) => {
+            if (id === this.currentOwner.id) {
               this.isBookOwner = true;
             }
           },
@@ -120,13 +118,12 @@ export class BookComponent implements OnInit {
           const query = new RequestQueryParams();
           query.first = true;
           query.last = false;
-          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
-            this.firstOwner = value.owner;
+          this.requestService.getRequestForBook(this.bookId, query).subscribe((request: IRequest) => {
+            this.firstOwner = request.owner;
           }, err => {
             this.firstOwner = value;
           });
-        }
-        else {
+        } else {
           this.firstOwner = value;
         }
         if (this.firstOwner === undefined) {
@@ -135,14 +132,14 @@ export class BookComponent implements OnInit {
       });
   }
 
-  getReadCount(bookId: number) {
+  public getReadCount(bookId: number): void {
     this.requestService.getAllRequestsForBook(this.bookId).subscribe((value: IRequest[]) => {
-      let counter: number = 0;
-      value.forEach(function (item) {
+      let counter = 0;
+      value.forEach((item) => {
         if (item.receiveDate) {
           counter++;
         }
-      })
+      });
       this.readCount = counter;
     },
       err => {
@@ -150,15 +147,15 @@ export class BookComponent implements OnInit {
           .instant('Something went wrong (Read by counter)!'), 'X');
       });
   }
-  showEditForm(book: IBook) {
+  public showEditForm(book: IBook): void {
     const formFactory = this.resolver.resolveComponentFactory(BookEditFormComponent);
     const instance = this.refDir.containerRef.createComponent(formFactory).instance;
     instance.book = book;
-    instance.isAdmin = this.isAdmin()
-    instance.onCancel.subscribe(() => { this.refDir.containerRef.clear(); this.ngOnInit(); });
+    instance.isAdmin = this.isAdmin();
+    instance.cancel.subscribe(() => { this.refDir.containerRef.clear(); this.ngOnInit(); });
   }
 
-  getUserWhoRequested() {
+  public getUserWhoRequested(): void {
     const query = new RequestQueryParams();
     query.first = false;
     query.last = true;
@@ -166,8 +163,8 @@ export class BookComponent implements OnInit {
       if (this.book.state !== bookState.available) {
         this.userWhoRequested = value.user;
         if (this.isAuthenticated()) {
-          this.authentication.getUserId().subscribe((value: number) => {
-            if (value === this.userWhoRequested.id) {
+          this.authentication.getUserId().subscribe((id: number) => {
+            if (id === this.userWhoRequested.id) {
               this.isRequester = true;
             }
           },
@@ -178,13 +175,13 @@ export class BookComponent implements OnInit {
       }
     });
   }
-  getFormData(book: IBookPut): FormData {
+  public getFormData(book: IBookPut): FormData {
     const formData = new FormData();
-    Object.keys(book).forEach((key, index) => {
+    Object.keys(book).forEach((key, i) => {
       if (book[key]) {
         if (Array.isArray(book[key])) {
-          book[key].forEach((i, index) => {
-            if (key == 'fieldMasks') {
+          book[key].forEach((_, index) => {
+            if (key === 'fieldMasks') {
               formData.append(`${key}[${index}]`, book[key][index]);
             } else {
               formData.append(`${key}[${index}][id]`, book[key][index].id);
@@ -197,7 +194,7 @@ export class BookComponent implements OnInit {
     });
     return formData;
   }
-  async makeAvailable() {
+  public async makeAvailable(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to share book? The book will be available for request!').toPromise()
@@ -226,7 +223,8 @@ export class BookComponent implements OnInit {
       });
     this.disabledButton = false;
   }
-  async cancelRequest() {
+
+  public async cancelRequest(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancelation.').toPromise()
@@ -254,7 +252,7 @@ export class BookComponent implements OnInit {
       });
 
   }
-  async startReading() {
+  public async startReading(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to start reading? You will be shown as current owner.').toPromise()
@@ -271,7 +269,7 @@ export class BookComponent implements OnInit {
               this.ngOnInit();
               this.notificationService.success(this.translate
                 .instant('Book’s owner has been changed.'), 'X');
-              this.Donate()
+              this.Donate();
             }, err => {
               this.disabledButton = false;
               this.notificationService.error(this.translate
@@ -283,7 +281,7 @@ export class BookComponent implements OnInit {
     this.disabledButton = false;
   }
 
-  async Donate() {
+  public async Donate(): Promise<void> {
     this.dialogService
       .openDonateDialog(
         await this.translate.get('\You can donate some money for the project. It\'s optional.').toPromise()
@@ -291,14 +289,14 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe(async res => {
         if (res) {
-          window.open("https://openeyes.org.ua/")
+          window.open('https://openeyes.org.ua/');
         }
       });
   }
 
-  async requestBook() {
+  public async requestBook(): Promise<void> {
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
-    if (!userHasValidLocation) return;
+    if (!userHasValidLocation) { return; }
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
@@ -321,14 +319,12 @@ export class BookComponent implements OnInit {
       });
   }
 
-  onRatingSet($event: number) {
-    console.log($event)
+  public onRatingSet($event: number): void {
+    console.log($event);
   }
 
-  changeWishList(book:IBook):void
-  {
-      if(this.isWished)
-      {
+  public changeWishList(book: IBook): void {
+      if (this.isWished) {
         this.wishListService.removeFromWishList(book.id).subscribe(
           (data) => { this.isWished = false; },
           (error) => {
@@ -338,9 +334,7 @@ export class BookComponent implements OnInit {
             );
           }
         );
-      }
-      else
-      {
+      } else {
         this.wishListService.addToWishList(book.id).subscribe(
         (data) => { this.isWished = true; },
           (error) => {

@@ -8,8 +8,7 @@ export class EmailNotificationService {
 
   readonly userUrl = userUrl;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   forbidEmail(mail, num) {
     return this.http.put(`${this.userUrl}/email/`, {email: mail, code: num});

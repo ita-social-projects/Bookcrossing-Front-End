@@ -87,7 +87,27 @@ export class CommentComponent implements OnInit {
     return `${owner.firstName} ${owner.lastName}`.trim();
   }
 
+  public getUserInitials(owner): string {
+    if (owner === null) {
+      return 'deleted user';
+    }
+
+    return `${owner.firstName} ${owner.lastName}`.trim();
+  }
+
   public canEditComment(owner: IBookOwner): boolean {
+    if (owner === null || this.user === null) {
+      return false;
+    }
+
+    return owner.id === this.user.id;
+  }
+
+  public canDeleteComment(owner: IBookOwner): boolean {
+    if (this.authenticationService.isAdmin()) {
+      return true;
+    }
+
     if (owner === null || this.user === null) {
       return false;
     }
@@ -109,7 +129,7 @@ export class CommentComponent implements OnInit {
   }
 
   UpdateComments() {
-    this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[])=> {
+    this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[]) => {
       this.comments = value;
       this.comments.sort((a, b) => {
         // @ts-ignore
@@ -119,16 +139,16 @@ export class CommentComponent implements OnInit {
   }
 
   PostComment() {
-    let postComment: IRootInsertComment = {
+    const postComment: IRootInsertComment = {
       bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
-    }
+    };
     this.commentservice.postComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
   }
 
   public PostChildComment(subcomment: string, ids: string[]): void {
     const postComment: IChildInsertComment = {
-      ids: ids, ownerId: this.user.id, text: subcomment
+      ids, ownerId: this.user.id, text: subcomment
     };
 
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
@@ -150,12 +170,12 @@ export class CommentComponent implements OnInit {
       });
   }
 
-  updateComment(id, text, rating) {
-    if(typeof this.updateRating === 'undefined'){
+  public updateComment(id, text, rating): void {
+    if (typeof this.updateRating === 'undefined') {
       this.updateRating = rating;
     }
     const updateComment: IRootUpdateComment = {
-      id: id, ownerId: this.user.id, rating: this.updateRating, text: text
+      id, ownerId: this.user.id, rating: this.updateRating, text
     };
     this.commentservice.updateComment(updateComment).subscribe(() => this.UpdateComments());
   }

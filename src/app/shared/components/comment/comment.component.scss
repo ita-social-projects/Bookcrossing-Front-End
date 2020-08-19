@@ -6,25 +6,19 @@ p {
   margin-top: 5px;
 }
 
-.comment-wrapper .panel-body {
-  max-height:650px;
-  overflow:auto;
+.comment-wrapper {
+  list-style-type: none;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #0000002b;
+}
+
+.show-subcomments {
+  display: block;
+  margin-left: 60px;
 }
 
 .pad{
   padding-left: 10px;
-
-}
-
-.comment-wrapper .media-list .media img {
-  width:64px;
-  height:64px;
-  border:2px solid #e5e7e8;
-}
-
-.comment-wrapper .media-list .media {
-  border-bottom:1px dashed #efefef;
-  margin-bottom:25px;
 }
 
 .arrow-down {
@@ -118,8 +112,7 @@ hr {
 .time-value,
 .reply-btn {
   font-size: 14px;
-  opacity: 50%;
-  color: black;
+  color: rgba(0,0,0,.5);
   font-weight: 400;
 }
 

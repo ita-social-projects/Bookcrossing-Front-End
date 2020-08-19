@@ -24,7 +24,7 @@ export class MapboxService {
   geocoder: MapboxGeocoder = new MapboxGeocoder({
     accessToken: this.ACCESS_TOKEN,
     placeholder: 'Search',
-    mapboxgl: mapboxgl,
+    mapboxgl,
     marker: false,
   });
 

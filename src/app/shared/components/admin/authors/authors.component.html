@@ -56,11 +56,11 @@
               [dataProperties]="authorProperties"
               [displayColumns]="authorDisplayColumns"
               [(selectedRows)]="selectedRows"
-              [(selectedHeader)]="queryParams.sort.orderByField"
+              [(sortParams)]="queryParams.sort"
               booleanButtonText="{{'components.admin.authors.approve' | translate}}"
               [canEdit]="true"
               (editClicked)="editAuthor($event)"
-              (selectedHeaderChange)="changeSort($event)"
+              (selectedHeaderChange)="onChangeSort()"
               (booleanButtonClicked)="approveAuthor($event)">
             </app-admin-table>
 

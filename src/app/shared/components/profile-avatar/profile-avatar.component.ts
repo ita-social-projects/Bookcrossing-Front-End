@@ -8,15 +8,15 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 })
 export class ProfileAvatarComponent implements OnInit {
 
-  userName: string = "unidentified";
+  userName = 'unidentified';
 
   constructor(
     private authenticationService: AuthenticationService
     ) { }
 
   ngOnInit() {
-    let currentUser = this.authenticationService.currentUserValue;
-    this.userName = currentUser.firstName + " " + currentUser.lastName;
+    const currentUser = this.authenticationService.currentUserValue;
+    this.userName = currentUser.firstName + ' ' + currentUser.lastName;
   }
 
   isAdmin(): boolean {

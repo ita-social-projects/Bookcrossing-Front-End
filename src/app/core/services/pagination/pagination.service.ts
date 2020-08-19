@@ -28,9 +28,9 @@ export class PaginationService {
     params = bookParams.getHttpParams();
     return this.http.get<IPage<T>>(getUrl, { params });
   }
-  getPage<T>(getUrl: string, pagination: PageableParameters) : Observable<IPage<T>> {
+  getPage<T>(getUrl: string, pagination: PageableParameters): Observable<IPage<T>> {
     let params = new HttpParams();
-    params = pagination.mapPagination(params, pagination)
+    params = pagination.mapPagination(params, pagination);
     return this.http.get<IPage<T>>(getUrl, { params });
   }
 

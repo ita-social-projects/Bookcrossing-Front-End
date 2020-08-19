@@ -47,10 +47,10 @@
               [data]="locations"
               [dataProperties]="locationProperties"
               [displayColumns]="locationDisplayColumns"
-              [(selectedHeader)]="queryParams.sort.orderByField"
+              [(sortParams)]="queryParams.sort"
               [canEdit]="true"
               (editClicked)="EditLocation($event)"
-              (selectedHeaderChange)="changeSort($event)">
+              (selectedHeaderChange)="onChangeSort()">
             </app-admin-table>
             <app-pagination *ngIf="locations && locations.length > 0" [arraySize]="totalSize"
                             [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">

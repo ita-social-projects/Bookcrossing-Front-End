@@ -43,9 +43,9 @@
               [data]="genres"
               [dataProperties]="genresProperties"
               [displayColumns]="genresDisplayColumns"
-              [(selectedHeader)]="queryParams.sort.orderByField"
-              [canEdit]="true";
-              (selectedHeaderChange)="changeSort($event)">
+              [(sortParams)]="queryParams.sort"
+              [canEdit]="true"
+              (selectedHeaderChange)="onChangeSort()">
             </app-admin-table>
 
             <app-pagination *ngIf="genres && genres.length > 0" [arraySize]="totalSize"

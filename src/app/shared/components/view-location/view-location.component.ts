@@ -12,7 +12,7 @@ export class ViewLocationComponent implements OnInit {
   @Input() isAdmin: boolean;
 
   locations: ILocation[] = [];
-  searchField: string = '';
+  searchField = '';
   constructor(private locationService: LocationService) {
     this.locationService.locationSubmited$.subscribe((location) => {
       const editedLocation = this.locations.find((x) => x.id === location.id);

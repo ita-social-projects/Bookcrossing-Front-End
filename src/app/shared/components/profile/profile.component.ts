@@ -1,75 +1,85 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
-import {IUserInfo} from '../../../core/models/userInfo';
-import {UserService} from '../../../core/services/user/user.service';
-import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
-import {ILocation} from '../../../core/models/location';
-import {LocationService} from '../../../core/services/location/location.service';
-import {RefDirective} from '../../directives/ref.derictive';
-import {ProfileEditComponent} from '../profile-edit/profile-edit.component';
-
+import {
+  Component,
+  ComponentFactoryResolver,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { IUserInfo } from '../../../core/models/userInfo';
+import { UserService } from '../../../core/services/user/user.service';
+import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
+import { ILocation } from '../../../core/models/location';
+import { LocationService } from '../../../core/services/location/location.service';
+import { RefDirective } from '../../directives/ref.derictive';
+import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  @ViewChild(RefDirective, {static: false}) refDir: RefDirective
+  @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
-  constructor(private userService: UserService,
-              private authentication: AuthenticationService,
-              private locationService: LocationService,
-              private resolver: ComponentFactoryResolver) { }
+  constructor(
+    private userService: UserService,
+    private authentication: AuthenticationService,
+    private locationService: LocationService,
+    private resolver: ComponentFactoryResolver
+  ) {}
 
-  user: IUserInfo;
-  id: number;
-  isEditing = false;
-  locations: ILocation[];
+  public user: IUserInfo;
+  public id: number;
+  public isEditing = false;
+  public locations: ILocation[];
 
-  ngOnInit(): void {
-
+  public ngOnInit(): void {
     this.userInfo();
   }
 
-  async getUserId(): Promise<number> {
-    let recieve = 100;
+  public async getUserId(): Promise<number> {
+    const recieve = 100;
 
-    let promice = new Promise<number>((resolve) => {
-      this.authentication.getUserId()
-        .subscribe({
-          next: (value: number) => {
-            if (value) {
-              resolve(value);
-            }
-          },
-          error: () => {
-            resolve(0);
+    const promice = new Promise<number>((resolve) => {
+      this.authentication.getUserId().subscribe({
+        next: (value: number) => {
+          if (value) {
+            resolve(value);
           }
-        });
+        },
+        error: () => {
+          resolve(0);
+        },
+      });
     });
 
-    await promice.then(value => this.id = value);
+    await promice.then((value) => (this.id = value));
     console.log('id :' + this.id);
 
     return this.id;
   }
 
-  async userInfo() {
-    await this.getUserId().then(res => this.getUserById());
+  public async userInfo(): Promise<void> {
+    await this.getUserId().then(() => this.getUserById());
   }
 
-  getUserById() {
-    this.userService.getUserById(this.id)
-    .subscribe(user_ => {
-    this.user = user_;
-  });
+  public getUserById(): void {
+    this.userService.getUserById(this.id).subscribe((user) => {
+      this.user = user;
+    });
   }
 
-  showEditForm(user: IUserInfo) {
+  public showEditForm(user: IUserInfo): void {
     this.isEditing = true;
-    let formFactory = this.resolver.resolveComponentFactory(ProfileEditComponent);
-    let instance = this.refDir.containerRef.createComponent(formFactory).instance;
+    const formFactory = this.resolver.resolveComponentFactory(
+      ProfileEditComponent
+    );
+    const instance = this.refDir.containerRef.createComponent(formFactory)
+      .instance;
     instance.user = user;
-    instance.onCancel.subscribe(() => {this.refDir.containerRef.clear(); this.ngOnInit(); this.isEditing = false; });
+    instance.cancel.subscribe(() => {
+      this.refDir.containerRef.clear();
+      this.ngOnInit();
+      this.isEditing = false;
+    });
   }
 }

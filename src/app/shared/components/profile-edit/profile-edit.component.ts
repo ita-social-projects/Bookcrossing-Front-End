@@ -12,26 +12,31 @@ import { IUserPut } from '../../../core/models/userPut';
 @Component({
   selector: 'app-profile-edit',
   templateUrl: './profile-edit.component.html',
-  styleUrls: ['./profile-edit.component.scss']
+  styleUrls: ['./profile-edit.component.scss'],
 })
 export class ProfileEditComponent implements OnInit {
-
-  @Output() onCancel: EventEmitter<void> = new EventEmitter<void>();
+  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
   @Input() user: IUserInfo;
 
-  password: string;
+  public password: string;
 
-  editUserForm: FormGroup;
+  public editUserForm: FormGroup;
 
-  firstName: string;
-  lastName: string;
-  room: number;
-  location: ILocation;
-  changingLocation = false;
-  locations: ILocation[] = [];
-  isEmail: boolean;
-  submitted = false;
-  fieldMasks = ['FirstName', 'LastName', 'BirthDate', 'UserRoomId', 'IsEmailAllowed'];
+  public firstName: string;
+  public lastName: string;
+  public room: number;
+  public location: ILocation;
+  public changingLocation = false;
+  public locations: ILocation[] = [];
+  public isEmail: boolean;
+  public submitted = false;
+  public fieldMasks = [
+    'FirstName',
+    'LastName',
+    'BirthDate',
+    'UserRoomId',
+    'IsEmailAllowed',
+  ];
   private notificationService: NotificationService;
 
   constructor(
@@ -39,15 +44,15 @@ export class ProfileEditComponent implements OnInit {
     private translate: TranslateService,
     private dialogService: DialogService,
     private locationService: LocationService
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.buildForm();
     this.getAllLocations();
     this.password = localStorage.getItem('password');
   }
 
-  getAllLocations() {
+  public getAllLocations(): void {
     this.locationService.getLocation().subscribe(
       (data) => {
         this.locations = data;
@@ -58,18 +63,34 @@ export class ProfileEditComponent implements OnInit {
     );
   }
 
-  buildForm() {
+  public buildForm(): void {
     this.editUserForm = new FormGroup({
-      firstName: new FormControl({ value: this.user.firstName, disabled: false }, Validators.required),
-      lastName: new FormControl({ value: this.user.lastName, disabled: false }, Validators.required),
-      birthDate: new FormControl({ value: this.user.birthDate, disabled: false }),
-      isEmail: new FormControl({ value: this.user.isEmailAllowed, disabled: false }),
-      room: new FormControl((this.user?.userLocation?.roomNumber) ? (this.user.userLocation.roomNumber) : 0,
-        [Validators.required, Validators.maxLength(7)])
+      firstName: new FormControl(
+        { value: this.user.firstName, disabled: false },
+        Validators.required
+      ),
+      lastName: new FormControl(
+        { value: this.user.lastName, disabled: false },
+        Validators.required
+      ),
+      birthDate: new FormControl({
+        value: this.user.birthDate,
+        disabled: false,
+      }),
+      isEmail: new FormControl({
+        value: this.user.isEmailAllowed,
+        disabled: false,
+      }),
+      room: new FormControl(
+        this.user?.userLocation?.roomNumber
+          ? this.user.userLocation.roomNumber
+          : 0,
+        [Validators.required, Validators.maxLength(7)]
+      ),
     });
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     this.editUserForm.markAllAsTouched();
     if (this.editUserForm.invalid) {
       return;
@@ -88,38 +109,40 @@ export class ProfileEditComponent implements OnInit {
       password: this.password,
       registeredDate: this.user.registeredDate,
       roleId: this.user.role.id,
-      fieldMasks: this.fieldMasks
+      fieldMasks: this.fieldMasks,
     };
     user.birthDate.setHours(12);
 
     if (this.changingLocation) {
       user.userLocation = {
         location: this.location,
-        roomNumber: this.editUserForm.get('room').value
-      }
-    }else if(user?.userLocation?.location){
-      user.userLocation.roomNumber = this.editUserForm.get('room').value
+        roomNumber: this.editUserForm.get('room').value,
+      };
+    } else if (user?.userLocation?.location) {
+      user.userLocation.roomNumber = this.editUserForm.get('room').value;
     }
 
     this.userService.editUser(user.id, user).subscribe(
-      (data: boolean) => {
-        this.onCancel.emit();
+      () => {
+        this.cancel.emit();
       },
       (error) => {
-        this.notificationService.error(this.translate.instant('Something went wrong'), 'X');
+        this.notificationService.error(
+          this.translate.instant('Something went wrong'),
+          'X'
+        );
       }
     );
     this.ngOnInit();
     this.editUserForm.reset();
-
   }
 
-  newLocation(location: ILocation) {
+  public newLocation(location: ILocation): void {
     this.location = location;
     this.changingLocation = true;
   }
 
-  async cancel() {
+  public async Cancel(): Promise<void> {
     this.changingLocation = false;
     this.dialogService
       .openConfirmDialog(
@@ -128,13 +151,13 @@ export class ProfileEditComponent implements OnInit {
       .afterClosed()
       .subscribe(async (res) => {
         if (res) {
-          this.onCancel.emit();
+          this.cancel.emit();
           this.editUserForm.reset();
         }
       });
   }
 
-  onIsEmailChange(isChecked: boolean) {
+  public onIsEmailChange(isChecked: boolean): void {
     this.isEmail = isChecked;
   }
 }

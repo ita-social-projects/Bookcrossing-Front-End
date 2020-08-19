@@ -9,6 +9,8 @@ import {IChildInsertComment} from '../../../../core/models/comments/child-commen
 import {DialogService} from '../../../../core/services/dialog/dialog.service';
 import {TranslateService} from '@ngx-translate/core';
 import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
+import {IBookOwner} from '../../../../core/models/comments/owner';
+import {AuthenticationService} from '../../../../core/services/authentication/authentication.service';
 
 
 @Component({
@@ -40,7 +42,8 @@ export class ChildcommentComponent implements OnInit {
   constructor(private commentservice: CommentService,
               private dialogService: DialogService,
               private translate: TranslateService,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -63,6 +66,18 @@ export class ChildcommentComponent implements OnInit {
     }
   }
 
+  public canDeleteComment(owner: IBookOwner): boolean {
+    if (this.authenticationService.isAdmin()) {
+      return true;
+    }
+
+    if (owner === null || this.user === null) {
+      return false;
+    }
+
+    return owner.id === this.user.id;
+  }
+
   getUserName(owner) {
     if (owner === null) {
       return 'deleted user';
@@ -80,7 +95,7 @@ export class ChildcommentComponent implements OnInit {
     return this.isAuthorized && (this.text !== '');
   }
   returnID(id) {
-    let newids = this.ids.slice();
+    const newids = this.ids.slice();
     newids.push(id);
     return newids;
   }
@@ -102,17 +117,17 @@ export class ChildcommentComponent implements OnInit {
       });
   }
 
-  updateComment(id, text) {
-    let newids = this.returnID(id);
-    let updateComment: IChildUpdateComment = {
-      ids: newids, ownerId: this.user.id, text: text
-    }
+  public updateComment(id, text): void {
+    const newids = this.returnID(id);
+    const updateComment: IChildUpdateComment = {
+      ids: newids, ownerId: this.user.id, text
+    };
     this.commentservice.updateChildComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
-  PostComment(ids: string[]) {
+  public PostComment(text: string, ids: string[]): void {
     const postComment: IChildInsertComment = {
-      ids: ids, ownerId: this.user.id, text: this.text
+      ids, ownerId: this.user.id, text
     };
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';

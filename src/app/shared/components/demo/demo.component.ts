@@ -15,7 +15,7 @@ export class DemoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openLocationPopup(){
+  openLocationPopup() {
     this.dialogService.openLocationDialog(null);
   }
 }
