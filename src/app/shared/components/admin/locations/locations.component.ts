@@ -14,6 +14,7 @@ import { FilterParameters } from '../../../../core/models/Pagination/filterParam
 import { SortParameters } from '../../../../core/models/Pagination/sortParameters';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-locations',
@@ -104,11 +105,7 @@ export class LocationsComponent implements OnInit {
     this.changeUrl();
   }
 
-  public changeSort(selectedHeader: string): void {
-    this.queryParams.sort = {
-      orderByField: selectedHeader,
-      orderByAscending: !this.queryParams.sort.orderByAscending,
-    } as SortParameters;
+  public onChangeSort(): void {
     this.changeUrl();
   }
 

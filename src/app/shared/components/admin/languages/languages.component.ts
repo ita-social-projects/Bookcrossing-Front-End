@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ILanguage } from '../../../../core/models/language';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-book-languages',
@@ -68,11 +69,7 @@ export class BookLanguagesComponent implements OnInit {
     this.changeUrl();
   }
 
-  public changeSort(selectedHeader: string): void {
-    this.queryParams.sort = {
-      orderByField: selectedHeader,
-      orderByAscending: !this.queryParams.sort.orderByAscending,
-    } as SortParameters;
+  public onChangeSort(): void {
     this.changeUrl();
   }
 

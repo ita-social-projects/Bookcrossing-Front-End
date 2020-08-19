@@ -65,11 +65,7 @@ export class GenresComponent implements OnInit {
     this.changeUrl();
   }
 
-  public changeSort(selectedHeader: string): void {
-    this.queryParams.sort = {
-      orderByField: selectedHeader,
-      orderByAscending: !this.queryParams.sort.orderByAscending,
-    } as SortParameters;
+  public onChangeSort(): void {
     this.changeUrl();
   }
 

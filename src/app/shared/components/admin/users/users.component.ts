@@ -13,6 +13,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-users',
@@ -90,12 +91,7 @@ export class UsersComponent implements OnInit {
     this.changeUrl();
   }
 
-  public onSortHeaderChanged(selectedHeader: string): void {
-    this.queryParams.sort = {
-      orderByField: selectedHeader,
-      orderByAscending: !this.queryParams.sort.orderByAscending,
-    } as SortParameters;
-
+  public onSortHeaderChanged(): void {
     this.changeUrl();
   }
 

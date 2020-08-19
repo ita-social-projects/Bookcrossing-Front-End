@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import * as _ from 'lodash';
+import { SortParameters } from 'src/app/core/models/Pagination/sortParameters';
 
 @Component({
   selector: 'app-admin-table',
@@ -10,9 +12,7 @@ export class AdminTableComponent implements OnInit {
   @Output() selectedRowsChange: EventEmitter<number[]> = new EventEmitter<
     number[]
   >();
-  @Output() selectedHeaderChange: EventEmitter<string> = new EventEmitter<
-    string
-  >();
+  @Output() selectedHeaderChange: EventEmitter<void> = new EventEmitter<void>();
   @Output() viewClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Output() booleanButtonClicked: EventEmitter<any> = new EventEmitter<any>();
@@ -25,7 +25,7 @@ export class AdminTableComponent implements OnInit {
   @Input() canEdit = false;
   @Input() canView = false;
 
-  @Input() selectedHeader: string;
+  @Input() sortParams: SortParameters;
   @Input() selectedRows: number[];
 
   @Input() booleanButtonText: string;
@@ -60,9 +60,10 @@ export class AdminTableComponent implements OnInit {
     this.deleteClicked.emit(item);
   }
 
-  public onHeaderClicked(headerName: string): void {
-    this.selectedHeader = headerName;
-    this.selectedHeaderChange.emit(headerName);
+  public onHeaderClicked($event: Sort): void {
+    this.sortParams.orderByField = $event.active;
+    this.sortParams.orderByAscending = $event.direction === 'asc';
+    this.selectedHeaderChange.emit();
   }
 
   public onBooleanButtonClick(item: any, $event): void {
