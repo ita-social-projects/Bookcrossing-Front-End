@@ -109,7 +109,10 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { WishListService } from './core/services/wishlist/wishlist.service';
 import { UsersComponent } from './shared/components/admin/users/users.component';
-import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
+import { NotificationBellComponent } from './shared/components/notification-bell/notification-bell.component';
+import { NotificationBellService } from './core/services/notification-bell/notification-bell.service';
+import { SignalRService } from './core/services/signal-r/signalr.service';
+import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
 
 @NgModule({
   declarations: [
@@ -174,6 +177,7 @@ import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
     ForbidEmailComponent,
     WishListComponent,
     UsersComponent,
+    NotificationBellComponent
   ],
   imports: [
     InputTrimModule,
@@ -239,7 +243,9 @@ import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
     BookLanguageService,
     EmailNotificationService,
     WishListService,
-    BookCanDeactivateGuard,
+    NotificationBellService,
+    SignalRService,
+    BookCanDeactivateGuard
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],
