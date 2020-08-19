@@ -11,6 +11,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
   aphorism: IAphorism;
+  isCurrent = true;
 
   constructor(
     private authentication: AuthenticationService,
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   public load(): void {
-    this.aphorismService.getAphorism().subscribe((data: IAphorism) => this.aphorism = data);
+    this.aphorismService.getAphorism(this.isCurrent).subscribe((data: IAphorism) => this.aphorism = data);
   }
 
   public isAuthenticated(): boolean {
