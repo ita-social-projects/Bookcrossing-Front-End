@@ -20,8 +20,7 @@ export class BookService {
   private apiUrl: string = bookUrl;
 
   constructor(private http: HttpClient,
-              private pagination: PaginationService,
-              private requestService: RequestService
+              private pagination: PaginationService
     ) {}
 
   getBooksPage(bookParams: BookQueryParams): Observable<IPage<IBook>> {
