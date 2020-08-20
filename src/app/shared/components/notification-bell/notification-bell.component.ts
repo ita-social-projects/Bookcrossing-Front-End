@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { NotifyAction } from 'src/app/core/models/notifyAction.enum';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -8,7 +8,7 @@ import { INotification } from 'src/app/core/models/notification';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { NotificationBellService } from 'src/app/core/services/notification-bell/notification-bell.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import {DialogService} from 'src/app/core/services/dialog/dialog.service';
+import { DialogService } from 'src/app/core/services/dialog/dialog.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IRequest } from 'src/app/core/models/request';
@@ -131,11 +131,10 @@ export class NotificationBellComponent implements OnInit {
     document.getElementById('box').style.height = '0vh';
   }
 
-  public checkIfBookIsAvailable(bookId: number): boolean {
-    let res;
-    this.bookService.getBookById(bookId).subscribe((book: IBook) => {
-      res = book.state === bookState.available;
-    });
+  public async checkIfBookIsAvailable(bookId: number): Promise<boolean> {
+    const res =
+      (await this.bookService.getBookById(bookId).toPromise()).state ===
+      bookState.available;
     return res;
   }
 

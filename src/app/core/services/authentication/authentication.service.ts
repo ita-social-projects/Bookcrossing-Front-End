@@ -143,7 +143,7 @@ export class AuthenticationService {
     }));
   }
 
-  public resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber): Observable<object>{
+  public resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber): Observable<object> {
     return this.http.put(`${this.userUrl}/password/`, {
       Password,
       PasswordConfirmation,
