@@ -21,7 +21,7 @@
                     class="btn btn-info pull-right comment-post-btn">
               Post
             </button>
-            <a *ngIf="!isAuthenticated()" [routerLink]="['/login']">login to comment</a>
+            <a *ngIf="!isAuthenticated()" (click)="login()">login to comment</a>
 
             <hr>
             <ul class="media-list" id="comments-block">

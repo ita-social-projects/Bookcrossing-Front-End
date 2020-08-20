@@ -259,5 +259,8 @@ export class CommentComponent implements OnInit {
 
     return true;
   }
-}
 
+  login() {
+    this.authenticationService.redirectToLogin();
+  }
+}

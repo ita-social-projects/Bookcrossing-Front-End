@@ -112,7 +112,10 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
 import { NotificationBellComponent } from './shared/components/notification-bell/notification-bell.component';
 import { NotificationBellService } from './core/services/notification-bell/notification-bell.service';
 import { SignalRService } from './core/services/signal-r/signalr.service';
-import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
+import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
+import { Configuration } from 'msal';
+import { AppConfig } from './configs/app.config';
+import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
 
 @NgModule({
   declarations: [
@@ -245,7 +248,18 @@ import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
     WishListService,
     NotificationBellService,
     SignalRService,
-    BookCanDeactivateGuard
+    BookCanDeactivateGuard,
+    WishListService,
+    MsalService,
+    BroadcastService,
+    {
+      provide: MSAL_CONFIG,
+      useFactory: MSALConfigFactory
+    },
+    {
+      provide: MSAL_CONFIG_ANGULAR,
+      useFactory: MSALAngularConfigFactory
+    }
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],
@@ -259,4 +273,27 @@ export function httpTranslateLoader(http: HttpClient) {
 
 export function tokenGetter() {
   return localStorage.getItem('currentUser');
+}
+
+function MSALConfigFactory(): Configuration {
+  return {
+    auth: {
+      clientId: AppConfig.activeDirectoryConfig.clientId,
+      authority: AppConfig.activeDirectoryConfig.authority,
+      validateAuthority: true,
+      redirectUri: window.location.origin,
+      postLogoutRedirectUri: window.location.origin,
+      navigateToLoginRequestUrl: false,
+    },
+    cache: {
+      cacheLocation: 'sessionStorage',
+      storeAuthStateInCookie: true,
+    }
+  };
+}
+
+function MSALAngularConfigFactory(): MsalAngularConfiguration {
+  return {
+    popUp: false
+  };
 }
