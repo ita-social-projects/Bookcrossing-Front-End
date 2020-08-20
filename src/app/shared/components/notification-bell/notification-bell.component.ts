@@ -121,6 +121,7 @@ export class NotificationBellComponent implements OnInit {
   public formatDate(date: Date): string {
     TimeAgo.addLocale(en);
     const d = new Date(date);
+    d.setHours(d.getHours() + 3);
     const timeAgo = new TimeAgo('en-US');
     return timeAgo.format(d);
   }
