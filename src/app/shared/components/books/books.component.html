@@ -52,8 +52,8 @@
                                 <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)=changeWishList(book)>
                                   <mat-icon *ngIf="book.isWished">favorite</mat-icon>
                                   <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-                                </button> 
-                              </ng-template>          
+                                </button>
+                              </ng-template>
                         <div class="col-lg-8 m2" >
                           <div class="card-block m-2 px-2">
                             <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
@@ -175,8 +175,8 @@
             <button mat-icon-button class="heartbox" change type="default"  aria-hidden="true" target="_blank"  color="warn" (click)=changeWishList(book)>
               <mat-icon *ngIf="book.isWished">favorite</mat-icon>
               <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-            </button> 
-          </ng-template>  
+            </button>
+          </ng-template>
           <div class="col m-2">
             <div class="card-block px-2">
               <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
@@ -253,7 +253,7 @@
                     <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
                     </ng-template>
                   </span>
-  
+
               </p>
 
             </div>
@@ -264,6 +264,6 @@
   </ng-template>
 
   <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
-                  [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+                  [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
   </app-pagination>
 </div>

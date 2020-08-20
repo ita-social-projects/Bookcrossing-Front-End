@@ -188,6 +188,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
+    console.log(this.queryParams);
     this.changeUrl();
     window.scrollTo( {
       top: 0,

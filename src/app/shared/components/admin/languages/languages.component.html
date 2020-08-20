@@ -52,7 +52,7 @@
             </app-admin-table>
 
             <app-pagination *ngIf="languages && languages.length > 0" [arraySize]="totalSize"
-                            [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+                            [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
             </app-pagination>
           </div>
         </div>

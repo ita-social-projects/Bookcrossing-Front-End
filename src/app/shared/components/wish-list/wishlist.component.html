@@ -4,17 +4,17 @@
         <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
       </mdb-breadcrumb>
     </div>
-  
+
     <ng-template [ngIf]="books?.length==0" [ngIfElse]="booksExist">
       <div class="container my-5 py-5 z-depth-1">
-  
+
         <section class="text-center px-md-5 mx-md-5 dark-grey-text">
           <h3 class="font-weight-bold">No books found</h3>
         </section>
-  
+
       </div>
     </ng-template>
-  
+
     <ng-template #booksExist>
     <ng-template [ngIf]="isBlockView" [ngIfElse]="tableView"></ng-template>
       <ng-template #tableView>
@@ -41,7 +41,7 @@
                     <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
                     Author:
                   </ng-template>
-  
+
                   <ng-template #manyAuthors>Authors:</ng-template>
                   <ng-template [ngIf]="book.authors.length<=5" [ngIfElse]="manyAuthorsEllipsis">
                     <span *ngFor="let author of book.authors; let i = index">
@@ -65,7 +65,7 @@
                   <br>
                   <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
                   <ng-template #manyGenres>Categories:</ng-template>
-  
+
                   <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
                     <span *ngFor="let genre of book.genres;let i = index">
                       <ng-template [ngIf]="i!=0">,</ng-template>
@@ -115,9 +115,8 @@
         </div>
       </ng-template>
     </ng-template>
-  
+
     <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize"
-                    [selectedPage]="queryParams.page" (onPageChange)="pageChanged($event)">
+                    [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
     </app-pagination>
   </div>
-  
