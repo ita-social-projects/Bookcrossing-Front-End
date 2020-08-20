@@ -26,14 +26,15 @@
         </li>
         <ng-template #login>
           <div class="collapse navbar-collapse " id="basicExampleNav">
-
             <ul class="navbar-nav ml-auto text-uppercase">
-            <li class="nav-item" routerLinkActive="active" [routerLink]="['login']">
+            <li class="nav-item" routerLinkActive="active" (click)="redirectToLogin()">
               <a class="nav-link">{{'common.login' | translate}}</a>
             </li>
-            <li class="nav-item" routerLinkActive="active" [routerLink]="['registration']">
-              <a class="nav-link">{{'common.registration' | translate}}</a>
-            </li>
+            <ng-template [ngIf]="canRegister">
+              <li class="nav-item" routerLinkActive="active" [routerLink]="['registration']">
+                <a class="nav-link">{{'common.registration' | translate}}</a>
+              </li>
+            </ng-template>
           </ul>
           </div>
         </ng-template>

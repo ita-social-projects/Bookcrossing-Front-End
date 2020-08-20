@@ -36,13 +36,14 @@ import { FoundBooksComponent } from './shared/components/found-books/found-books
 import { ForbidEmailComponent } from './shared/components/email-notification-forbid/email-notification-forbid.component';
 import { WishListComponent } from './shared/components/wish-list/wish-list.component';
 import { UsersComponent } from './shared/components/admin/users/users.component';
-import {BookCanDeactivateGuard} from './core/guards/bookCanDeactivate.guard';
+import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
+import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
+
 
 // @ts-ignore
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'registration', component: RegistrationComponent },
-
+  {path: 'login', component: LoginComponent, canActivate: [BasicAuthOnlyGuard]},
+  {path: 'registration', component: RegistrationComponent, canActivate: [BasicAuthOnlyGuard]},
   {
     path: 'admin',
     component: AdminComponent,

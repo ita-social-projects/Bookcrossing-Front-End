@@ -9,8 +9,18 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { IToken } from '../../models/token';
 import { UserService } from '../user/user.service';
 import { DialogService } from '../dialog/dialog.service';
+import {AppConfig} from '../../../configs/app.config';
+import {MsalService} from '@azure/msal-angular';
+import {Router, RouterStateSnapshot} from '@angular/router';
+import {RegistrationService} from '../registration/registration.service';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Account, UserAgentApplication} from 'msal';
+import { CookieService } from 'ngx-cookie-service';
 
-
+export enum AuthenticationMethod {
+  AzureActiveDirectory,
+  LoginPassword
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -23,21 +33,39 @@ export class AuthenticationService {
 
   private currentUserSubject: BehaviorSubject<IUserInfo>;
   public currentUser: Observable<IUserInfo>;
+  public AuthMethod: AuthenticationMethod;
 
-  getLoginEmitter() {
+  private static azureLogout(): void {
+    // make window appearing in center
+    const windowWidth = 500;
+    const windowHeight = 600;
+    const y = window.top.outerHeight / 2 + window.top.screenY - ( windowHeight / 2);
+    const x = window.top.outerWidth / 2 + window.top.screenX - ( windowWidth / 2);
+    const popup = window.open(`https://login.microsoftonline.com/logout.srf`,
+      'logout',
+      `width=${windowWidth},height=${windowHeight},top=${y}, left=${x}`);
+    popup.focus();
+  }
+
+  public getLoginEmitter(): EventEmitter<any> {
     return this.loginEvent;
   }
 
-  getLogoutEmitter() {
+  public getLogoutEmitter(): EventEmitter<any> {
     return this.logoutEvent;
   }
 
-  constructor(private http: HttpClient,
-              private jwtHelper: JwtHelperService,
+  constructor(private jwtHelper: JwtHelperService,
               private dialogService: DialogService,
-              private userService: UserService) {
+              private userService: UserService,
+              private msalService: MsalService,
+              private router: Router,
+              private registrationService: RegistrationService,
+              private http: HttpClient,
+              private cookie: CookieService) {
     this.currentUserSubject = new BehaviorSubject<IUserInfo>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+    this.AuthMethod = AuthenticationMethod[AppConfig.authConfiguration];
   }
 
   public get currentUserValue(): IUserInfo {
@@ -64,15 +92,50 @@ export class AuthenticationService {
       }));
   }
 
-  logout() {
+  public async loginActiveDirectory(): Promise<void> {
+    await this.msalService.loginPopup();
+    const account = this.msalService.getAccount();
+    const loginForm = new FormGroup({
+      Email: new FormControl(account.userName),
+      AzureId: new FormControl(account.accountIdentifier)
+    });
+    this.login(loginForm.value).subscribe();
+    if (!this.isAuthenticated()) {
+      this.registrationService.registerAzureAccount(account).subscribe(
+        () => {
+          this.login(loginForm.value).subscribe();
+        }
+      );
+    }
+  }
+
+  public redirectToLogin(): void {
+    switch (this.AuthMethod) {
+      case AuthenticationMethod.AzureActiveDirectory:
+        this.loginActiveDirectory();
+        break;
+      case AuthenticationMethod.LoginPassword:
+        this.router.navigate(['/login']);
+        break;
+    }
+  }
+
+  public logout(): void {
     localStorage.removeItem('RememberMe');
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    if (this.msalService.getAccount()) {
+      sessionStorage.clear();
+      this.cookie.delete(`msal.${AppConfig.activeDirectoryConfig.clientId}.client.info`);
+      this.cookie.delete(`msal.${AppConfig.activeDirectoryConfig.clientId}.idtoken`);
+      AuthenticationService.azureLogout();
+      window.location.reload();
+    }
     this.logoutEvent.emit();
   }
 
-  refresh(Token: IToken) {
-    return this.http.post<IUserInfo>(this.refreshUrl, Token).pipe(tap(user => {
+  public refresh(Token: IToken): Observable<IUserInfo> {
+      return this.http.post<IUserInfo>(this.refreshUrl, Token).pipe(tap(user => {
       console.log('received refresh ', user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.currentUserSubject.next(user);
@@ -80,8 +143,7 @@ export class AuthenticationService {
     }));
   }
 
-
-  resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber) {
+  public resetPassword(Password, PasswordConfirmation, Email, ConfirmationNumber): Observable<object>{
     return this.http.put(`${this.userUrl}/password/`, {
       Password,
       PasswordConfirmation,
@@ -90,13 +152,13 @@ export class AuthenticationService {
     });
   }
 
-  forgotPassword(email) {
+  public forgotPassword(email) {
     return this.http.post(`${this.userUrl}/password/`, {
       email
     });
   }
 
-  async validateLocation(): Promise<boolean> {
+  public async validateLocation(): Promise<boolean> {
     const userId = this.currentUserValue.id;
     const userInfo = await this.userService.getUserById(userId).toPromise();
 
@@ -109,20 +171,20 @@ export class AuthenticationService {
     return hasActiveLocation;
   }
 
-  isAuthenticated() {
+  public isAuthenticated(): boolean {
     const token: string = localStorage.getItem('currentUser');
     return token !== null;
   }
 
-  getUserId() {
-    return this.http.get(`${this.userUrl}/id/`);
+  public getUserId(): Observable<number> {
+      return this.http.get<number>(`${this.userUrl}/id/`);
   }
 
-  isAdmin() {
+  public isAdmin(): boolean {
     return this.getUserRole() === 'Admin';
   }
 
-  getUserRole() {
+  public getUserRole() {
     const token: string = localStorage.getItem('currentUser');
     if (token) {
       const role = this.jwtHelper.decodeToken(token)[

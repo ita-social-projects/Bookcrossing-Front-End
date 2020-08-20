@@ -3,6 +3,7 @@ import {AuthenticationService} from '../../../core/services/authentication/authe
 import { AphorismService } from 'src/app/core/services/aphorism/aphorism.service';
 import { IAphorism } from 'src/app/core/models/aphorism';
 import { ActivatedRoute, Params } from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -29,5 +30,8 @@ export class HomeComponent implements OnInit {
   public isAuthenticated(): boolean {
     return this.authentication.isAuthenticated();
   }
-}
 
+  redirectToLogin() {
+    this.authentication.redirectToLogin();
+  }
+}

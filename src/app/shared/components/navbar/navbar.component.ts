@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from '../../../core/services/language/language.service';
 import {Language} from '../../../core/models/languages.enum';
-import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import {AuthenticationMethod, AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
   @ViewChild('menu', {static: false}) menu: any;
   languages: Language[];
   isLoggedIn: boolean;
+  canRegister: boolean;
 
   constructor(private authenticationService: AuthenticationService,
               private translate: TranslateService,
@@ -20,6 +21,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.isLoggedIn = this.authenticationService.isAuthenticated();
+    this.canRegister = this.authenticationService.AuthMethod !== AuthenticationMethod.AzureActiveDirectory;
     this.languages = this.languageService.languages;
     this.authenticationService.getLoginEmitter().subscribe(() => {
       this.isLoggedIn = true;
@@ -27,5 +29,9 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.getLogoutEmitter().subscribe(() => {
       this.isLoggedIn = false;
     });
+  }
+
+  redirectToLogin() {
+    this.authenticationService.redirectToLogin();
   }
 }
