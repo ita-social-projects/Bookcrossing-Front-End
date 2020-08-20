@@ -1,10 +1,10 @@
-import{ NotifyAction } from './notifyAction.enum';
+import { NotifyAction } from './notifyAction.enum';
 
 export interface INotification {
-    id: number;
-    message: string;
-    bookId?: number;
-    action: NotifyAction;
-    isSeen: boolean;
-    date: Date;
+  id: number;
+  message: string;
+  bookId?: number;
+  action: NotifyAction;
+  isSeen: boolean;
+  date: Date;
 }
