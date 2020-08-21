@@ -17,6 +17,10 @@ p {
   margin-left: 60px;
 }
 
+#comments-block {
+  padding-left: 38px;
+}
+
 .pad{
   padding-left: 10px;
 }
@@ -89,7 +93,6 @@ a[aria-expanded=false] .shown{
   width: 60px;
   height: 30px;
   margin: 0;
-  margin-top: 12px;
   border-radius: 0;
   box-sizing: content-box;
   padding: 3px 6px;
@@ -122,4 +125,14 @@ hr {
   margin-top: 5px;
   border-radius: 0;
   overflow: hidden;
+}
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.login-link {
+  margin-left: 10px;
 }

@@ -17,12 +17,13 @@
                 </textarea>
             </div>
 
-            <button [disabled]="!canCommit()" type="button" (click)="PostComment()"
-                    class="btn btn-info pull-right comment-post-btn">
-              Post
-            </button>
-            <a *ngIf="!isAuthenticated()" (click)="login()">login to comment</a>
-
+            <div class="flex-align-center">
+              <button [disabled]="!canCommit()" type="button" (click)="PostComment()"
+                      class="btn btn-info pull-right comment-post-btn">
+                Post
+              </button>
+              <a class="login-link" *ngIf="!isAuthenticated()" (click)="login()">login to comment</a>
+            </div>
             <hr>
             <ul class="media-list" id="comments-block">
 
