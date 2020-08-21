@@ -45,8 +45,6 @@ export class PaginationComponent implements OnInit, OnChanges {
       return;
     }
     this.PageChange.emit(pageNumber);
-    this.selectedPage = pageNumber;
-    this.changePageList();
   }
 
   private changePageList(): void {
