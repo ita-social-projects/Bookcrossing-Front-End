@@ -62,12 +62,22 @@
 
                       <ng-container *ngIf="isAuthorized; else ReplyNotAllowed">
                         <!-- Reply form -->
-                        <textarea class="form-control sub-comment"
-                                  [(ngModel)]='text'
-                                  placeholder="Write a reply up to 500 characters"
-                                  #Subcomment
-                                  (input)="onCommentInput(Subcomment, 500)"
-                        ></textarea>
+
+                        <div class="search-wrapper">
+                          <form (reset)="changeTextAreaHeight(Subcomment)">
+                            <div class="comment-area-wrapper">
+                              <textarea class="form-control sub-comment deletable"
+                                        [(ngModel)]='text'
+                                        name="subcomment"
+                                        placeholder="Write a reply up to 500 characters"
+                                        #Subcomment
+                                        required
+                                        (input)="onCommentInput(Subcomment, 500)"
+                              ></textarea>
+                              <button class="close-icon" type="reset"></button>
+                            </div>
+                          </form>
+                        </div>
 
                         <button [disabled]="Subcomment.value.length === 0"
                                 (click)="PostComment(Subcomment.value, returnID(comment.id))"
@@ -83,23 +93,31 @@
 
                     <div id="child_{{root}}_{{i}}_edit" class="collapse text-area" data-parent="#comments-block">
                       <!-- Edit form -->
-                      <form #updateFrom="ngForm">
-                       <textarea name="text"
-                                 class="form-control sub-comment"
-                                 placeholder="Edit your comment..."
-                                 [ngModel]="comment.text"
-                                 [attr.data-old-value]="comment.text"
-                                 #EditComment
-                                 (input)="onCommentInput(EditComment, 500)"
-                       ></textarea>
+                      <div class="search-wrapper">
+                        <form #updateFrom="ngForm" (reset)="changeTextAreaHeight(EditComment)">
+                          <div class="comment-area-wrapper">
+                            <textarea name="text"
+                                      required
+                                      class="form-control sub-comment deletable"
+                                      placeholder="Edit your comment..."
+                                      [ngModel]="comment.text"
+                                      [attr.data-old-value]="comment.text"
+                                      #EditComment
+                                      (input)="onCommentInput(EditComment, 500)"
+                                      (focus)="changeTextAreaHeight(EditComment)"
+                            ></textarea>
+                            <button class="close-icon" type="reset"></button>
+                          </div>
+                        </form>
+                      </div>
 
-                        <button type="button"
-                                class="btn btn-info comment-post-btn"
-                                [disabled]="EditComment.value.length === 0"
-                                (click)="updateComment(comment.id,EditComment.value)">
-                          Post
-                        </button>
-                      </form>
+                      <button type="button"
+                              class="btn btn-info comment-post-btn"
+                              [disabled]="EditComment.value.length === 0"
+                              (click)="updateComment(comment.id,EditComment.value)">
+                        Post
+                      </button>
+
                     </div>
                   </div>
                 </div>

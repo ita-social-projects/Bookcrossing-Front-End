@@ -98,6 +98,10 @@ a[aria-expanded=false] .shown{
   padding: 3px 6px;
 }
 
+.comment-btn {
+  margin: 10px 0;
+}
+
 textarea.invalid {
   border: 1px solid #FF3547 !important;
 }
@@ -135,4 +139,48 @@ hr {
 
 .login-link {
   margin-left: 10px;
+}
+
+.close-icon {
+  position: relative;
+  padding: 10px 7px;
+}
+
+.deletable {
+  position: relative;
+  padding: 10px 25px 10px 10px;
+}
+
+.comment-area-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.close-icon {
+  border:1px solid transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  outline: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-icon:after {
+  content: "X";
+  display: block;
+  width: 15px;
+  height: 15px;
+  z-index:1;
+  text-align: center;
+  color: gray;
+  font-weight: normal;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.deletable:not(:valid) ~ .close-icon {
+  display: none;
 }

@@ -162,7 +162,7 @@ export class ChildcommentComponent implements OnInit {
     }, 2000);
   }
 
-  private changeTextAreaHeight(input: HTMLTextAreaElement): void {
+  public changeTextAreaHeight(input: HTMLTextAreaElement): void {
     if (input.scrollHeight > 0) {
       input.style.height = 'auto';
       input.style.height = `${input.scrollHeight}px`;
