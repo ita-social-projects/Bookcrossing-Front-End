@@ -8,17 +8,25 @@
                            [rating]="rating"></ngx-star-rating>
           <div>
             <div>
-                <textarea class="form-control main-comment"
-                          placeholder="Write a comment up to 500 characters"
-                          #Text
-                          [(ngModel)]="text"
-                          (input)="onCommentInput(Text, 500)"
-                >
-                </textarea>
+              <div class="search-wrapper">
+                <form (reset)="changeTextAreaHeight(Comment)">
+                  <div class="comment-area-wrapper">
+                    <textarea class="form-control main-comment deletable"
+                              placeholder="Write a comment up to 500 characters"
+                              name="comment"
+                              required
+                              #Comment
+                              [(ngModel)]="text"
+                              (input)="onCommentInput(Comment, 500)"
+                    ></textarea>
+                    <button class="close-icon" type="reset"></button>
+                  </div>
+                </form>
+              </div>
             </div>
 
             <div class="flex-align-center">
-              <button [disabled]="!canCommit()" type="button" (click)="PostComment()"
+              <button [disabled]="!canCommit()" type="button" (click)="PostComment(Comment.value)"
                       class="btn btn-info pull-right comment-post-btn">
                 Post
               </button>
@@ -82,17 +90,26 @@
                     <div id="root_{{i}}_reply" class="collapse" data-parent="#comments-block">
                       <ng-container *ngIf="isAuthenticated(); else ReplyNotAllowed">
                         <div>
-                          <textarea class="form-control sub-comment"
-                                    placeholder="Write a reply up to 500 characters"
-                                    #Subcomment
-                                    (input)="onCommentInput(Subcomment, 500)"
-                          ></textarea>
+                          <div class="search-wrapper">
+                            <form (reset)="changeTextAreaHeight(Subcomment)">
+                              <div class="comment-area-wrapper">
+                                <textarea class="form-control sub-comment deletable"
+                                          placeholder="Write a reply up to 500 characters"
+                                          required
+                                          name="subcomment"
+                                          #Subcomment
+                                          (input)="onCommentInput(Subcomment, 500)"
+                                ></textarea>
+                                <button class="close-icon" type="reset"></button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
 
                         <button [disabled]="Subcomment.value.length === 0"
                                 (click)="PostChildComment(Subcomment.value, returnID(comment.id))"
                                 type="button"
-                                class="btn btn-info pull-right comment-post-btn">
+                                class="btn btn-info pull-right comment-post-btn comment-btn">
                           Post
                         </button>
                       </ng-container>
@@ -107,20 +124,29 @@
                         <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating"
                                          (rated)="onEditRatingSet($event)"></ngx-star-rating>
                         <div>
-                          <textarea class="form-control sub-comment"
-                                    placeholder="Edit your comment..."
-                                    [ngModel]="comment.text"
-                                    [attr.data-old-value]="comment.text"
-                                    name="text"
-                                    #EditComment
-                                    (input)="onCommentInput(EditComment, 500)"
-                          ></textarea>
+                          <div class="search-wrapper">
+                            <form (reset)="changeTextAreaHeight(EditComment)">
+                              <div class="comment-area-wrapper">
+                                <textarea class="form-control sub-comment deletable"
+                                          placeholder="Edit your comment..."
+                                          [ngModel]="comment.text"
+                                          [attr.data-old-value]="comment.text"
+                                          name="text"
+                                          required
+                                          #EditComment
+                                          (input)="onCommentInput(EditComment, 500)"
+                                          (focus)="changeTextAreaHeight(EditComment)"
+                                ></textarea>
+                                <button class="close-icon" type="reset"></button>
+                              </div>
+                            </form>
+                          </div>
                         </div>
 
                         <button [disabled]="EditComment.value.length === 0"
                                 (click)="updateComment(comment.id, EditComment.value, comment.rating)"
                                 type="button"
-                                class="btn btn-info pull-right comment-post-btn">
+                                class="btn btn-info pull-right comment-post-btn comment-btn">
                           Post
                         </button>
                       </form>

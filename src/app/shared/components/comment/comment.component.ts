@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Renderer2, HostListener, ViewChildren, QueryList} from '@angular/core';
+import {Component, OnInit, Input, Renderer2, HostListener, ViewChildren, QueryList, ViewChild} from '@angular/core';
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
@@ -23,6 +23,7 @@ import {ChildcommentComponent} from './childcomment/childcomment.component';
 })
 export class CommentComponent implements OnInit {
   @ViewChildren('childComment') subcomments: QueryList<ChildcommentComponent>;
+  @ViewChild('Comment') mainCommentTextArea;
   @Input() bookId = 0;
   comments: IRootComment[];
   user: IUserInfo;
@@ -138,9 +139,9 @@ export class CommentComponent implements OnInit {
     });
   }
 
-  PostComment() {
+  public PostComment(text: string): void {
     const postComment: IRootInsertComment = {
-      bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text: this.text
+      bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text
     };
     this.commentservice.postComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
@@ -217,7 +218,7 @@ export class CommentComponent implements OnInit {
     }, 2000);
   }
 
-  private changeTextAreaHeight(input: HTMLTextAreaElement): void {
+  public changeTextAreaHeight(input: HTMLTextAreaElement): void {
     if (input.scrollHeight > 0) {
       input.style.height = 'auto';
       input.style.height = `${input.scrollHeight}px`;
@@ -228,7 +229,7 @@ export class CommentComponent implements OnInit {
   @HostListener('window:beforeunload', ['$event'])
   public canLeave(): boolean {
 
-    if (this.text !== '') {
+    if (this.mainCommentTextArea.nativeElement.value.trim() !== '') {
       return false;
     }
 

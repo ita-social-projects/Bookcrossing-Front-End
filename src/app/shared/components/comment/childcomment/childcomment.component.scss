@@ -120,3 +120,47 @@ a[aria-expanded=false] .shown{
   color: #FF3547;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.close-icon {
+  position: relative;
+  padding: 10px 7px;
+}
+
+.deletable {
+  position: relative;
+  padding: 10px 25px 10px 10px;
+}
+
+.comment-area-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.close-icon {
+  border:1px solid transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  outline: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-icon:after {
+  content: "X";
+  display: block;
+  width: 15px;
+  height: 15px;
+  z-index:1;
+  text-align: center;
+  color: gray;
+  font-weight: normal;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.deletable:not(:valid) ~ .close-icon {
+  display: none;
+}
