@@ -38,6 +38,7 @@ import { WishListComponent } from './shared/components/wish-list/wish-list.compo
 import { UsersComponent } from './shared/components/admin/users/users.component';
 import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
+import {StatisticsComponent} from './shared/components/statistics/statistics.component';
 
 
 // @ts-ignore
@@ -61,7 +62,11 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
     ],
   },
-
+  {
+    path: 'statistics',
+    component: StatisticsComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'book/:id',
     component: BookComponent,
