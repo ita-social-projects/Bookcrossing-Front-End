@@ -33,4 +33,12 @@ export class UserService {
     return this.http.put(this.baseUrl + `/${user.id}`, user);
   }
 
+  public recoverUser(userId: number): Observable<object> {
+    return this.http.put(this.baseUrl, userId);
+  }
+
+  public deleteUser(userId: number): Observable<object> {
+    return this.http.delete(this.baseUrl + `/${userId}`);
+  }
+
 }

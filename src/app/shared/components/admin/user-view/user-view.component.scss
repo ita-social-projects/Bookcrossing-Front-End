@@ -1,0 +1,28 @@
+.user-info > .row:not(:last-child) {
+  border-bottom: 2px solid #eee;
+}
+
+.table {
+  width: 99%;
+  thead th {
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    vertical-align: bottom;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+  }
+  tbody {
+    tr {
+      padding: 0.25rem 1rem;
+    }
+    td {
+      vertical-align: middle;
+      font-size: 1rem;
+    }
+  }
+}
+
+.book-title-cell {
+  max-width: 14rem;
+}

@@ -1,0 +1,137 @@
+<div class="container user-info mt-3 mb-5">
+  <h1 class="mb-3 text-center font-weight-bold">User's details</h1>
+  <span *ngIf="user?.isDeleted" class="d-block w-100 text-danger h4 mb-5 text-center">User is deleted!</span>
+  <div class="row mb-4">
+    <div class="col-5">First name</div>
+    <div class="col">
+      {{ user?.firstName }}
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-5">Last name</div>
+    <div class="col">
+      {{ user?.lastName }}
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-5">Email</div>
+    <div class="col">
+      {{ user?.email }}
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-5">Birthday</div>
+    <div class="col">
+      {{ user?.birthDate | date }}
+    </div>
+  </div>
+  <ng-container *ngIf="user?.userLocation?.location">
+    <div class="row mb-4">
+      <div class="col-5">Location</div>
+      <div class="col">
+        {{
+          user.userLocation.location.city +
+            " " +
+            user.userLocation.location.street +
+            " " +
+            user.userLocation.location.officeName
+        }}
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-5">Room number</div>
+      <div class="col">
+        {{ user.userLocation.roomNumber }}
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="user && !user?.isDeleted && books && books.length > 0">
+    <div class="row mb-3">
+      <div class="col">Books</div>
+    </div>
+    <table class="table">
+      <thead>
+        <th>Name</th>
+        <th>State</th>
+        <th><span class="sr-only">Actions</span></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of books">
+          <td class="book-title-cell">
+            <span class="d-inline-block text-truncate w-100">{{
+              book.name
+            }}</span>
+          </td>
+          <td [ngSwitch]="book.state">
+            <ng-template ngSwitchCase="0"
+              ><span class="badge badge-success product"
+                >Available</span
+              ></ng-template
+            >
+            <ng-template ngSwitchCase="1"
+              ><span class="badge badge-info product"
+                >Requested</span
+              ></ng-template
+            >
+            <ng-template ngSwitchCase="2"
+              ><span class="badge badge-info product"
+                >Reading</span
+              ></ng-template
+            >
+            <ng-template ngSwitchCase="3"
+              ><span class="badge badge-light product"
+                >Inactive</span
+              ></ng-template
+            >
+          </td>
+          <td>
+            <div class="row justify-content-end">
+              <ng-container *ngIf="book.state != 3; else inactiveBook">
+                <button
+                  *ngIf="book.userId != currentUserId"
+                  class="btn btn-small btn-info"
+                  (click)="onTakeOwnershipButtonClick(book.id)"
+                >
+                  Take ownership
+                </button>
+                <button
+                  class="btn btn-small btn-danger"
+                  (click)="onDeactivateBookButtonClick(book.id)"
+                >
+                  Deactivate
+                </button>
+              </ng-container>
+              <ng-template #inactiveBook>
+                <button
+                  class="btn btn-small btn-success"
+                  (click)="onActivateButtonClick(book.id)"
+                >
+                  Activate
+                </button>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <div *ngIf="user" class="d-flex flex-column align-items-start mt-5">
+    <span *ngIf="activeBooksExist" class="text-danger">You cannot delete user with active books!</span>
+    <button
+      *ngIf="!user.isDeleted; else deletedUser"
+      class="btn btn-danger w-25 mx-0 mb-0 mt-1"
+      (click)="onDeleteUserButtonClick()"
+      [disabled]="activeBooksExist"
+    >
+      Delete user
+    </button>
+    <ng-template #deletedUser>
+      <button
+        class="btn btn-success w-25 m-0"
+        (click)="onRecoverUserButtonClick()"
+      >
+        Recover
+      </button>
+    </ng-template>
+  </div>
+</div>

@@ -31,6 +31,10 @@ export class BookService {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'current', bookParams);
   }
 
+  getCurrentBooksOfUser(userId: number): Observable<IBook[]> {
+    return this.http.get<IBook[]>(this.apiUrl + `current/${userId}`);
+  }
+
   getRegisteredBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'registered', bookParams);
   }

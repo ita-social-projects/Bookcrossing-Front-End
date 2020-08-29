@@ -116,6 +116,7 @@ import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { Configuration } from 'msal';
 import { AppConfig } from './configs/app.config';
 import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
+import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
     ForbidEmailComponent,
     WishListComponent,
     UsersComponent,
-    NotificationBellComponent
+    NotificationBellComponent,
+    UserViewComponent
   ],
   imports: [
     InputTrimModule,

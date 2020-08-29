@@ -38,12 +38,20 @@ import { WishListComponent } from './shared/components/wish-list/wish-list.compo
 import { UsersComponent } from './shared/components/admin/users/users.component';
 import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
-
+import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 
 // @ts-ignore
 const routes: Routes = [
-  {path: 'login', component: LoginComponent, canActivate: [BasicAuthOnlyGuard]},
-  {path: 'registration', component: RegistrationComponent, canActivate: [BasicAuthOnlyGuard]},
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [BasicAuthOnlyGuard],
+  },
+  {
+    path: 'registration',
+    component: RegistrationComponent,
+    canActivate: [BasicAuthOnlyGuard],
+  },
   {
     path: 'admin',
     component: AdminComponent,
@@ -59,13 +67,15 @@ const routes: Routes = [
       { path: 'languages', component: BookLanguagesComponent },
       { path: 'language-form', component: LanguageFormComponent },
       { path: 'users', component: UsersComponent },
+      { path: 'user/:id', component: UserViewComponent },
     ],
   },
 
   {
     path: 'book/:id',
     component: BookComponent,
-    canDeactivate: [BookCanDeactivateGuard] },
+    canDeactivate: [BookCanDeactivateGuard],
+  },
   {
     path: 'book',
     component: AddBookComponent,
