@@ -116,6 +116,7 @@ import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { Configuration } from 'msal';
 import { AppConfig } from './configs/app.config';
 import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
+import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 
@@ -183,6 +184,7 @@ import { StatisticsService } from './core/services/statistics/statistics.service
     WishListComponent,
     UsersComponent,
     NotificationBellComponent,
+    UserViewComponent,
     StatisticsComponent
   ],
   imports: [

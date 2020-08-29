@@ -6,4 +6,5 @@ export interface IUserInfo extends IUser {
   numberOfBooksOwned?: number;
   role: IRole;
   token: IToken;
+  isDeleted: boolean;
 }
