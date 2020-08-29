@@ -39,6 +39,8 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
 import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
+import {StatisticsComponent} from './shared/components/statistics/statistics.component';
+
 
 // @ts-ignore
 const routes: Routes = [
@@ -70,7 +72,11 @@ const routes: Routes = [
       { path: 'user/:id', component: UserViewComponent },
     ],
   },
-
+  {
+    path: 'statistics',
+    component: StatisticsComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'book/:id',
     component: BookComponent,

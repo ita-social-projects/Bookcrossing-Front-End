@@ -25,8 +25,9 @@ before_script:
   - npm install -g @angular/cli
   
 script:
-  - npm run-script build --base-href $base_href
-  - ng test --watch=false
+  - npm run-script build
+  - npm run-script test
+  - npm run-script lint
   
 deploy:
     provider: azure_web_apps

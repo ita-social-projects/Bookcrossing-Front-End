@@ -1,0 +1,67 @@
+<div class="container">
+  <div class="row counters">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="counter">
+        <a [routerLink]="['/wishlist']" class="icon wishlist">
+          <i class="fas fa-heart"></i>
+        </a>
+        <div class="counter-body">
+          <div class="title">
+            Added to wishlist
+          </div>
+          <div class="value">
+            {{countersData?.wishedBooksCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="counter">
+        <a [routerLink]="['/books/requests']" class="icon requested">
+          <i class="fas fa-book"></i>
+        </a>
+        <div class="counter-body">
+          <div class="title">
+            Requested
+          </div>
+          <div class="value">
+            {{countersData?.requestedBooksCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="counter">
+        <a [routerLink]="['/books/read']" class="icon not-finished">
+          <i class="fas fa-book-open"></i>
+        </a>
+        <div class="counter-body">
+          <div class="title">
+            To be finished
+          </div>
+          <div class="value">
+            {{countersData?.readBooksCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="counter">
+        <div class="icon books-read">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="counter-body">
+          <div class="title">
+            Your books read
+          </div>
+          <div class="value">
+            {{countersData?.registeredBooksWereReadCount}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

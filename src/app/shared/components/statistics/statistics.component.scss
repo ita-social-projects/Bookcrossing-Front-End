@@ -1,0 +1,57 @@
+/* Counters */
+.wishlist {
+ background-color: #FF00B3;
+}
+
+.requested {
+  background-color: #00258D;
+}
+
+.not-finished {
+  background-color: #2A8D00;
+}
+
+.books-read {
+  background-color: #FED500;
+}
+
+.counters {
+  margin-top: 25px;
+}
+
+.counter {
+  display: flex;
+  padding: 3px;
+  box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.52);
+  -webkit-box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.52);
+}
+
+.counter .icon {
+  padding: 30px;
+  color: white;
+  font-size: 2rem;
+}
+
+.counter .counter-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.counter .counter-body .title{
+  text-align: center;
+  font-weight: 500;
+  color: #7F7F7F;
+  font-size: 14px;
+}
+
+.counter .counter-body .value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #7F7F7F;
+  font-size: 52px;
+  font-weight: 600;
+}

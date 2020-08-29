@@ -10,6 +10,7 @@
             <a class="dropdown-item" routerLinkActive="active" *ngIf="isAdmin()" [routerLink]="['/admin/dashboard']">{{'common.manage' | translate}}</a>
             <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/profile']">{{'common.myProfile' | translate}}</a>
             <a class="dropdown-item" href="https://openeyes.org.ua/">{{'common.donate' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/statistics']">{{'common.statistics' | translate}}</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/registered']">{{'common.registered' | translate}}</a>
             <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/requests']">{{'common.requested' | translate}}</a>

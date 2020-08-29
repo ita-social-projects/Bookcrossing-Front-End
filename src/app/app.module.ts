@@ -117,6 +117,8 @@ import { Configuration } from 'msal';
 import { AppConfig } from './configs/app.config';
 import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfiguration, MsalModule, MsalService } from '@azure/msal-angular';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
+import { StatisticsComponent } from './shared/components/statistics/statistics.component';
+import { StatisticsService } from './core/services/statistics/statistics.service';
 
 @NgModule({
   declarations: [
@@ -182,7 +184,8 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
     WishListComponent,
     UsersComponent,
     NotificationBellComponent,
-    UserViewComponent
+    UserViewComponent,
+    StatisticsComponent
   ],
   imports: [
     InputTrimModule,
@@ -261,7 +264,8 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
     {
       provide: MSAL_CONFIG_ANGULAR,
       useFactory: MSALAngularConfigFactory
-    }
+    },
+    StatisticsService,
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],
