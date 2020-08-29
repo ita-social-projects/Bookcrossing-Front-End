@@ -74,7 +74,7 @@ export class UsersComponent implements OnInit {
         : 'id';
 
       this.initShowDeleted();
-      let searchFilter: FilterParameters = this.queryParams?.filters?.find(
+      const searchFilter: FilterParameters = this.queryParams?.filters?.find(
         (filter) => this.fieldsForSearch.includes(filter.propertyName)
       );
       this.buildSearchForm(searchFilter?.value);
@@ -83,7 +83,7 @@ export class UsersComponent implements OnInit {
   }
 
   public search(searchText: string): void {
-    let searchFilter: FilterParameters = this.queryParams?.filters?.find(
+    const searchFilter: FilterParameters = this.queryParams?.filters?.find(
       (filter) => this.fieldsForSearch.includes(filter.propertyName)
     );
     if (searchFilter?.value === searchText) {
@@ -92,7 +92,7 @@ export class UsersComponent implements OnInit {
 
     this.queryParams.page = 1;
     for (const fieldForSearch of this.fieldsForSearch) {
-      let searchFilterIndex: number = this.queryParams?.filters?.findIndex(
+      const searchFilterIndex: number = this.queryParams?.filters?.findIndex(
         (filter) => filter.propertyName === fieldForSearch
       );
       if (searchFilterIndex !== -1) {
@@ -111,7 +111,7 @@ export class UsersComponent implements OnInit {
   public onShowDeletedChange(): void {
     this.showDeleted = !this.showDeleted;
     if (this.showDeleted) {
-      let isDeletedFilterIndex = this.queryParams?.filters?.findIndex(
+      const isDeletedFilterIndex = this.queryParams?.filters?.findIndex(
         (filter) => filter.propertyName === this.IsDeletedPropertyName
       );
       if (isDeletedFilterIndex !== -1) {
@@ -145,10 +145,10 @@ export class UsersComponent implements OnInit {
   }
 
   public checkLength(control: AbstractControl) {
-    if (!control) return;
+    if (!control) { return; }
 
     const maxLength: number = control.errors?.maxlength?.requiredLength;
-    if (!maxLength) return;
+    if (!maxLength) { return; }
 
     if (control.value.length > maxLength) {
       control.setValue(control.value.substr(0, maxLength));
@@ -167,7 +167,7 @@ export class UsersComponent implements OnInit {
   }
 
   private initShowDeleted() {
-    let isDeletedFilterIndex: number = this.queryParams?.filters?.findIndex(
+    const isDeletedFilterIndex: number = this.queryParams?.filters?.findIndex(
       (filter) => filter.propertyName === this.IsDeletedPropertyName
     );
     if (isDeletedFilterIndex !== -1) {
@@ -192,10 +192,10 @@ export class UsersComponent implements OnInit {
   }
 
   private configureIsDeletedColumn(): void {
-    let isDeletedDisplayIndex = this.usersDisplayColumns.findIndex(
+    const isDeletedDisplayIndex = this.usersDisplayColumns.findIndex(
       (value) => value === this.isDeletedDispalyName
     );
-    let isDeletedPropertyIndex = this.usersProperties.findIndex(
+    const isDeletedPropertyIndex = this.usersProperties.findIndex(
       (value) => value === this.IsDeletedPropertyName
     );
     if (this.showDeleted) {
@@ -226,7 +226,7 @@ export class UsersComponent implements OnInit {
     this.userService.getUsers(params).subscribe({
       next: (pageData) => {
         this.users = pageData.page;
-        for (let user of this.users) {
+        for (const user of this.users) {
           user.registeredDate = new Date(user.registeredDate);
           user.registeredDate.toString = Date.prototype.toLocaleDateString;
         }

@@ -50,7 +50,7 @@ export class UserViewComponent implements OnInit {
   }
 
   private loadUsersBooks(): void {
-    if (!this.user) return;
+    if (!this.user) { return; }
 
     this.booksService.getCurrentBooksOfUser(this.user.id).subscribe((books) => {
       this.books = books;
@@ -59,7 +59,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onDeleteUserButtonClick(): void {
-    let isConfirmed: boolean = confirm(
+    const isConfirmed: boolean = confirm(
       `Do you want to delete the ${this.user.firstName} ${this.user.lastName} from the list of users?`
     );
 
@@ -76,7 +76,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onRecoverUserButtonClick() {
-    let isConfirmed: boolean = confirm(
+    const isConfirmed: boolean = confirm(
       `Do you want to recover the ${this.user.firstName} ${this.user.lastName}?`
     );
 
@@ -113,7 +113,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onTakeOwnershipButtonClick(bookId: number): void {
-    let bookPut: IBookPut = {
+    const bookPut: IBookPut = {
       id: bookId,
       userId: this.authService.currentUserValue.id,
       fieldMasks: ['UserId'],
