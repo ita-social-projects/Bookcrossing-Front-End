@@ -115,10 +115,10 @@ export class UserViewComponent implements OnInit {
   }
 
   public onTakeOwnershipButtonClick(bookId: number): void {
-    let isConfirmed: boolean = confirm(
+    const isConfirmed: boolean = confirm(
       'Do you want to take ownership of this book?'
     );
-    if (!isConfirmed) return;
+    if (!isConfirmed) { return; }
 
     const bookPut: IBookPut = {
       id: bookId,
@@ -136,8 +136,8 @@ export class UserViewComponent implements OnInit {
   }
 
   public onActivateButtonClick(bookId: number) {
-    let isConfirmed: boolean = confirm('Do you want to activate the book?');
-    if (!isConfirmed) return;
+    const isConfirmed: boolean = confirm('Do you want to activate the book?');
+    if (!isConfirmed) { return; }
 
     this.booksService.activateBook(bookId).subscribe(
       (data) => this.loadUsersBooks(),
@@ -150,8 +150,8 @@ export class UserViewComponent implements OnInit {
   }
 
   public onDeactivateBookButtonClick(bookId: number): void {
-    let isConfirmed: boolean = confirm('Do you want to deactivate the book?');
-    if (!isConfirmed) return;
+    const isConfirmed: boolean = confirm('Do you want to deactivate the book?');
+    if (!isConfirmed) { return; }
 
     this.booksService.deactivateBook(bookId).subscribe(
       (data) => this.loadUsersBooks(),
