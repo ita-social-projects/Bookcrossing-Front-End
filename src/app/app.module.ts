@@ -5,6 +5,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgxEchartsModule } from 'ngx-echarts';
 import {
   HttpClient,
   HttpClientModule,
@@ -188,6 +189,9 @@ import { StatisticsService } from './core/services/statistics/statistics.service
     StatisticsComponent
   ],
   imports: [
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
     InputTrimModule,
     BrowserModule,
     AppRoutingModule,
@@ -232,7 +236,7 @@ import { StatisticsService } from './core/services/statistics/statistics.service
       },
     }),
     MatLineModule,
-    MatListModule,
+    MatListModule
   ],
   providers: [
     BookService,

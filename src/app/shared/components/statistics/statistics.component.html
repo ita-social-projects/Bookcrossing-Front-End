@@ -64,4 +64,99 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Pie charts -->
+  <div class="pie-charts">
+    <div class="card">
+      <div class="">
+        <div class="card-title">
+          Donated
+        </div>
+        <div class="pie-chart"
+             echarts
+             [options]="donatedPieChartOption"
+             (mouseover)="DonatedTotal.style.display = 'none';"
+             (mouseleave)="DonatedTotal.style.display = 'block';">
+        </div>
+        <div #DonatedTotal>
+          <ng-container *ngIf="donatedPieData?.total !== 0; else DidNotDonateAnyBook">
+            <div class="total">
+              {{donatedPieData?.total}}
+            </div>
+          </ng-container>
+          <ng-template #DidNotDonateAnyBook>
+            <div class="total-none">
+              You didn't donate any book yet
+            </div>
+          </ng-template>
+        </div>
+        <mat-form-field class="picker">
+          <mat-label>{{'components.admin.dashboard.choose-data-range' | translate}}</mat-label>
+          <mat-select [(ngModel)]="selectedDonatedDataRange" (selectionChange)="onDonatedPieDateRangeChange()">
+            <mat-option
+              [value]="DateRangeEnumValues.Week">{{'components.admin.dashboard.week' | translate}}</mat-option>
+            <mat-option
+              [value]="DateRangeEnumValues.Month">{{'components.admin.dashboard.month' | translate}}</mat-option>
+            <mat-option
+              [value]="DateRangeEnumValues.HalfYear">{{'components.admin.dashboard.six-months' | translate}}</mat-option>
+            <mat-option
+              [value]="DateRangeEnumValues.Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
+            <mat-option
+              [value]="DateRangeEnumValues.AllTime">All time</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="card">
+      <div class="">
+        <div class="card-title">
+          Books read
+        </div>
+        <div class="pie-chart"
+             echarts
+             [options]="readPieChartOption"
+             (mouseover)="ReadTotal.style.display = 'none';"
+             (mouseleave)="ReadTotal.style.display = 'block';">
+        </div>
+        <div #ReadTotal>
+          <ng-container *ngIf="readPieData?.total !== 0; else DidNotReadAnyBook">
+            <div class="total">
+              {{readPieData?.total}}
+            </div>
+          </ng-container>
+          <ng-template #DidNotReadAnyBook>
+            <div class="total-none">
+              You didn't read any book yet
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="">
+        <div class="card-title">
+          Book languages
+        </div>
+        <div class="pie-chart"
+             echarts
+             [options]="languagesPieChartOption"
+             (mouseover)="LanguagesTotal.style.display = 'none';"
+             (mouseleave)="LanguagesTotal.style.display = 'block';">
+        </div>
+        <div #LanguagesTotal>
+          <ng-container *ngIf="languagesPieData?.total !== 0; else DidNotReadAnyBook">
+            <div class="total">
+              {{ languagesPieData?.chartData[0]?.name.substr(0, 3).toUpperCase() }}
+            </div>
+          </ng-container>
+          <ng-template #DidNotReadAnyBook>
+            <div class="total-none">
+              You didn't read any book yet
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
