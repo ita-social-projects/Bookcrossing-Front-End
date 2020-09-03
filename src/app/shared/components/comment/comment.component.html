@@ -4,8 +4,6 @@
     <div class=" col-md-offset-2 col-sm-12">
       <div>
         <div class="panel panel-info ">
-          <ngx-star-rating class="rating" [filledColor]="'#FF8800'" (rated)="onRatingSet($event)"
-                           [rating]="rating"></ngx-star-rating>
           <div>
             <div>
               <div class="search-wrapper">
@@ -66,8 +64,6 @@
                       Delete
                     </button>
 
-                    <ngx-star-rating *ngIf="!comment.isDeleted && comment.rating !== 0" [filledColor]="'#FF8800'"
-                                     [rating]="comment.rating" readonly="true"></ngx-star-rating>
                     <p *ngIf="!comment.isDeleted; else DeletedMessage">
                       {{comment.text}}
                     </p>
@@ -121,8 +117,6 @@
                     <!--Edit form-->
                     <div id="root_{{i}}_edit" class="collapse" data-parent="#comments-block">
                       <form #updateFrom="ngForm">
-                        <ngx-star-rating [filledColor]="'#FF8800'" [rating]="comment.rating"
-                                         (rated)="onEditRatingSet($event)"></ngx-star-rating>
                         <div>
                           <div class="search-wrapper">
                             <form (reset)="changeTextAreaHeight(EditComment)">
@@ -144,7 +138,7 @@
                         </div>
 
                         <button [disabled]="EditComment.value.length === 0"
-                                (click)="updateComment(comment.id, EditComment.value, comment.rating)"
+                                (click)="updateComment(comment.id, EditComment.value)"
                                 type="button"
                                 class="btn btn-info pull-right comment-post-btn comment-btn">
                           Post
