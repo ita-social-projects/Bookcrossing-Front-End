@@ -62,4 +62,8 @@ export class BookService {
   activateBook(bookId: number): Observable<object> {
     return this.http.put(this.apiUrl + bookId + '/activate', undefined);
   }
+
+  postBookRequestedFromCompany(book: FormData): Observable<IBook> {
+    return this.http.post<IBook>(this.apiUrl + 'fromcompany', book);
+  }
 }
