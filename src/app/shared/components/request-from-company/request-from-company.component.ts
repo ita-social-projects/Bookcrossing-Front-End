@@ -42,18 +42,18 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
 
           this.newBook = {
             name: book.title,
-            userId: 3,
+            userId: 3,            // default
             publisher: book.publisher,
             state: bookState.requestedFromCompany,
             notice: book.description,
             image: this.selectedFile,
-            languageId: 1,
+            languageId: 1,       // default
             authors: this.authors,
-            genres: this.genres,
+            genres: this.genres,  // default
           };
-
+          console.log(this.genres);
           this.bookService
-            .postBookRequestedFromCompany(this.getFormData(this.newBook))
+            .postBook(this.getFormData(this.newBook))
             .subscribe((b) => {
               this.notificationService.success(
                 this.translate.instant(
@@ -61,7 +61,9 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
                 ),
                 'X'
               );
-              this.router.navigate(['book/' + b.id]);
+              this.wishListService.addToWishList(b.id).subscribe(() => {
+                this.router.navigate(['book/' + b.id]);
+              });
             });
         });
     });

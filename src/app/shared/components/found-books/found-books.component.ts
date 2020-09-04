@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { OuterBookQueryParams } from 'src/app/core/models/outerBookQueryParams';
 import { BookService } from 'src/app/core/services/book/book.service';
 import { AuthorService } from 'src/app/core/services/author/authors.service';
+import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-found-books',
@@ -35,7 +36,8 @@ export class FoundBooksComponent implements OnInit {
     protected notificationService: NotificationService,
     protected translate: TranslateService,
     protected bookService: BookService,
-    protected authorService: AuthorService
+    protected authorService: AuthorService,
+    protected wishListService: WishListService
   ) {}
 
   ngOnInit(): void {
