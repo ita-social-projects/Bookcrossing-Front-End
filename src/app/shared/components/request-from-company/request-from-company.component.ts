@@ -51,7 +51,6 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
             authors: this.authors,
             genres: this.genres,  // default
           };
-          console.log(this.genres);
           this.bookService
             .postBook(this.getFormData(this.newBook))
             .subscribe((b) => {
