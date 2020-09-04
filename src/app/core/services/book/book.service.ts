@@ -1,7 +1,7 @@
 import { RequestQueryParams } from './../../models/requestQueryParams';
 import { bookUrl } from '../../../configs/api-endpoint.constants';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IBook } from '../../models/book';
 import { bookState } from '../../models/bookState.enum';
@@ -14,6 +14,7 @@ import { IBookPost } from '../../models/bookPost';
 import { delay } from 'rxjs/operators';
 import { promise } from 'protractor';
 import { IBookPut } from '../../models/bookPut';
+import {BookRatingQueryParams} from '../../models/bookRatingQueryParams';
 
 @Injectable()
 export class BookService {
@@ -63,7 +64,17 @@ export class BookService {
     return this.http.put(this.apiUrl + bookId + '/activate', undefined);
   }
 
-  postBookRequestedFromCompany(book: FormData): Observable<IBook> {
-    return this.http.post<IBook>(this.apiUrl + 'fromcompany', book);
+  public getUserRating(bookId: number, userId: number): Observable<number> {
+    return this.http.get<number>(this.apiUrl + `rating/${bookId}/user/${userId}`);
+  }
+
+  public setUserRating(ratingParams: BookRatingQueryParams): Observable<boolean> {
+    let params = new HttpParams();
+    params = params
+      .set('BookId', ratingParams.bookId.toString())
+      .set('UserId', ratingParams.userId.toString())
+      .set('Rating', ratingParams.rating.toString());
+
+    return this.http.post<boolean>(this.apiUrl + 'rating', null, {params});
   }
 }

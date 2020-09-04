@@ -23,6 +23,7 @@ import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 import { Observable } from 'rxjs/internal/Observable';
 import {CommentComponent} from '../comment/comment.component';
+import {BookRatingQueryParams} from '../../../core/models/bookRatingQueryParams';
 
 @Component({
   selector: 'app-book',
@@ -47,6 +48,7 @@ export class BookComponent implements OnInit {
   imagePath: string;
   disabledButton = false;
   previousBooksPage: booksPage;
+  rating = 0;
 
   constructor(
     private translate: TranslateService,
@@ -81,7 +83,15 @@ export class BookComponent implements OnInit {
             this.isWished = true;
           }
         });
+
+        this.bookService.getUserRating(this.bookId, this.authentication.currentUserValue.id).subscribe(
+          (data: number) => {
+            console.log(data);
+            this.rating = data;
+          }
+        );
       }
+
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
@@ -320,7 +330,19 @@ export class BookComponent implements OnInit {
   }
 
   public onRatingSet($event: number): void {
-    console.log($event);
+    const params: BookRatingQueryParams = {
+      bookId: this.bookId,
+      userId: this.authentication.currentUserValue.id,
+      rating: $event
+    };
+
+    this.bookService.setUserRating(params).subscribe(
+      (response: boolean) => {
+        if (response) {
+          this.rating = $event;
+        }
+      }
+    );
   }
 
   public changeWishList(book: IBook): void {

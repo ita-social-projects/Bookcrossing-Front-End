@@ -55,3 +55,58 @@
   font-size: 52px;
   font-weight: 600;
 }
+
+
+/* Pie charts */
+.pie-charts {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.pie-chart {
+  margin: 15px;
+  height: 375px;
+}
+
+.total {
+  position: absolute;
+  top: 39.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 35px;
+  color: #1D70B8;
+  font-weight: 400;
+}
+
+.total-none {
+  position: absolute;
+  top: 39.5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #1D70B8;
+  font-weight: 400;
+  width: 80%;
+  text-align: center;
+}
+
+.card {
+  width: 32%;
+}
+
+.card-title {
+  text-align: center;
+  padding: 18px 10px;
+  background: linear-gradient(90deg, #020024 0%, #3f51b5 100%, #1b8ea6 100%);
+  color: white;
+  margin: 15px;
+  font-size: 23px;
+}
+
+.picker {
+  float: right;
+  width: 170px;
+  margin-right: 15px;
+}
