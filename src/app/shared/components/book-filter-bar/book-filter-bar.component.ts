@@ -144,7 +144,6 @@ export class BookFilterBarComponent implements OnInit {
   }
 
   onOrderByFieldChange() {
-
     this.orderByFieldChange.emit(this.orderByField);
     this.notifyFilterChange();
   }
@@ -154,9 +153,19 @@ export class BookFilterBarComponent implements OnInit {
     this.notifyFilterChange();
   }
 
+  onOrderByCurrent(){
+    if(this.orderByFieldAscending == null)
+    {
+      this.orderByFieldAscending = false;
+    }
+    this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
+    this.notifyFilterChange();
+  }
+
   onOrderByAscendingChange() {
     this.orderByFieldAscending = !this.orderByFieldAscending;
     this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
     this.notifyFilterChange();
   }
+  
 }
