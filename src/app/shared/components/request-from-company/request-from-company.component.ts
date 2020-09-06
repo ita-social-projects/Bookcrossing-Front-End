@@ -31,15 +31,16 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
     };
     await this.authorService.addAuthor(author).subscribe(async (auth) => {
       this.authors.push(auth);
-
-      await fetch(book.imageUrl)
+      await fetch(book.imageUrl, { mode: 'no-cors' })
         .then((response) => response.blob())
         .then((blob) => {
           this.selectedFile = new File(
             [blob],
             book.imageUrl.substring(book.imageUrl.lastIndexOf('/') + 1)
           );
-
+          if (book.imageUrl.indexOf('assets/nophoto') >= 0) {
+            this.selectedFile = null;
+          }
           this.newBook = {
             name: book.title,
             userId: 3,            // default
@@ -51,7 +52,6 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
             authors: this.authors,
             genres: this.genres,  // default
           };
-          console.log(this.genres);
           this.bookService
             .postBook(this.getFormData(this.newBook))
             .subscribe((b) => {
