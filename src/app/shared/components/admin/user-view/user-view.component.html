@@ -38,7 +38,7 @@
         }}
       </div>
     </div>
-    <div class="row mb-4">
+    <div class="row">
       <div class="col-5">Room number</div>
       <div class="col">
         {{ user.userLocation.roomNumber }}
@@ -46,9 +46,7 @@
     </div>
   </ng-container>
   <ng-container *ngIf="user && !user?.isDeleted && books && books.length > 0">
-    <div class="row mb-3">
-      <div class="col">Books</div>
-    </div>
+    <h3 class="text-center font-weight-bold mt-5">User's books</h3>
     <table class="table">
       <thead>
         <th>Name</th>
@@ -57,7 +55,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let book of books">
-          <td class="book-title-cell">
+          <td>
             <span class="d-inline-block text-truncate w-100">{{
               book.name
             }}</span>
@@ -85,17 +83,17 @@
             >
           </td>
           <td>
-            <div class="row justify-content-end">
+            <div *ngIf="book.state === 1" class="row justify-content-end w-100">
               <ng-container *ngIf="book.state != 3; else inactiveBook">
                 <button
                   *ngIf="book.userId != currentUserId"
-                  class="btn btn-small btn-info"
+                  class="btn btn-small btn-info col-6"
                   (click)="onTakeOwnershipButtonClick(book.id)"
                 >
                   Take ownership
                 </button>
                 <button
-                  class="btn btn-small btn-danger"
+                  class="btn btn-small btn-danger col-4"
                   (click)="onDeactivateBookButtonClick(book.id)"
                 >
                   Deactivate
@@ -103,7 +101,7 @@
               </ng-container>
               <ng-template #inactiveBook>
                 <button
-                  class="btn btn-small btn-success"
+                  class="btn btn-small btn-success col-4"
                   (click)="onActivateButtonClick(book.id)"
                 >
                   Activate
@@ -115,7 +113,7 @@
       </tbody>
     </table>
   </ng-container>
-  <div *ngIf="user" class="d-flex flex-column align-items-start mt-5">
+  <div *ngIf="user && user.id != currentUserId" class="d-flex flex-column align-items-start mt-5">
     <span *ngIf="activeBooksExist" class="text-danger">You cannot delete user with active books!</span>
     <button
       *ngIf="!user.isDeleted; else deletedUser"
