@@ -23,6 +23,9 @@
 
       <section class="text-center px-md-5 mx-md-5 dark-grey-text">
         <h3 class="font-weight-bold">No books found</h3>
+        <ng-template [ngIf]="queryParams.searchTerm != null && isAuthenticated()">
+          <button class="btn btn-primary ml-0" (click)="navigateToRequestFromCompany()">Request from company</button>
+        </ng-template>
       </section>
 
     </div>
@@ -145,6 +148,8 @@
                                       </ng-template>
                                       <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
                                       </ng-template>
+                                      <ng-template ngSwitchCase="4"><span class="badge badge-dark product">Unavailable</span>
+                                      </ng-template>
                                     </span>
                             </p>
                           </div>
@@ -251,6 +256,8 @@
                     <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
                     </ng-template>
                     <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
+                    </ng-template>
+                    <ng-template ngSwitchCase="4"><span class="badge badge-dark product">Unavailable</span>
                     </ng-template>
                   </span>
 

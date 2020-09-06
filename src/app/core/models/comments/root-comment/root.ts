@@ -5,7 +5,6 @@ export interface IRootComment {
   id?: number;
   text: string;
   date: Date;
-  rating: number;
   bookId: number;
   owner: IBookOwner;
   isDeleted: boolean;

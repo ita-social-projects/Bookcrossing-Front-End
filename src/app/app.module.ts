@@ -5,6 +5,7 @@ import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confi
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgxEchartsModule } from 'ngx-echarts';
 import {
   HttpClient,
   HttpClientModule,
@@ -119,6 +120,7 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 
 @NgModule({
   declarations: [
@@ -185,9 +187,13 @@ import { StatisticsService } from './core/services/statistics/statistics.service
     UsersComponent,
     NotificationBellComponent,
     UserViewComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    RequestFromCompanyComponent
   ],
   imports: [
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
     InputTrimModule,
     BrowserModule,
     AppRoutingModule,
@@ -232,7 +238,7 @@ import { StatisticsService } from './core/services/statistics/statistics.service
       },
     }),
     MatLineModule,
-    MatListModule,
+    MatListModule
   ],
   providers: [
     BookService,
