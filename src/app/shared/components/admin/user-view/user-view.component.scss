@@ -4,6 +4,11 @@
 
 .table {
   width: 99%;
+  thead,
+  tbody tr {
+    display: grid;
+    grid-template-columns: 5fr 2fr 5fr;
+  }
   thead th {
     font-size: 0.95rem;
     font-weight: 500;
@@ -13,12 +18,10 @@
     border-bottom: 2px solid rgba(0, 0, 0, 0.06);
   }
   tbody {
-    tr {
-      padding: 0.25rem 1rem;
-    }
     td {
-      vertical-align: middle;
       font-size: 1rem;
+      display: flex;
+      align-items: center;
     }
   }
 }
