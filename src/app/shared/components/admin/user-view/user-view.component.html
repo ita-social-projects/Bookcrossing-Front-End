@@ -48,19 +48,19 @@
   <ng-container *ngIf="user && !user?.isDeleted && books && books.length > 0">
     <h3 class="text-center font-weight-bold mt-5">User's books</h3>
     <table class="table">
-      <thead>
-        <th>Name</th>
-        <th>State</th>
-        <th><span class="sr-only">Actions</span></th>
+      <thead class="row">
+        <th class="col-5">Name</th>
+        <th class="col-2">State</th>
+        <th class="col-5"><span class="sr-only">Actions</span></th>
       </thead>
       <tbody>
-        <tr *ngFor="let book of books">
-          <td>
+        <tr *ngFor="let book of books" class="row">
+          <td class="col-5 align-middle">
             <span class="d-inline-block text-truncate w-100">{{
               book.name
             }}</span>
           </td>
-          <td [ngSwitch]="book.state">
+          <td [ngSwitch]="book.state" class="col-2">
             <ng-template ngSwitchCase="0"
               ><span class="badge badge-success product"
                 >Available</span
@@ -82,8 +82,8 @@
               ></ng-template
             >
           </td>
-          <td>
-            <div *ngIf="book.state === 1" class="row justify-content-end w-100">
+          <td class="col-5 py-2">
+            <div *ngIf="book.state !== 1" class="row justify-content-end w-100">
               <ng-container *ngIf="book.state != 3; else inactiveBook">
                 <button
                   *ngIf="book.userId != currentUserId"
