@@ -16,6 +16,8 @@ import { BookService } from 'src/app/core/services/book/book.service';
 import { IBook } from 'src/app/core/models/book';
 import { SignalRService } from 'src/app/core/services/signal-r/signalr.service';
 import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { IMessage } from 'src/app/core/models/message';
 
 @Component({
   selector: 'app-notification-bell',
@@ -37,7 +39,8 @@ export class NotificationBellComponent implements OnInit {
     private dialogService: DialogService,
     private requestService: RequestService,
     private notificationBellService: NotificationBellService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private userService: UserService
   ) {}
 
   public ngOnInit(): void {
@@ -268,6 +271,10 @@ export class NotificationBellComponent implements OnInit {
     return action.valueOf() === 3;
   }
 
+  public checkIfMessage(action: NotifyAction): boolean {
+    return action.valueOf() === 4;
+  }
+
   public getNewNotifications(): void {
     this.signalRService.hubConnection.on(
       'Notify',
@@ -276,5 +283,25 @@ export class NotificationBellComponent implements OnInit {
         this.numberOfNotifications++;
       }
     );
+  }
+
+  public sendMessage(receiverId: number) {
+    this.userService.getUserById(receiverId).subscribe((user) => {
+      this.dialogService
+        .openMessageDialog(user.firstName + ' ' + user.lastName)
+        .afterClosed()
+        .subscribe((message) => {
+          if (message !== null) {
+            const currentUser = this.authenticationService.currentUserValue;
+            message =
+              `${currentUser.firstName} ${currentUser.lastName}: ` + message;
+            const newMessage: IMessage = {
+              message: message,
+              userId: receiverId
+            };
+            this.notificationBellService.addNotification(newMessage).subscribe();
+          }
+        });
+    });
   }
 }

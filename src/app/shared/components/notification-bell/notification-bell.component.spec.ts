@@ -23,6 +23,7 @@ describe('#checkIfOpen(INotification), checkIfRequest(INotification), checkIfSta
       null,
       null,
       null,
+      null,
       null
     );
   });
