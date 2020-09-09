@@ -359,7 +359,7 @@ export class BookComponent implements OnInit {
     this.dialogService
       .openDonateDialog(
         await this.translate
-          .get("You can donate some money for the project. It's optional.")
+          .get('You can donate some money for the project. It`s optional.')
           .toPromise()
       )
       .afterClosed()
@@ -462,13 +462,13 @@ export class BookComponent implements OnInit {
         this.currentOwner.firstName + ' ' + this.currentOwner.lastName
       )
       .afterClosed()
-      .subscribe((message) => {
-        if (message !== null) {
+      .subscribe((Newmessage) => {
+        if (Newmessage !== null) {
           const currentUser = this.authentication.currentUserValue;
-          message =
-          `${currentUser.firstName} ${currentUser.lastName}: ` + message;
+          Newmessage =
+          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
           const newMessage: IMessage = {
-            message: message,
+            message: Newmessage,
             userId: this.currentOwner.id
           };
           this.notificationBellService.addNotification(newMessage).subscribe();
