@@ -101,8 +101,8 @@
                     <strong>Current owner: </strong>
                   </th>
                   <td class="align-middle" class="fontsize">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <span>
-                    (<a [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
-                  </span></td>
+                    (<a class="bluetext" [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
+                  </span> <div class="contact" (click)="sendMessage()">Contact Owner</div></td>
                 </tr>
                 <tr *ngIf="firstOwner !== null">
                   <th scope="row" class="fontsize">

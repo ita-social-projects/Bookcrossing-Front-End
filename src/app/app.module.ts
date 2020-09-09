@@ -2,6 +2,7 @@ import { BookEditFormComponent } from './shared/components/book-edit-form/book-e
 import { UserService } from './core/services/user/user.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { MessageDialogComponent } from './shared/components/message-dialog/message-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -160,6 +161,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
+    MessageDialogComponent,
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CommentComponent,
