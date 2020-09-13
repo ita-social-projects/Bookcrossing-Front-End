@@ -291,7 +291,7 @@ export class NotificationBellComponent implements OnInit {
         .openMessageDialog(user.firstName + ' ' + user.lastName)
         .afterClosed()
         .subscribe((Newmessage) => {
-          if (Newmessage !== null) {
+          if (Newmessage !== null && Newmessage !== false) {
             const currentUser = this.authenticationService.currentUserValue;
             Newmessage =
               `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
