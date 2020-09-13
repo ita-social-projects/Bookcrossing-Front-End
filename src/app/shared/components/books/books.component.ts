@@ -145,6 +145,10 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public async requestBook(bookId: number): Promise<void> {
+    if (!this.isAuthenticated()) {
+      this.authentication.redirectToLogin();
+    }
+
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
     if (!userHasValidLocation) {
       return;
