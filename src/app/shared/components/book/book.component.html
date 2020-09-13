@@ -100,26 +100,38 @@
                   <th scope="row" class="fontsize">
                     <strong>Current owner: </strong>
                   </th>
-                  <td class="align-middle" class="fontsize">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <span>
-                    (<a class="bluetext" [href]="'mailto:'.concat(currentOwner?.email)">{{ currentOwner?.email | UserName }}</a>)
-                  </span> <div class="contact" (click)="sendMessage()">Contact Owner</div></td>
+                  
+                  <td class="align-middle" class="fontsize contactowner">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <br>
+                  <ng-template [ngIf]="isAuthenticated()">
+                    <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
+                      <mat-icon> email </mat-icon> 
+                    </button>
+                    <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessage()">
+                      <mat-icon> chat_bubble </mat-icon> 
+                    </button>
+                  </ng-template>
+                </td>
                 </tr>
                 <tr *ngIf="firstOwner !== null">
                   <th scope="row" class="fontsize">
                     <strong>Registered by: </strong>
                   </th>
-                  <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
-                    <span>
-                      (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
-                    </span></td>
+                  <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}</td>
                 </tr>
                 <tr *ngIf="userWhoRequested != null">
                   <th scope="row" class="fontsize">
                     <strong>Requested by: </strong>
                   </th>
-                  <td class="align-middle" class="fontsize">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}<span>
-                    (<a [href]="'mailto:'.concat(userWhoRequested?.email)">{{ userWhoRequested?.email | UserName }}</a>)
-                  </span></td>
+                  <td class="align-middle" class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} <br>
+                    <ng-template [ngIf]="isAuthenticated()">
+                      <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
+                        <mat-icon> email </mat-icon> 
+                      </button>
+                      <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessageRequester()">
+                        <mat-icon> chat_bubble </mat-icon> 
+                      </button>
+                    </ng-template>
+                  </td>
                 </tr>
                 <tr *ngIf="book?.publisher != null">
                   <th scope="row" class="fontsize">

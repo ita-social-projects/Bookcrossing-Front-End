@@ -18,6 +18,9 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
   newBook: IBookPost;
 
   public async requestFromCompany(book: IOuterBook): Promise<void> {
+    this.genres = [];
+    this.authors = [];
+    this.selectedFile = null;
     const genre: IGenre = { id: 1, name: 'Unknown' };
     this.genres.push(genre);
     const names = book.author.fullName.split(' ');

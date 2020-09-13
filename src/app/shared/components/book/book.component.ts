@@ -463,7 +463,7 @@ export class BookComponent implements OnInit {
       )
       .afterClosed()
       .subscribe((Newmessage) => {
-        if (Newmessage !== null) {
+        if (Newmessage !== null && Newmessage !== false) {
           const currentUser = this.authentication.currentUserValue;
           Newmessage =
           `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
@@ -474,5 +474,31 @@ export class BookComponent implements OnInit {
           this.notificationBellService.addNotification(newMessage).subscribe();
         }
       });
+  }
+
+  public sendMessageRequester(): void {
+  if (this.userWhoRequested !== null) {
+    this.dialogService
+      .openMessageDialog(
+        this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
+      )
+      .afterClosed()
+      .subscribe((Newmessage) => {
+        if (Newmessage !== null && Newmessage !== false) {
+          const currentUser = this.authentication.currentUserValue;
+          Newmessage =
+          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+          const newMessage: IMessage = {
+            message: Newmessage,
+            userId: this.userWhoRequested.id
+          };
+          this.notificationBellService.addNotification(newMessage).subscribe();
+        }
+      });
+    }
+  }
+
+  public openEmail() {
+    window.open('mailto:'.concat(this.currentOwner?.email));
   }
 }
