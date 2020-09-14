@@ -29,12 +29,15 @@ export class ProfileEditComponent implements OnInit {
   public changingLocation = false;
   public locations: ILocation[] = [];
   public isEmail: boolean;
+  public changeLocation = false;
   public submitted = false;
+  public homeAdress: string;
   public fieldMasks = [
     'FirstName',
     'LastName',
     'BirthDate',
     'UserRoomId',
+    'UserHomeAdressId',
     'IsEmailAllowed',
   ];
   private notificationService: NotificationService;
@@ -81,12 +84,20 @@ export class ProfileEditComponent implements OnInit {
         value: this.user.isEmailAllowed,
         disabled: false,
       }),
+      changeLocation: new FormControl({
+        value: null
+      }),
       room: new FormControl(
-        this.user?.userLocation?.roomNumber
-          ? this.user.userLocation.roomNumber
+        this.user?.userRoomLocation?.roomNumber
+          ? this.user.userRoomLocation.roomNumber
           : 0,
-        [Validators.required, Validators.maxLength(7)]
+        [Validators.maxLength(7)]
       ),
+      homeAdress: new FormControl(
+        this.user?.userHomeAdress?.homeAdress
+          ? this.user.userHomeAdress.homeAdress
+          : 0
+      )
     });
   }
 
@@ -103,7 +114,8 @@ export class ProfileEditComponent implements OnInit {
       firstName: this.editUserForm.get('firstName').value,
       lastName: this.editUserForm.get('lastName').value,
       birthDate: new Date(this.editUserForm.get('birthDate').value),
-      userLocation: this.user.userLocation,
+      userRoomLocation: this.user.userRoomLocation,
+      userHomeAdress: this.user.userHomeAdress,
       email: this.user.email,
       isEmailAllowed: this.isEmail,
       password: this.password,
@@ -114,12 +126,21 @@ export class ProfileEditComponent implements OnInit {
     user.birthDate.setHours(12);
 
     if (this.changingLocation) {
-      user.userLocation = {
+      if (this.editUserForm.get('changeLocation').value === true) {
+      user.userHomeAdress = {
+        location: this.location,
+        homeAdress: this.editUserForm.get('homeAdress').value
+      };
+    } else {
+      user.userRoomLocation = {
         location: this.location,
         roomNumber: this.editUserForm.get('room').value,
       };
-    } else if (user?.userLocation?.location) {
-      user.userLocation.roomNumber = this.editUserForm.get('room').value;
+    }
+
+    } else if (user?.userRoomLocation?.location) {
+      user.userRoomLocation.roomNumber = this.editUserForm.get('room').value;
+      user.userHomeAdress.homeAdress = this.editUserForm.get('homeAdress').value;
     }
 
     this.userService.editUser(user.id, user).subscribe(

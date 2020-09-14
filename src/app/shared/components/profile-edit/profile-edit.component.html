@@ -72,11 +72,11 @@
     <div class="form-row mb-4">
       <div class="col-2"></div>
       <div class="col-3">
-        <p class="input-label padding-left">Location :<span class="asterisk"> *</span></p>
+        <p class="input-label padding-left">Office Location :<span class="asterisk"> *</span></p>
       </div>
       <div class="col-3">
         <mat-select class="form-control select-dropdown"
-          [placeholder]="user?.userLocation?.location ? (user.userLocation.location.city+' '+user.userLocation.location.officeName+user.userLocation.location.street):'Please choose location'">
+          [placeholder]="user?.userRoomLocation?.location ? (user.userRoomLocation.location.city+' '+user.userRoomLocation.location.officeName+user.userRoomLocation.location.street):'Please choose location'">
           <mat-option *ngFor="let location of locations" (click)="newLocation(location)" [value]="location.id"
             [matTooltip]="location.city
                                     + ' ' + location.officeName + ', ' + location.street" matTooltipPosition="right">
@@ -95,6 +95,7 @@
         {{'common-errors.validation-max-length' | translate:{value:editUserForm.get('room').errors?.maxlength?.requiredLength} }}
       </div>
     </div>
+
     <div>
       <div class="form-row mb-4">
         <div class="col-2"></div>
@@ -109,6 +110,17 @@
         <div class="col-2"></div>
       </div>
     </div>
+
+    <div class="form-row mb-4">
+      <div class="col-2"></div>
+      <div class="col-3">
+        <p class="input-label padding-left">Home Location :</p>
+      </div>
+        <div class="col-3">
+          <input type="text" class="form-control" formControlName="homeAdress" />
+        </div>
+    </div>
+
     <div>
       <div class="form-row mb-4">
         <div class="col-2"></div>
@@ -126,6 +138,16 @@
       </div>
     </div>
 
+    <div class="form-row mb-4" style="margin-top: 40px; margin-right: 95px;">
+      <div class="col-2"></div>
+      <div class="col-3"></div>
+        <span style="margin-right: 10px;">Use my Office Adress</span>   
+          <label class="switch">
+            <input type="checkbox" formControlName="changeLocation"  class="form-control">
+            <span class="slider round"></span>
+          </label>
+          <span style="margin-left: 10px;"> Use my Home Adress</span>
+     </div>
 
     <div>
       <div class="form-row mb-4">

@@ -5,30 +5,31 @@
   <tbody>
   <tr>
     <td>First Name</td>
-    <td>{{user.firstName}}</td>
+    <td>{{user?.firstName}}</td>
   </tr>
   <tr>
     <td>Last Name</td>
-    <td>{{user.lastName}}</td>
+    <td>{{user?.lastName}}</td>
   </tr>
   <tr>
     <td>Email</td>
-    <td>{{user.email}}</td>
+    <td>{{user?.email}}</td>
   </tr>
   <tr>
     <td>Birthday</td>
-    <td>{{user.birthDate | date }}</td>
+    <td>{{user?.birthDate | date }}</td>
   </tr>
-  <tr *ngIf="user?.userLocation?.location">
+  <tr >
     <td>Location</td>
-    <td class ="location"><span>{{user.userLocation.location.city}}</span><span>{{user.userLocation.location.street}}</span>
-      <span>{{user.userLocation.location.rooms}}</span>
+    <td class ="location">
+      <p *ngIf="user?.userRoomLocation?.roomNumber"><span>{{user.userRoomLocation.location.city}}</span><span>{{user.userRoomLocation.location.street}}</span> <span>{{user.userRoomLocation.location.rooms}}</span></p>
+      <p *ngIf="user?.userHomeAdress?.homeAdress"><span>{{user.userHomeAdress.location.city}}</span><span>{{user.userHomeAdress.location.homeAdress}}</span></p>
     </td>
   </tr>
   <tr>
     <td>Receive e-mails</td>
-    <td *ngIf="user.isEmailAllowed">Yes</td>
-    <td *ngIf="!user.isEmailAllowed">No</td>
+    <td *ngIf="user?.isEmailAllowed">Yes</td>
+    <td *ngIf="!user?.isEmailAllowed">No</td>
   </tr>
   <tr>
     <td>
