@@ -292,6 +292,7 @@ export class NotificationBellComponent implements OnInit {
         .afterClosed()
         .subscribe((Newmessage) => {
           if (Newmessage !== null && Newmessage !== false) {
+            this.notificationBellService.addToNotification('To ' + user.firstName + ' ' + user.lastName + ': ' + Newmessage).subscribe();
             const currentUser = this.authenticationService.currentUserValue;
             Newmessage =
               `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;

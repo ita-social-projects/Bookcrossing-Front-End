@@ -464,6 +464,7 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe((Newmessage) => {
         if (Newmessage !== null && Newmessage !== false) {
+          this.notificationBellService.addToNotification('To ' + this.currentOwner.firstName + ' ' + this.currentOwner.lastName + ': ' + Newmessage).subscribe();
           const currentUser = this.authentication.currentUserValue;
           Newmessage =
           `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
@@ -493,6 +494,7 @@ export class BookComponent implements OnInit {
             userId: this.userWhoRequested.id
           };
           this.notificationBellService.addNotification(newMessage).subscribe();
+          this.notificationBellService.addToNotification('To ' + this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName).subscribe();
         }
       });
     }
