@@ -46,14 +46,14 @@ export class StatisticsComponent implements OnInit {
   public DateRangeEnumValues = DateRangeEnum;
   public selectedDonatedDataRange: DateRangeEnum = DateRangeEnum.AllTime;
 
-  public readingFiltersChanged: boolean = false;
+  public readingFiltersChanged = false;
   public readingSelectedCities: string[];
   public readingSelectedOffices: string[];
   public readingSelectedGenres: number[];
   public readingFrom: Date;
   public readingTo: Date;
 
-  public donationFiltersChanged: boolean = false;
+  public donationFiltersChanged = false;
   public donationSelectedCities: string[];
   public donationSelectedOffices: string[];
   public donationSelectedGenres: number[];
