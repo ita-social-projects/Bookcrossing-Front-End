@@ -1,4 +1,4 @@
-# BookCrossing-Front-End [![Build Status](https://travis-ci.org/ita-social-projects/Bookcrossing-Front-End.svg?branch=develop)](https://travis-ci.org/ita-social-projects/Bookcrossing-Front-End) [![Build number](https://img.shields.io/badge/build-number-blue.svg)](https://travis-ci.org/github/ita-social-projects/Bookcrossing-Front-End/buildss) 
+# BookCrossing-Front-End [![Build Status](https://travis-ci.org/ita-social-projects/Bookcrossing-Front-End.svg?branch=develop)](https://travis-ci.org/ita-social-projects/Bookcrossing-Front-End) [![Build number](https://img.shields.io/badge/build-number-blue.svg)](https://travis-ci.org/github/ita-social-projects/Bookcrossing-Front-End/builds) 
 Platform for book crossing between company employees
 [Website](https://bookcrossing.tech/) 
   
