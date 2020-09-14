@@ -145,7 +145,7 @@ constructor(
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const genre of this.editBookForm.get('genres').value) {
-      const id = genre.value;
+      const id = genre;//.value;
       selectedGenres.push({ id, name: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
@@ -211,7 +211,7 @@ constructor(
     }
     if (book.fieldMasks.length < 1) {
       this.chengeInActiveIfNeed();
-      this.Cancel();
+      this.cancel.emit();
     } else {
       const formData: FormData = this.getFormData(book);
       this.bookService.putBook(book.id, formData).subscribe(
@@ -385,9 +385,6 @@ constructor(
 
   onFileClear() {
     this.selectedFile = null;
-  }
-  Cancel() {
-    this.cancel.emit();
   }
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
