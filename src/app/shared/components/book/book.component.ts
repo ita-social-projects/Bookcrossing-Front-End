@@ -464,13 +464,22 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe((Newmessage) => {
         if (Newmessage !== null && Newmessage !== false) {
-          this.notificationBellService.addToNotification('To ' + this.currentOwner.firstName + ' ' + this.currentOwner.lastName + ': ' + Newmessage).subscribe();
+          this.notificationBellService
+            .addToNotification(
+              'To ' +
+                this.currentOwner.firstName +
+                ' ' +
+                this.currentOwner.lastName +
+                ': ' +
+                Newmessage
+            )
+            .subscribe();
           const currentUser = this.authentication.currentUserValue;
           Newmessage =
-          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
           const newMessage: IMessage = {
             message: Newmessage,
-            userId: this.currentOwner.id
+            userId: this.currentOwner.id,
           };
           this.notificationBellService.addNotification(newMessage).subscribe();
         }
@@ -478,25 +487,34 @@ export class BookComponent implements OnInit {
   }
 
   public sendMessageRequester(): void {
-  if (this.userWhoRequested !== null) {
-    this.dialogService
-      .openMessageDialog(
-        this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
-      )
-      .afterClosed()
-      .subscribe((Newmessage) => {
-        if (Newmessage !== null && Newmessage !== false) {
-          const currentUser = this.authentication.currentUserValue;
-          Newmessage =
-          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
-          const newMessage: IMessage = {
-            message: Newmessage,
-            userId: this.userWhoRequested.id
-          };
-          this.notificationBellService.addNotification(newMessage).subscribe();
-          this.notificationBellService.addToNotification('To ' + this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName).subscribe();
-        }
-      });
+    if (this.userWhoRequested !== null) {
+      this.dialogService
+        .openMessageDialog(
+          this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
+        )
+        .afterClosed()
+        .subscribe((Newmessage) => {
+          if (Newmessage !== null && Newmessage !== false) {
+            const currentUser = this.authentication.currentUserValue;
+            Newmessage =
+              `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            const newMessage: IMessage = {
+              message: Newmessage,
+              userId: this.userWhoRequested.id,
+            };
+            this.notificationBellService
+              .addNotification(newMessage)
+              .subscribe();
+            this.notificationBellService
+              .addToNotification(
+                'To ' +
+                  this.userWhoRequested.firstName +
+                  ' ' +
+                  this.userWhoRequested.lastName
+              )
+              .subscribe();
+          }
+        });
     }
   }
 
