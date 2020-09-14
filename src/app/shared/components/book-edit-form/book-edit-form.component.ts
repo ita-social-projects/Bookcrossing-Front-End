@@ -145,7 +145,7 @@ constructor(
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const genre of this.editBookForm.get('genres').value) {
-      const id = genre;//.value;
+      const id = genre;
       selectedGenres.push({ id, name: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
