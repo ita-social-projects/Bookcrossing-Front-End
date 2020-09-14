@@ -1,6 +1,6 @@
-import {IChartValue} from './chartValue';
+import {IPieChartValue} from './pieChartValue';
 
 export interface IPieChartData {
   total: number;
-  chartData: IChartValue[];
+  chartData: IPieChartValue[];
 }
