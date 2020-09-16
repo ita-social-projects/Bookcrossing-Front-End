@@ -5,6 +5,7 @@ import {ICountersSet} from '../../models/statistics/counters';
 import {Observable} from 'rxjs';
 import {IPieChartData} from '../../models/statistics/userDonationsData';
 import {map} from 'rxjs/operators';
+import {IStatisticsData} from '../../models/statistics/IStatisticsData';
 
 @Injectable()
 export class StatisticsService {
@@ -52,6 +53,94 @@ export class StatisticsService {
             return {name: key, value: userMostReadLanguagesData.data[key]};
           });
           return {total: userMostReadLanguagesData.total, chartData};
+        })
+      );
+  }
+
+  public getReadingStatistics(cities: string[], offices: string[], genres: number[], from?: Date, to?: Date): Observable<IStatisticsData> {
+    let params = new HttpParams();
+    if (cities?.length > 0) {
+      for (const city of cities) {
+        params = params.append('cities', city);
+      }
+    }
+
+    if (offices?.length > 0) {
+      for (const office of offices) {
+        params = params.append('offices', office);
+      }
+    }
+
+    if (genres?.length > 0) {
+      for (const id of genres) {
+        params = params.append('genres', id.toString());
+      }
+    }
+
+    if (from) {
+      params = params.set('from', from.toLocaleDateString());
+    }
+
+    if (to) {
+      params = params.set('to', to.toLocaleDateString());
+    }
+
+    return this.http.get<IStatisticsData>(`${statisticsUrl}/reading`, {params})
+      .pipe(
+        map((readingData: any) => {
+          const lineChartData = Object.keys(readingData.data).map((key) => {
+            return {name: key, data: readingData.data[key]};
+          });
+          const obj: IStatisticsData = {
+            data: lineChartData,
+            periods: readingData.periods
+          };
+
+          return obj;
+        })
+      );
+  }
+
+  public getDonationStatistics(cities: string[], offices: string[], genres: number[], from?: Date, to?: Date): Observable<IStatisticsData> {
+    let params = new HttpParams();
+    if (cities?.length > 0) {
+      for (const city of cities) {
+        params = params.append('cities', city);
+      }
+    }
+
+    if (offices?.length > 0) {
+      for (const office of offices) {
+        params = params.append('offices', office);
+      }
+    }
+
+    if (genres?.length > 0) {
+      for (const id of genres) {
+        params = params.append('genres', id.toString());
+      }
+    }
+
+    if (from) {
+      params = params.set('from', from.toLocaleDateString());
+    }
+
+    if (to) {
+      params = params.set('to', to.toLocaleDateString());
+    }
+
+    return this.http.get<IStatisticsData>(`${statisticsUrl}/donation`, {params})
+      .pipe(
+        map((readingData: any) => {
+          const lineChartData = Object.keys(readingData.data).map((key) => {
+            return {name: key, data: readingData.data[key]};
+          });
+          const obj: IStatisticsData = {
+            data: lineChartData,
+            periods: readingData.periods
+          };
+
+          return obj;
         })
       );
   }

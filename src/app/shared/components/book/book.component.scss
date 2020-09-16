@@ -35,6 +35,11 @@ display: initial;
   outline:none; 
 }
 
+.emailbutton
+{
+  outline:none; 
+}
+
 .heart 
 {
   color:black !important;
@@ -43,4 +48,20 @@ display: initial;
 
 .fontsize{
   font-size: 16px;
+}
+
+.contactowner
+{
+  display: inline !important;
+}
+
+.contact
+{
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+.bluetext
+{
+  color: rgb(6, 173, 250);
 }
