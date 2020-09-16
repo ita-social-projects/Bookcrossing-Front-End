@@ -122,6 +122,7 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { TimespansComponent } from './shared/components/admin/timespans/timespans/timespans.component';
 
 @NgModule({
   declarations: [
@@ -190,7 +191,8 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    RequestFromCompanyComponent
+    RequestFromCompanyComponent,
+    TimespansComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
