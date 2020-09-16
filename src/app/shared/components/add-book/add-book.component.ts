@@ -180,7 +180,7 @@ export class AddBookComponent implements OnInit {
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const id of this.addBookForm.get('genres').value) {
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
     const authorInput = this.addBookForm.get('authorFirstname').value.trim();

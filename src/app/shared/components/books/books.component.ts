@@ -313,4 +313,11 @@ export class BooksComponent implements OnInit, OnDestroy {
       queryParams: { searchTerm: this.queryParams.searchTerm}
     });
   }
+  public isEn(): boolean {
+    if (this.translate.currentLang === 'en') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -18,7 +18,7 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
   newBook: IBookPost;
 
   public async requestFromCompany(book: IOuterBook): Promise<void> {
-    const genre: IGenre = { id: 1, name: 'Unknown' };
+    const genre: IGenre = { id: 1, name: 'Unknown', nameUk: 'Невідомий' };
     this.genres.push(genre);
     const names = book.author.fullName.split(' ');
     if (names.length === 1) {
