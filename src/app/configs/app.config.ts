@@ -8,5 +8,4 @@ export const AppConfig = {
     tenantId: '35ff8860-06dd-4467-9118-10c7f33af235',
     authority: 'https://login.microsoftonline.com/35ff8860-06dd-4467-9118-10c7f33af235/',
   }
-  
 };
