@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle/button-toggle';
 import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLanguage.service';
+import { Language } from 'src/app/core/models/languages.enum';
 
 @Component({
   selector: 'app-book-filter-bar',
@@ -36,11 +37,13 @@ export class BookFilterBarComponent implements OnInit {
   @Input() orderByField: string;
   @Input() orderByFieldAscending = true;
   constructor(
+    private languageService: LanguageService,
     private genreService: GenreService,
     private bookLanguageService: BookLanguageService,
     private locationService: LocationService,
     private translate: TranslateService,
-    private notificationService: NotificationService, ) { }
+    private notificationService: NotificationService,
+  ) {}
 
   ngOnInit(): void {
     this.getAllGenres();
@@ -56,6 +59,13 @@ export class BookFilterBarComponent implements OnInit {
     if (!isOpened) {
       this.selectedGenresChange.emit(this.selectedGenres);
       this.notifyFilterChange();
+    }
+  }
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      return true;
+    } else {
+      return false;
     }
   }
   onCategoriesReset() {
@@ -114,7 +124,6 @@ export class BookFilterBarComponent implements OnInit {
     }
     );
   }
-
   getAllLanguages() {
     this.bookLanguageService.getLanguage().subscribe({
       next: (data) => {

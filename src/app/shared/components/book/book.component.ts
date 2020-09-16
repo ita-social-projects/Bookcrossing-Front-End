@@ -455,6 +455,9 @@ export class BookComponent implements OnInit {
   public canLeave(): boolean {
     return this.comment.canLeave();
   }
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 
   public sendMessage(): void {
     this.dialogService

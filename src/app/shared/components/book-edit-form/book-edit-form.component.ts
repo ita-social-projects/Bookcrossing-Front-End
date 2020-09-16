@@ -146,7 +146,7 @@ constructor(
     const selectedGenres: IGenre[] = [];
     for (const genre of this.editBookForm.get('genres').value) {
       const id = genre;
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
 
@@ -283,7 +283,11 @@ constructor(
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    if (this.isEn() ) {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    } else {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
+    }
   }
 
   getAllGenres() {
@@ -473,5 +477,7 @@ constructor(
       );
     }
   }
-
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 }

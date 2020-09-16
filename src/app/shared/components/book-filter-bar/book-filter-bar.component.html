@@ -2,7 +2,12 @@
     <div class="card-header white d-flex align-items-center py-3">
         <div class="form-inline block">
             <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoriesChange($event)" class="form-control select-dropdown" multiple placeholder="{{'components.books.categories' | translate}}">
-                <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
+                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
+                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
+                </ng-template>
+                <ng-template #uk>
+                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk}}</mat-option>
+                </ng-template>
             </mat-select>
             <span [ngClass]="{'hidden': !(selectedGenres && selectedGenres.length > 0)}" class="clear-icon" (click)="onCategoriesReset()" aria-label="Clear"><svg focusable="false"
             viewBox="0 0 24 24">
@@ -23,10 +28,10 @@
         </div>
 
         <div class="form-inline block">
-            <mat-select placeholder="Sort by" [(ngModel)]="orderByField" (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
-                <mat-option value="Rating" (click)="onOrderByCurrent()">Rating <i class="fas fa-star"></i></mat-option>
-                <mat-option value="DateAdded" (click)="onOrderByCurrent()">Date added <i class="far fa-clock"></i></mat-option>
-                <mat-option value="Name" (click)="onOrderByCurrent()">Book's title <i class="fab fa-amilia"></i></mat-option>
+            <mat-select placeholder="{{ 'components.booksfilter.sortby'| translate }}" [(ngModel)]="orderByField" (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
+                <mat-option value="Rating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.rating'| translate }} <i class="fas fa-star"></i></mat-option>
+                <mat-option value="DateAdded" (click)="onOrderByCurrent()">{{ 'components.booksfilter.dateadded'| translate }} <i class="far fa-clock"></i></mat-option>
+                <mat-option value="Name" (click)="onOrderByCurrent()">{{ 'components.booksfilter.bookstitle'| translate }} <i class="fab fa-amilia"></i></mat-option>
             </mat-select>
 
             <ng-template [ngIf]="orderByField">
