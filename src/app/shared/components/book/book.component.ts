@@ -473,7 +473,12 @@ export class BookComponent implements OnInit {
                 ': ' +
                 Newmessage
             )
-            .subscribe();
+            .subscribe(() => {
+              this.notificationService.success(
+                this.translate.instant('Message is successfully sent'),
+                'X'
+              );
+            });
           const currentUser = this.authentication.currentUserValue;
           Newmessage =
             `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
@@ -504,7 +509,12 @@ export class BookComponent implements OnInit {
             };
             this.notificationBellService
               .addNotification(newMessage)
-              .subscribe();
+              .subscribe(() => {
+                this.notificationService.success(
+                  this.translate.instant('Message is successfully sent'),
+                  'X'
+                );
+              });
             this.notificationBellService
               .addToNotification(
                 'To ' +
