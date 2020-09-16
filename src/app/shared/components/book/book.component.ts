@@ -455,7 +455,6 @@ export class BookComponent implements OnInit {
   public canLeave(): boolean {
     return this.comment.canLeave();
   }
-  
   public isEn(): boolean {
     if (this.translate.currentLang === 'en') {
       return true;
