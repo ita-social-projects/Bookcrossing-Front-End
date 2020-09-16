@@ -456,11 +456,7 @@ export class BookComponent implements OnInit {
     return this.comment.canLeave();
   }
   public isEn(): boolean {
-    if (this.translate.currentLang === 'en') {
-      return true;
-    } else {
-      return false;
-    }
+    return this.translate.currentLang === 'en';
   }
 
   public sendMessage(): void {
