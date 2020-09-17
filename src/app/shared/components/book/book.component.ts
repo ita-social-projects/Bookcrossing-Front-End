@@ -104,9 +104,6 @@ export class BookComponent implements OnInit {
       this.getReadCount(value.id);
     });
     this.previousBooksPage = history.state.booksPage;
-
-    console.log(this.isRequester);
-    console.log(this.isBookOwner);
   }
 
   public navigate(): void {
@@ -127,11 +124,7 @@ export class BookComponent implements OnInit {
       if (this.isAuthenticated()) {
         this.authentication.getUserId().subscribe(
           (id: number) => {
-            if (id === this.currentOwner.id) {
-              this.isBookOwner = true;
-            } else {
-              this.isBookOwner = false;
-            }
+            this.isBookOwner = id === this.currentOwner.id;
           },
           (err) => {
             this.isBookOwner = false;
