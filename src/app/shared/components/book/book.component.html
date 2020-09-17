@@ -30,16 +30,16 @@
                     </div>
                     <div class="text-center text-md-left text-md-right mt-2">
                         <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && isBookOwner !== undefined && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
+                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.startreading' | translate }}</button>
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.cancelrequest' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                 </span>
@@ -116,10 +116,7 @@
                                     <th scope="row" class="fontsize">
                                         <strong>{{ 'components.book.registeredby' | translate }}: </strong>
                                     </th>
-                                    <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}
-                                        <span>
-                      (<a [href]="'mailto:'.concat(firstOwner?.email)">{{ firstOwner?.email | UserName }}</a>)
-                    </span></td>
+                                    <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}</td>
                                 </tr>
                                 <tr *ngIf="userWhoRequested != null">
                                     <th scope="row" class="fontsize">
