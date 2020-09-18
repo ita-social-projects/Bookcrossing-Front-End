@@ -10,7 +10,8 @@
     </div>
     <div class="col-3">
       <br>
-      <a mat-button class="contacts" [routerLink]="['contacts']"> Contacts </a>
+      <a *ngIf="isAuthenticated()" mat-button class="contacts" [routerLink]="['contacts']">Contact Us</a>
+      <a *ngIf="!isAuthenticated()" mat-button class="contacts" (click)="redirectToLogin()">Contact Us</a>
     </div>
     <div class="col-4 text-white">
       <br>
