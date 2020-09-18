@@ -25,42 +25,44 @@
       {{ user?.birthDate | date }}
     </div>
   </div>
-  <ng-container *ngIf="user?.userLocation?.location">
+  <ng-container *ngIf="user?.userRoomLocation?.location">
     <div class="row mb-4">
       <div class="col-5">Location</div>
       <div class="col">
         {{
-          user.userLocation.location.city +
+          user.userRoomLocation.location.city +
             " " +
-            user.userLocation.location.street +
+            user.userRoomLocation.location.street +
             " " +
-            user.userLocation.location.officeName
+            user.userRoomLocation.location.officeName
         }}
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-4">
       <div class="col-5">Room number</div>
       <div class="col">
-        {{ user.userLocation.roomNumber }}
+        {{ user.userRoomLocation.roomNumber }}
       </div>
     </div>
   </ng-container>
   <ng-container *ngIf="user && !user?.isDeleted && books && books.length > 0">
-    <h3 class="text-center font-weight-bold mt-5">User's books</h3>
+    <div class="row mb-3">
+      <div class="col">Books</div>
+    </div>
     <table class="table">
-      <thead class="row">
-        <th class="col-5">Name</th>
-        <th class="col-2">State</th>
-        <th class="col-5"><span class="sr-only">Actions</span></th>
+      <thead>
+        <th>Name</th>
+        <th>State</th>
+        <th><span class="sr-only">Actions</span></th>
       </thead>
       <tbody>
-        <tr *ngFor="let book of books" class="row">
-          <td class="col-5 align-middle">
+        <tr *ngFor="let book of books">
+          <td class="book-title-cell">
             <span class="d-inline-block text-truncate w-100">{{
               book.name
             }}</span>
           </td>
-          <td [ngSwitch]="book.state" class="col-2">
+          <td [ngSwitch]="book.state">
             <ng-template ngSwitchCase="0"
               ><span class="badge badge-success product"
                 >Available</span
@@ -82,18 +84,18 @@
               ></ng-template
             >
           </td>
-          <td class="col-5 py-2">
-            <div *ngIf="book.state !== 1" class="row justify-content-end w-100">
+          <td>
+            <div class="row justify-content-end">
               <ng-container *ngIf="book.state != 3; else inactiveBook">
                 <button
                   *ngIf="book.userId != currentUserId"
-                  class="btn btn-small btn-info col-6"
+                  class="btn btn-small btn-info"
                   (click)="onTakeOwnershipButtonClick(book.id)"
                 >
                   Take ownership
                 </button>
                 <button
-                  class="btn btn-small btn-danger col-4"
+                  class="btn btn-small btn-danger"
                   (click)="onDeactivateBookButtonClick(book.id)"
                 >
                   Deactivate
@@ -101,7 +103,7 @@
               </ng-container>
               <ng-template #inactiveBook>
                 <button
-                  class="btn btn-small btn-success col-4"
+                  class="btn btn-small btn-success"
                   (click)="onActivateButtonClick(book.id)"
                 >
                   Activate
@@ -113,7 +115,7 @@
       </tbody>
     </table>
   </ng-container>
-  <div *ngIf="user && user.id != currentUserId" class="d-flex flex-column align-items-start mt-5">
+  <div *ngIf="user" class="d-flex flex-column align-items-start mt-5">
     <span *ngIf="activeBooksExist" class="text-danger">You cannot delete user with active books!</span>
     <button
       *ngIf="!user.isDeleted; else deletedUser"

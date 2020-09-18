@@ -7,8 +7,6 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { userUrl } from '../../../configs/api-endpoint.constants';
 import { IUserInfo } from '../../models/userInfo';
 import { IUserPut } from '../../models/userPut';
-import { ILocation } from '../../models/location';
-import { IRoomLocation } from '../../models/roomLocation';
 import { UserService } from './user.service';
 
 // Testing of UserService
@@ -42,7 +40,7 @@ describe('#UserService.getUserById(id), UserService.editUser(id, IUserPut)', () 
       lastName: 'Oleksiuk',
       email: 'qwerty@gmail.com',
       isEmailAllowed: true,
-      userLocation: null,
+      userRoomLocation: null,
       role: null,
       birthDate: null,
       registeredDate: null,
@@ -72,7 +70,7 @@ describe('#UserService.getUserById(id), UserService.editUser(id, IUserPut)', () 
       email: 'qwerty@gmail.com',
       password: '1234',
       isEmailAllowed: true,
-      userLocation: null,
+      userRoomLocation: null,
       roleId: 1,
       birthDate: null,
       registeredDate: null,

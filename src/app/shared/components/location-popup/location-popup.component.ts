@@ -10,6 +10,7 @@ import { IUserPut } from 'src/app/core/models/userPut';
 import { IRoomLocation } from 'src/app/core/models/roomLocation';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { IHomeAdress } from 'src/app/core/models/homeAdress';
 
 @Component({
   selector: 'app-location-popup',
@@ -20,7 +21,7 @@ export class LocationPopupComponent implements OnInit {
   locations: ILocation[] = [];
 
   locationForm: FormGroup;
-  private locationFormMasks: string[] = ['UserRoomId'];
+  private locationFormMasks: string[] = ['UserRoomId', 'UserHomeAdressId'];
 
   constructor(
     public dialogRef: MatDialogRef<LocationPopupComponent>,
@@ -41,6 +42,7 @@ export class LocationPopupComponent implements OnInit {
           Validators.pattern(/^[^\s]{1,7}$/),
         ],
       ],
+      homeAdress: ['']
     });
   }
 
@@ -49,6 +51,9 @@ export class LocationPopupComponent implements OnInit {
   }
   get roomNumber() {
     return this.locationForm.get('roomNumber');
+  }
+  get homeAdress() {
+    return this.locationForm.get('homeAdress');
   }
 
   ngOnInit(): void {
@@ -84,19 +89,25 @@ export class LocationPopupComponent implements OnInit {
       location: this.location.value,
     };
 
+    const newHomeAdress: IHomeAdress = {
+      homeAdress: this.homeAdress.value,
+      location: this.location.value
+    };
+
     const userPut: IUserPut = {
       id: this.user.id,
       middleName: this.user.middleName,
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       birthDate: this.user.birthDate,
-      userLocation: newLocation,
+      userRoomLocation: newLocation,
+      userHomeAdress: newHomeAdress,
       email: this.user.email,
       isEmailAllowed: this.user.isEmailAllowed,
       password: localStorage.getItem('password'),
       registeredDate: this.user.registeredDate,
       roleId: this.user.role.id,
-      fieldMasks: this.locationFormMasks,
+      fieldMasks: this.locationFormMasks
     };
 
     this.userService.editUser(this.user.id, userPut).subscribe(

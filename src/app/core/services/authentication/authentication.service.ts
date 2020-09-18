@@ -83,7 +83,7 @@ export class AuthenticationService {
           this.loginEvent.emit();
 
           this.userService.getUserById(user.id).subscribe(userInfo => {
-            if (!userInfo.userLocation?.location?.isActive) {
+            if (!userInfo.userRoomLocation?.location?.isActive) {
               this.dialogService.openLocationDialog(userInfo);
             }
           });
@@ -162,7 +162,7 @@ export class AuthenticationService {
     const userId = this.currentUserValue.id;
     const userInfo = await this.userService.getUserById(userId).toPromise();
 
-    const hasActiveLocation = userInfo.userLocation?.location?.isActive;
+    const hasActiveLocation = userInfo.userRoomLocation?.location?.isActive;
     if (!hasActiveLocation) {
       return this.dialogService.openLocationDialog(userInfo)
         .afterClosed().toPromise();
