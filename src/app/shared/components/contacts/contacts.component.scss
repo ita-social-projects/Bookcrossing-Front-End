@@ -38,3 +38,19 @@ p{
   color: white;
 }
 
+.validation-error {
+  width: 100%;
+  font-size: 80%;
+  color: #ff3547;
+}
+
+input,
+textarea,
+mat-select {
+  &.ng-invalid.ng-touched {
+    border: 1px solid #ff3547 !important;
+  }
+  &.ng-valid.ng-touched {
+    border: 1px solid green;
+  }
+}
