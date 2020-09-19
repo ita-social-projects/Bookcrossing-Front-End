@@ -10,6 +10,7 @@ import { BookQueryParams } from '../../models/bookQueryParams';
 import { IPage } from '../../models/page';
 import { IBook } from '../../models/book';
 import { INotification } from '../../models/notification';
+import { IMessage } from '../../models/message';
 
 // Testing of BookService
 describe('#NotificationBellService getNotifications, deleteNotifications, makeNotificationsSeen', () => {
@@ -91,5 +92,19 @@ describe('#NotificationBellService getNotifications, deleteNotifications, makeNo
     // should have made one request to DELETE
     const req = httpTestingController.expectOne(notificationUrl + 'read/all');
     expect(req.request.method).toEqual('PUT');
+  });
+
+  // Test case 6
+  it('should send Notification Message, POST method', () => {
+    const message: IMessage = { message: 'Hi!', userId: 1 };
+
+    notificationBellService.addNotification(message).subscribe();
+
+    // should have made one request to POST
+    const req = httpTestingController.expectOne(
+      notificationUrl + 'add'
+    );
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(message);
   });
 });

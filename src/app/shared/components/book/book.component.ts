@@ -1,5 +1,11 @@
 import { UserService } from '../../../core/services/user/user.service';
-import {Component, ComponentFactoryResolver, HostListener, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ComponentFactoryResolver,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,7 +28,10 @@ import { IBookPut } from 'src/app/core/models/bookPut';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 import { Observable } from 'rxjs/internal/Observable';
-import {CommentComponent} from '../comment/comment.component';
+import { CommentComponent } from '../comment/comment.component';
+import { BookRatingQueryParams } from '../../../core/models/bookRatingQueryParams';
+import { IMessage } from 'src/app/core/models/message';
+import { NotificationBellService } from 'src/app/core/services/notification-bell/notification-bell.service';
 
 @Component({
   selector: 'app-book',
@@ -47,6 +56,7 @@ export class BookComponent implements OnInit {
   imagePath: string;
   disabledButton = false;
   previousBooksPage: booksPage;
+  rating = 0;
 
   constructor(
     private translate: TranslateService,
@@ -59,15 +69,14 @@ export class BookComponent implements OnInit {
     private userService: UserService,
     private authentication: AuthenticationService,
     private resolver: ComponentFactoryResolver,
-    private wishListService: WishListService
-  ) { }
+    private wishListService: WishListService,
+    private notificationBellService: NotificationBellService
+  ) {}
 
   public ngOnInit(): void {
-
-    this.routeActive.paramMap.pipe(
-      switchMap(params => params.getAll('id'))
-    )
-      .subscribe(data => this.bookId = +data);
+    this.routeActive.paramMap
+      .pipe(switchMap((params) => params.getAll('id')))
+      .subscribe((data) => (this.bookId = +data));
 
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
       this.book = value;
@@ -76,12 +85,21 @@ export class BookComponent implements OnInit {
         this.getUserWhoRequested();
       }
       if (this.isAuthenticated()) {
-        this.wishListService.isWished(this.book.id).subscribe((isWished: boolean) => {
-          if (isWished) {
-            this.isWished = true;
-          }
-        });
+        this.wishListService
+          .isWished(this.book.id)
+          .subscribe((isWished: boolean) => {
+            if (isWished) {
+              this.isWished = true;
+            }
+          });
+
+        this.bookService
+          .getUserRating(this.bookId, this.authentication.currentUserValue.id)
+          .subscribe((data: number) => {
+            this.rating = data;
+          });
       }
+
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
@@ -101,79 +119,95 @@ export class BookComponent implements OnInit {
   }
 
   public getOwners(userId: number): void {
-    this.userService.getUserById(userId)
-      .subscribe((value: IUserInfo) => {
-        this.currentOwner = value;
-        if (this.isAuthenticated()) {
-          this.authentication.getUserId().subscribe((id: number) => {
-            if (id === this.currentOwner.id) {
-              this.isBookOwner = true;
-            }
+    this.userService.getUserById(userId).subscribe((value: IUserInfo) => {
+      this.currentOwner = value;
+      if (this.isAuthenticated()) {
+        this.authentication.getUserId().subscribe(
+          (id: number) => {
+            this.isBookOwner = id === this.currentOwner.id;
           },
-            err => {
-              this.isBookOwner = false;
-            });
-        }
-        if (this.book.state !== bookState.available) {
-          const query = new RequestQueryParams();
-          query.first = true;
-          query.last = false;
-          this.requestService.getRequestForBook(this.bookId, query).subscribe((request: IRequest) => {
+          (err) => {
+            this.isBookOwner = false;
+          }
+        );
+      }
+      if (this.book.state !== bookState.available) {
+        const query = new RequestQueryParams();
+        query.first = true;
+        query.last = false;
+        this.requestService.getRequestForBook(this.bookId, query).subscribe(
+          (request: IRequest) => {
             this.firstOwner = request.owner;
-          }, err => {
+          },
+          (err) => {
             this.firstOwner = value;
-          });
-        } else {
-          this.firstOwner = value;
-        }
-        if (this.firstOwner === undefined) {
-          this.firstOwner = value;
-        }
-      });
+          }
+        );
+      } else {
+        this.firstOwner = value;
+      }
+      if (this.firstOwner === undefined) {
+        this.firstOwner = value;
+      }
+    });
   }
 
   public getReadCount(bookId: number): void {
-    this.requestService.getAllRequestsForBook(this.bookId).subscribe((value: IRequest[]) => {
-      let counter = 0;
-      value.forEach((item) => {
-        if (item.receiveDate) {
-          counter++;
-        }
-      });
-      this.readCount = counter;
-    },
-      err => {
-        this.notificationService.error(this.translate
-          .instant('Something went wrong (Read by counter)!'), 'X');
-      });
+    this.requestService.getAllRequestsForBook(this.bookId).subscribe(
+      (value: IRequest[]) => {
+        let counter = 0;
+        value.forEach((item) => {
+          if (item.receiveDate) {
+            counter++;
+          }
+        });
+        this.readCount = counter;
+      },
+      (err) => {
+        this.notificationService.error(
+          this.translate.instant('Something went wrong (Read by counter)!'),
+          'X'
+        );
+      }
+    );
   }
   public showEditForm(book: IBook): void {
-    const formFactory = this.resolver.resolveComponentFactory(BookEditFormComponent);
-    const instance = this.refDir.containerRef.createComponent(formFactory).instance;
+    const formFactory = this.resolver.resolveComponentFactory(
+      BookEditFormComponent
+    );
+    const instance = this.refDir.containerRef.createComponent(formFactory)
+      .instance;
     instance.book = book;
     instance.isAdmin = this.isAdmin();
-    instance.cancel.subscribe(() => { this.refDir.containerRef.clear(); this.ngOnInit(); });
+    instance.cancel.subscribe(() => {
+      this.refDir.containerRef.clear();
+      this.ngOnInit();
+    });
   }
 
   public getUserWhoRequested(): void {
     const query = new RequestQueryParams();
     query.first = false;
     query.last = true;
-    this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
-      if (this.book.state !== bookState.available) {
-        this.userWhoRequested = value.user;
-        if (this.isAuthenticated()) {
-          this.authentication.getUserId().subscribe((id: number) => {
-            if (id === this.userWhoRequested.id) {
-              this.isRequester = true;
-            }
-          },
-            err => {
-              this.isRequester = false;
-            });
+    this.requestService
+      .getRequestForBook(this.bookId, query)
+      .subscribe((value: IRequest) => {
+        if (this.book.state !== bookState.available) {
+          this.userWhoRequested = value.user;
+          if (this.isAuthenticated()) {
+            this.authentication.getUserId().subscribe(
+              (id: number) => {
+                if (id === this.userWhoRequested.id) {
+                  this.isRequester = true;
+                }
+              },
+              (err) => {
+                this.isRequester = false;
+              }
+            );
+          }
         }
-      }
-    });
+      });
   }
   public getFormData(book: IBookPut): FormData {
     const formData = new FormData();
@@ -197,10 +231,14 @@ export class BookComponent implements OnInit {
   public async makeAvailable(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to share book? The book will be available for request!').toPromise()
+        await this.translate
+          .get(
+            'Do you want to share book? The book will be available for request!'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
           const book: IBookPut = {
@@ -209,16 +247,25 @@ export class BookComponent implements OnInit {
             state: bookState.available,
           };
           const formData = this.getFormData(book);
-          this.bookService.putBook(this.bookId, formData).subscribe(() => {
-            this.disabledButton = false;
-            this.ngOnInit();
-            this.notificationService.success(this.translate
-              .instant('Your Book`s status changed to available.'), 'X');
-          }, err => {
-            this.disabledButton = false;
-            this.notificationService.error(this.translate
-              .instant('Something went wrong!'), 'X');
-          });
+          this.bookService.putBook(this.bookId, formData).subscribe(
+            () => {
+              this.disabledButton = false;
+              this.ngOnInit();
+              this.notificationService.success(
+                this.translate.instant(
+                  'Your Book`s status changed to available.'
+                ),
+                'X'
+              );
+            },
+            (err) => {
+              this.disabledButton = false;
+              this.notificationService.error(
+                this.translate.instant('Something went wrong!'),
+                'X'
+              );
+            }
+          );
         }
       });
     this.disabledButton = false;
@@ -227,55 +274,80 @@ export class BookComponent implements OnInit {
   public async cancelRequest(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancelation.').toPromise()
+        await this.translate
+          .get(
+            'Do you want to cancel request? Current owner will be notified about your cancelation.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
           const query = new RequestQueryParams();
           query.first = false;
           query.last = true;
-          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
-            this.requestService.deleteRequest(value.id).subscribe(() => {
-              this.disabledButton = false;
-              this.ngOnInit();
-              this.notificationService.success(this.translate
-                .instant('Request is cancelled.'), 'X');
-            }, err => {
-              this.disabledButton = false;
-              this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+          this.requestService
+            .getRequestForBook(this.bookId, query)
+            .subscribe((value: IRequest) => {
+              this.requestService.deleteRequest(value.id).subscribe(
+                () => {
+                  this.disabledButton = false;
+                  this.ngOnInit();
+                  this.notificationService.success(
+                    this.translate.instant('Request is cancelled.'),
+                    'X'
+                  );
+                },
+                (err) => {
+                  this.disabledButton = false;
+                  this.notificationService.error(
+                    this.translate.instant('Something went wrong!'),
+                    'X'
+                  );
+                }
+              );
             });
-          });
         }
       });
-
   }
   public async startReading(): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to start reading? You will be shown as current owner.').toPromise()
+        await this.translate
+          .get(
+            'Do you want to start reading? You will be shown as current owner.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
           const query = new RequestQueryParams();
           query.last = true;
-          this.requestService.getRequestForBook(this.bookId, query).subscribe((value: IRequest) => {
-            this.requestService.approveReceive(value.id).subscribe(() => {
-              this.disabledButton = false;
-              this.ngOnInit();
-              this.notificationService.success(this.translate
-                .instant('Book’s owner has been changed.'), 'X');
-              this.Donate();
-            }, err => {
-              this.disabledButton = false;
-              this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+          this.requestService
+            .getRequestForBook(this.bookId, query)
+            .subscribe((value: IRequest) => {
+              this.requestService.approveReceive(value.id).subscribe(
+                () => {
+                  this.disabledButton = false;
+                  this.ngOnInit();
+                  this.notificationService.success(
+                    this.translate.instant('Book’s owner has been changed.'),
+                    'X'
+                  );
+                  this.Donate();
+                },
+                (err) => {
+                  this.disabledButton = false;
+                  this.notificationService.error(
+                    this.translate.instant('Something went wrong!'),
+                    'X'
+                  );
+                }
+              );
             });
-          });
         }
       });
     this.disabledButton = false;
@@ -284,10 +356,12 @@ export class BookComponent implements OnInit {
   public async Donate(): Promise<void> {
     this.dialogService
       .openDonateDialog(
-        await this.translate.get('\You can donate some money for the project. It\'s optional.').toPromise()
+        await this.translate
+          .get('You can donate some money for the project. It`s optional.')
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           window.open('https://openeyes.org.ua/');
         }
@@ -296,58 +370,166 @@ export class BookComponent implements OnInit {
 
   public async requestBook(): Promise<void> {
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
-    if (!userHasValidLocation) { return; }
+    if (!userHasValidLocation) {
+      return;
+    }
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
+        await this.translate
+          .get(
+            'Do you want to request this book? Current owner will be notified about your request.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
-          this.requestService.requestBook(this.bookId).subscribe((value: IRequest) => {
-            this.disabledButton = false;
-            this.ngOnInit();
-            this.notificationService.success(this.translate
-              .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
-          }, err => {
-            this.disabledButton = false;
-            this.notificationService.error(this.translate
-              .instant('Something went wrong!'), 'X');
-          });
+          this.requestService.requestBook(this.bookId).subscribe(
+            (value: IRequest) => {
+              this.disabledButton = false;
+              this.ngOnInit();
+              this.notificationService.success(
+                this.translate.instant(
+                  'Book is successfully requested. Please contact with current owner to receive a book'
+                ),
+                'X'
+              );
+            },
+            (err) => {
+              this.disabledButton = false;
+              this.notificationService.error(
+                this.translate.instant('Something went wrong!'),
+                'X'
+              );
+            }
+          );
         }
       });
   }
 
   public onRatingSet($event: number): void {
-    console.log($event);
+    const params: BookRatingQueryParams = {
+      bookId: this.bookId,
+      userId: this.authentication.currentUserValue.id,
+      rating: $event,
+    };
+
+    this.bookService.setUserRating(params).subscribe((response: boolean) => {
+      if (response) {
+        this.rating = $event;
+      }
+    });
   }
 
   public changeWishList(book: IBook): void {
-      if (this.isWished) {
-        this.wishListService.removeFromWishList(book.id).subscribe(
-          (data) => { this.isWished = false; },
-          (error) => {
-            this.notificationService.error(
-              this.translate.instant('Something went wrong'),
-              'X'
-            );
-          }
-        );
-      } else {
-        this.wishListService.addToWishList(book.id).subscribe(
-        (data) => { this.isWished = true; },
-          (error) => {
-            this.notificationService.error(
-              this.translate.instant('Cannot add own book to the wish list'),
-              'X'
-            );
-          }
-        );
-      }
+    if (this.isWished) {
+      this.wishListService.removeFromWishList(book.id).subscribe(
+        (data) => {
+          this.isWished = false;
+        },
+        (error) => {
+          this.notificationService.error(
+            this.translate.instant('Something went wrong'),
+            'X'
+          );
+        }
+      );
+    } else {
+      this.wishListService.addToWishList(book.id).subscribe(
+        (data) => {
+          this.isWished = true;
+        },
+        (error) => {
+          this.notificationService.error(
+            this.translate.instant('Cannot add own book to the wish list'),
+            'X'
+          );
+        }
+      );
+    }
   }
 
   public canLeave(): boolean {
     return this.comment.canLeave();
+  }
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
+
+  public sendMessage(): void {
+    this.dialogService
+      .openMessageDialog(
+        this.currentOwner.firstName + ' ' + this.currentOwner.lastName
+      )
+      .afterClosed()
+      .subscribe((Newmessage) => {
+        if (Newmessage !== null && Newmessage !== false) {
+          this.notificationBellService
+            .addToNotification(
+              'To ' +
+                this.currentOwner.firstName +
+                ' ' +
+                this.currentOwner.lastName +
+                ': ' +
+                Newmessage
+            )
+            .subscribe(() => {
+              this.notificationService.success(
+                this.translate.instant('Message is successfully sent'),
+                'X'
+              );
+            });
+          const currentUser = this.authentication.currentUserValue;
+          Newmessage =
+            `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+          const newMessage: IMessage = {
+            message: Newmessage,
+            userId: this.currentOwner.id,
+          };
+          this.notificationBellService.addNotification(newMessage).subscribe();
+        }
+      });
+  }
+
+  public sendMessageRequester(): void {
+    if (this.userWhoRequested !== null) {
+      this.dialogService
+        .openMessageDialog(
+          this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
+        )
+        .afterClosed()
+        .subscribe((Newmessage) => {
+          if (Newmessage !== null && Newmessage !== false) {
+            const currentUser = this.authentication.currentUserValue;
+            Newmessage =
+              `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            const newMessage: IMessage = {
+              message: Newmessage,
+              userId: this.userWhoRequested.id,
+            };
+            this.notificationBellService
+              .addNotification(newMessage)
+              .subscribe(() => {
+                this.notificationService.success(
+                  this.translate.instant('Message is successfully sent'),
+                  'X'
+                );
+              });
+            this.notificationBellService
+              .addToNotification(
+                'To ' +
+                  this.userWhoRequested.firstName +
+                  ' ' +
+                  this.userWhoRequested.lastName
+              )
+              .subscribe();
+          }
+        });
+    }
+  }
+
+  public openEmail() {
+    window.open('mailto:'.concat(this.currentOwner?.email));
   }
 }

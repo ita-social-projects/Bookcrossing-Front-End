@@ -3,7 +3,6 @@
 }
 
 .table {
-  width: 99%;
   thead th {
     font-size: 0.95rem;
     font-weight: 500;
@@ -12,14 +11,9 @@
     vertical-align: bottom;
     border-bottom: 2px solid rgba(0, 0, 0, 0.06);
   }
-  tbody {
-    tr {
-      padding: 0.25rem 1rem;
-    }
-    td {
-      vertical-align: middle;
-      font-size: 1rem;
-    }
+  td {
+    display: flex;
+    align-items: center;
   }
 }
 

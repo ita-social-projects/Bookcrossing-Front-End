@@ -1,34 +1,42 @@
-import {RequestService} from 'src/app/core/services/request/request.service';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IBook} from 'src/app/core/models/book';
-import {BookService} from 'src/app/core/services/book/book.service';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import { RequestService } from 'src/app/core/services/request/request.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IBook } from 'src/app/core/models/book';
+import { BookService } from 'src/app/core/services/book/book.service';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import {BookQueryParams} from 'src/app/core/models/bookQueryParams';
-import {SearchBarService} from 'src/app/core/services/searchBar/searchBar.service';
-import {AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
-import {DialogService} from 'src/app/core/services/dialog/dialog.service';
-import {TranslateService} from '@ngx-translate/core';
-import {NotificationService} from 'src/app/core/services/notification/notification.service';
-import {IRequest} from 'src/app/core/models/request';
-import {bookState} from 'src/app/core/models/bookState.enum';
-import {RequestQueryParams} from 'src/app/core/models/requestQueryParams';
-import {environment} from 'src/environments/environment';
-import {booksPage} from 'src/app/core/models/booksPage.enum';
-import {IBookPut} from '../../../core/models/bookPut';
+import { BookQueryParams } from 'src/app/core/models/bookQueryParams';
+import { SearchBarService } from 'src/app/core/services/searchBar/searchBar.service';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { DialogService } from 'src/app/core/services/dialog/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { IRequest } from 'src/app/core/models/request';
+import { bookState } from 'src/app/core/models/bookState.enum';
+import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
+import { environment } from 'src/environments/environment';
+import { booksPage } from 'src/app/core/models/booksPage.enum';
+import { IBookPut } from '../../../core/models/bookPut';
 import { FormGroup } from '@angular/forms';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 
 @Component({
   selector: 'app-books',
   templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss']
+  styleUrls: ['./books.component.scss'],
 })
 export class BooksComponent implements OnInit, OnDestroy {
-
   public isBlockView = false;
   public userId: number;
-  public isRequester: boolean[] = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+  public isRequester: boolean[] = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ];
   public requestIds: object = {};
   public disabledButton = false;
   public books: IBook[];
@@ -39,27 +47,28 @@ export class BooksComponent implements OnInit, OnDestroy {
   public selectedGenres: number[];
   public selectedLanguages: number[];
   public route = this.router.url;
-  public constructor(protected routeActive: ActivatedRoute,
-                     protected router: Router,
-                     protected bookService: BookService,
-                     protected searchBarService: SearchBarService,
-                     protected authentication: AuthenticationService,
-                     protected dialogService: DialogService,
-                     protected translate: TranslateService,
-                     protected notificationService: NotificationService,
-                     protected requestService: RequestService,
-                     protected wishListService: WishListService) {
-  }
+  public constructor(
+    protected routeActive: ActivatedRoute,
+    protected router: Router,
+    protected bookService: BookService,
+    protected searchBarService: SearchBarService,
+    protected authentication: AuthenticationService,
+    protected dialogService: DialogService,
+    protected translate: TranslateService,
+    protected notificationService: NotificationService,
+    protected requestService: RequestService,
+    protected wishListService: WishListService
+  ) {}
 
   public ngOnInit(): void {
     this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
-    this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
-    this.populateDataFromQuery();
-    this.getBooks(this.queryParams);
+      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+      this.populateDataFromQuery();
+      this.getBooks(this.queryParams);
     });
     this.router.events.subscribe((val) => {
-      if ( this.router.url !== '' ) {
+      if (this.router.url !== '') {
         this.route = this.router.url;
       }
     });
@@ -73,7 +82,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     if (this.isAuthenticated()) {
       this.authentication.getUserId().subscribe((value: number) => {
         this.userId = value;
-        });
+      });
     }
   }
 
@@ -82,12 +91,14 @@ export class BooksComponent implements OnInit, OnDestroy {
       const query = new RequestQueryParams();
       query.first = false;
       query.last = true;
-      this.requestService.getRequestForBook(book.id, query).subscribe((value: IRequest) => {
-        if (this.userId === value.user.id) {
-          this.requestIds[book.id] = value.id;
-          this.isRequester[key] = true;
-        }
-      });
+      this.requestService
+        .getRequestForBook(book.id, query)
+        .subscribe((value: IRequest) => {
+          if (this.userId === value.user.id) {
+            this.requestIds[book.id] = value.id;
+            this.isRequester[key] = true;
+          }
+        });
     }
   }
 
@@ -102,49 +113,77 @@ export class BooksComponent implements OnInit, OnDestroy {
   public async cancelRequest(bookId: number): Promise<void> {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancellation.').toPromise()
+        await this.translate
+          .get(
+            'Do you want to cancel request? Current owner will be notified about your cancellation.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
-          this.requestService.deleteRequest(this.requestIds[bookId]).subscribe(() => {
-            this.disabledButton = false;
-            this.ngOnInit();
-            this.notificationService.success(this.translate
-              .instant('Request is cancelled.'), 'X');
-          }, err => {
-            this.disabledButton = false;
-            this.notificationService.error(this.translate
-              .instant('Something went wrong!'), 'X');
-          });
+          this.requestService.deleteRequest(this.requestIds[bookId]).subscribe(
+            () => {
+              this.disabledButton = false;
+              this.ngOnInit();
+              this.notificationService.success(
+                this.translate.instant('Request is cancelled.'),
+                'X'
+              );
+            },
+            (err) => {
+              this.disabledButton = false;
+              this.notificationService.error(
+                this.translate.instant('Something went wrong!'),
+                'X'
+              );
+            }
+          );
         }
       });
   }
 
   public async requestBook(bookId: number): Promise<void> {
+    if (!this.isAuthenticated()) {
+      this.authentication.redirectToLogin();
+    }
+
     const userHasValidLocation: boolean = await this.authentication.validateLocation();
     if (!userHasValidLocation) {
       return;
     }
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to request this book? Current owner will be notified about your request.').toPromise()
+        await this.translate
+          .get(
+            'Do you want to request this book? Current owner will be notified about your request.'
+          )
+          .toPromise()
       )
       .afterClosed()
-      .subscribe(async res => {
+      .subscribe(async (res) => {
         if (res) {
           this.disabledButton = true;
-          this.requestService.requestBook(bookId).subscribe((value: IRequest) => {
-          this.disabledButton = false;
-          this.ngOnInit();
-          this.notificationService.success(this.translate
-            .instant('Book is successfully requested. Please contact with current owner to receive a book'), 'X');
-          }, err => {
-            this.disabledButton = false;
-            this.notificationService.error(this.translate
-            .instant('Something went wrong!'), 'X');
-          });
+          this.requestService.requestBook(bookId).subscribe(
+            (value: IRequest) => {
+              this.disabledButton = false;
+              this.ngOnInit();
+              this.notificationService.success(
+                this.translate.instant(
+                  'Book is successfully requested. Please contact with current owner to receive a book'
+                ),
+                'X'
+              );
+            },
+            (err) => {
+              this.disabledButton = false;
+              this.notificationService.error(
+                this.translate.instant('Something went wrong!'),
+                'X'
+              );
+            }
+          );
         }
       });
   }
@@ -167,32 +206,32 @@ export class BooksComponent implements OnInit, OnDestroy {
     if (this.queryParams.genres) {
       let genres: number[];
       if (Array.isArray(this.queryParams.genres)) {
-        genres = this.queryParams.genres.map(v => +v);
+        genres = this.queryParams.genres.map((v) => +v);
       } else {
         genres = [+this.queryParams.genres];
       }
-      this.selectedGenres =  genres;
+      this.selectedGenres = genres;
     }
     if (this.queryParams.languages) {
       let languages: number[];
       if (Array.isArray(this.queryParams.languages)) {
-        languages = this.queryParams.languages.map(v => +v);
+        languages = this.queryParams.languages.map((v) => +v);
       } else {
         languages = [+this.queryParams.languages];
       }
-      this.selectedLanguages =  languages;
+      this.selectedLanguages = languages;
     }
   }
 
- // Navigation
+  // Navigation
   public pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     console.log(this.queryParams);
     this.changeUrl();
-    window.scrollTo( {
+    window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   }
 
@@ -202,20 +241,17 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   private changeUrl(): void {
-    this.router.navigate(['.'],
-      {
-        relativeTo: this.routeActive,
-        queryParams: this.queryParams,
-      });
+    this.router.navigate(['.'], {
+      relativeTo: this.routeActive,
+      queryParams: this.queryParams,
+    });
     this.getBooks(this.queryParams);
   }
 
-
- // get
+  // get
   public getBooks(params: BookQueryParams): void {
-    this.bookService.getBooksPage(params)
-    .subscribe( {
-      next: pageData => {
+    this.bookService.getBooksPage(params).subscribe({
+      next: (pageData) => {
         this.books = pageData.page;
         if (this.isAuthenticated()) {
           for (let i = 0; i < pageData.page.length; i++) {
@@ -227,12 +263,14 @@ export class BooksComponent implements OnInit, OnDestroy {
           this.totalSize = pageData.totalCount;
         }
       },
-      error: err => {
-        this.notificationService.error(this.translate
-          .instant('Something went wrong!'), 'X');
-      }
+      error: (err) => {
+        this.notificationService.error(
+          this.translate.instant('Something went wrong!'),
+          'X'
+        );
+      },
     });
-}
+  }
 
   public ngOnDestroy(): void {
     this.searchBarService.changeSearchTerm(null);
@@ -247,26 +285,43 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public changeWishList(book: IBook): void {
-      if (book.isWished) {
-        this.wishListService.removeFromWishList(book.id).subscribe(
-          (data) => { book.isWished = false; },
-          (error) => {
-            this.notificationService.error(
-              this.translate.instant('Something went wrong'),
-              'X'
-            );
-          }
-        );
-      } else {
-        this.wishListService.addToWishList(book.id).subscribe(
-        (data) => { book.isWished = true; },
-          (error) => {
-            this.notificationService.error(
-              this.translate.instant('Cannot add own book to the wish list'),
-              'X'
-            );
-          }
-        );
-      }
+    if (book.isWished) {
+      this.wishListService.removeFromWishList(book.id).subscribe(
+        (data) => {
+          book.isWished = false;
+        },
+        (error) => {
+          this.notificationService.error(
+            this.translate.instant('Something went wrong'),
+            'X'
+          );
+        }
+      );
+    } else {
+      this.wishListService.addToWishList(book.id).subscribe(
+        (data) => {
+          book.isWished = true;
+        },
+        (error) => {
+          this.notificationService.error(
+            this.translate.instant('Cannot add own book to the wish list'),
+            'X'
+          );
+        }
+      );
+    }
+  }
+
+  public navigateToRequestFromCompany(): void {
+    this.router.navigate(['requestfromcompany'], {
+      queryParams: { searchTerm: this.queryParams.searchTerm}
+    });
+  }
+  public isEn(): boolean {
+    if (this.translate.currentLang === 'en') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

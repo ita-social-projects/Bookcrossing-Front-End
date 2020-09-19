@@ -2,6 +2,7 @@ import { BookEditFormComponent } from './shared/components/book-edit-form/book-e
 import { UserService } from './core/services/user/user.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { MessageDialogComponent } from './shared/components/message-dialog/message-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -122,6 +123,7 @@ import { StatisticsComponent } from './shared/components/statistics/statistics.c
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
+import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +163,7 @@ import { IssuesComponent } from './shared/components/admin/issues/issues/issues.
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
+    MessageDialogComponent,
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CommentComponent,
@@ -189,7 +192,8 @@ import { IssuesComponent } from './shared/components/admin/issues/issues/issues.
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    IssuesComponent
+    IssuesComponent,
+    RequestFromCompanyComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({
