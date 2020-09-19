@@ -46,6 +46,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public apiUrl: string = environment.apiUrl;
   public selectedGenres: number[];
   public selectedLanguages: number[];
+  public selectedLocations: number[];
   public route = this.router.url;
   public constructor(
     protected routeActive: ActivatedRoute,
@@ -191,6 +192,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public onFilterChange(filterChanged: boolean): void {
     this.queryParams.genres = this.selectedGenres;
     this.queryParams.languages = this.selectedLanguages;
+    this.queryParams.locations = this.selectedLocations;
     if (filterChanged) {
       this.resetPageIndex();
       this.changeUrl();
