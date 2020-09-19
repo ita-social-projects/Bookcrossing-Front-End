@@ -121,6 +121,7 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { MatSelectFilterModule } from 'mat-select-filter';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 
 @NgModule({
   declarations: [
@@ -187,7 +188,8 @@ import { MatSelectFilterModule } from 'mat-select-filter';
     UsersComponent,
     NotificationBellComponent,
     UserViewComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    IssuesComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
