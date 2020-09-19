@@ -122,6 +122,7 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { LocationHomeService } from './core/services/locationHome/locationHome.service';
 
 @NgModule({
   declarations: [
@@ -252,6 +253,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     CookieService,
     JwtHelperService,
     LocationService,
+    LocationHomeService,
     GenreService,
     DialogService,
     UserService,
