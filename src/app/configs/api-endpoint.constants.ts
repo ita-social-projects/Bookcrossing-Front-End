@@ -7,6 +7,7 @@ export const requestUrl = baseUrl + 'requests';
 export const bookUrl = baseUrl + 'books/';
 export const authorUrl = baseUrl + 'authors';
 export const locationUrl = baseUrl + 'locations/';
+export const locationHomeUrl = baseUrl + 'locationHome/';
 export const loginUrl = baseUrl + 'login';
 export const userUrl = baseUrl + 'users';
 export const genreUrl = baseUrl + 'genre/';
