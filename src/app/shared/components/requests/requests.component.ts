@@ -37,6 +37,7 @@ export class RequestsComponent implements OnInit {
   queryParams: BookQueryParams = new BookQueryParams();
   selectedGenres: number[];
   selectedLanguages: number[];
+  selectedLocations: number[];
   apiUrl: string = environment.apiUrl;
   route = this.router.url;
 
@@ -127,6 +128,7 @@ export class RequestsComponent implements OnInit {
   onFilterChange(filterChanged: boolean) {
     this.queryParams.genres = this.selectedGenres;
     this.queryParams.languages = this.selectedLanguages;
+    this.queryParams.locations = this.selectedLocations;
     if (filterChanged) {
       this.resetPageIndex();
       this.changeUrl();
