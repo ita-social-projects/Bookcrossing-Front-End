@@ -38,6 +38,11 @@ p{
   color: white;
 }
 
+p > a{
+  font: 20px Roboto;
+  color: white;
+}
+
 .validation-error {
   width: 100%;
   font-size: 80%;

@@ -124,6 +124,7 @@ import { StatisticsService } from './core/services/statistics/statistics.service
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
 
 @NgModule({
   declarations: [
@@ -194,6 +195,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     StatisticsComponent,
     IssuesComponent,
     RequestFromCompanyComponent,
+    IssueFormComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({

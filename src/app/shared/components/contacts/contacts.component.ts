@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MessageService } from 'src/app/core/services/message/message.service';
-import {IMessage} from 'src/app/core/models/message';
+import { IUserMessage } from 'src/app/core/models/userMessage';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { IUserInfo } from 'src/app/core/models/userInfo';
 import { IssueService} from 'src/app/core/services/issue/issue';
 import { IIssue } from 'src/app/core/models/issue';
-import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-contacts',
@@ -18,6 +17,7 @@ import { forEach } from 'lodash';
 
 export class ContactsComponent implements OnInit {
   email = 'support@bookcrossing.tech';
+  emailString: string;
   contactsForm :FormGroup;
   summaryStates: Array<string>;
   public filteredStates: Array<string>;
@@ -30,20 +30,12 @@ export class ContactsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllIssues();
     this.buildForm();
+    this.userInfo();
   }
 
-  copyMessage(val: string) {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
+  openEmail()
+  {
+    this.emailString = "mailto:"+ this.email + "?subject=Need support";
   }
 
   public buildForm(): void {
@@ -56,15 +48,14 @@ export class ContactsComponent implements OnInit {
 
   public onSubmit()
   {
-    this.userInfo();
-    console.log(this.user);
-    let userMessage: IMessage;
-    userMessage = {};
-    userMessage.user = this.authentification.currentUserValue;
+    let userMessage: IUserMessage;
+    userMessage = {}
+    userMessage.userId = this.user.id;
+    userMessage.userFirstName = this.user.firstName;
+    userMessage.userLastName = this.user.lastName;
+    userMessage.userEmail = this.user.email;
     userMessage.summary = this.contactsForm.get('summary').value;
     userMessage.text = this.contactsForm.get('description').value;
-    console.log(userMessage.user);
-    console.log(userMessage);
     this.messageService.postMessage(userMessage);
   }
 
@@ -97,8 +88,6 @@ export class ContactsComponent implements OnInit {
     });
 
     await promice.then((value) => (this.id = value));
-    console.log('id :' + this.id);
-
     return this.id;
   }
 
