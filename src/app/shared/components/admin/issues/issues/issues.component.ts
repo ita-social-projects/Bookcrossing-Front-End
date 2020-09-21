@@ -18,7 +18,7 @@ export class IssuesComponent implements OnInit {
   issues: IIssue[];
   issuesDisplayColumns: string[] = [
     '#',
-    'components.admin.issues.issue',
+    'components.admin.issues.issues',
   ];
   issueProperties: string[] = ['id', 'name'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
@@ -95,17 +95,18 @@ export class IssuesComponent implements OnInit {
     });
   }
 
-  public addLanguage(): void {
+  public addIssue(): void {
     this.issueService.formIssue = null;
     this.router.navigate(['admin/issue-form']);
   }
 
-  public editLanguage(issue: IIssue): void {
+  public editIssue(issue: IIssue): void {
     this.issueService.formIssue = issue;
     this.router.navigate(['admin/issue-form']);
   }
 
-  public deleteLanguage(issue: IIssue): void {
+  public deleteIssue(issue: IIssue): void {
+    console.log(issue.id);
     this.issueService.deleteIssue(issue.id).subscribe({
       next: () => {
         if (this.issues.length === 1 && this.queryParams.page > 1) {
@@ -113,7 +114,7 @@ export class IssuesComponent implements OnInit {
         }
         this.getIssues(this.queryParams);
         this.notificationService.success(
-          this.translate.instant('components.admin.languages.delete-success'),
+          this.translate.instant('components.admin.issues.delete-success'),
           'X'
         );
       },

@@ -41,6 +41,7 @@ import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 
 // @ts-ignore
 const routes: Routes = [
@@ -70,6 +71,8 @@ const routes: Routes = [
       { path: 'language-form', component: LanguageFormComponent },
       { path: 'users', component: UsersComponent },
       { path: 'user/:id', component: UserViewComponent },
+      { path: 'issues', component: IssuesComponent },
+      // { path: 'Issu-form', component: LanguageFormComponent },
     ],
   },
   {
