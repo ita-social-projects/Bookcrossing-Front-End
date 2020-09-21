@@ -42,6 +42,10 @@
                     <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
+                  <ng-template ngSwitchCase="4">
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
+                  </ng-template>
                 </span>
                     </div>
                 </div>
