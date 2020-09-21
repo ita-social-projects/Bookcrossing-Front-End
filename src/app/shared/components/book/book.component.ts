@@ -271,6 +271,55 @@ export class BookComponent implements OnInit {
     this.disabledButton = false;
   }
 
+  public async makeOrderedAvailable(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate
+          .get(
+            'Do you want to make book available? The book will be available for request!'
+          )
+          .toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.authentication.getUserId().subscribe(
+            (id) => {
+              this.disabledButton = true;
+              const book: IBookPut = {
+                id: this.book.id,
+                userId: id,
+                fieldMasks: ['State'],
+                state: bookState.available,
+              };
+              const formData = this.getFormData(book);
+              this.bookService.putBook(this.bookId, formData).subscribe(
+                () => {
+                  this.disabledButton = false;
+                  this.ngOnInit();
+                  this.notificationService.success(
+                    this.translate.instant(
+                      'Book`s status changed to available.'
+                    ),
+                    'X'
+                  );
+                },
+                (err) => {
+                  this.disabledButton = false;
+                  this.notificationService.error(
+                    this.translate.instant('Something went wrong!'),
+                    'X'
+                  );
+                }
+              );
+            });
+            }
+          }
+          );
+    this.disabledButton = false;
+  }
+
+
   public async cancelRequest(): Promise<void> {
     this.dialogService
       .openConfirmDialog(

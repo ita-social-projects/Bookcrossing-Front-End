@@ -42,6 +42,10 @@
                     <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
+                  <ng-template ngSwitchCase="4">
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
+                  </ng-template>
                 </span>
                     </div>
                 </div>
@@ -148,7 +152,7 @@
                                         <ng-template ngSwitchCase="1"><span class="badge badge-info product">{{ 'components.book.statuses.requested' | translate }}</span></ng-template>
                                         <ng-template ngSwitchCase="2"><span class="badge badge-info product">{{ 'components.book.statuses.reading' | translate }}</span></ng-template>
                                         <ng-template ngSwitchCase="3"><span class="badge badge-light product">{{ 'components.book.statuses.inactive' | translate }}</span></ng-template>
-                                        <ng-template ngSwitchCase="4"><span class="badge badge-dark product">{{ 'components.book.statuses.unavailavle' | translate }}</span></ng-template>
+                                        <ng-template ngSwitchCase="4"><span class="badge badge-dark product">{{ 'components.book.statuses.unavailable' | translate }}</span></ng-template>
                                         </span>
                                     </td>
                                 </tr>
