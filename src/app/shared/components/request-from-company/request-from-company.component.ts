@@ -40,6 +40,7 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
           name: book.title,
           userId: 3, // default
           publisher: book.publisher,
+          isbn: book.isbn,
           state: bookState.requestedFromCompany,
           notice: book.description,
           image: null,
@@ -61,6 +62,7 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
               name: book.title,
               userId: 3, // default
               publisher: book.publisher,
+              isbn: book.isbn,
               state: bookState.requestedFromCompany,
               notice: book.description,
               image: this.selectedFile,

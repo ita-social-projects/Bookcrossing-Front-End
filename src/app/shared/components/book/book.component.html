@@ -139,6 +139,12 @@
                   </th>
                   <td class="fontsize align-middle">{{ book?.publisher }} </td>
                 </tr>
+                <tr *ngIf="book?.isbn != null">
+                  <th scope="row" class="fontsize">
+                    <strong>ISBN:</strong>
+                  </th>
+                  <td class="fontsize align-middle">{{ book?.isbn }} </td>
+                </tr>
                 <tr *ngIf="book?.state != null">
                   <th scope="row" class="fontsize">
                     <strong>Status: </strong>

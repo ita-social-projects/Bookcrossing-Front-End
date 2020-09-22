@@ -106,6 +106,7 @@ constructor(
       title: new FormControl({value: this.book.name, disabled: false}, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl({value: this.book.publisher, disabled: false}),
+      isbn: new FormControl({value: this.book.isbn, disabled: false}),
       authorFirstname: new FormControl(null),
       description: new FormControl({value: this.book.notice, disabled: false}),
       image: new FormControl({value: this.book.imagePath, disabled: false}),
@@ -196,6 +197,10 @@ constructor(
     if (this.editBookForm.get('publisher').value !== this.book.publisher) {
       book.fieldMasks.push('Publisher');
       book.publisher = this.editBookForm.get('publisher').value;
+    }
+    if (this.editBookForm.get('isbn').value !== this.book.isbn) {
+      book.fieldMasks.push('ISBN');
+      book.isbn = this.editBookForm.get('isbn').value;
     }
     if (this.editBookForm.get('description').value !== this.book.notice) {
       book.fieldMasks.push('Notice');
@@ -455,6 +460,11 @@ constructor(
         case 'publisher':
           this.editBookForm.patchValue({
             publisher: value.substr(0, maxLength)
+          });
+          break;
+        case 'isbn':
+          this.editBookForm.patchValue({
+            isbn: value.substr(0, maxLength)
           });
           break;
         case 'description':

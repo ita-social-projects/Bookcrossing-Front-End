@@ -80,6 +80,9 @@ export class BookComponent implements OnInit {
 
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
       this.book = value;
+
+      console.log(this.book);
+
       this.getOwners(this.book.userId);
       if (value.state !== bookState.available) {
         this.getUserWhoRequested();
