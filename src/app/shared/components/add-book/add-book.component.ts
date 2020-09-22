@@ -107,6 +107,7 @@ export class AddBookComponent implements OnInit {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
+    this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
     for (const author of this.outerBook.authors) {
       this.addBookForm.get('authorFirstname').setValue(author.fullName);
     }
@@ -206,6 +207,7 @@ export class AddBookComponent implements OnInit {
       authors: bookAuthors,
       genres: selectedGenres,
       publisher: this.addBookForm.get('publisher').value,
+      isbn: this.addBookForm.get('isbn').value,
       notice: this.addBookForm.get('description').value,
       state: bookState.available,
       userId: this.userId,
