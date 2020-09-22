@@ -4,7 +4,7 @@ import { HttpParams } from '@angular/common/http';
 export class BookQueryParams extends PageableParameters {
   showAvailable?: boolean;
   searchTerm?: string;
-  location?: number;
+  locations?: number[];
   genres?: number[];
   languages?: number[];
   orderByField?: string;
@@ -18,7 +18,7 @@ export class BookQueryParams extends PageableParameters {
     const book = new BookQueryParams();
     book.page = params.page ? +params.page : defaultPage;
     book.pageSize = params.pageSize ? +params.pageSize : defaultPageSize;
-    book.location = params.location ? +params.location : undefined;
+    book.locations = params.locations ? params.locations : undefined;
     book.searchTerm = params.searchTerm ? params.searchTerm : undefined;
     book.showAvailable =
       typeof params.showAvailable === 'undefined'
@@ -41,8 +41,10 @@ export class BookQueryParams extends PageableParameters {
     if (this.searchTerm) {
       params = params.set('searchTerm', this.searchTerm);
     }
-    if (this.location) {
-      params = params.set('location', this.location.toString());
+    if (this.locations?.length > 0) {
+      for (const id of this.locations) {
+        params = params.append('locations', id.toString());
+      }
     }
     if (typeof this.showAvailable !== 'undefined') {
       params = params.set('showAvailable', this.showAvailable.toString());

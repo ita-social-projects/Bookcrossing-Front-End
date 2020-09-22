@@ -1,191 +1,188 @@
 <ng-template appRef>
-  <!--Add Form-->
+    <!--Add Form-->
 </ng-template>
 
 <div class="container my-4">
 
-  <mdb-breadcrumb>
-    <mdb-breadcrumb-item class="blue-text" (click)="navigate()" >{{previousBooksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
-    <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
-  </mdb-breadcrumb>
+    <mdb-breadcrumb>
+        <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
+    </mdb-breadcrumb>
 
-<div class="container my-3 py-5 z-depth-1">
-    <section class="text-center">
-      <div class="row">
+    <div class="container my-3 py-5 z-depth-1">
+        <section class="text-center">
+            <div class="row">
 
-        <div class="col-lg-4">
+                <div class="col-lg-4">
 
-            <div class="carousel-inner text-center text-md-left" role="listbox">
-              <div class="size carousel-item active zoom">
-                <div class="mask flex-center waves-effect waves-light">
-                  <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
-                  <ng-template #thenBlock>
-                    <img src="{{imagePath}}"
-                         appDefaultImage
-                         default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-                         class="rounded float-left img-fluid">
-                  </ng-template>
-                  <ng-template #elseBlock>
-                    <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg"
-                    class="rounded float-left img-fluid">
-                  </ng-template>
-                </div>
-              </div>
-            </div>
-              <div class="text-center text-md-left text-md-right mt-2">
-                <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && isBookOwner !== undefined && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
+                    <div class="carousel-inner text-center text-md-left" role="listbox">
+                        <div class="size carousel-item active zoom">
+                            <div class="mask flex-center waves-effect waves-light">
+                                <div *ngIf="book?.imagePath; then thenBlock else elseBlock"></div>
+                                <ng-template #thenBlock>
+                                    <img src="{{imagePath}}" appDefaultImage default="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left img-fluid">
+                                </ng-template>
+                                <ng-template #elseBlock>
+                                    <img src="https://images.squarespace-cdn.com/content/582caad246c3c4568a7e562e/1519054615446-T9CP1E3U87P6M709L6E3/booktitle.jpg?content-type=image%2Fjpeg" class="rounded float-left img-fluid">
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center text-md-left text-md-right mt-2">
+                        <span [ngSwitch]="book?.state">
+                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
-                    <i class="mr-2" aria-hidden="true"></i> Start reading</button>
-                    <button [hidden]="!isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
-                      <i class="mr-2" aria-hidden="true"></i> Cancel request</button>
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.startreading' | translate }}</button>
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
+                      <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.cancelrequest' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button [hidden]="!isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
-                    <i class="mr-2" aria-hidden="true"></i> Make available</button>
+                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
+                  </ng-template>
+                  <ng-template ngSwitchCase="4">
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                 </span>
-            </div>
-        </div>
-        <div class="col-lg-7 text-center text-md-left">
-          <ng-template [ngIf]="isAuthenticated() && !isBookOwner">
-            <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank"  change type="default" color="warn" (click)=changeWishList(book)>
+                    </div>
+                </div>
+                <div class="col-lg-7 text-center text-md-left">
+                    <ng-template [ngIf]="isAuthenticated() && !isBookOwner">
+                        <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank" change type="default" color="warn" (click)=changeWishList(book)>
               <mat-icon *ngIf="isWished">favorite</mat-icon>
               <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
             </button>
-          </ng-template>
-          <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
-          <div class="row">
-            <div class="col-3" >
-              <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin" style="padding-left: 10px;">Read by: <span class="font-weight-normal">{{readCount}}</span></div>
-            </div>
-            <div class="col-3">
-              <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
-            </div>
-          </div>
-        <br>
-
-          <div class="font-weight-normal" style="margin-right: 45%;">
-            <table class="table borderless">
-              <tbody>
-                <tr *ngIf="book?.authors != null">
-                  <th scope="row" class="fontsize">
-                    <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>Author: </strong></ng-template>
-                    <ng-template #manyAuthors><strong >Authors: </strong></ng-template>
-                  </th>
-                  <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
-                </tr>
-                <tr *ngIf="book?.genres != null">
-                  <th scope="row" class="fontsize">
-                    <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>Category: </strong></ng-template>
-                    <ng-template #manyGenres><strong>Categories: </strong></ng-template>
-                  </th>
-                  <td class="align-middle" class="fontsize"><span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0"> , </ng-template>{{genre?.name }}</span></td>
-                </tr>
-                <tr *ngIf="book?.language != null">
-                  <th scope="row" class="fontsize">
-                    <strong>Language: </strong>
-                  </th>
-                  <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
-                </tr>
-                <tr *ngIf="book?.location != null">
-                  <th scope="row" class="fontsize">
-                    <strong>Location: </strong>
-                  </th>
-                  <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
-                </tr>
-                <tr *ngIf="currentOwner !== null">
-                  <th scope="row" class="fontsize">
-                    <strong>Current owner: </strong>
-                  </th>
-                  
-                  <td class="align-middle" class="fontsize contactowner">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <br>
-                  <ng-template [ngIf]="isAuthenticated()">
-                    <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
-                      <mat-icon> email </mat-icon> 
-                    </button>
-                    <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessage()">
-                      <mat-icon> chat_bubble </mat-icon> 
-                    </button>
-                  </ng-template>
-                </td>
-                </tr>
-                <tr *ngIf="firstOwner !== null">
-                  <th scope="row" class="fontsize">
-                    <strong>Registered by: </strong>
-                  </th>
-                  <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}</td>
-                </tr>
-                <tr *ngIf="userWhoRequested != null">
-                  <th scope="row" class="fontsize">
-                    <strong>Requested by: </strong>
-                  </th>
-                  <td class="align-middle" class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} <br>
-                    <ng-template [ngIf]="isAuthenticated()">
-                      <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
-                        <mat-icon> email </mat-icon> 
-                      </button>
-                      <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessageRequester()">
-                        <mat-icon> chat_bubble </mat-icon> 
-                      </button>
                     </ng-template>
-                  </td>
-                </tr>
-                <tr *ngIf="book?.publisher != null">
-                  <th scope="row" class="fontsize">
-                    <strong>{{ 'components.book.publisher' | translate }}:</strong>
-                  </th>
-                  <td class="fontsize align-middle">{{ book?.publisher }} </td>
-                </tr>
-                <tr *ngIf="book?.isbn != null">
-                  <th scope="row" class="fontsize">
-                    <strong>ISBN:</strong>
-                  </th>
-                  <td class="fontsize align-middle">{{ book?.isbn }} </td>
-                </tr>
-                <tr *ngIf="book?.state != null">
-                  <th scope="row" class="fontsize">
-                    <strong>Status: </strong>
-                  </th>
-                  <td class="align-middle" class="fontsize"><span [ngSwitch]="book?.state">
-                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span></ng-template>
-                    <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span></ng-template>
-                    <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span></ng-template>
-                    <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span></ng-template>
-                    <ng-template ngSwitchCase="4"><span class="badge badge-dark product">Unavailable</span></ng-template>
-                  </span></td>
-                </tr>
+                    <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
+                    <div class="row">
+                        <div class="col-3">
+                            <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin" style="padding-left: 10px;">{{ 'components.book.readby' | translate }}: <span class="font-weight-normal">{{readCount}}</span></div>
+                        </div>
+                        <div class="col-3">
+                            <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="font-weight-normal" style="margin-right: 45%;">
+                        <table class="table borderless">
+                            <tbody>
+                                <tr *ngIf="book?.authors != null">
+                                    <th scope="row" class="fontsize">
+                                        <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>{{ 'components.book.author' | translate }}: </strong></ng-template>
+                                        <ng-template #manyAuthors><strong>{{ 'components.book.authors' | translate }}: </strong></ng-template>
+                                    </th>
+                                    <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
+                                </tr>
+                                <tr *ngIf="book?.genres != null">
+                                    <th scope="row" class="fontsize">
+                                        <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>{{ 'components.book.category' | translate }}: </strong></ng-template>
+                                        <ng-template #manyGenres><strong>{{ 'components.book.categories' | translate }}: </strong></ng-template>
+                                    </th>
+                                    <td class="align-middle" class="fontsize"><span *ngFor="let genre of book?.genres; let i = index"><ng-template [ngIf]="i!=0"> , </ng-template>
+                                    <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                                        {{genre?.name}}
+                                    </ng-template>
+                                    <ng-template #uk>
+                                        {{genre?.nameUk}}
+                                    </ng-template></span></td>
+                                </tr>
+                                <tr *ngIf="book?.language != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.language' | translate }}: </strong>
+                                    </th>
+                                    <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
+                                </tr>
+                                <tr *ngIf="book?.location != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.location' | translate }}: </strong>
+                                    </th>
+                                    <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                                </tr>
+                                <tr *ngIf="currentOwner !== null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.currentowner' | translate }}: </strong>
+                                    </th>
+                                    <td class="align-middle" class="fontsize contactowner">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <br>
+                                      <ng-template [ngIf]="isAuthenticated()">
+                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
+                                          <mat-icon> email </mat-icon> 
+                                        </button>
+                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessage()">
+                                          <mat-icon> chat_bubble </mat-icon> 
+                                        </button>
+                                      </ng-template>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="firstOwner !== null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.registeredby' | translate }}: </strong>
+                                    </th>
+                                    <td class="fontsize align-middle">{{ firstOwner?.firstName + " " + firstOwner?.lastName }}</td>
+                                </tr>
+                                <tr *ngIf="userWhoRequested != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.requestedby' | translate }}: </strong>
+                                    </th>
+                                    <td class="align-middle" class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} <br>
+                                      <ng-template [ngIf]="isAuthenticated()">
+                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
+                                          <mat-icon> email </mat-icon> 
+                                        </button>
+                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessageRequester()">
+                                          <mat-icon> chat_bubble </mat-icon> 
+                                        </button>
+                                      </ng-template>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="book?.publisher != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.publisher' | translate }}:</strong>
+                                    </th>
+                                    <td class="fontsize align-middle">{{ book?.publisher }} </td>
+                                </tr>
+                                <tr *ngIf="book?.state != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.status' | translate }}: </strong>
+                                    </th>
+                                    <td class="align-middle" class="fontsize"><span [ngSwitch]="book?.state">
+                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">{{ 'components.book.statuses.available' | translate }}</span></ng-template>
+                                        <ng-template ngSwitchCase="1"><span class="badge badge-info product">{{ 'components.book.statuses.requested' | translate }}</span></ng-template>
+                                        <ng-template ngSwitchCase="2"><span class="badge badge-info product">{{ 'components.book.statuses.reading' | translate }}</span></ng-template>
+                                        <ng-template ngSwitchCase="3"><span class="badge badge-light product">{{ 'components.book.statuses.inactive' | translate }}</span></ng-template>
+                                        <ng-template ngSwitchCase="4"><span class="badge badge-dark product">{{ 'components.book.statuses.unavailable' | translate }}</span></ng-template>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <tr *ngIf="book?.notice != null">
+                        <th scope="row" class="fontsize">
+                            <strong style="margin-left: 11px;">{{ 'components.book.notice' | translate }}: </strong>
+                        </th>
+                        <td class="fontsize">
+                            <p style="margin-left: 65px; word-wrap: break-word;">{{ book?.notice }}</p>
+                        </td>
+                    </tr>
 
-              </tbody>
-            </table>
-          </div>
-          <tr *ngIf="book?.notice != null">
-            <th scope="row" class="fontsize">
-              <strong style="margin-left: 11px;">Notice: </strong>
-            </th>
-            <td class="fontsize" ><p style="margin-left: 65px; word-wrap: break-word;">{{ book?.notice }}</p> </td>
-          </tr>
 
-        </div>
-        <div class="col-lg-1">
-          <div class=" row d-flex">
-            <button *ngIf="isAdmin() || isBookOwner" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
+                </div>
+                <div class="col-lg-1">
+                    <div class=" row d-flex">
+                        <button *ngIf="isAdmin() || isBookOwner" class="btn btn-md btn-md px-3 m-1" (click)="showEditForm(book)"> <i
                 class="fas fa-edit"></i></button>
-          </div>
-        </div>
-      </div>
+                    </div>
+                </div>
+            </div>
 
-    </section>
+        </section>
 
-  <ngx-star-rating class="rating"
-                   [filledColor]="'#FF8800'"
-                   [rating]="rating"
-                   (rated)="onRatingSet($event)"
-                   [readonly]="rating !== 0 || !isAuthenticated()">
-  </ngx-star-rating>
+        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="rating !== 0 || !isAuthenticated()">
+        </ngx-star-rating>
 
-  <app-comment [bookId]="bookId" #comment></app-comment>
-  </div>
+        <app-comment [bookId]="bookId" #comment></app-comment>
+    </div>
 </div>

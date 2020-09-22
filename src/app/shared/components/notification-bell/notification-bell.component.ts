@@ -292,15 +292,26 @@ export class NotificationBellComponent implements OnInit {
         .afterClosed()
         .subscribe((Newmessage) => {
           if (Newmessage !== null && Newmessage !== false) {
-            this.notificationBellService.addToNotification('To ' + user.firstName + ' ' + user.lastName + ': ' + Newmessage).subscribe();
+            this.notificationBellService
+              .addToNotification(
+                'To ' + user.firstName + ' ' + user.lastName + ': ' + Newmessage
+              )
+              .subscribe();
             const currentUser = this.authenticationService.currentUserValue;
             Newmessage =
               `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
             const newMessage: IMessage = {
               message: Newmessage,
-              userId: receiverId
+              userId: receiverId,
             };
-            this.notificationBellService.addNotification(newMessage).subscribe();
+            this.notificationBellService
+              .addNotification(newMessage)
+              .subscribe(() => {
+                this.notificationService.success(
+                  this.translateService.instant('Message is successfully sent'),
+                  'X'
+                );
+              });
           }
         });
     });
