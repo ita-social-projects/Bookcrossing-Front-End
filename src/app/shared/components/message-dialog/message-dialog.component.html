@@ -1,0 +1,19 @@
+<h2 mat-dialog-title >To: {{data.to}}</h2>
+<mat-dialog-actions>
+    <ng-container>
+        <div class="container">
+            <div class="text">
+                <textarea #content name="message" class="form-control" id="message" cols="80" rows="10" placeholder="Write your message:"></textarea>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient button1" (click)="sendMessage(content.value)">Send</button>
+              </div>
+              <div class="col-sm">
+                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button" [mat-dialog-close]="false">Cancel</button>
+              </div>
+            </div>
+          </div>
+    </ng-container>
+</mat-dialog-actions>
+

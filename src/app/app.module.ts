@@ -2,6 +2,7 @@ import { BookEditFormComponent } from './shared/components/book-edit-form/book-e
 import { UserService } from './core/services/user/user.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { MessageDialogComponent } from './shared/components/message-dialog/message-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -121,6 +122,8 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { HideProdDirective } from './shared/directives/hideIfProduction.directive';
+import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { LocationHomeService } from './core/services/locationHome/locationHome.service';
 
 @NgModule({
   declarations: [
@@ -160,6 +163,7 @@ import { HideProdDirective } from './shared/directives/hideIfProduction.directiv
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
+    MessageDialogComponent,
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CommentComponent,
@@ -189,6 +193,7 @@ import { HideProdDirective } from './shared/directives/hideIfProduction.directiv
     UserViewComponent,
     StatisticsComponent,
     HideProdDirective,
+    RequestFromCompanyComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
@@ -250,6 +255,7 @@ import { HideProdDirective } from './shared/directives/hideIfProduction.directiv
     CookieService,
     JwtHelperService,
     LocationService,
+    LocationHomeService,
     GenreService,
     DialogService,
     UserService,

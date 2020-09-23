@@ -145,8 +145,8 @@ constructor(
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const genre of this.editBookForm.get('genres').value) {
-      const id = genre.value;
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      const id = genre;
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
 
@@ -211,7 +211,7 @@ constructor(
     }
     if (book.fieldMasks.length < 1) {
       this.chengeInActiveIfNeed();
-      this.Cancel();
+      this.cancel.emit();
     } else {
       const formData: FormData = this.getFormData(book);
       this.bookService.putBook(book.id, formData).subscribe(
@@ -283,7 +283,11 @@ constructor(
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    if (this.isEn() ) {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    } else {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
+    }
   }
 
   getAllGenres() {
@@ -386,9 +390,6 @@ constructor(
   onFileClear() {
     this.selectedFile = null;
   }
-  Cancel() {
-    this.cancel.emit();
-  }
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
@@ -476,5 +477,7 @@ constructor(
       );
     }
   }
-
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 }

@@ -1,37 +1,42 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
-import {DonateDialogComponent} from '../../../shared/components/donate-dialog/donate-dialog.component';
+import { DonateDialogComponent } from '../../../shared/components/donate-dialog/donate-dialog.component';
 import { LocationPopupComponent } from 'src/app/shared/components/location-popup/location-popup.component';
 import { IUserInfo } from 'src/app/core/models/userInfo';
+import { MessageDialogComponent } from 'src/app/shared/components/message-dialog/message-dialog.component';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DialogService {
   constructor(private dialog: MatDialog) {}
 
-  openConfirmDialog(msg) {
+  public openConfirmDialog(msg): MatDialogRef<ConfirmDialogComponent, any> {
     return this.dialog.open(ConfirmDialogComponent, {
       width: '390px',
       panelClass: 'confirm-dialog-container',
       disableClose: true,
       data: {
-        message: msg
-      }
+        message: msg,
+      },
     });
   }
-  openDonateDialog(msg) {
+  public openDonateDialog(msg): MatDialogRef<DonateDialogComponent, any> {
     return this.dialog.open(DonateDialogComponent, {
       width: '390px',
       panelClass: 'confirm-dialog-container',
       disableClose: true,
       data: {
-        message: msg
-      }
+        message: msg,
+      },
     });
   }
-  openFormDialog(formComponent) {
+  public openFormDialog(formComponent): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -40,15 +45,27 @@ export class DialogService {
     this.dialog.open(formComponent, dialogConfig);
   }
 
-  openLocationDialog(user: IUserInfo): MatDialogRef<LocationPopupComponent> {
+  public openLocationDialog(
+    user: IUserInfo
+  ): MatDialogRef<LocationPopupComponent> {
     return this.dialog.open(LocationPopupComponent, {
       ariaLabelledBy: '#locationPopupTitle',
       maxWidth: '512px',
-      data: user
+      data: user,
     });
   }
 
-  closeDialogs() {
+  public closeDialogs(): void {
     this.dialog.closeAll();
+  }
+
+  public openMessageDialog(name: string) {
+    return this.dialog.open(MessageDialogComponent, {
+      width: '50%',
+      disableClose: true,
+      data: {
+        to: name
+      },
+    });
   }
 }

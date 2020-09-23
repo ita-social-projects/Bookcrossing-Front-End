@@ -1,83 +1,114 @@
 <br/>
 <table class="table container">
     <thead class="unique-color white-text">
-      <tr>
-        <th scope="col">Route</th>
-        <th scope="col">Description</th>
-      </tr>
+        <tr>
+            <th scope="col">Route</th>
+            <th scope="col">Description</th>
+        </tr>
     </thead>
     <tbody>
-    <tr>
-      <td><a [routerLink]="['/profile']">/profile</a></td>
-      <td>User Profile</td>
-    </tr>
-      <tr>
-        <td><a [routerLink]="['/login']">/login</a></td>
-        <td>Login in our site</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/password/forgot']">/password/forgot</a></td>
-        <td>Reset new password</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/registration']">/registration</a></td>
-        <td>Registration in our site</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/book/4']">/book:/bookId</a></td>
-        <td>Single page for a book</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/books/requests']">/books/requests</a></td>
-        <td>All user requests</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/book']">/book</a></td>
-        <td>Add new book</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/books']">/books</a></td>
-        <td>List of all books</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/books/registered']">/books/registered</a></td>
-        <td>List of registered books</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/books/current']">/books/current</a></td>
-        <td>List of current owned books</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/location-form']">/add-location</a></td>
-        <td>Add new location</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/admin/authors']">/admin/authors</a></td>
-        <td>Manage authors</td>
-      </tr>
-      <tr>
-        <td><a [routerLink]="['/contacts']">/contacts</a></td>
-        <td>Contacts Page</td>
-      </tr>
+        <tr>
+            <td><a [routerLink]="['/profile']">/profile</a></td>
+            <td>User Profile</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/login']">/login</a></td>
+            <td>Login in our site</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/password/forgot']">/password/forgot</a></td>
+            <td>Reset new password</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/registration']">/registration</a></td>
+            <td>Registration in our site</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/book/4']">/book:/bookId</a></td>
+            <td>Single page for a book</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/books/requests']">/books/requests</a></td>
+            <td>All user requests</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/book']">/book</a></td>
+            <td>Add new book</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/books']">/books</a></td>
+            <td>List of all books</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/books/registered']">/books/registered</a></td>
+            <td>List of registered books</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/books/current']">/books/current</a></td>
+            <td>List of current owned books</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/location-form']">/add-location</a></td>
+            <td>Add new location</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/admin/authors']">/admin/authors</a></td>
+            <td>Manage authors</td>
+        </tr>
+        <tr>
+            <td><a [routerLink]="['/contacts']">/contacts</a></td>
+            <td>Contacts Page</td>
+        </tr>
     </tbody>
-  </table>
-  <br/>
-  <table class="table container">
+</table>
+<br/>
+<table class="table container">
     <thead class="unique-color white-text">
-      <tr>
-        <th scope="col">Dialog</th>
-        <th scope="col">Description</th>
-      </tr>
+        <tr>
+            <th scope="col">Dialog</th>
+            <th scope="col">Description</th>
+        </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="p-1"><button class="btn p-1" (click)="openLocationPopup()">Location pop-up</button></td>
-        <td>Asks user for his location</td>
-      </tr>
+        <tr>
+            <td class="p-1"><button class="btn p-1" (click)="openLocationPopup()">Location pop-up</button></td>
+            <td>Asks user for his location</td>
+        </tr>
     </tbody>
-  </table>
-  <div class="container"><div class="alert alert-info" role="alert">
-    Test credentials: User - test@gmail.com | test
-    <br>
-    Admin - admin@gmail.com | admin
-  </div></div>
+</table>
+<div>
+    <div class="alert alert-info" role="alert">
+        <h4 class="text-center">Test credentials</h4>
+        <table class="table container">
+            <thead class="unique-color white-text">
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>User</td>
+                    <td>test@gmail.com</td>
+                    <td>test</td>
+                </tr>
+                <tr>
+                    <td>Admin</td>
+                    <td>admin@gmail.com</td>
+                    <td>admin</td>
+                </tr>
+                <tr>
+                    <td>Monika Belucci</td>
+                    <td>super.newgeneration@ukr.net</td>
+                    <td>CreatePassword</td>
+                </tr>
+                <tr>
+                    <td>Vincent Van Gog</td>
+                    <td>vincentvangog2020@gmail.com</td>
+                    <td>VanGog2020</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

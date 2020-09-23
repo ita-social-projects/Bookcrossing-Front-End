@@ -27,6 +27,9 @@
         <ng-template #login>
           <div class="collapse navbar-collapse " id="basicExampleNav">
             <ul class="navbar-nav ml-auto text-uppercase">
+            <div class="search-bar">
+              <app-search-bar> </app-search-bar>
+            </div>
             <li class="nav-item" routerLinkActive="active" (click)="redirectToLogin()">
               <a class="nav-link">{{'common.login' | translate}}</a>
             </li>

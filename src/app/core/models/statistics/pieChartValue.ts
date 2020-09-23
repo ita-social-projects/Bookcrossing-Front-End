@@ -1,4 +1,4 @@
-export interface IChartValue {
+export interface IPieChartValue {
   name: string;
   value: number;
 }

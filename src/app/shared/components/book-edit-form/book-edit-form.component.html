@@ -1,53 +1,32 @@
 <section class="backdrop">
 
-  <form
-  [formGroup]="editBookForm"
-  #ngForm="ngForm"
-  (ngSubmit)="onSubmit()"
-  class="form-popup text-center border border-light p-5"
->
-  <p class="h2 mb-4 title">Edit book</p>
-  <div>
-    <div class="form-row mb-4">
-      <div class="col-3">
-        <p class="input-label">Book title:<span class="asterisk"> *</span></p>
-      </div>
-      <div class="col-4">
-        <!-- Book title -->
-        <input
-          formControlName="title"
-          type="text"
-          class="form-control"
-          [ngClass]="{
+    <form [formGroup]="editBookForm" #ngForm="ngForm" (ngSubmit)="onSubmit()" class="form-popup text-center border border-light p-5">
+        <p class="h2 mb-4 title">{{ 'components.book-edit.editbook' | translate }}</p>
+        <div>
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{ 'components.book-edit.booktitle' | translate }}<span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <!-- Book title -->
+                    <input formControlName="title" type="text" class="form-control" [ngClass]="{
             'is-invalid': submitted && editBookForm.controls.title.errors
-          }"
-          (input)="checkLength('title', $event, 100)"
-        />
-        <div
-          *ngIf="submitted && editBookForm.controls.title.errors"
-          class="invalid-feedback"
-        >
-          <div *ngIf="editBookForm.controls.title.errors.required">
-            This field is required.
-          </div>
-        </div>
-      </div>
-    </div>
+          }" (input)="checkLength('title', $event, 100)" />
+                    <div *ngIf="submitted && editBookForm.controls.title.errors" class="invalid-feedback">
+                        <div *ngIf="editBookForm.controls.title.errors.required">
+                            {{ 'components.book-edit.fieldrequaired' | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Author -->
-    <div class="form-row mb-4">
-      <div class="col-3">
-        <p class="input-label">Author:<span class="asterisk"> *</span></p>
-        <div class="custom-control custom-checkbox" style="text-align: left;">
-          <input
-            type="checkbox"
-            class="custom-control-input"
-            id="uncheckedAuthor"
-            [checked]="withoutAuthorChecked"
-            (change)="changeAuthorInput()"
-          />
-          <label class="custom-control-label" for="uncheckedAuthor"
-          >Without author</label
+            <!-- Author -->
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{ 'components.book-edit.author' | translate }}:<span class="asterisk"> *</span></p>
+                    <div class="custom-control custom-checkbox" style="text-align: left;">
+                        <input type="checkbox" class="custom-control-input" id="uncheckedAuthor" [checked]="withoutAuthorChecked" (change)="changeAuthorInput()" />
+                        <label class="custom-control-label" for="uncheckedAuthor">{{ 'components.book-edit.withoutauthor' | translate }}</label
           >
         </div>
       </div>
@@ -83,7 +62,7 @@
                 "
               class="invalid-feedback"
             >
-              This field is required.
+            {{ 'components.book-edit.fieldrequaired' | translate }}
             </div>
             <div
               *ngIf="
@@ -94,7 +73,7 @@
                 "
               class="new-author-warning"
             >
-              Lastname is required.
+              {{ 'components.book-edit.lastnamerequaired' | translate }}
             </div>
           </div>
         </div>
@@ -102,7 +81,7 @@
           *ngIf="editBookForm.controls.authorFirstname.value && !authorFocused"
           class="new-author-warning"
         >
-          <span>Entered author is saved as 'not confirmed'</span>
+          <span>{{ 'components.book-edit.notconfirmedsave' | translate }}</span>
         </div>
       </div>
       <div class="col">
@@ -147,7 +126,7 @@
     <!-- Category -->
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Category:<span class="asterisk"> *</span></p>
+        <p class="input-label">{{ 'components.book-edit.category' | translate }}:<span class="asterisk"> *</span></p>
       </div>
       <!-- Select multiple genres -->
       <div class="col-4">
@@ -179,16 +158,21 @@
               }})
             </span>
           </mat-select-trigger>
-          <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
-            genre.name
-          }}</mat-option>
+          <mat-option *ngFor="let genre of genres" [value]="genre.id">
+            <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+              {{genre?.name}}
+            </ng-template>
+            <ng-template #uk>
+              {{genre?.nameUk}}
+            </ng-template>
+          </mat-option>
         </mat-select>
         <div
           *ngIf="submitted && editBookForm.controls.genres.errors"
           class="invalid-feedback"
         >
           <div *ngIf="editBookForm.controls.genres.errors.required">
-            This field is required.
+            {{ 'components.book-edit.fieldrequaired' | translate }}
           </div>
         </div>
       </div>
@@ -197,7 +181,7 @@
     <!-- Language -->
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Language:<span class="asterisk"> *</span></p>
+        <p class="input-label">{{ 'components.book-edit.language' | translate }}:<span class="asterisk"> *</span></p>
       </div>
       <div class="col-4">
         <mat-select
@@ -217,7 +201,7 @@
           class="invalid-feedback"
         >
           <div *ngIf="editBookForm.controls.languageId.errors.required">
-            This field is required.
+            {{ 'components.book-edit.fieldrequaired' | translate }}
           </div>
         </div>
       </div>
@@ -226,7 +210,7 @@
     <!-- Publisher -->
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Publishing house:</p>
+        <p class="input-label">{{ 'components.book-edit.publishinghouse' | translate }}:</p>
       </div>
       <div class="col-4">
         <input
@@ -240,7 +224,7 @@
     <!-- Notice -->
     <div class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Notice:</p>
+        <p class="input-label">{{ 'components.book-edit.notice' | translate }}:</p>
       </div>
       <div class="col-4">
         <textarea
@@ -254,7 +238,7 @@
 
     <div *ngIf="isAdmin" class="form-row mb-4">
       <div class="col-3">
-        <p class="input-label">Inactive:</p>
+        <p class="input-label">{{ 'components.book-edit.inactive' | translate }}:</p>
       </div>
       <div class="col-4">
         <div class="custom-control custom-checkbox" style="display: flex;">
@@ -264,35 +248,28 @@
                  id="inactive"
                  [ngModel]="isInActive">
           <label class="custom-control-label" for="inactive"></label>
-        </div>
-      </div>
-    </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="form-row mb-4">
-      <button type="button" class="btn btn-info" (click)="fileInput.click()">
-        Edit image
+            <div class="form-row mb-4">
+                <button type="button" class="btn btn-info" (click)="fileInput.click()">
+        {{ 'components.book-edit.editimage' | translate }}
       </button>
-    </div>
+            </div>
 
-    <div class="form-row mb-4">
-      <div class="col-3">
-        <p *ngIf="isFileExists()" class="input-label">Image:</p>
-        <p *ngIf="selectedFile" class="input-label">New image:</p>
-      </div>
-      <div class="file-upload-wrapper">
-        <input
-          #fileInput
-          style="display: none;"
-          type="file"
-          accept="image/png, image/jpeg"
-          (change)="onFileSelected($event)"
-        />
-      </div>
-      <div class="col-4">
-        <span *ngIf="isFileExists()">{{ book.imagePath.substr(-15, 15) }}</span>
-        <div *ngIf="selectedFile">
-          <span
-          >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p *ngIf="isFileExists()" class="input-label">{{ 'components.book-edit.image' | translate }}:</p>
+                    <p *ngIf="selectedFile" class="input-label">{{ 'components.book-edit.newimage' | translate }}:</p>
+                </div>
+                <div class="file-upload-wrapper">
+                    <input #fileInput style="display: none;" type="file" accept="image/png, image/jpeg" (change)="onFileSelected($event)" />
+                </div>
+                <div class="col-4">
+                    <span *ngIf="isFileExists()">{{ book.imagePath.substr(-15, 15) }}</span>
+                    <div *ngIf="selectedFile">
+                        <span>{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
           >
           <span
             *ngIf="selectedFile"
@@ -302,16 +279,17 @@
             (click)="onFileClear()"
           >
             <span aria-hidden="true">×</span>
-          </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-    <!-- Add book button -->
-    <button class="btn btn-info" type="submit" name="submit">
-      Save
+        <!-- Add book button -->
+        <button class="btn btn-info" type="submit" name="submit">
+      {{ 'components.book-edit.save' | translate }}
     </button>
-    <input type="button" class="btn" (click)="Cancel()" value="Cancel" />
-  </form>
+        <input type="button" class="btn" (click)="cancel.emit()" value="{{ 'components.book-edit.cancel' | translate }}" />
+    </form>
 </section>
+

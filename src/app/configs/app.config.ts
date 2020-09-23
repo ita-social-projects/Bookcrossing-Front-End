@@ -1,5 +1,5 @@
 export const AppConfig = {
-  authConfiguration: 'LoginPassword',
+  authConfiguration: 'AzureActiveDirectory',
   // use "LoginPassword" for basic authentication
   // use "AzureActiveDirectory" for AAD authentication
 

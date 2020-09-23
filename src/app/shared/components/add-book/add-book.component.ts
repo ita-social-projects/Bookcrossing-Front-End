@@ -90,7 +90,7 @@ export class AddBookComponent implements OnInit {
     this.activeroute.queryParams.subscribe((params) => {
       /* tslint:disable:no-string-literal */
       if (params['outerBookId']) {
-      /* tslint:enable:no-string-literal */
+        /* tslint:enable:no-string-literal */
         this.outerService
           /* tslint:disable:no-string-literal */
           .getBooksById(params['outerBookId'])
@@ -126,7 +126,7 @@ export class AddBookComponent implements OnInit {
   public setSearchTerm(searchTerm: string): void {
     /* tslint:disable:no-string-literal */
     this.router.navigate(['found-books'], {
-    /* tslint:enable:no-string-literal */
+      /* tslint:enable:no-string-literal */
       queryParams: { searchTerm },
     });
   }
@@ -180,7 +180,7 @@ export class AddBookComponent implements OnInit {
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const id of this.addBookForm.get('genres').value) {
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
     const authorInput = this.addBookForm.get('authorFirstname').value.trim();
