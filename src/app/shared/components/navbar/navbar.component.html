@@ -21,7 +21,7 @@
         <li class="nav-item" routerLinkActive="active" [routerLink]="['books']">
           <a class="nav-link">{{'common.books' | translate}}</a>
         </li>
-        <li class="nav-item" routerLinkActive="active" [routerLink]="['demo']">
+        <li *hideProd class="nav-item" routerLinkActive="active" [routerLink]="['demo']">
           <a class="nav-link">{{'common.routes' | translate}}</a>
         </li>
         <ng-template #login>
