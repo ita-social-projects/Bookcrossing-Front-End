@@ -121,13 +121,10 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
-<<<<<<< HEAD
 import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
 import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
-=======
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
->>>>>>> ab7faae718933a8f7f344deb51942447584564c3
 
 @NgModule({
   declarations: [
@@ -196,11 +193,8 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-<<<<<<< HEAD
-    SuggestionMessageComponent
-=======
+    SuggestionMessageComponent,
     RequestFromCompanyComponent
->>>>>>> ab7faae718933a8f7f344deb51942447584564c3
   ],
   imports: [
     NgxEchartsModule.forRoot({
