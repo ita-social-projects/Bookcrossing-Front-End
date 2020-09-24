@@ -119,6 +119,8 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
 
 @NgModule({
   declarations: [
@@ -185,7 +187,8 @@ import { StatisticsService } from './core/services/statistics/statistics.service
     UsersComponent,
     NotificationBellComponent,
     UserViewComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    SuggestionMessageComponent
   ],
   imports: [
     InputTrimModule,
@@ -266,6 +269,7 @@ import { StatisticsService } from './core/services/statistics/statistics.service
       useFactory: MSALAngularConfigFactory
     },
     StatisticsService,
+    SuggestionMessageService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],
