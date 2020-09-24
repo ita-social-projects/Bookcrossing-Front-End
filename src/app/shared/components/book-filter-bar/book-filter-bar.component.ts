@@ -1,14 +1,15 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { IGenre } from 'src/app/core/models/genre';
-import {ILanguage } from 'src/app/core/models/language';
+import { ILanguage } from 'src/app/core/models/language';
 import { ILocation } from 'src/app/core/models/location';
 import { LocationService } from 'src/app/core/services/location/location.service';
 import { GenreService } from 'src/app/core/services/genre/genre';
-import {LanguageService } from 'src/app/core/services/language/language.service';
+import { LanguageService } from 'src/app/core/services/language/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { MatButtonToggleChange } from '@angular/material/button-toggle/button-toggle';
 import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLanguage.service';
+import { Language } from 'src/app/core/models/languages.enum';
 
 @Component({
   selector: 'app-book-filter-bar',
@@ -19,7 +20,7 @@ export class BookFilterBarComponent implements OnInit {
   @Output() filterChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() selectedGenresChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedLanguagesChange: EventEmitter<number[]> = new EventEmitter<number[]>();
-  @Output() selectedLocationChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() selectedLocationsChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() availableSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() viewMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() orderByFieldChange: EventEmitter<string> = new EventEmitter<string>();
@@ -30,17 +31,19 @@ export class BookFilterBarComponent implements OnInit {
   locations: ILocation[];
   @Input() selectedGenres: number[];
   @Input() selectedLanguages: number[];
-  @Input() selectedLocation: number;
+  @Input() selectedLocations: number[];
   @Input() availableSelected?: boolean;
   @Input() showAvailable = true;
   @Input() orderByField: string;
   @Input() orderByFieldAscending = true;
   constructor(
+    private languageService: LanguageService,
     private genreService: GenreService,
     private bookLanguageService: BookLanguageService,
     private locationService: LocationService,
     private translate: TranslateService,
-    private notificationService: NotificationService, ) { }
+    private notificationService: NotificationService,
+  ) {}
 
   ngOnInit(): void {
     this.getAllGenres();
@@ -56,6 +59,13 @@ export class BookFilterBarComponent implements OnInit {
     if (!isOpened) {
       this.selectedGenresChange.emit(this.selectedGenres);
       this.notifyFilterChange();
+    }
+  }
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      return true;
+    } else {
+      return false;
     }
   }
   onCategoriesReset() {
@@ -74,12 +84,14 @@ export class BookFilterBarComponent implements OnInit {
     this.notifyFilterChange();
   }
   // Location
-  onLocationChange() {
-    this.selectedLocationChange.emit(this.selectedLocation);
-    this.notifyFilterChange();
+  onLocationChange(isOpened: boolean) {
+    if (!isOpened) {
+      this.selectedLocationsChange.emit(this.selectedLocations);
+      this.notifyFilterChange();
+    }
   }
   onLocationReset() {
-    this.selectedLocationChange.emit(null);
+    this.selectedLocationsChange.emit(null);
     this.notifyFilterChange();
   }
 
@@ -114,7 +126,6 @@ export class BookFilterBarComponent implements OnInit {
     }
     );
   }
-
   getAllLanguages() {
     this.bookLanguageService.getLanguage().subscribe({
       next: (data) => {
@@ -144,13 +155,20 @@ export class BookFilterBarComponent implements OnInit {
   }
 
   onOrderByFieldChange() {
-
     this.orderByFieldChange.emit(this.orderByField);
     this.notifyFilterChange();
   }
 
   onOrderByFieldReset() {
     this.orderByFieldChange.emit(null);
+    this.notifyFilterChange();
+  }
+
+  onOrderByCurrent()  {
+    if  (this.orderByFieldAscending == null) {
+      this.orderByFieldAscending = false;
+    }
+    this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
     this.notifyFilterChange();
   }
 

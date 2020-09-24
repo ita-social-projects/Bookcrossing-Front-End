@@ -28,7 +28,6 @@ export class CommentComponent implements OnInit {
   comments: IRootComment[];
   user: IUserInfo;
   text = '';
-  rating = 0;
   updateRating = undefined;
   level = 0;
   hideErrorInterval: NodeJS.Timeout;
@@ -141,7 +140,7 @@ export class CommentComponent implements OnInit {
 
   public PostComment(text: string): void {
     const postComment: IRootInsertComment = {
-      bookId: this.bookId, ownerId: this.user.id, rating: this.rating, text
+      bookId: this.bookId, ownerId: this.user.id, text
     };
     this.commentservice.postComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
@@ -171,19 +170,13 @@ export class CommentComponent implements OnInit {
       });
   }
 
-  public updateComment(id, text, rating): void {
-    if (typeof this.updateRating === 'undefined') {
-      this.updateRating = rating;
-    }
+  public updateComment(id, text): void {
     const updateComment: IRootUpdateComment = {
-      id, ownerId: this.user.id, rating: this.updateRating, text
+      id, ownerId: this.user.id, text
     };
     this.commentservice.updateComment(updateComment).subscribe(() => this.UpdateComments());
   }
 
-  onRatingSet($event: number) {
-    this.rating = $event;
-  }
   onEditRatingSet($event: number) {
     this.updateRating = $event;
   }
@@ -205,7 +198,7 @@ export class CommentComponent implements OnInit {
       return;
     }
 
-    input.classList.add('invalid');
+    input.classList.add('has-error');
     const div = this.renderer.createElement('div');
     this.renderer.addClass(div, 'validation-error');
     div.append(this.translate.instant('common-errors.validation-max-length', {value: maxLength}));

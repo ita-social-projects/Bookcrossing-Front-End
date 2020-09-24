@@ -36,7 +36,7 @@ export class UserViewComponent implements OnInit {
 
   public ngOnInit(): void {
     this.activatedRoute.paramMap
-      .pipe(switchMap((params) => params.get('id')))
+      .pipe(switchMap((params) => params.getAll('id')))
       .subscribe((id) => {
         this.loadUser(+id);
       });
@@ -50,7 +50,9 @@ export class UserViewComponent implements OnInit {
   }
 
   private loadUsersBooks(): void {
-    if (!this.user) { return; }
+    if (!this.user) {
+      return;
+    }
 
     this.booksService.getCurrentBooksOfUser(this.user.id).subscribe((books) => {
       this.books = books;
@@ -113,6 +115,11 @@ export class UserViewComponent implements OnInit {
   }
 
   public onTakeOwnershipButtonClick(bookId: number): void {
+    const isConfirmed: boolean = confirm(
+      'Do you want to take ownership of this book?'
+    );
+    if (!isConfirmed) { return; }
+
     const bookPut: IBookPut = {
       id: bookId,
       userId: this.authService.currentUserValue.id,
@@ -129,6 +136,9 @@ export class UserViewComponent implements OnInit {
   }
 
   public onActivateButtonClick(bookId: number) {
+    const isConfirmed: boolean = confirm('Do you want to activate the book?');
+    if (!isConfirmed) { return; }
+
     this.booksService.activateBook(bookId).subscribe(
       (data) => this.loadUsersBooks(),
       (error) =>
@@ -140,6 +150,9 @@ export class UserViewComponent implements OnInit {
   }
 
   public onDeactivateBookButtonClick(bookId: number): void {
+    const isConfirmed: boolean = confirm('Do you want to deactivate the book?');
+    if (!isConfirmed) { return; }
+
     this.booksService.deactivateBook(bookId).subscribe(
       (data) => this.loadUsersBooks(),
       (error) =>

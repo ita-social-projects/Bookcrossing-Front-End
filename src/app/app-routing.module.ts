@@ -40,8 +40,8 @@ import { UsersComponent } from './shared/components/admin/users/users.component'
 import { BookCanDeactivateGuard } from './core/guards/bookCanDeactivate.guard';
 import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
-import {StatisticsComponent} from './shared/components/statistics/statistics.component';
-
+import { StatisticsComponent } from './shared/components/statistics/statistics.component';
+import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 
 // @ts-ignore
 const routes: Routes = [
@@ -77,7 +77,7 @@ const routes: Routes = [
   {
     path: 'statistics',
     component: StatisticsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'book/:id',
@@ -114,6 +114,11 @@ const routes: Routes = [
   { path: 'location-form', component: LocationFormComponent },
   { path: 'wishlist', component: WishListComponent, canActivate: [AuthGuard] },
   { path: '', component: HomeComponent },
+  {
+    path: 'requestfromcompany',
+    component: RequestFromCompanyComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'email', component: ForbidEmailComponent },
   { path: 'rules', component: RulesComponent },
   { path: 'demo', component: DemoComponent },

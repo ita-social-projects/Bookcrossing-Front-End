@@ -2,9 +2,11 @@ import { BookEditFormComponent } from './shared/components/book-edit-form/book-e
 import { UserService } from './core/services/user/user.service';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
+import { MessageDialogComponent } from './shared/components/message-dialog/message-dialog.component';
 import { assetsUrl } from './configs/api-endpoint.constants';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgxEchartsModule } from 'ngx-echarts';
 import {
   HttpClient,
   HttpClientModule,
@@ -119,8 +121,13 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+<<<<<<< HEAD
 import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
 import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
+=======
+import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+>>>>>>> ab7faae718933a8f7f344deb51942447584564c3
 
 @NgModule({
   declarations: [
@@ -160,6 +167,7 @@ import { SuggestionMessageComponent } from './shared/components/admin/suggestion
     ConfirmDialogComponent,
     LanguagesComponent,
     SearchBarComponent,
+    MessageDialogComponent,
     ProfileAvatarComponent,
     BookFilterBarComponent,
     CommentComponent,
@@ -188,9 +196,16 @@ import { SuggestionMessageComponent } from './shared/components/admin/suggestion
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
+<<<<<<< HEAD
     SuggestionMessageComponent
+=======
+    RequestFromCompanyComponent
+>>>>>>> ab7faae718933a8f7f344deb51942447584564c3
   ],
   imports: [
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
     InputTrimModule,
     BrowserModule,
     AppRoutingModule,
@@ -235,7 +250,7 @@ import { SuggestionMessageComponent } from './shared/components/admin/suggestion
       },
     }),
     MatLineModule,
-    MatListModule,
+    MatListModule
   ],
   providers: [
     BookService,
@@ -247,6 +262,7 @@ import { SuggestionMessageComponent } from './shared/components/admin/suggestion
     CookieService,
     JwtHelperService,
     LocationService,
+    LocationHomeService,
     GenreService,
     DialogService,
     UserService,
