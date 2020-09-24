@@ -29,9 +29,9 @@ export class SuggestionMessageComponent implements OnInit {
   @Output() viewClicked: EventEmitter<any> = new EventEmitter<any>();
 
   public statusHtml: Map<MessageStatus, string> = new Map([
-    [MessageStatus.Read,'<i class="fas fa-lg green-text fa-check-circle"></i>'],
-    [MessageStatus.Unread,'<i class="fas fa-lg fa-dot-circle"></i>'],
-    [MessageStatus.Declined,'<i class="fas fa-lg red-text fa-times-circle"></i>']      
+    [MessageStatus.Read, '<i class="fas fa-lg green-text fa-check-circle"></i>'],
+    [MessageStatus.Unread, '<i class="fas fa-lg fa-dot-circle"></i>'],
+    [MessageStatus.Declined, '<i class="fas fa-lg red-text fa-times-circle"></i>']
   ]);
 
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
@@ -44,7 +44,7 @@ export class SuggestionMessageComponent implements OnInit {
      'components.admin.suggestion-message.summary',
      'components.admin.suggestion-message.status'
   ];
-  public btnReplyTitle: string = 'components.admin.suggestion-message.reply';
+  public btnReplyTitle = 'components.admin.suggestion-message.reply';
 
   public messageProperties: string[] = [
     'id',
@@ -54,7 +54,7 @@ export class SuggestionMessageComponent implements OnInit {
     'text'
   ];
   public selectedRows: any = [];
-  public selectDeselect: boolean = true;
+  public selectDeselect = true;
   public isChecked: boolean[] ;
   public queryParams: CompletePaginationParams = new CompletePaginationParams();
   public searchText: string;
@@ -70,7 +70,7 @@ export class SuggestionMessageComponent implements OnInit {
     private messageService: SuggestionMessageService,
     private notificationService: NotificationService
   ) {}
-  
+
   ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
@@ -107,19 +107,19 @@ export class SuggestionMessageComponent implements OnInit {
     });
   }
 
-  public addStatus(): void{
-    this.messagesStatusHtml=[];
+  public addStatus(): void {
+    this.messagesStatusHtml = [];
     this.messages.forEach((msg) => {
       this.messagesStatusHtml.push(this.statusHtml.get(msg.state));
       });
   }
-  
-  public onStatusChanged(status: MessageStatus, message: ISuggestionMessage){
 
-    if(status == this.messages[this.messages.indexOf(message)].state){
+  public onStatusChanged(status: MessageStatus, message: ISuggestionMessage) {
+
+    if (status === this.messages[this.messages.indexOf(message)].state) {
       return;
     }
-  
+
     message.state = status;
     this.messageService.editMessage(message).subscribe({
       next: () => {
@@ -139,7 +139,7 @@ export class SuggestionMessageComponent implements OnInit {
     });
   }
 
-  public search(): void{
+  public search(): void {
     if (this.queryParams?.filters[0]?.value === this.searchText) {
       return;
     }
@@ -165,8 +165,8 @@ export class SuggestionMessageComponent implements OnInit {
     });
   }
 
-  public deleteSelected(): void{
-    var messagesToDelete = this.messages.filter(val => this.selectedRows.includes(val));
+  public deleteSelected(): void {
+    const messagesToDelete = this.messages.filter(val => this.selectedRows.includes(val));
     messagesToDelete.forEach(msg => this.deleteMessage(msg));
     this.deselectAll();
   }
@@ -210,42 +210,40 @@ public onSelectedRowChange(selectedItem: ISuggestionMessage): void {
     selectedItem.isChecked = true;
     this.selectedRowsChange.emit(this.selectedRows);
 
-    if(this.selectedRows.length == this.messages.length){ 
-      this.selectDeselect = false;  
+    if (this.selectedRows.length === this.messages.length) {
+      this.selectDeselect = false;
     }
-    if(this.selectedRows.length == 0){
+    if (this.selectedRows.length === 0) {
       this.selectDeselect = true;
     }
   }
 }
 
-public selectAll(): void{
+public selectAll(): void {
 
-  if(this.selectDeselect)
-  {
+  if (this.selectDeselect) {
     this.messages.forEach(msg => {
 
-      if(!msg.isChecked){
+      if (!msg.isChecked) {
       this.selectedRows = _.xorBy(
         this.selectedRows,
         [msg],
         this.messageProperties[0],
       );
 
-        msg.isChecked = true;
-        this.selectedRowsChange.emit(this.selectedRows);
+      msg.isChecked = true;
+      this.selectedRowsChange.emit(this.selectedRows);
       }
     });
     this.selectDeselect = false;
-  }
-  else{
+  } else {
     this.deselectAll();
     this.selectDeselect = true;
   }
 }
 
 public deselectAll(): void {
-  this.messages.forEach(msg => {msg.isChecked = false;})
+  this.messages.forEach(msg => {msg.isChecked = false; } );
   this.selectedRows = [];
 }
 
@@ -260,7 +258,7 @@ public onHeaderClicked($event: Sort): void {
   this.changeUrl();
 }
 
-public onReply(item: ISuggestionMessage){
-  this.emailString = "mailto:"+ item.userEmail + "?subject=" + item.summary + "&body=" + item.text + "%20goes%20here";
+public onReply(item: ISuggestionMessage) {
+  this.emailString = 'mailto:' + item.userEmail + '?subject=' + item.summary + '&body=' + item.text + '%20goes%20here';
   }
 }
