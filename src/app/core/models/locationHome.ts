@@ -5,5 +5,4 @@ export interface ILocationHome {
     latitude: number;
     longitude: number;
     isActive?: boolean;
-    UserId?: number;
 }

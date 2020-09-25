@@ -123,6 +123,7 @@ import { StatisticsComponent } from './shared/components/statistics/statistics.c
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +192,8 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    RequestFromCompanyComponent
+    RequestFromCompanyComponent,
+    HomeLocationPickerComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
