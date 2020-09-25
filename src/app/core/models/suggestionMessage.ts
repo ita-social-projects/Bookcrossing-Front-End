@@ -1,4 +1,4 @@
-export interface IUserMessage {
+export interface ISuggestionMessage {
     id?: number;
     userId?: number;
     userFirstName?: string;
