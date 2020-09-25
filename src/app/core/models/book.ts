@@ -16,5 +16,6 @@ export interface IBook {
   notice?: string;
   location: IRoomLocation;
   language: ILanguage;
+  isbn?: string;
   isWished?: boolean;
 }

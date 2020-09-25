@@ -7,6 +7,7 @@ export interface IOuterBook {
     authors: IOuterAuthor[];
     author: IOuterAuthor;
     publisher: string;
+    isbn: string;
     languageCode: string;
     description: string;
     }
