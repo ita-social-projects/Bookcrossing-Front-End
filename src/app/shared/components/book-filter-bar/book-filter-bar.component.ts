@@ -20,7 +20,7 @@ export class BookFilterBarComponent implements OnInit {
   @Output() filterChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() selectedGenresChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedLanguagesChange: EventEmitter<number[]> = new EventEmitter<number[]>();
-  @Output() selectedLocationChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() selectedLocationsChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() availableSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() viewMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() orderByFieldChange: EventEmitter<string> = new EventEmitter<string>();
@@ -31,7 +31,7 @@ export class BookFilterBarComponent implements OnInit {
   locations: ILocation[];
   @Input() selectedGenres: number[];
   @Input() selectedLanguages: number[];
-  @Input() selectedLocation: number;
+  @Input() selectedLocations: number[];
   @Input() availableSelected?: boolean;
   @Input() showAvailable = true;
   @Input() orderByField: string;
@@ -84,12 +84,14 @@ export class BookFilterBarComponent implements OnInit {
     this.notifyFilterChange();
   }
   // Location
-  onLocationChange() {
-    this.selectedLocationChange.emit(this.selectedLocation);
-    this.notifyFilterChange();
+  onLocationChange(isOpened: boolean) {
+    if (!isOpened) {
+      this.selectedLocationsChange.emit(this.selectedLocations);
+      this.notifyFilterChange();
+    }
   }
   onLocationReset() {
-    this.selectedLocationChange.emit(null);
+    this.selectedLocationsChange.emit(null);
     this.notifyFilterChange();
   }
 

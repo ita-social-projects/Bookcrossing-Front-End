@@ -125,6 +125,9 @@ import { MatSelectFilterModule } from 'mat-select-filter';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
+import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
+import { LocationHomeService } from './core/services/locationHome/locationHome.service';
 
 @NgModule({
   declarations: [
@@ -196,6 +199,8 @@ import { IssueFormComponent } from './shared/components/admin/issue-form/issue-f
     IssuesComponent,
     RequestFromCompanyComponent,
     IssueFormComponent,
+    SuggestionMessageComponent,
+    RequestFromCompanyComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
@@ -258,6 +263,7 @@ import { IssueFormComponent } from './shared/components/admin/issue-form/issue-f
     CookieService,
     JwtHelperService,
     LocationService,
+    LocationHomeService,
     GenreService,
     DialogService,
     UserService,
@@ -280,6 +286,7 @@ import { IssueFormComponent } from './shared/components/admin/issue-form/issue-f
       useFactory: MSALAngularConfigFactory
     },
     StatisticsService,
+    SuggestionMessageService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],

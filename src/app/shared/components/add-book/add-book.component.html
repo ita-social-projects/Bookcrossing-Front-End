@@ -285,6 +285,36 @@
         </div>
       </div>
 
+      <!-- ISBN -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">ISBN:</p>
+        </div>
+        <div class="col-4">
+          <input
+            #ISBN
+            formControlName="isbn"
+            type="text"
+            class="form-control"
+            (input)="checkLength(ISBN, 17)"
+            trim="blur"
+          />
+          <div
+            *ngIf="addBookForm.get('isbn').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("isbn").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
+          </div>
+        </div>
+      </div>
+
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">Notice:</p>
