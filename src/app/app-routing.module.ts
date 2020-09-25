@@ -23,6 +23,7 @@ import { ChildcommentComponent } from './shared/components/comment/childcomment/
 import { NgContentAst } from '@angular/compiler';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
 import { LocationsComponent } from './shared/components/admin/locations/locations.component';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
 import { GenresComponent } from './shared/components/admin/genres/genres.component';
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
@@ -70,6 +71,7 @@ const routes: Routes = [
       { path: 'language-form', component: LanguageFormComponent },
       { path: 'users', component: UsersComponent },
       { path: 'user/:id', component: UserViewComponent },
+      { path: 'suggestion-message', component: SuggestionMessageComponent }
     ],
   },
   {
