@@ -42,7 +42,6 @@ export class ProfileComponent implements OnInit {
   }
 
   public async getUserId(): Promise<number> {
-    const recieve = 100;
 
     const promice = new Promise<number>((resolve) => {
       this.authentication.getUserId().subscribe({
@@ -58,7 +57,6 @@ export class ProfileComponent implements OnInit {
     });
 
     await promice.then((value) => (this.id = value));
-    console.log('id :' + this.id);
 
     return this.id;
   }
@@ -76,7 +74,9 @@ export class ProfileComponent implements OnInit {
   public getUserById(): void {
     this.userService.getUserById(this.id).subscribe((user) => {
       this.user = user;
-      this.getHomeLocationById(user.role.user[0].locationHomeId);
+      if (user.role.user[0].locationHomeId != null) {
+        this.getHomeLocationById(user.role.user[0]?.locationHomeId);
+      }
     });
   }
 

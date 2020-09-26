@@ -55,7 +55,7 @@ export class ProfileEditComponent implements OnInit {
     this.locationHomeService.locationHomePost$.subscribe(location => {
       this.canPostLocation = true;
       this.locationHomePost = location;
-      this.locationHomePost.id = this.locationHome.id;
+      this.locationHomePost.id = this.locationHome?.id;
       this.locationHome = this.locationHomePost;
     });
     this.buildForm();
@@ -69,7 +69,7 @@ export class ProfileEditComponent implements OnInit {
   }
 
   public getLocationHome(): void {
-    this.locationHomeService.getLocationHomeById(this.user.role.user[0].locationHomeId).subscribe((location: ILocationHome) => {
+    this.locationHomeService.getLocationHomeById(this.user.role.user[0]?.locationHomeId).subscribe((location: ILocationHome) => {
       this.locationHome = location;
     },
     (error) => {
@@ -121,7 +121,7 @@ export class ProfileEditComponent implements OnInit {
       (data) => {
         this.locationHomeService.submitLocationHomePost(this.locationHomePost);
         this.notificationService.success(
-          'Home location succesfuly updated',
+          this.translate.instant('components.profile.edit.locationUpdate'),
           'X'
         );
       },
@@ -138,14 +138,14 @@ export class ProfileEditComponent implements OnInit {
     this.locationHomeService.editLocationHome(this.locationHome).subscribe(
       (data) => {
         this.locationHomeService.submitLocationHome(this.locationHome);
-        if (this.locationHome.isActive) {
+        if (this.locationHome?.isActive) {
           this.notificationService.success(
-            'Congrats! Now your location is set to home.',
+            this.translate.instant('components.profile.edit.homeLocationUpdate'),
             'X'
           );
-        } else if (this.locationHome.isActive === false) {
+        } else if (this.locationHome?.isActive === false) {
           this.notificationService.success(
-            'Congrats! Now your location is set to office.',
+            this.translate.instant('components.profile.edit.officeLocationUpdate'),
             'X'
           );
         }
@@ -219,7 +219,7 @@ export class ProfileEditComponent implements OnInit {
     this.changingLocation = false;
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Are yo sure want to cancel?').toPromise()
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
       )
       .afterClosed()
       .subscribe(async (res) => {

@@ -4,46 +4,46 @@
 <table class="table table-bordered" [hidden]="isEditing">
     <tbody>
         <tr class="table-primary">
-            <td scope="row">First Name</td>
+            <td scope="row">{{ 'components.profile.home.firstName' | translate }}</td>
             <td>{{user.firstName}}</td>
         </tr>
         <tr>
-            <td scope="row">Last Name</td>
+            <td scope="row">{{ 'components.profile.home.lastName' | translate }}</td>
             <td>{{user.lastName}}</td>
         </tr>
         <tr class="table-primary">
-            <td scope="row">Email</td>
+            <td scope="row">{{ 'components.profile.home.email' | translate }}</td>
             <td>{{user.email}}</td>
         </tr>
         <tr>
-            <td scope="row">Birthday</td>
+            <td scope="row">{{ 'components.profile.home.bithdate' | translate }}</td>
             <td>{{user.birthDate | date }}</td>
         </tr>
         <tr class="table-primary" *ngIf="user?.userLocation?.location">
-            <td scope="row">Location</td>
+            <td scope="row">{{ 'components.profile.home.location' | translate }}</td>
             <td class="location"><span>{{user.userLocation.location.city}}</span><span>{{user.userLocation.location.street}}</span>
                 <span>{{user.userLocation.location.rooms}}</span>
             </td>
         </tr>
         <tr>
-            <td scope="row">Home Location</td>
+            <td scope="row">{{ 'components.profile.home.homeLocation' | translate }}</td>
             <td class="location" *ngIf="locationHome != null">
                 <span>{{ locationHome.city }}</span><span>{{ locationHome.street }}</span>
             </td>
             <td class="" *ngIf="locationHome == null">
-                <span>No home location set. Go to edit to set your home location.</span>
+                <span>{{ 'components.profile.home.noHomeLocationMessage' | translate }}</span>
             </td>
         </tr>
         <tr class="table-primary">
-            <td scope="row">Receive e-mails</td>
-            <td *ngIf="user.isEmailAllowed">Yes</td>
-            <td *ngIf="!user.isEmailAllowed">No</td>
+            <td scope="row">{{ 'components.profile.home.reEmail' | translate }}</td>
+            <td *ngIf="user.isEmailAllowed">{{ 'common.yes' | translate }}</td>
+            <td *ngIf="!user.isEmailAllowed">{{ 'common.no' | translate }}</td>
         </tr>
         <tr>
             <td>
             </td>
             <td>
-                <button (click)="showEditForm(user)" class="btn blue-gradient float-right">Edit</button>
+                <button (click)="showEditForm(user)" class="btn blue-gradient float-right">{{ 'common.edit' | translate }}</button>
             </td>
         </tr>
 
