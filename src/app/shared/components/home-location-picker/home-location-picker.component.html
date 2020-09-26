@@ -9,10 +9,10 @@
     <div class="form-group m-3">
         <div class="row justify-content-center">
             <div class="col-sm">
-                <button (click)="saveLocation()" class="btn btn-primary btn-block w-100">Pick</button>
+                <button (click)="saveLocation()" class="btn btn-primary btn-block w-100">{{ 'components.profile.picker.pick' | translate }}</button>
             </div>
             <div class="col-sm">
-                <button class="btn w-100 btn-block" [mat-dialog-close]="false">Close</button>
+                <button class="btn w-100 btn-block" [mat-dialog-close]="false">{{ 'components.profile.picker.close' | translate }}</button>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
     <ng-template #noHomeLocation>
         <div class="row justify-content-center">
             <div>
-                <span class="padding-left text-center form-control">Choose a home location.</span>
+                <span class="padding-left text-center form-control">{{ 'components.profile.edit.noHomeLocationEditMessage' | translate }}</span>
             </div>
         </div>
     </ng-template>
