@@ -201,7 +201,6 @@ import { HomeLocationPickerComponent } from './shared/components/home-location-p
     RequestFromCompanyComponent,
     IssueFormComponent,
     SuggestionMessageComponent,
-    RequestFromCompanyComponent
     RequestFromCompanyComponent,
     HomeLocationPickerComponent,
     SuggestionMessageComponent
