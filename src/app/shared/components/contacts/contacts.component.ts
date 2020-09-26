@@ -21,21 +21,20 @@ import { Router } from '@angular/router';
 export class ContactsComponent implements OnInit {
   email = 'support@bookcrossing.tech';
   emailString: string;
-  contactsForm :FormGroup;
+  contactsForm: FormGroup;
   summaryStates: Array<string>;
   public filteredStates: Array<string>;
   public id: number;
   private user: IUserInfo;
 
   constructor(
-    private messageService: SuggestionMessageService, 
+    private messageService: SuggestionMessageService,
     private authentification: AuthenticationService,
-    private userService: UserService, 
-    private translationService: TranslateService, 
-    private notificationService: NotificationService, 
+    private userService: UserService,
+    private translationService: TranslateService,
+    private notificationService: NotificationService,
     private issueService: IssueService,
     private router: Router) {}
-    
 
   ngOnInit(): void {
     this.getAllIssues();
@@ -43,21 +42,19 @@ export class ContactsComponent implements OnInit {
     this.userInfo();
   }
 
-  openEmail()
-  {
-    this.emailString = "mailto:"+ this.email + "?subject=Need support";
+  openEmail() {
+    this.emailString = 'mailto:' + this.email + '?subject=Need support';
   }
 
   public buildForm(): void {
-    this.contactsForm = new FormGroup({ 
+    this.contactsForm = new FormGroup({
       summary: new FormControl('', [Validators.required]),
       summaryFilter: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required, Validators.minLength(1)])
     });
   }
 
-  public onSubmit()
-  {
+  public onSubmit() {
     const message: ISuggestionMessage = {
       userId: this.user.id,
       userFirstName: this.user.firstName,
@@ -65,7 +62,7 @@ export class ContactsComponent implements OnInit {
       userEmail: this.user.email,
       summary: this.contactsForm.get('summary').value,
       text: this.contactsForm.get('description').value
-    }
+    };
 
     this.messageService.postMessage(message).subscribe(
       (data: ISuggestionMessage) => {
@@ -74,7 +71,7 @@ export class ContactsComponent implements OnInit {
           this.translationService.instant('components.admin.suggestion-message.message-sent-success'),
         'X'
       );
-      this.router.navigate(['.']);
+        this.router.navigate(['.']);
       });
   }
 

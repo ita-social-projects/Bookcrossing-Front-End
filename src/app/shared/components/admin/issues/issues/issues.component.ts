@@ -14,7 +14,6 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   styleUrls: ['./issues.component.scss']
 })
 export class IssuesComponent implements OnInit {
-  
   issues: IIssue[];
   issuesDisplayColumns: string[] = [
     '#',
@@ -134,5 +133,4 @@ export class IssuesComponent implements OnInit {
       },
     });
   }
-  
 }
