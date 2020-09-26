@@ -131,8 +131,8 @@ const routes: Routes = [
     component: CommentComponent,
     children: [{ path: 'subcomment', component: ChildcommentComponent }],
   },
-  { 
-    path: 'contacts', 
+  {
+    path: 'contacts',
     component: ContactsComponent,
     canActivate: [AuthGuard],
    },

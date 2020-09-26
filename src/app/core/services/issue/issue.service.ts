@@ -27,7 +27,7 @@ export class IssueService {
   getIssuePage(paginationParameters: CompletePaginationParams): Observable<IPage<IIssue>> {
     return this.pagination.getPaginatedPage<IIssue>(issueUrl + 'paginated', paginationParameters);
   }
-  
+
   getIssueById(issueId: number) {
     return this.http.get<IIssue[]>( issueUrl + `/${issueId}`);
   }
