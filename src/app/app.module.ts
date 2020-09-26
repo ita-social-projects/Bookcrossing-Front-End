@@ -128,6 +128,7 @@ import { IssueFormComponent } from './shared/components/admin/issue-form/issue-f
 import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
 import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
 
 @NgModule({
   declarations: [
@@ -201,6 +202,9 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
     IssueFormComponent,
     SuggestionMessageComponent,
     RequestFromCompanyComponent
+    RequestFromCompanyComponent,
+    HomeLocationPickerComponent,
+    SuggestionMessageComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({

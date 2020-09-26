@@ -1,18 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MessageService } from 'src/app/core/services/message/message.service';
-import { IUserMessage } from 'src/app/core/models/userMessage';
+import { SuggestionMessageService } from 'src/app/core/services/suggestion-message/suggestion-message.service';
+import { ISuggestionMessage } from 'src/app/core/models/suggestion-message/suggestion-message';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { IUserInfo } from 'src/app/core/models/userInfo';
 import { IssueService} from 'src/app/core/services/issue/issue';
 import { IIssue } from 'src/app/core/models/issue';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
-  providers: [MessageService, IssueService]
+  providers: [SuggestionMessageService, IssueService]
 })
 
 export class ContactsComponent implements OnInit {
@@ -24,8 +27,15 @@ export class ContactsComponent implements OnInit {
   public id: number;
   private user: IUserInfo;
 
-  constructor(private messageService: MessageService, private authentification: AuthenticationService,
-    private userService: UserService, private issueService: IssueService) {}
+  constructor(
+    private messageService: SuggestionMessageService, 
+    private authentification: AuthenticationService,
+    private userService: UserService, 
+    private translationService: TranslateService, 
+    private notificationService: NotificationService, 
+    private issueService: IssueService,
+    private router: Router) {}
+    
 
   ngOnInit(): void {
     this.getAllIssues();
@@ -48,15 +58,24 @@ export class ContactsComponent implements OnInit {
 
   public onSubmit()
   {
-    let userMessage: IUserMessage;
-    userMessage = {}
-    userMessage.userId = this.user.id;
-    userMessage.userFirstName = this.user.firstName;
-    userMessage.userLastName = this.user.lastName;
-    userMessage.userEmail = this.user.email;
-    userMessage.summary = this.contactsForm.get('summary').value;
-    userMessage.text = this.contactsForm.get('description').value;
-    this.messageService.postMessage(userMessage);
+    const message: ISuggestionMessage = {
+      userId: this.user.id,
+      userFirstName: this.user.firstName,
+      userLastName: this.user.lastName,
+      userEmail: this.user.email,
+      summary: this.contactsForm.get('summary').value,
+      text: this.contactsForm.get('description').value
+    }
+
+    this.messageService.postMessage(message).subscribe(
+      (data: ISuggestionMessage) => {
+        this.messageService.submitMessage(message);
+        this.notificationService.success(
+          this.translationService.instant('components.admin.suggestion-message.message-sent-success'),
+        'X'
+      );
+      this.router.navigate(['.']);
+      });
   }
 
   public getAllIssues(): void {
