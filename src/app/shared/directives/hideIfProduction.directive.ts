@@ -9,7 +9,7 @@ export class HideProdDirective implements OnInit {
   constructor(private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
-    if (!environment.production) {
+    if (environment.production) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     }
   }
