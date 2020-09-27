@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ILocation } from 'src/app/core/models/location';
 import { ILocationHomePost } from 'src/app/core/models/locationHomePost';
@@ -11,6 +11,7 @@ import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
   styleUrls: ['./home-location-picker.component.scss']
 })
 export class HomeLocationPickerComponent implements OnInit {
+  @Input() isDialog = true;
   public address: ILocation;
   public locationHomePost: ILocationHomePost;
   constructor(
@@ -40,7 +41,10 @@ export class HomeLocationPickerComponent implements OnInit {
   public saveLocation(): void {
     this.locationHomePost.isActive = true;
     this.locationHomeService.submitLocationHomePost(this.locationHomePost);
-    this.dialogRef.close(true);
+    console.log(this.isDialog);
+    if (this.isDialog) {
+      this.dialogRef.close(true);
+    }
   }
 
 }
