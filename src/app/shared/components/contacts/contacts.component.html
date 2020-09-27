@@ -14,7 +14,12 @@
       <div class="row">
         <div class="col-md-3 text-center">
           <i class="fas fa-paper-plane"></i>
-          <p><a (click)="copyMessage('support@bookcrossing.tech')" value="click to copy">support@bookcrossing.tech</a></p>
+          <p>
+            <a (click)="openEmail()"
+            value="Click to copy"
+            [href]="emailString"
+            >support@bookcrossing.tech</a>
+          </p>
         </div>
         <div class="col-md"></div>
         <div class="col-md-3 text-center">
@@ -22,6 +27,57 @@
           <p>Lviv, 52 V.Velykoho Street</p>
         </div>
       </div>
+
+      <form #Formcontrol="ngForm"
+        class="col-lg-6 offset-lg-3" 
+        [formGroup]="contactsForm"
+        (ngSubmit)="onSubmit()"
+        >
+
+        <div class="form-row">
+          <div class="col-lg-12 mb-3">
+            <mat-select 
+              #select
+              class="form-control" 
+              formControlName="summary"
+              placeholder="Summary"
+              >
+              <mat-select-filter
+                #MatFilter
+                [array]="summaryStates" 
+                (filteredReturn)="filteredStates = $event"
+                [placeholder]="'Search'"></mat-select-filter>
+                  <mat-option *ngFor = "let state of filteredStates"
+                  [value] = "state">{{state}}</mat-option>
+            </mat-select>
+            <div *ngIf="contactsForm.get('summary').errors">
+              <div 
+              *ngIf="contactsForm.get('summary').touched &&
+              contactsForm.get('summary').errors?.required"
+              class="validation-error">
+                <small>You must choose an option</small>
+              </div>
+          </div>
+          </div>
+        </div>
+
+        <div class="form-row mb-1">
+          <div class="col-lg-12 mb-3">
+            <textarea class="form-control" 
+            #textarea
+            formControlName="description"
+            rows="8" 
+            maxlength="500" 
+            style="resize: none;" 
+            placeholder="We appreciate your time to describe this matter"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row justify-content-center mb-3">
+          <button class="btn btn-primary" type="submit" [disabled]="select.value === '' || textarea.value === ''">Send</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </div>
