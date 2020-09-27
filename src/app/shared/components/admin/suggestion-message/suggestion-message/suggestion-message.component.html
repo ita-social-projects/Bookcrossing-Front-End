@@ -135,10 +135,10 @@
                   </tbody>
                 </table>
               </div>
+              <app-pagination *ngIf="messages && messages.length > 0" [arraySize]="totalSize"
+                [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
+              </app-pagination>
             </div>
-            <app-pagination *ngIf="messages && messages.length > 0" [arraySize]="totalSize"
-              [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
-            </app-pagination>
           </div>
         </div>
       </div>
