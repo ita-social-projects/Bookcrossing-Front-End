@@ -42,6 +42,8 @@ import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
+import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
 
 // @ts-ignore
 const routes: Routes = [
@@ -71,6 +73,8 @@ const routes: Routes = [
       { path: 'language-form', component: LanguageFormComponent },
       { path: 'users', component: UsersComponent },
       { path: 'user/:id', component: UserViewComponent },
+      { path: 'issues', component: IssuesComponent },
+      { path: 'issue-form', component: IssueFormComponent },
       { path: 'suggestion-message', component: SuggestionMessageComponent }
     ],
   },
@@ -127,7 +131,11 @@ const routes: Routes = [
     component: CommentComponent,
     children: [{ path: 'subcomment', component: ChildcommentComponent }],
   },
-  { path: 'contacts', component: ContactsComponent },
+  {
+    path: 'contacts',
+    component: ContactsComponent,
+    canActivate: [AuthGuard],
+   },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   {
     path: 'password',
