@@ -107,6 +107,7 @@ export class AddBookComponent implements OnInit {
     console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
+    this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
     for (const author of this.outerBook.authors) {
       this.addBookForm.get('authorFirstname').setValue(author.fullName);
     }
@@ -180,7 +181,7 @@ export class AddBookComponent implements OnInit {
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const id of this.addBookForm.get('genres').value) {
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
     const authorInput = this.addBookForm.get('authorFirstname').value.trim();
@@ -206,6 +207,7 @@ export class AddBookComponent implements OnInit {
       authors: bookAuthors,
       genres: selectedGenres,
       publisher: this.addBookForm.get('publisher').value,
+      isbn: this.addBookForm.get('isbn').value,
       notice: this.addBookForm.get('description').value,
       state: bookState.available,
       userId: this.userId,

@@ -27,6 +27,11 @@ export class NotificationBellService {
     return this.http.post(this.baseUrl + 'add', message);
   }
 
+  public addToNotification(message: string): Observable<object> {
+    const msg = {Message: message};
+    return this.http.post(this.baseUrl + 'addto', msg);
+  }
+
   public deleteAllNotifications(): Observable<object> {
     return this.http.delete(this.baseUrl + 'remove/all');
   }

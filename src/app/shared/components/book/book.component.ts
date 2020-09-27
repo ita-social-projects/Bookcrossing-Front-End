@@ -124,9 +124,7 @@ export class BookComponent implements OnInit {
       if (this.isAuthenticated()) {
         this.authentication.getUserId().subscribe(
           (id: number) => {
-            if (id === this.currentOwner.id) {
-              this.isBookOwner = true;
-            }
+            this.isBookOwner = id === this.currentOwner.id;
           },
           (err) => {
             this.isBookOwner = false;
@@ -272,6 +270,55 @@ export class BookComponent implements OnInit {
       });
     this.disabledButton = false;
   }
+
+  public async makeOrderedAvailable(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate
+          .get(
+            'Do you want to make book available? The book will be available for request!'
+          )
+          .toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.authentication.getUserId().subscribe(
+            (id) => {
+              this.disabledButton = true;
+              const book: IBookPut = {
+                id: this.book.id,
+                userId: id,
+                fieldMasks: ['State'],
+                state: bookState.available,
+              };
+              const formData = this.getFormData(book);
+              this.bookService.putBook(this.bookId, formData).subscribe(
+                () => {
+                  this.disabledButton = false;
+                  this.ngOnInit();
+                  this.notificationService.success(
+                    this.translate.instant(
+                      'Book`s status changed to available.'
+                    ),
+                    'X'
+                  );
+                },
+                (err) => {
+                  this.disabledButton = false;
+                  this.notificationService.error(
+                    this.translate.instant('Something went wrong!'),
+                    'X'
+                  );
+                }
+              );
+            });
+            }
+          }
+          );
+    this.disabledButton = false;
+  }
+
 
   public async cancelRequest(): Promise<void> {
     this.dialogService
@@ -455,6 +502,9 @@ export class BookComponent implements OnInit {
   public canLeave(): boolean {
     return this.comment.canLeave();
   }
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 
   public sendMessage(): void {
     this.dialogService
@@ -464,12 +514,27 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe((Newmessage) => {
         if (Newmessage !== null && Newmessage !== false) {
+          this.notificationBellService
+            .addToNotification(
+              'To ' +
+                this.currentOwner.firstName +
+                ' ' +
+                this.currentOwner.lastName +
+                ': ' +
+                Newmessage
+            )
+            .subscribe(() => {
+              this.notificationService.success(
+                this.translate.instant('Message is successfully sent'),
+                'X'
+              );
+            });
           const currentUser = this.authentication.currentUserValue;
           Newmessage =
-          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
           const newMessage: IMessage = {
             message: Newmessage,
-            userId: this.currentOwner.id
+            userId: this.currentOwner.id,
           };
           this.notificationBellService.addNotification(newMessage).subscribe();
         }
@@ -477,24 +542,39 @@ export class BookComponent implements OnInit {
   }
 
   public sendMessageRequester(): void {
-  if (this.userWhoRequested !== null) {
-    this.dialogService
-      .openMessageDialog(
-        this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
-      )
-      .afterClosed()
-      .subscribe((Newmessage) => {
-        if (Newmessage !== null && Newmessage !== false) {
-          const currentUser = this.authentication.currentUserValue;
-          Newmessage =
-          `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
-          const newMessage: IMessage = {
-            message: Newmessage,
-            userId: this.userWhoRequested.id
-          };
-          this.notificationBellService.addNotification(newMessage).subscribe();
-        }
-      });
+    if (this.userWhoRequested !== null) {
+      this.dialogService
+        .openMessageDialog(
+          this.userWhoRequested.firstName + ' ' + this.userWhoRequested.lastName
+        )
+        .afterClosed()
+        .subscribe((Newmessage) => {
+          if (Newmessage !== null && Newmessage !== false) {
+            const currentUser = this.authentication.currentUserValue;
+            Newmessage =
+              `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            const newMessage: IMessage = {
+              message: Newmessage,
+              userId: this.userWhoRequested.id,
+            };
+            this.notificationBellService
+              .addNotification(newMessage)
+              .subscribe(() => {
+                this.notificationService.success(
+                  this.translate.instant('Message is successfully sent'),
+                  'X'
+                );
+              });
+            this.notificationBellService
+              .addToNotification(
+                'To ' +
+                  this.userWhoRequested.firstName +
+                  ' ' +
+                  this.userWhoRequested.lastName
+              )
+              .subscribe();
+          }
+        });
     }
   }
 

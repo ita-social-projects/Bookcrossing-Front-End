@@ -106,6 +106,7 @@ constructor(
       title: new FormControl({value: this.book.name, disabled: false}, Validators.required),
       genres: new FormControl(null, Validators.required),
       publisher: new FormControl({value: this.book.publisher, disabled: false}),
+      isbn: new FormControl({value: this.book.isbn, disabled: false}),
       authorFirstname: new FormControl(null),
       description: new FormControl({value: this.book.notice, disabled: false}),
       image: new FormControl({value: this.book.imagePath, disabled: false}),
@@ -145,8 +146,8 @@ constructor(
     // parse selected genres
     const selectedGenres: IGenre[] = [];
     for (const genre of this.editBookForm.get('genres').value) {
-      const id = genre.value;
-      selectedGenres.push({ id, name: this.getGenreById(id) });
+      const id = genre;
+      selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
     let bookAuthors: IAuthor[];
 
@@ -197,6 +198,10 @@ constructor(
       book.fieldMasks.push('Publisher');
       book.publisher = this.editBookForm.get('publisher').value;
     }
+    if (this.editBookForm.get('isbn').value !== this.book.isbn) {
+      book.fieldMasks.push('ISBN');
+      book.isbn = this.editBookForm.get('isbn').value;
+    }
     if (this.editBookForm.get('description').value !== this.book.notice) {
       book.fieldMasks.push('Notice');
       book.notice = this.editBookForm.get('description').value;
@@ -211,7 +216,7 @@ constructor(
     }
     if (book.fieldMasks.length < 1) {
       this.chengeInActiveIfNeed();
-      this.Cancel();
+      this.cancel.emit();
     } else {
       const formData: FormData = this.getFormData(book);
       this.bookService.putBook(book.id, formData).subscribe(
@@ -283,7 +288,11 @@ constructor(
   }
 
   getGenreById(id: number) {
-    return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    if (this.isEn() ) {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    } else {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
+    }
   }
 
   getAllGenres() {
@@ -386,9 +395,6 @@ constructor(
   onFileClear() {
     this.selectedFile = null;
   }
-  Cancel() {
-    this.cancel.emit();
-  }
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
@@ -460,6 +466,11 @@ constructor(
             publisher: value.substr(0, maxLength)
           });
           break;
+        case 'isbn':
+          this.editBookForm.patchValue({
+            isbn: value.substr(0, maxLength)
+          });
+          break;
         case 'description':
           this.editBookForm.patchValue({
             description: value.substr(0, maxLength)
@@ -476,5 +487,7 @@ constructor(
       );
     }
   }
-
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 }
