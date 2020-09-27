@@ -122,8 +122,14 @@ import { UserViewComponent } from './shared/components/admin/user-view/user-view
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { HideProdDirective } from './shared/directives/hideIfProduction.directive';
+import { MatSelectFilterModule } from 'mat-select-filter';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
+import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
 
 @NgModule({
   declarations: [
@@ -193,13 +199,19 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
     UserViewComponent,
     StatisticsComponent,
     HideProdDirective,
-    RequestFromCompanyComponent
+    IssuesComponent,
+    RequestFromCompanyComponent,
+    IssueFormComponent,
+    SuggestionMessageComponent,
+    HomeLocationPickerComponent,
+    SuggestionMessageComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
     InputTrimModule,
+    MatSelectFilterModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -278,6 +290,7 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
       useFactory: MSALAngularConfigFactory
     },
     StatisticsService,
+    SuggestionMessageService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],

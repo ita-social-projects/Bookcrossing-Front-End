@@ -12,6 +12,7 @@ export interface IBookPut {
   bookGenre?: IGenre[];
   image?: File;
   notice?: string;
+  isbn?: string;
   fieldMasks?: string[];
   languageId?: number;
 }

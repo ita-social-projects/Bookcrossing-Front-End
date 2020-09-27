@@ -1,115 +1,97 @@
 <div class="container p-3">
-  <div >
-  <div class="map-container">
-    <app-mapbox></app-mapbox>
-  </div>
-</div>
-  <div>
-    <form
-      [formGroup]="addLocationForm"
-      (ngSubmit)="onSubmit()"
-      class="text-center border border-light p-5 form-background"
-    >
-      <p class="h4 mb-4 title" *ngIf="!isEdited">{{'components.admin.location-form.add-title' | translate}}</p>
-      <p class="h4 mb-4 title" *ngIf="isEdited">{{'components.admin.location-form.edit-title' | translate}}</p>
+    <div>
+        <div class="map-container">
+            <app-mapbox></app-mapbox>
+        </div>
+    </div>
+    <div>
+        <form [formGroup]="addLocationForm" (ngSubmit)="onSubmit()" class="text-center border border-light p-5 form-background">
+            <p class="h4 mb-4 title" *ngIf="!isEdited">{{'components.admin.location-form.add-title' | translate}}</p>
+            <p class="h4 mb-4 title" *ngIf="isEdited">{{'components.admin.location-form.edit-title' | translate}}</p>
 
-      <!-- City input-->
-      <div class="form-row mb-4">
-        <div class="col-3">
-          <p class="input-label">{{'components.admin.locations.city' | translate}}: <span class="asterisk"> *</span></p>
-        </div>
-        <div class="col-4">
-          <input
-          formControlName="city"
-          type="text"
-          class="form-control"/>
-        </div>
-          <div *ngIf="addLocationForm.get('city').errors && addLocationForm.get('city').touched">
-            <div *ngIf="addLocationForm.get('city').errors?.required" class="validation-error">
-              {{'common-errors.validation-required' | translate}}
+            <!-- City input-->
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{'components.admin.locations.city' | translate}}: <span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <input formControlName="city" type="text" class="form-control" />
+                </div>
+                <div *ngIf="addLocationForm.get('city').errors && addLocationForm.get('city').touched">
+                    <div *ngIf="addLocationForm.get('city').errors?.required" class="validation-error">
+                        {{'common-errors.validation-required' | translate}}
+                    </div>
+                    <div *ngIf="addLocationForm.get('city').errors?.maxlength" class="validation-error">
+                        {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('city').errors?.maxlength?.requiredLength} }}
+                    </div>
+                </div>
             </div>
-            <div *ngIf="addLocationForm.get('city').errors?.maxlength" class="validation-error">
-              {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('city').errors?.maxlength?.requiredLength} }}
+            <!-- Street input -->
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{'components.admin.locations.street' | translate}}: <span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <input formControlName="street" type="text" class="form-control" />
+                </div>
+                <div *ngIf="addLocationForm.get('street').errors && addLocationForm.get('street').touched">
+                    <div *ngIf="addLocationForm.get('street').errors?.required" class="validation-error">
+                        {{'common-errors.validation-required' | translate}}
+                    </div>
+                    <div *ngIf="addLocationForm.get('street').errors?.maxlength" class="validation-error">
+                        {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('street').errors?.maxlength?.requiredLength} }}
+                    </div>
+                </div>
             </div>
-          </div>
-      </div>
-      <!-- Street input -->
-      <div class="form-row mb-4">
-        <div class="col-3">
-          <p class="input-label">{{'components.admin.locations.street' | translate}}: <span class="asterisk"> *</span></p>
-        </div>
-        <div class="col-4">
-          <input
-          formControlName="street"
-          type="text"
-          class="form-control" />
-        </div>
-        <div *ngIf="addLocationForm.get('street').errors && addLocationForm.get('street').touched">
-          <div *ngIf="addLocationForm.get('street').errors?.required" class="validation-error">
-            {{'common-errors.validation-required' | translate}}
-          </div>
-          <div *ngIf="addLocationForm.get('street').errors?.maxlength" class="validation-error">
-            {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('street').errors?.maxlength?.requiredLength} }}
-          </div>
-        </div>
-      </div>
 
-      <!-- Office name input -->
-      <div class="form-row mb-4">
-        <div class="col-3">
-          <p class="input-label">{{'components.admin.locations.office-name' | translate}}: <span class="asterisk"> *</span></p>
-        </div>
-        <div class="col-4">
-          <input
-            formControlName="officeName"
-            type="text"
-            class="form-control"
-            maxlength="10"
-          />
-        </div>
-        <div *ngIf="addLocationForm.get('officeName').errors && addLocationForm.get('officeName').touched">
-          <div *ngIf="addLocationForm.get('officeName').errors?.required" class="validation-error">
-            {{'common-errors.validation-required' | translate}}
-          </div>
-          <div *ngIf="addLocationForm.get('officeName').errors?.maxlength" class="validation-error">
-            {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('officeName').errors?.maxlength?.requiredLength} }}
-          </div>
-        </div>
-      </div>
+            <!-- Office name input -->
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{'components.admin.locations.office-name' | translate}}: <span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <input formControlName="officeName" type="text" class="form-control" maxlength="10" />
+                </div>
+                <div *ngIf="addLocationForm.get('officeName').errors && addLocationForm.get('officeName').touched">
+                    <div *ngIf="addLocationForm.get('officeName').errors?.required" class="validation-error">
+                        {{'common-errors.validation-required' | translate}}
+                    </div>
+                    <div *ngIf="addLocationForm.get('officeName').errors?.maxlength" class="validation-error">
+                        {{'common-errors.validation-max-length' | translate:{value:addLocationForm.get('officeName').errors?.maxlength?.requiredLength} }}
+                    </div>
+                </div>
+            </div>
 
-      <div class="form-row mb-4" *ngIf="isEdited">
-        <div class="col-3">
-          <p class="input-label">{{'components.admin.locations.status' | translate}}: <span class="asterisk"> *</span></p>
-        </div>
-        <div class="col-4">
-          <div class="">
-            <select class="form-control select-dropdown" formControlName="isActive">
+            <div class="form-row mb-4" *ngIf="isEdited">
+                <div class="col-3">
+                    <p class="input-label">{{'components.admin.locations.status' | translate}}: <span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <div class="">
+                        <select class="form-control select-dropdown" formControlName="isActive">
               <option value="true">{{'components.admin.locations.active' | translate}}</option>
               <option value="false">{{'components.admin.locations.inactive' | translate}}</option>
             </select>
-          </div>
-        </div>
+                    </div>
+                </div>
 
-        <div *ngIf="addLocationForm.get('isActive').errors && addLocationForm.get('isActive').touched">
-          <div *ngIf="addLocationForm.get('isActive').errors?.required" class="validation-error">
-            {{'common-errors.validation-required' | translate}}
-          </div>
-        </div>
-      </div>
+                <div *ngIf="addLocationForm.get('isActive').errors && addLocationForm.get('isActive').touched">
+                    <div *ngIf="addLocationForm.get('isActive').errors?.required" class="validation-error">
+                        {{'common-errors.validation-required' | translate}}
+                    </div>
+                </div>
+            </div>
 
 
 
-      <!-- Add location button -->
-      <button
-        class="btn btn-info"
-        type="submit"
-      >
+            <!-- Add location button -->
+            <button class="btn btn-info" type="submit">
         {{submitButtonText | translate}}
       </button>
 
-      <button type="button" class="btn btn-danger" (click)="onCancel()">
+            <button type="button" class="btn btn-danger" (click)="onCancel()">
         {{'common.cancel' | translate}}
       </button>
-    </form>
-  </div>
+        </form>
+    </div>
 </div>
