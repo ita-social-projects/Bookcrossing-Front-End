@@ -127,6 +127,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
 import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
 import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
 import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
+import { TimespansComponent } from './shared/components/admin/timespans/timespans/timespans.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
 import { SearchBooksMapComponent } from './shared/components/search-books-map/search-books-map.component';
 import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
@@ -204,6 +205,7 @@ import { HomeLocationPickerComponent } from './shared/components/home-location-p
     IssueFormComponent,
     SuggestionMessageComponent,
     RequestFromCompanyComponent,
+    TimespansComponent,
     HomeLocationPickerComponent,
     SuggestionMessageComponent
   ],
