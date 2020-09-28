@@ -1,0 +1,70 @@
+.map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.map {
+  height: 400px;
+  margin-bottom: 10px;
+}
+
+.radius-control {
+  display: flex;
+  align-items: center;
+}
+
+.radius-control input {
+  width: 100px;
+}
+
+.radius-control span {
+  font-size: 19px;
+  margin-right: 10px;
+}
+
+input {
+  border-radius: 0;
+}
+
+.set-btn {
+  width: 95px;
+  border-radius: 0;
+  margin-left: 5px;
+}
+
+/* Location triggers */
+.locations {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.locations label {
+  margin: 0;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #303030;
+}
+
+input[type="radio"]:checked + label {
+  box-shadow:
+  inset -10px -10px 15px rgba(255, 255, 255, 0.55),
+  inset 10px 10px 15px rgba(70, 70, 70, 0.12);
+}
+
+.location-btn {
+  background-color: #f1f1f1 !important;
+  border: 1px solid #dadada;
+}
+
+.location-btn:hover {
+  color: #1d1f20;
+}
+

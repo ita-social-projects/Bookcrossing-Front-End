@@ -6,6 +6,7 @@ import {Observable, Subject} from 'rxjs';
 import {CompletePaginationParams} from '../../models/Pagination/completePaginationParameters';
 import {IPage} from '../../models/page';
 import {PaginationService} from '../pagination/pagination.service';
+import {IMapHomeLocation} from '../../models/books-map/map-homeLocation';
 
 @Injectable()
 export class LocationHomeService {
@@ -44,5 +45,9 @@ export class LocationHomeService {
 
   editLocationHome(locationHome: ILocationHome) {
     return this.http.put(this.apiUrl, locationHome);
+  }
+
+  public getBooksQuantityOnLocations(): Observable<IMapHomeLocation[]> {
+    return this.http.get<IMapHomeLocation[]>(this.apiUrl + 'locations');
   }
 }

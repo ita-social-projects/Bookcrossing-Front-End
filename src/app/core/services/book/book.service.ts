@@ -15,6 +15,7 @@ import { delay } from 'rxjs/operators';
 import { promise } from 'protractor';
 import { IBookPut } from '../../models/bookPut';
 import {BookRatingQueryParams} from '../../models/bookRatingQueryParams';
+import {IMapLocation} from '../../models/books-map/map-location';
 
 @Injectable()
 export class BookService {
@@ -76,5 +77,9 @@ export class BookService {
       .set('Rating', ratingParams.rating.toString());
 
     return this.http.post<boolean>(this.apiUrl + 'rating', null, {params});
+  }
+
+  public getBooksQuantityOnLocations(): Observable<IMapLocation[]> {
+    return this.http.get<IMapLocation[]>(this.apiUrl + 'locations');
   }
 }

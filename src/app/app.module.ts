@@ -123,6 +123,7 @@ import { StatisticsComponent } from './shared/components/statistics/statistics.c
 import { StatisticsService } from './core/services/statistics/statistics.service';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+import { SearchBooksMapComponent } from './shared/components/search-books-map/search-books-map.component';
 
 @NgModule({
   declarations: [
@@ -191,7 +192,8 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    RequestFromCompanyComponent
+    RequestFromCompanyComponent,
+    SearchBooksMapComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
