@@ -83,22 +83,25 @@ export class UserViewComponent implements OnInit {
       });
   }
 
-  public onRecoverUserButtonClick() {
-    const isConfirmed: boolean = confirm(
-      this.translate.instant('components.admin.user-view.confirmation.recover',
-      { firstName: this.user.firstName, lastName: this.user.lastName})
-    );
-
-    if (isConfirmed) {
-      this.usersService.recoverUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onRecoverUserButtonClick() {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.recover',
+          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.recoverUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
   public getFormData(book: IBookPut): FormData {
