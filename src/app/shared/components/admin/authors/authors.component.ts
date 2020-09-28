@@ -25,12 +25,11 @@ export class AuthorsComponent implements OnInit {
 
   authors: IAuthor[];
   authorDisplayColumns: string[] = [
-    '#',
     'components.admin.authors.first-name',
     'components.admin.authors.last-name',
     'components.admin.authors.approved',
   ];
-  authorProperties: string[] = ['id', 'firstName', 'lastName', 'isConfirmed'];
+  authorProperties: string[] = ['firstName', 'lastName', 'isConfirmed'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'lastName';

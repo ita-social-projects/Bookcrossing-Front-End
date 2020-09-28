@@ -16,10 +16,9 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 export class IssuesComponent implements OnInit {
   issues: IIssue[];
   issuesDisplayColumns: string[] = [
-    '#',
     'components.admin.issues.issues',
   ];
-  issueProperties: string[] = ['id', 'name'];
+  issueProperties: string[] = ['name'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'name';

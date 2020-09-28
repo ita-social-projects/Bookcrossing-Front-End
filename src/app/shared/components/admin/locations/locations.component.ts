@@ -24,14 +24,12 @@ import { Sort } from '@angular/material/sort';
 export class LocationsComponent implements OnInit {
   public locations: ILocation[];
   public locationDisplayColumns: string[] = [
-    '#',
     'components.admin.locations.city',
     'components.admin.locations.street',
     'components.admin.locations.office-name',
     'components.admin.locations.active',
   ];
   public locationProperties: string[] = [
-    'id',
     'city',
     'street',
     'officeName',
