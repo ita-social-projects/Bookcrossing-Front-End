@@ -24,8 +24,8 @@ export class GenresComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
   genres: IGenre[];
-  genresDisplayColumns: string[] = ['#', 'components.admin.genres.genres', 'components.admin.genres.genresUk'];
-  genresProperties: string[] = ['id', 'name', 'nameUk'];
+  genresDisplayColumns: string[] = ['components.admin.genres.genres', 'components.admin.genres.genresUk'];
+  genresProperties: string[] = ['name', 'nameUk'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'lastName';
