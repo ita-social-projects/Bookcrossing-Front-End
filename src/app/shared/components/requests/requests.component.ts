@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import {IRequest} from 'src/app/core/models/request';
 import {BookService} from 'src/app/core/services/book/book.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
@@ -12,10 +11,9 @@ import {SearchBarService} from 'src/app/core/services/searchBar/searchBar.servic
 import {environment} from 'src/environments/environment';
 import {IBook} from '../../../core/models/book';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
-import {bookState} from 'src/app/core/models/bookState.enum';
-import {RequestQueryParams} from '../../../core/models/requestQueryParams';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
+import {ILocationFilter} from '../../../core/models/books-map/location-filter';
 
 @Component({
   selector: 'app-requests',
@@ -212,5 +210,9 @@ export class RequestsComponent implements OnInit {
           }
         );
       }
+  }
+
+  public onLocationFilterChange(filter: ILocationFilter) {
+    this.selectedLocations = filter.locationIds;
   }
 }

@@ -1,4 +1,5 @@
 import { IRoomLocation } from './roomLocation';
+import {ILocationHome} from './locationHome';
 
 export interface IUser {
   id: number;
@@ -8,6 +9,7 @@ export interface IUser {
   email: string;
   isEmailAllowed: boolean;
   userLocation?: IRoomLocation;
+  locationHome?: ILocationHome;
   birthDate: Date;
   registeredDate: Date;
 }
