@@ -1,0 +1,149 @@
+<div class="container my-5">
+    <section>
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-list">
+            <div class="card-header white d-flex  align-items-center py-3">
+              <p class="h5-responsive font-weight-bold mb-1 mr-2">
+                {{'components.admin.suggestion-message.messages' | translate}} 
+              </p>
+  
+              <!-- header search -->
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control" type="text" placeholder="{{'components.admin.search' | translate}}" aria-label="Search"
+                         [(ngModel)]="searchText" (keyup.enter)="search()">
+                  <div class="input-group-append">
+                    <button class="input-group-text btn-light" (click)="search()">
+                      <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- header buttons -->
+              <ul class="list-unstyled d-flex align-items-center mb-1">
+                <li>
+                  <button class="btn btn-md px-3 my-0 mr-0" (click)="selectAll()">
+                    <span class="button-label">
+                      {{selectDeselect ? ('components.admin.suggestion-message.selectAll' | translate)  : 
+                                        ('components.admin.suggestion-message.deselectAll' | translate)}}</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="btn btn-md px-3 my-0 mr-0" (click)="deleteSelected()">
+                    <i class="fa fa-trash-alt"></i>
+                    <span class="button-label">
+                      {{'components.admin.suggestion-message.delete' | translate}} </span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+  
+            <!-- Table -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table
+                  matSort
+                  (matSortChange)="onHeaderClicked($event)"
+                  [matSortDisableClear]="true"
+                  [matSortActive]="queryParams.sort.orderByField"
+                  [matSortDirection]="queryParams.sort.orderByAscending ? 'asc' : 'desc'"
+                  class="table table-hover mb-0"
+                >
+                  <thead>
+                    <tr>
+                      <ng-container *ngFor="let name of messageDisplayColumns; let i = index">
+                        <th
+                          scope="col"
+                          mat-sort-header="{{ messageProperties[i] }}"
+                        >
+                          {{ name | translate }}
+                        </th>
+                      </ng-container>
+                      <th scope="col" class="text-center"></th>
+                    </tr>
+                  </thead>
+              
+                  <tbody>
+                    <ng-container *ngFor="let item of messages; let i = index">
+                      
+                      <tr
+                        id="{{ i }}"
+                        [ngClass]="{ isSelected: selectedRows?.includes(item) }"
+                        class="isSelected"
+                      >
+                      <td class="align-middle">
+                          <input type="checkbox"
+                          [(ngModel)]="item.isChecked"                    
+                          (change)="onSelectedRowChange(item)">
+                      </td>
+                      <td class="align-middle">
+                        <a (click)="onViewButtonClicked(item.userId)">
+                          {{item.userFirstName}}
+                          {{item.userLastName}}
+                        </a>
+                      </td>
+                      <td class="align-middle">
+                        <button
+                          class="btn btn-link popoverBtn"
+                          [mdbPopover]="item.text"
+                          triggers="focus"
+                          placement="right"
+                          [mdbPopoverHeader]="item.summary"   
+                          (click)="onStatusChanged(messageStatus.Read, item)"
+                          
+                          >
+                          {{item.summary}}
+                        </button> 
+                      </td>
+                      <td class="align-middle">
+                        <div class="text-center dropdown">
+                          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                          [innerHTML]="messagesStatusHtml[i]">
+                          </button>
+                          <div class="dropdown-menu text-center">
+                            <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Read, item)">
+                              <span class="mr-4">{{'components.admin.suggestion-message.read' | translate}} </span>
+                              <i class="fas fa-lg green-text fa-check-circle"></i>
+                            </div>
+                            <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Unread, item)">
+                              <span class="mr-2">{{'components.admin.suggestion-message.unread' | translate}} </span>
+                              <i class="fas fa-lg fa-dot-circle"></i>
+                            </div>
+                            <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Declined, item)">
+                              <span class="mr-2">{{'components.admin.suggestion-message.decline' | translate}} </span>
+                              <i class="fas fa-lg red-text fa-times-circle"></i>
+                            </div>
+                          </div>
+                        </div>                       
+                      </td>
+                      <td>
+                        <div class="manage-btns row d-flex text-center">
+                          <a
+                            class="btn btn-md admin-button px-3"
+                            (click)="onReply(item)"
+                            title= "{{ btnReplyTitle | translate }}"
+                            [href]="emailString"   
+                            >
+                            <i class="fa fa-reply"></i>
+                        </a>
+                        </div>
+                      </td>
+                       </tr
+                    ></ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <app-pagination *ngIf="messages && messages.length > 0" [arraySize]="totalSize"
+                [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
+              </app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  
+  

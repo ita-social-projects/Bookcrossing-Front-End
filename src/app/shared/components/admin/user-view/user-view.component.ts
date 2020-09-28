@@ -20,7 +20,6 @@ export class UserViewComponent implements OnInit {
   public user: IUserInfo;
   public books: IBook[];
   public activeBooksExist: boolean;
-
   public currentUserId: number;
 
   constructor(
@@ -62,7 +61,8 @@ export class UserViewComponent implements OnInit {
 
   public onDeleteUserButtonClick(): void {
     const isConfirmed: boolean = confirm(
-      `Do you want to delete the ${this.user.firstName} ${this.user.lastName} from the list of users?`
+      this.translate.instant('components.admin.user-view.confirmation.delete',
+      { firstName: this.user.firstName, lastName: this.user.lastName})
     );
 
     if (isConfirmed) {
@@ -79,7 +79,8 @@ export class UserViewComponent implements OnInit {
 
   public onRecoverUserButtonClick() {
     const isConfirmed: boolean = confirm(
-      `Do you want to recover the ${this.user.firstName} ${this.user.lastName}?`
+      this.translate.instant('components.admin.user-view.confirmation.recover',
+      { firstName: this.user.firstName, lastName: this.user.lastName})
     );
 
     if (isConfirmed) {
@@ -116,7 +117,7 @@ export class UserViewComponent implements OnInit {
 
   public onTakeOwnershipButtonClick(bookId: number): void {
     const isConfirmed: boolean = confirm(
-      'Do you want to take ownership of this book?'
+      this.translate.instant('components.admin.user-view.confirmation.take-ownership')
     );
     if (!isConfirmed) { return; }
 
@@ -136,7 +137,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onActivateButtonClick(bookId: number) {
-    const isConfirmed: boolean = confirm('Do you want to activate the book?');
+    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.activate'));
     if (!isConfirmed) { return; }
 
     this.booksService.activateBook(bookId).subscribe(
@@ -150,7 +151,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onDeactivateBookButtonClick(bookId: number): void {
-    const isConfirmed: boolean = confirm('Do you want to deactivate the book?');
+    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.deactivate'));
     if (!isConfirmed) { return; }
 
     this.booksService.deactivateBook(bookId).subscribe(

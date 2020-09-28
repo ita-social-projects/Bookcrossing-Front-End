@@ -10,6 +10,7 @@ export class BookQueryParams extends PageableParameters {
   genres?: number[];
   languages?: number[];
   orderByField?: string;
+  isbn?: string;
   orderByAscending?: boolean;
   static mapFromQuery(
     params: any,
@@ -30,6 +31,7 @@ export class BookQueryParams extends PageableParameters {
     book.genres = params.genres ? params.genres : undefined;
     book.languages = params.languages ? params.languages : undefined;
     book.orderByField = params.orderByField ? params.orderByField : undefined;
+    book.isbn = params.isbn ? params.isbn : undefined;
     book.orderByAscending =
       typeof params.orderByAscending === 'undefined'
         ? undefined

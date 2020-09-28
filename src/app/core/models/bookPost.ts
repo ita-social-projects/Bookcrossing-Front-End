@@ -12,5 +12,6 @@ export interface IBookPost {
   genres: IGenre[];
   image?: File;
   notice?: string;
+  isbn?: string;
   languageId: number;
 }

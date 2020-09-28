@@ -43,6 +43,7 @@
     "jquery": "^3.5.0",
     "lodash": "^4.17.19",
     "mapbox-gl": "^1.10.0",
+    "mat-select-filter": "^2.3.6",
     "msal": "^1.3.4",
     "ng2-trim-directive": "^2.3.4",
     "ngx-avatar": "^3.7.0",

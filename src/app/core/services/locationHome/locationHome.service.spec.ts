@@ -57,8 +57,7 @@ describe('#LocationHomeService.getLocationHome(), .getLocationHomeById(id),' +
         city: 'Lviv',
         isActive: true,
         latitude: 20.121,
-        longitude: 48.231,
-        UserId: 1
+        longitude: 48.231
     };
     const id = 1;
 
@@ -80,8 +79,7 @@ describe('#LocationHomeService.getLocationHome(), .getLocationHomeById(id),' +
         city: 'Lviv',
         isActive: true,
         latitude: 20.121,
-        longitude: 48.231,
-        UserId: 1
+        longitude: 48.231
     };
 
     locationService.postLocationHome(newLocationHome).subscribe(
@@ -118,8 +116,7 @@ describe('#LocationHomeService.getLocationHome(), .getLocationHomeById(id),' +
         city: 'Lviv',
         isActive: true,
         latitude: 20.121,
-        longitude: 48.231,
-        UserId: 1
+        longitude: 48.231
     };
 
     locationService.editLocationHome(newLocationHome).subscribe(

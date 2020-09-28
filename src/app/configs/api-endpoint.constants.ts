@@ -24,3 +24,6 @@ export const bookRegistrationUrl = window.location.origin + '/book/';
 export const booksUrl = window.location.origin + '/books/';
 export const notificationUrl = baseUrl + 'notifications/';
 export const statisticsUrl = baseUrl + 'statistics';
+export const messagesUrl = baseUrl + 'messages';
+export const issueUrl = baseUrl + 'issue/';
+export const suggestionMessageUrl = baseUrl + 'suggestionmessage/';

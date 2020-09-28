@@ -25,43 +25,43 @@ export class BookService {
               private pagination: PaginationService
     ) {}
 
-  getBooksPage(bookParams: BookQueryParams): Observable<IPage<IBook>> {
+  public getBooksPage(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(bookUrl, bookParams);
   }
 
-  getCurrentOwnedBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
+  public getCurrentOwnedBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'current', bookParams);
   }
 
-  getCurrentBooksOfUser(userId: number): Observable<IBook[]> {
+  public getCurrentBooksOfUser(userId: number): Observable<IBook[]> {
     return this.http.get<IBook[]>(this.apiUrl + `current/${userId}`);
   }
 
-  getRegisteredBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
+  public getRegisteredBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'registered', bookParams);
   }
 
-  getReadBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
+  public getReadBooks(bookParams: BookQueryParams): Observable<IPage<IBook>> {
     return this.pagination.getBookPage<IBook>(this.apiUrl + 'read', bookParams);
   }
 
-  getBookById(id: number): Observable<IBook> {
+  public getBookById(id: number): Observable<IBook> {
     return this.http.get<IBook>(this.apiUrl + id);
   }
 
-  postBook(book: FormData): Observable<IBook> {
+  public postBook(book: FormData): Observable<IBook> {
     return this.http.post<IBook>(this.apiUrl, book);
   }
 
-  putBook(bookId: number, book: FormData): Observable<object> {
+  public putBook(bookId: number, book: FormData): Observable<object> {
     return this.http.put(this.apiUrl + bookId, book);
   }
 
-  deactivateBook(bookId: number): Observable<object> {
+  public deactivateBook(bookId: number): Observable<object> {
     return this.http.put(this.apiUrl + bookId + '/deactivate', undefined);
   }
 
-  activateBook(bookId: number): Observable<object> {
+  public activateBook(bookId: number): Observable<object> {
     return this.http.put(this.apiUrl + bookId + '/activate', undefined);
   }
 
