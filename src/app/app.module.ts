@@ -198,7 +198,7 @@ import { HomeLocationPickerComponent } from './shared/components/home-location-p
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    SearchBooksMapComponent
+    SearchBooksMapComponent,
     IssuesComponent,
     RequestFromCompanyComponent,
     IssueFormComponent,
