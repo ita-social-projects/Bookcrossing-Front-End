@@ -19,17 +19,15 @@ export class LoginComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error = '';
-  
-  @ViewChild('loginElement', {static: true, read: NgForm}) loginForm: NgForm;
-
+@ViewChild('loginElement', {static: true, read: NgForm}) loginForm: NgForm;
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
-              private cookieService: CookieService,) {
+              private cookieService: CookieService) {
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/books']);
-    }    
+    }
   }
 
   navigateToSingUp() {
@@ -38,26 +36,26 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.redirectUrl = params.returnUrl;      
+      this.redirectUrl = params.returnUrl;
     });
 
-    if(this.cookieService.get('remember')!==undefined){
-      if(this.cookieService.get('remember')==="Yes"){
-        this.loginForm.control.value.Email =this.cookieService.get('email');
+    if (this.cookieService.get('remember') !== undefined) {
+      if (this.cookieService.get('remember') === 'Yes') {
+        this.loginForm.control.value.Email = this.cookieService.get('email');
         this.loginForm.control.value.Password = this.cookieService.get('password');
       }
     }
   }
 
   singIn(loginForm) {
-    if(loginForm.value.RememberMe) {
-      this.cookieService.set('remember',"Yes");
-      this.cookieService.set('email',loginForm.value.Email);
-      this.cookieService.set('password',loginForm.value.Password);
+    if (loginForm.value.RememberMe) {
+      this.cookieService.set('remember', 'Yes');
+      this.cookieService.set('email', loginForm.value.Email);
+      this.cookieService.set('password', loginForm.value.Password);
     } else {
-      this.cookieService.set('remember',"No");
-      this.cookieService.set('email',"");
-      this.cookieService.set('password',"");
+      this.cookieService.set('remember', 'No');
+      this.cookieService.set('email', '');
+      this.cookieService.set('password', '');
     }
     this.authenticationService.login(loginForm.value)
       .pipe(first())
