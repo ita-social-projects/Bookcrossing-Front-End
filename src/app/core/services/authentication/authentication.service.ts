@@ -77,6 +77,7 @@ export class AuthenticationService {
       .pipe(map(user => {
         if (user && user.token) {
           localStorage.setItem('RememberMe', form.RememberMe);
+
           localStorage.setItem('currentUser', JSON.stringify(user));
           console.log('user creds is ', user);
           this.currentUserSubject.next(user);
