@@ -51,7 +51,8 @@ export class DialogService {
   ): MatDialogRef<LocationPopupComponent> {
     return this.dialog.open(LocationPopupComponent, {
       ariaLabelledBy: '#locationPopupTitle',
-      maxWidth: '512px',
+      minWidth: '600px',
+      maxWidth: '600px',
       maxHeight: '95%',
       data: user,
     });

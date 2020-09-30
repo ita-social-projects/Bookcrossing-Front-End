@@ -24,7 +24,8 @@ export class LocationPopupComponent implements OnInit {
   locationForm: FormGroup;
   locationHomeForm: FormGroup;
   public locationDialogIsOpen: boolean;
-  public tooltip = 'Choose one';
+  public canSubmitLocationHome = false;
+  public tooltip = this.translate.instant('components.locationpopup.chooseone');
   public locationHomePost: ILocationHomePost;
   private locationFormMasks: string[] = ['UserRoomId'];
 
@@ -72,6 +73,7 @@ export class LocationPopupComponent implements OnInit {
       this.locationHomePost.UserId = this.user?.id;
       this.locationDialogIsOpen = false;
       this.tooltip = location?.city + ', ' + location?.street;
+      this.canSubmitLocationHome = true;
     },
     (error) => {
       console.log(error);
