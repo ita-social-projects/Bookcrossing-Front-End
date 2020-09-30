@@ -18,7 +18,10 @@ export class BookQueryParams extends PageableParameters {
     defaultPageSize: number = 8
   ): BookQueryParams {
     const book = new BookQueryParams();
-    book.locationFilterOn = params.locationFilterOn ? params.locationFilterOn : undefined;
+    book.locationFilterOn =
+      typeof params.locationFilterOn === 'undefined'
+        ? undefined
+        : JSON.parse(params.locationFilterOn);
     book.page = params.page ? +params.page : defaultPage;
     book.pageSize = params.pageSize ? +params.pageSize : defaultPageSize;
     book.locations = params.locations ? params.locations : undefined;
