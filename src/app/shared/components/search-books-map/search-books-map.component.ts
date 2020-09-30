@@ -49,8 +49,10 @@ export class SearchBooksMapComponent implements OnInit {
   ngOnInit(): void {
     this.mapboxBookService.buildMap().then(() => {
       this.setLocationsOnMap();
-      this.getCurrentUser();
       this.setEventForMarker();
+      if (this.authenticationService.isAuthenticated()) {
+        this.getCurrentUser();
+      }
     });
   }
 
@@ -175,7 +177,7 @@ export class SearchBooksMapComponent implements OnInit {
     await this.userService.getUserById(userId)
       .toPromise()
       .then((data: IUserInfo) => {
-          if (data.locationHome.id !== 0 && data.locationHome.isActive === true) {
+          if (data.locationHome.id !== 0 && data.locationHome.isActive) {
             this.userHomeLocation = {
               lng: data.locationHome.longitude,
               lat: data.locationHome.latitude
@@ -184,7 +186,7 @@ export class SearchBooksMapComponent implements OnInit {
             return;
           }
 
-          if (data.userLocation.location.id !== 0 && data.userLocation.location.isActive) {
+          if (data.userLocation?.location?.id !== 0 && data.userLocation.location.isActive) {
             this.userHomeLocation = {
               lng: data.userLocation.location.longitude,
               lat: data.userLocation.location.latitude
