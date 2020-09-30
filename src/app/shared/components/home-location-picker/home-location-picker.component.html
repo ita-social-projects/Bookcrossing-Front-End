@@ -9,7 +9,7 @@
     <div class="form-group m-3">
         <div class="row justify-content-center">
             <div class="col-sm">
-                <button (click)="saveLocation()" class="btn btn-primary btn-block w-100">{{ 'components.profile.picker.pick' | translate }}</button>
+                <button (click)="saveLocation()" aria-disabled="!canSubmitLocationHome" class="btn btn-primary btn-block w-100" [ngClass]="{ 'disabled' : canSubmitLocationHome == false }">{{ 'components.profile.picker.pick' | translate }}</button>
             </div>
             <div class="col-sm">
                 <button class="btn w-100 btn-block" [mat-dialog-close]="false">{{ 'components.profile.picker.close' | translate }}</button>

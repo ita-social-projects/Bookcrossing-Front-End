@@ -42,9 +42,12 @@
     background-attachment: initial;
     background-origin: initial;
     background-clip: initial;
-    background-color: blue;
   }
-  
+
+  .custom-control-label {
+    cursor: pointer;
+  }
+
   .mat-select>.mat-option{position:relative;}
   .mat-select>.mat-option[data-tooltip]:hover::after {
      content: attr(data-tooltip);
@@ -60,7 +63,7 @@
      font-size: 11px;
      box-shadow: 0 6px 12px rgba(0,0,0,.175);
   }
-  
+
   @media (max-width: 780px){
     .select-dropdown{
       min-width: 8rem;
@@ -82,4 +85,3 @@
     }
     }
   }
-  
