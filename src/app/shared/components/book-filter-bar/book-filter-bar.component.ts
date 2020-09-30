@@ -109,7 +109,6 @@ export class BookFilterBarComponent implements OnInit {
 
   public toggleMap(selected): void {
     this.showMapSelected = selected;
-    console.log(this.showMapSelected);
     this.showMapSelectedChange.emit(selected);
     if (!selected) {
       this.selectedLocations = null;
