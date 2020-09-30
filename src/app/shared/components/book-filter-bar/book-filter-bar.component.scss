@@ -7,29 +7,30 @@
     width: 14rem;
   }
   .clear-icon, .search-icon{
+    cursor: pointer;
     display: inline-block;
     fill: currentColor;
-    position: relative;
+    position: relative; 
   }
   .clear-icon{
       color: #80868b;
-      margin-left: 2px;
-      margin-right: 7px;
-      height: 24px;
-      line-height: 24px;
-      width: 24px;
   }
   .hidden{
     visibility: hidden;
   }
 
+.sign {
+  cursor: pointer !important;
+}
+
   .block
   {
+    display: inline-flex;
     top: 100000;
     margin: 0.25%;
-    margin-top: 3% !important;
-    margin-bottom: 0.2% !important;
-    width: 18% !important;
+    width: 16% !important;
+    margin-right: 6px !important;
+    margin-left: 14px !important;
   }
 
   .mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
