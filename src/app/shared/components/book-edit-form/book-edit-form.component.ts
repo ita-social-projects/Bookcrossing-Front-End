@@ -348,7 +348,6 @@ constructor(
 
   // parses string and returns IAuthor object
   parseAuthorString(input: string): IAuthor {
-    console.log(input);
     input = input.trim();
     const words = input.split(/\s+/g);
     const firstName = words[0];
@@ -363,7 +362,6 @@ constructor(
       lastName,
       isConfirmed: false
     };
-    console.log(author);
     return author;
   }
 
