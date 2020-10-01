@@ -1,0 +1,62 @@
+.book-name{
+  font-size: 22px;
+  word-wrap: break-word;
+}
+
+.read-by-margin {
+  margin-top: 3px;
+}
+
+.borderless td, .borderless th {
+  border: none;
+  margin: 0;
+  padding: 10px;
+}
+
+td {
+  padding-left: 50px;
+}
+
+table {
+  table-layout: fixed;
+}
+
+.badge{
+display: initial;
+}
+
+
+.heartbox
+{
+  position: absolute;
+  z-index: 1;
+  top: -8px;
+  right:0px;
+  outline:none; 
+}
+
+.emailbutton
+{
+  outline:none; 
+}
+
+.heart 
+{
+  color:black !important;
+  border-color: black !important;
+}
+
+.fontsize{
+  font-size: 16px;
+}
+
+.contact
+{
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+.bluetext
+{
+  color: rgb(6, 173, 250);
+}

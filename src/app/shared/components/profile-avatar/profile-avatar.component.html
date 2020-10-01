@@ -1,0 +1,23 @@
+   <ul class="nav-item avatar dropdown">
+          <a class="nav-link avatar" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <ngx-avatar size="45"[name]="userName"></ngx-avatar>
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+            aria-labelledby="navbarDropdownMenuLink-55">
+            <a class="dropdown-unclickable-item dropdown-item" ><strong>{{userName}}</strong></a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLinkActive="active" *ngIf="isAdmin()" [routerLink]="['/admin/dashboard']">{{'common.manage' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/profile']">{{'common.myProfile' | translate}}</a>
+            <a class="dropdown-item" href="https://openeyes.org.ua/">{{'common.donate' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/statistics']">{{'common.statistics' | translate}}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/registered']">{{'common.registered' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/requests']">{{'common.requested' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/current']">{{'common.currentlyOwned' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/books/read']">{{'common.read' | translate}}</a>
+            <a class="dropdown-item" routerLinkActive="active" [routerLink]="['/wishlist']">{{'common.wishlist' | translate}}</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" routerLink="" (click)="logout()">{{'common.logOut' | translate}}</a>
+          </div>
+        </ul>

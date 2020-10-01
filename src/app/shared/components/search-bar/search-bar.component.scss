@@ -1,0 +1,58 @@
+.md-form input::placeholder {
+    color: #bdbdbd;
+  }
+.form-control-sm {
+  padding: 3.8px 8px 3.8px 11.200px;
+}
+.fa-search, .md-form input{
+  color: #bdbdbd;
+}
+.search-bar{
+  border-radius: 16px;
+}
+#basicExampleNav > app-search-bar > div {
+  margin-bottom: 2px;
+}
+.search-field{
+  background: none;
+  border:none;
+  line-height: normal;
+  outline:none;
+  margin-bottom: 5px;
+}
+.search-bar:focus{
+  outline:none;
+}
+.clear-icon, .search-icon{
+  display: inline-block;
+  fill: currentColor;
+  position: relative;
+  cursor: pointer;
+}
+.clear-icon{
+    color: #80868b;
+
+    margin-right: 2px;
+    height: 20px;
+    line-height: 20px;
+    width: 20px;
+}
+.devider {
+  border-left: 1px solid #dfe1e5;
+  height: 65%;
+}
+.search-icon{
+  margin-left: 2px;
+  height: 24px;
+  line-height: 24px;
+  width: 24px;
+}
+.hidden{
+  visibility: hidden;
+}
+@media (max-width: 990px){
+  .search-bar{
+      position: relative;
+      right: 12px;
+  }
+}

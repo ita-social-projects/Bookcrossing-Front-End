@@ -1,0 +1,50 @@
+.map-container{
+  height:300px;
+}
+.form-background{
+  background-color: #fff;
+}
+.title{
+  text-align: left;
+  font-size: 24pt;
+}
+
+.input-label{
+  text-align: left;
+  font-size: 16pt;
+}
+.asterisk {
+  color: red;
+}
+input,select {
+  &.ng-invalid.ng-touched {
+    border: 1px solid red;
+  }
+  &.ng-valid.ng-touched {
+    border: 1px solid green;
+  }
+}
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+.validation-error{
+  width: 100%;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+
+
+@media (max-width: 600px) {
+  .form-row .col-4, .form-row .col-3 {
+    max-width: none;
+    flex: none;
+  }
+  .form-row {
+    margin-bottom: 0.5rem !important;
+  }
+  .form-row p {
+    margin-bottom: 0.5rem;
+  }
+}

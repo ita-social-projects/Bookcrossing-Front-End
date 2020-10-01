@@ -1,0 +1,66 @@
+<div class="container my-5 py-5 z-depth-1">
+
+
+
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+
+
+    <div class="row d-flex justify-content-center">
+
+
+      <div class="col-md-6">
+
+
+        <form class="text-center" #loginFrom="ngForm" #loginElement>
+
+          <span class="h4 mb-4">Log in</span>
+
+
+          <input type="email" [email]="true" required [(ngModel)]='this.loginForm.control.value.Email' name="Email"  id="defaultLoginFormEmail" class="form-control mb-4 underheader" [ngClass]="{
+            'is-invalid': Isinvalid}" placeholder="E-mail">
+
+
+          <input type="password" id="defaultLoginFormPassword" required  [(ngModel)]='this.loginForm.control.value.Password' name="Password" class="form-control mb-4 password" [ngClass]="{
+            'is-invalid': Isinvalid}" placeholder="Password">
+
+
+          <p *ngIf="Isinvalid" class="text-danger"> Specified e-mail or password are incorrect. Please try again.</p>
+          <div class="d-flex justify-content-around">
+            <div>
+              <div class="custom-control custom-checkbox margintop">
+                <input type="checkbox" ngModel name="RememberMe" class="custom-control-input" id="defaultLoginFormRemember">
+                <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+              </div>
+            </div>
+              <div class="margintop2">
+                <a [routerLink]="['/password/forgot']">{{'components.signIn.forgot-password'|translate}}</a>
+              </div>
+          </div>
+
+
+          <button [disabled]="loginFrom.invalid "  class="btn btn-info btn-block my-4"  (click)="singIn(loginFrom)"  type="submit">Log in</button>
+
+
+          <span>Not a member?
+            <a class="text-primary" (click)="navigateToSingUp()">Register</a>
+          </span>
+
+
+
+
+        </form>
+
+
+      </div>
+
+
+    </div>
+
+
+
+  </section>
+
+
+
+</div>

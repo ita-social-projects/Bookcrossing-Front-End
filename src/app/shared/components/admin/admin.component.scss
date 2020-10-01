@@ -1,0 +1,42 @@
+.slider {
+  z-index: 1031;
+  position:fixed;
+  left:0;
+  top: 50%;
+  color: #fff;
+  padding: 10px;
+  border-radius: 0 6px 6px 0;
+  width: 64px;
+  background: rgba(0,0,0,.3);
+  text-align: center;
+}
+.links{
+   margin-left: 20px;
+   margin-right: 20px;
+}
+.logo-header{
+    height: 90px;
+    margin: 1rem 1rem 1rem;
+}
+
+.logo-wrapper{
+    padding:2.5rem
+}
+mat-sidenav-content{
+  min-height:81.5vh;
+}
+mat-sidenav {
+  width:17rem;
+}
+
+@media (max-width: 600px) {
+  .slider{
+    width: 36px;
+    height: 36px;
+  }
+  .slider-icon{
+    position:relative;
+    top:-1px;
+    font-size: 1.3em;
+  }
+}

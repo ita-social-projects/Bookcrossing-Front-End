@@ -1,0 +1,431 @@
+<div>
+  <form
+    [formGroup]="addBookForm"
+    #ngForm="ngForm"
+    (ngSubmit)="onSubmit()"
+    class="border border-light p-5"
+  >
+    <p class="h2 mb-4 title">{{'components.book-edit.register-book'| translate}}</p>
+    <div>
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.booktitle'| translate}}:<span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <!-- Book title -->
+          <input
+            #Title
+            formControlName="title"
+            type="text"
+            class="form-control"
+            (input)="checkLength(Title, 150)"
+            trim="blur"
+          />
+          <div *ngIf="addBookForm.get('title').errors">
+            <div
+              *ngIf="
+                addBookForm.get('title').errors?.required &&
+                addBookForm.get('title').touched
+              "
+              class="validation-error"
+            >
+              {{'components.home.field-required'| translate}}
+
+            </div>
+            <div
+              *ngIf="addBookForm.get('title').errors?.maxlength"
+              class="validation-error"
+            >
+              {{
+                "common-errors.validation-max-length"
+                  | translate
+                    : {
+                        value: addBookForm.get("title").errors?.maxlength
+                          ?.requiredLength
+                      }
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Author -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.author'| translate}}:<span class="asterisk"> *</span></p>
+          <div class="custom-control custom-checkbox" style="text-align: left;">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="uncheckedAuthor"
+              [checked]="withoutAuthorChecked"
+              (change)="changeAuthorInput()"
+            />
+            <label class="custom-control-label" for="uncheckedAuthor"
+              >{{'components.book-edit.withoutauthor'| translate}}</label
+            >
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-row">
+            <div class="col">
+              <input
+                formControlName="authorFirstname"
+                #firstnameInput
+                type="text"
+                class="form-control"
+                [matAutocomplete]="FirstNameAuto"
+                (focus)="authorFocused = true"
+                (blur)="authorFocused = false"
+                (input)="checkLength(firstnameInput, 100)"
+                [ngClass]="{
+                  'ng-invalid':
+                    addBookForm.get('authorFirstname').touched &&
+                    !selectedAuthors.length &&
+                    !addBookForm.controls.authorFirstname.value?.trim() &&
+                    !withoutAuthorChecked,
+                  'not-confirmed':
+                    addBookForm.controls.authorFirstname.dirty &&
+                    addBookForm.controls.authorFirstname.value != '' &&
+                    !withoutAuthorChecked
+                }"
+              />
+              <div
+                *ngIf="
+                  addBookForm.get('authorFirstname').touched &&
+                  !selectedAuthors.length &&
+                  !addBookForm.controls.authorFirstname.value?.trim() &&
+                  !withoutAuthorChecked
+                "
+                class="validation-error"
+              >
+              {{'components.home.field-required'| translate}}
+              </div>
+              <div
+                *ngIf="
+                  submitted &&
+                  !checkAuthorLastName(
+                    addBookForm.controls.authorFirstname.value
+                  ) &&
+                  !withoutAuthorChecked
+                "
+                class="validation-error"
+              >
+                Lastname is required.
+              </div>
+              <div
+                *ngIf="addBookForm.get('authorFirstname').errors?.maxlength"
+                class="validation-error"
+              >
+                {{
+                  "common-errors.validation-max-length"
+                    | translate
+                      : {
+                          value: addBookForm.get("authorFirstname").errors
+                            ?.maxlength?.requiredLength
+                        }
+                }}
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              addBookForm.controls.authorFirstname.dirty &&
+              addBookForm.controls.authorFirstname.value != '' &&
+              !withoutAuthorChecked
+            "
+            class="new-author-warning"
+          >
+            <span>{{'components.home.author-not-confirmed'| translate}}</span>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            <ul class="list-group authors-list list-group-horizontal-sm">
+              <li
+                *ngFor="let author of selectedAuthors"
+                class="list-group-item"
+              >
+                <span>{{ author.firstName + "  " + author.lastName }}</span>
+                <span
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="onDeleteAuthor(author)"
+                >
+                  <span aria-hidden="true">×</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <mat-autocomplete
+        #FirstNameAuto="matAutocomplete"
+        (optionSelected)="onAuthorSelect($event); firstnameInput.value = ''"
+      >
+        <mat-option
+          *ngFor="
+            let author of filterConfirmedAuthors()
+              | contentFilter
+                : firstnameInput.value.trim()
+                : ['firstName', 'lastName']
+          "
+          [value]="author"
+        >
+          {{ author.firstName + " " + author.lastName }}
+        </mat-option>
+      </mat-autocomplete>
+
+      <!-- Category -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.category'| translate}}:<span class="asterisk"> *</span></p>
+        </div>
+        <!-- Select multiple genres -->
+        <div class="col-4">
+          <mat-select
+            formControlName="genres"
+            class="form-control"
+            multiple
+            placeholder="Select"
+          >
+            <mat-select-trigger>
+              {{
+                addBookForm.get("genres").value
+                  ? getGenreById(addBookForm.get("genres").value[0])
+                  : ""
+              }}
+              <span
+                *ngIf="addBookForm.get('genres').value?.length > 1"
+                class="additional-selection"
+              >
+                (+{{ addBookForm.get("genres").value.length - 1 }}
+                {{
+                  addBookForm.get("genres").value.length === 2
+                    ? "other"
+                    : "others"
+                }})
+              </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
+              genre.name
+            }}</mat-option>
+          </mat-select>
+          <div
+            *ngIf="
+              addBookForm.get('genres').touched &&
+              addBookForm.get('genres').errors
+            "
+            class="validation-error"
+          >
+            <div *ngIf="addBookForm.get('genres').errors.required">
+              {{'components.home.field-required'| translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Language -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.language'| translate}}:<span class="asterisk"> *</span></p>
+        </div>
+        <div class="col-4">
+          <mat-select
+            class="form-control"
+            formControlName="languageId"
+            placeholder="Select"
+          >
+            <mat-option
+              *ngFor="let language of languages"
+              [value]="language.id"
+              >{{ language.name }}</mat-option
+            >
+          </mat-select>
+          <div
+            *ngIf="
+              addBookForm.get('languageId').touched &&
+              addBookForm.get('languageId').errors
+            "
+            class="validation-error"
+          >
+            <div *ngIf="addBookForm.get('languageId').errors.required">
+              {{'components.home.field-required'| translate}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Publisher -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.publishinghouse'| translate}}:</p>
+        </div>
+        <div class="col-4">
+          <input
+            #Publisher
+            formControlName="publisher"
+            type="text"
+            class="form-control"
+            (input)="checkLength(Publisher, 150)"
+            trim="blur"
+          />
+          <div
+            *ngIf="addBookForm.get('publisher').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("publisher").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
+          </div>
+        </div>
+      </div>
+
+      <!-- ISBN -->
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">ISBN:</p>
+        </div>
+        <div class="col-4">
+          <input
+            #ISBN
+            formControlName="isbn"
+            type="text"
+            class="form-control"
+            (input)="checkLength(ISBN, 17)"
+            trim="blur"
+          />
+          <div
+            *ngIf="addBookForm.get('isbn').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("isbn").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'components.book-edit.notice'| translate}}:</p>
+        </div>
+        <div class="col-4">
+          <textarea
+            #Description
+            formControlName="description"
+            type="text"
+            class="form-control"
+            (input)="checkLength(Description, 250)"
+            trim="blur"
+          >
+          </textarea>
+          <div
+            *ngIf="addBookForm.get('description').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("description").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3" style="text-align: left;">
+          <button
+            type="button"
+            [disabled]="!searchTerm.value"
+            (click)="setSearchTerm(searchTerm.value)"
+            class="btn btn-info"
+          >
+            {{'components.admin.issues-form.find-by'| translate}} {{'components.searchBar.searchPlaceholder'| translate}}
+          </button>
+        </div>
+        <div class="col-4">
+          <input
+            #searchTerm
+            formControlName="isbn"
+            class="form-control"
+            trim="blur"
+            type="text"
+            (input)="checkLength(searchTerm, 150)"
+          />
+
+          <div
+            *ngIf="addBookForm.get('isbn').errors?.maxlength"
+            class="validation-error"
+          >
+            {{
+              "common-errors.validation-max-length"
+                | translate
+                  : {
+                      value: addBookForm.get("isbn").errors?.maxlength
+                        ?.requiredLength
+                    }
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row mb-4">
+        <button type="button" class="btn btn-info" (click)="fileInput.click()">
+          {{'common.add'| translate}} {{'components.book-edit.image'| translate}}:
+        </button>
+      </div>
+
+      <div class="form-row mb-4">
+        <div class="col-3">
+          <p class="input-label">{{'common.add'| translate}} {{'components.book-edit.image'| translate}}:</p>
+        </div>
+        <div class="file-upload-wrapper">
+          <input
+            #fileInput
+            formControlName="image"
+            style="display: none;"
+            type="file"
+            accept="image/png, image/jpeg"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+        <div class="col-4">
+          <div *ngIf="selectedFile">
+            <span
+              >{{ selectedFile.name }} ({{ selectedFile.size / 1000 }}kb)</span
+            >
+            <span
+              *ngIf="selectedFile"
+              type="button"
+              class="close"
+              aria-label="Close"
+              (click)="onFileClear()"
+            >
+              <span aria-hidden="true">×</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add book button -->
+    <div class="center">
+      <button class="btn btn-info" type="submit" name="submit"> {{'common.save'| translate}}</button>
+      <button class="btn" (click)="onCancel()">{{'common.cancel'| translate}}</button>
+    </div>
+  </form>
+</div>

@@ -1,1 +1,53 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+
+body {
+height: 100%;
+position: relative;
+}
+
+app-root {
+min-height: 100%;
+display: block;
+position: relative;
+padding-bottom: 74px; // height of the footer
+}
+
+footer {
+position: absolute;
+bottom: 0;
+width: 100%;
+}
+.list-tooltip {
+  background: #007bff;
+  font-size: 15px;
+}
+snack-bar-container.success {
+    background-color: #5cb85c;
+    color : #fff;
+  }
+
+snack-bar-container.error {
+    background-color: #ce3232;
+    color : #fff;
+  }
+
+snack-bar-container.info {
+    background-color: #259cc0;
+    color : #fff;
+  }
+snack-bar-container.warn {
+  background-color: #ffc107;
+  color : #fff;
+}
+
+
+snack-bar-container.notification simple-snack-bar{
+    font-size: 17px !important;
+    justify-content: center;
+  }
+  .mat-simple-snackbar-action {
+    color: #ffffff;
+}

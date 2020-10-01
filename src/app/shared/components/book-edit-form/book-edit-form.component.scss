@@ -1,0 +1,73 @@
+.backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 5;
+}
+
+.form-popup{
+    position: absolute;
+    background: white;
+    top: 10%;
+    left: 15%;
+    width: 50%;
+}
+$color-danger: red;
+
+form {
+    margin: 0% 10%;
+}
+.hide-input{
+  display: none;
+}
+
+.additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+}
+mat-select{
+    text-align: left;
+}
+
+mat-select-trigger{
+    color: #495057;
+}
+
+.authors-list {
+    list-style-type:none;
+    text-align: left;
+li{
+    padding: 1%;
+    span{
+        margin-left: 2px;
+        margin-right: 5px;
+    }
+}
+
+}
+
+
+.title{
+    text-align: left;
+    font-size: 24pt;
+}
+
+.input-label{
+    text-align: left;
+    font-size: 16pt;
+}
+
+.new-author-warning{
+    font-size: 0.8em;
+}
+
+.asterisk {
+    color: red;
+}
+
+.close {
+    margin-left: 5px;
+}

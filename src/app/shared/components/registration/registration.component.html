@@ -1,0 +1,94 @@
+<div class="container my-5 py-5 z-depth-1">
+ 
+
+  <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-6">
+
+        <form class="text-center" #RegistrationForm="ngForm">
+
+          <span class="h4 mb-4 signup">Sign up</span>
+
+          <div class="form-row mb-4 fields">
+            <div class="col">
+
+              <input type="text" maxlength="20" #nameRef='ngModel' required ngModel name="FirstName" id="defaultRegisterFormFirstName" class="form-control" [ngClass]="{
+                'is-invalid': nameRef.dirty && isEmpty(RegistrationForm.value.FirstName)}" placeholder="First name">
+              <p *ngIf="nameRef.dirty && isEmpty(RegistrationForm.value.FirstName)" class = text-danger>Name is invalid </p>
+
+            </div>
+            <div class="col">
+
+              <input type="text" maxlength="20" #surnameRef='ngModel' required ngModel name="LastName" id="defaultRegisterFormLastName" class="form-control" [ngClass]="{
+                'is-invalid': surnameRef.dirty && isEmpty(RegistrationForm.value.LastName)}" placeholder="Last name">
+              <p *ngIf="surnameRef.dirty && isEmpty(RegistrationForm.value.LastName)">Lastname is invalid </p>
+
+            </div>
+          </div>
+
+
+          <input type="email" maxlength="40" #emailRef='ngModel' (change)="isEmail(RegistrationForm.value.email)" required ngModel name="email" [email]="true"  id="defaultRegisterFormEmail" class="form-control mb-4 mail" [ngClass]="{
+            'is-invalid': emailRef.dirty && !isEmail(RegistrationForm.value.email)}" placeholder="E-mail">
+          <p *ngIf="emailRef.dirty && !isEmail(RegistrationForm.value.email)">E-mail is invalid </p>
+         
+          <div id="block_container">
+            <input (change)="checkPassword(RegistrationForm.value.password)" #pass1Ref='ngModel' [type]="fieldTextType ? 'text' : 'password'" minlength ="4" maxlength="32" required ngModel name="password" id="defaultRegisterFormPassword" 
+            class="form-control password" [ngClass]="{'is-invalid': pass1Ref.dirty && !(checkPassword(RegistrationForm.value.password))}" placeholder="Password"
+                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
+                  <div class="input-group-append flag">
+                    <span class="input-group-text eye">
+                      <i
+                        class="fa eye"
+                        [ngClass]="{
+                          'fa-eye-slash': !fieldTextType,
+                          'fa-eye': fieldTextType
+                        }"
+                        (click)="toggleFieldTextType()"
+                      ></i>
+                    </span>
+                  </div>
+            </div>
+          <p id="hidden">Password is too short</p>
+
+          <div id="block_container">
+            <input (change)="comparePasswords(RegistrationForm.value.password,
+            RegistrationForm.value.confirmPassword)"  #pass2Ref='ngModel' [type]="repeatFieldTextType ? 'text' : 'password'" minlength ="4" maxlength="32" required ngModel name="confirmPassword" id="defaultRegisterFormConfirmPassword" 
+            class="form-control password" [ngClass]="{'is-invalid': pass1Ref.dirty && pass2Ref.dirty && !(comparePasswords(RegistrationForm.value.password, RegistrationForm.value.confirmPassword))}" placeholder="Confirm Password"
+                  aria-describedby="defaultRegisterFormPasswordHelpBlock">
+            <div class="input-group-append flag">
+              <span class="input-group-text eye">
+                <i
+                  class="fa eye"
+                  [ngClass]="{
+                    'fa-eye-slash': !repeatFieldTextType,
+                    'fa-eye': repeatFieldTextType
+                  }"
+                  (click)="toggleRepeatFieldTextType()"
+                ></i>
+              </span>
+            </div>
+        </div>
+        <p *ngIf="pass1Ref.dirty && pass2Ref.dirty && !(comparePasswords(RegistrationForm.value.password,
+            RegistrationForm.value.confirmPassword))">Passwords are different</p>
+
+          <button [disabled]="(clicked == false && (RegistrationForm.invalid || !checkPassword(RegistrationForm.value.password) || (!comparePasswords(RegistrationForm.value.password,
+          RegistrationForm.value.confirmPassword)) || !isEmail(RegistrationForm.value.email) || !emailRef || !pass1Ref || !pass2Ref|| !nameRef || !surnameRef))" 
+          (click)="SignUp(RegistrationForm)" class="btn btn-info my-4 btn-block" >Sign up</button>
+
+
+
+          <span>Already a member?
+            <a class="text-primary" (click)="navigateToSignIn()" >Sign in</a>
+          </span>
+
+
+
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+

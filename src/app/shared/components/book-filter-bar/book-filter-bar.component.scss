@@ -1,0 +1,87 @@
+.padding-0{
+    padding-right:0;
+    padding-left:0;
+  }
+  .select-dropdown{
+    min-width: 5rem;
+    width: 14rem;
+  }
+  .clear-icon, .search-icon{
+    cursor: pointer;
+    display: inline-block;
+    fill: currentColor;
+    position: relative; 
+  }
+  .clear-icon{
+      color: #80868b;
+  }
+  .hidden{
+    visibility: hidden;
+  }
+
+.sign {
+  cursor: pointer !important;
+}
+
+  .block
+  {
+    display: inline-flex;
+    top: 100000;
+    margin: 0.25%;
+    width: 16% !important;
+    margin-right: 6px !important;
+    margin-left: 14px !important;
+  }
+
+  .mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
+    background: blue;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+  }
+
+  .custom-control-label {
+    cursor: pointer;
+  }
+
+  .mat-select>.mat-option{position:relative;}
+  .mat-select>.mat-option[data-tooltip]:hover::after {
+     content: attr(data-tooltip);
+     position: absolute;
+     left: 40px;
+     top: 10px;
+     min-width: 75px;
+     border: 1px solid rgba(0,0,0,.15);
+     border-radius: 2px;
+     background: white;
+     padding: 3px;
+     color: #000000;
+     font-size: 11px;
+     box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  }
+
+  @media (max-width: 780px){
+    .select-dropdown{
+      min-width: 8rem;
+      width: auto;
+    }
+  }
+  @media (max-width: 550px){
+    .card-header.d-flex{
+      display: block !important;
+    .select-dropdown{
+      width:88%;
+      margin: 0.5rem;
+      }
+    .custom-control-label{
+      margin-left:24px;
+    }
+    .form-inline{
+      flex-flow:nowrap;
+    }
+    }
+  }

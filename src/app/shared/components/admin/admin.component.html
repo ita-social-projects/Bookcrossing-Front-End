@@ -1,0 +1,62 @@
+<div class="admin-container">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav mode="over" [(opened)]="isSideBarOpened">
+      <div class="d-flex justify-content-center pt-4">
+        <img src="https://ldaily.ua/wp-content/uploads/2017/01/logo_SoftServe-810x270.jpg"
+             class="logo-header" alt="company's logo">
+      </div>
+      <div class="list-group list-group-flush mb-2 links" (click)="isSideBarOpened = !isSideBarOpened">
+        <a routerLink="dashboard" class="list-group-item list-group-item-action waves-effect">
+          <i class="far fa-chart-bar mr-3"></i>{{'components.admin.dashboard.dashboard' | translate}}</a>
+      </div>
+
+      <div class="list-group list-group-flush links">
+      <div class="list-group-item active waves-effect justify-content-center text-center"
+      (click)="showTimeSpans = !showTimeSpans">
+      <span>{{'components.admin.timespans.timespans' | translate}}</span>
+      </div>
+      <div class="" *ngIf="showTimeSpans" (click)="isSideBarOpened = !isSideBarOpened">
+        <a routerLink="timespans" class="list-group-item list-group-item-action waves-effect">
+          <i class="fas fa-table mr-3"></i></a>
+      </div>
+      </div>
+    
+      <div class="list-group list-group-flush links" style="margin-top: 5px;">
+        <div class="list-group-item active waves-effect justify-content-center text-center"
+             (click)="showTableManagement = !showTableManagement">
+          <span>{{'components.admin.table-management' | translate}}</span>
+        </div>
+        <div class="" *ngIf="showTableManagement" (click)="isSideBarOpened = !isSideBarOpened">
+          <a routerLink="authors" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>{{'components.admin.authors.authors' | translate}}</a>
+          <a routerLink="locations" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>{{'components.admin.locations.locations' | translate}}</a>
+          <a routerLink="genres" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>{{'components.admin.genres.genres' | translate}}</a>
+          <a routerLink="languages" class="list-group-item list-group-item-action waves-effect">
+            <i class="fas fa-table mr-3"></i>{{'components.admin.languages.languages' | translate}}</a>
+          <a routerLink="users" class="list-group-item list-group-item-action waves-effect">
+              <i class="fas fa-table mr-3"></i>{{'components.admin.users.users' | translate}}</a>
+          <a routerLink="issues" class="list-group-item list-group-item-action waves-effect">
+                <i class="fas fa-table mr-3"></i>{{'components.admin.issues.issues' | translate}}</a>
+        </div>
+      </div>
+
+      <div routerLink="suggestion-message" class="list-group list-group-flush links mt-2" (click)="isSideBarOpened = !isSideBarOpened">
+        <div  class="list-group-item active waves-effect justify-content-center text-center">
+          <a class="text-white">
+            {{'components.admin.suggestion-message.messages' | translate}}</a>
+        </div>
+      </div>
+      
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="slider" (click)="isSideBarOpened = !isSideBarOpened">
+        <i class="fas fa-2x fa-angle-double-right slider-icon"></i>
+      </div>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

@@ -1,0 +1,149 @@
+<div class="my-comment">
+
+    <div class="row bootstrap snippets">
+        <div class=" col-md-offset-2 col-sm-12">
+            <div>
+                <div class="panel panel-info ">
+                    <div>
+                        <div>
+                            <div class="search-wrapper">
+                                <form (reset)="changeTextAreaHeight(Comment)">
+                                    <div class="md-form amber-textarea active-amber-textarea-2">
+                                        <i class="fas fa-pencil-alt prefix"></i>
+                                        <textarea id="form20" class="md-textarea form-control main-comment deletable" name="comment" required #Comment [(ngModel)]="text" (input)="onCommentInput(Comment, 500)"></textarea>
+                                        <label for="form20">{{'components.comment.commentplaceholder' | translate}}</label>
+                                        <button class="close-icon" type="reset"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="flex-align-center">
+                            <button [disabled]="!canCommit()" type="button" (click)="PostComment(Comment.value)" class="btn btn-info pull-right primary-flat">
+                {{'components.comment.post' | translate}}
+              </button>
+                            <a class="login-link" *ngIf="!isAuthenticated()" (click)="login()">{{'components.comment.logintocommentmessage' | translate}}</a>
+                        </div>
+                        <hr>
+                        <ul class="media-list" id="comments-block">
+
+                            <li *ngFor="let comment of comments; let i = index" [attr.data-index]="i" class="comment-wrapper">
+
+
+                                <div class="media">
+                                    <a class="pull-left">
+                                        <ngx-avatar [name]="getUserInitials(comment.owner)"></ngx-avatar>
+                                    </a>
+
+                                    <div class="media-body pad">
+                                        <span class="time-value pull-right">
+                          {{ formatDate(comment.date) }}
+                    </span>
+                                        <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
+
+                                        <a *ngIf="!comment.isDeleted && canEditComment(comment.owner)" [attr.data-target]="'#root_'+ i + '_edit'" data-toggle="collapse" role="button" class="btn-text" href="#">
+                      {{'components.comment.edit' | translate}}
+                    </a>
+
+                                        <button *ngIf="!comment.isDeleted && canDeleteComment(comment.owner)" (click)="onDeleteComment(comment.id)" role="button" class="btn-text">
+                      {{'components.comment.delete' | translate}}
+                    </button>
+
+                                        <p *ngIf="!comment.isDeleted; else DeletedMessage">
+                                            {{comment.text}}
+                                        </p>
+                                        <ng-template #DeletedMessage>
+                                            <p class="text-deleted">
+                                                {{'components.comment.deletemessage' | translate}}
+                                            </p>
+                                        </ng-template>
+
+                                        <small *ngIf="!comment.isDeleted">
+                      <a [attr.data-target]="'#root_'+ i + '_reply'"
+                         data-toggle="collapse"
+                         class="reply-btn"
+                         href="#">
+                        {{'components.comment.reply' | translate}}
+                      </a>
+                    </small>
+
+                                        <!--Reply form-->
+                                        <div id="root_{{i}}_reply" class="collapse" data-parent="#comments-block">
+                                            <ng-container *ngIf="isAuthenticated(); else ReplyNotAllowed">
+                                                <div>
+                                                    <div class="search-wrapper">
+                                                        <form (reset)="changeTextAreaHeight(Subcomment)">
+                                                            <div class="md-form amber-textarea active-amber-textarea-2">
+                                                                <i class="fas fa-pencil-alt prefix"></i>
+                                                                <textarea id="form22" class="md-textarea form-control sub-comment deletable" required name="subcomment" #Subcomment (input)="onCommentInput(Subcomment, 500)"></textarea>
+                                                                <label for="form22">{{'components.comment.commentplaceholder' | translate}}</label>
+                                                                <button class="close-icon" type="reset"></button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <button [disabled]="Subcomment.value.length === 0" (click)="PostChildComment(Subcomment.value, returnID(comment.id))" type="button" class="btn btn-info pull-right primary-flat">
+                          {{'components.comment.post' | translate}}
+                        </button>
+                                            </ng-container>
+                                            <ng-template #ReplyNotAllowed>
+                                                <p class="validation-error">{{'components.comment.replymessage' | translate}}</p>
+                                            </ng-template>
+                                        </div>
+
+                                        <!--Edit form-->
+                                        <div id="root_{{i}}_edit" class="collapse" data-parent="#comments-block">
+                                            <form #updateFrom="ngForm">
+                                                <div>
+                                                    <div class="search-wrapper">
+                                                        <form (reset)="changeTextAreaHeight(EditComment)">
+                                                            <div class="md-form amber-textarea active-amber-textarea-2">
+                                                                <i class="fas fa-pencil-alt prefix"></i>
+                                                                <textarea id="form21" class="md-textarea form-control sub-comment deletable" [ngModel]="comment.text" [attr.data-old-value]="comment.text" name="text" required #EditComment (input)="onCommentInput(EditComment, 500)" (focus)="changeTextAreaHeight(EditComment)"></textarea>
+                                                                <label for="form21">{{'components.comment.editplaceholder' | translate}}</label>
+                                                                <button class="close-icon" type="reset"></button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <button [disabled]="EditComment.value.length === 0" (click)="updateComment(comment.id, EditComment.value)" type="button" class="btn btn-info pull-right primary-flat">
+                          {{'components.comment.post' | translate}}
+                        </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <ng-template [ngIf]="comment.comments.length > 0">
+                                        <a data-toggle="collapse" href="#root_subcomments_{{i}}" role="button" aria-expanded="false" [attr.aria-controls]="'root_subcomments_' + i" class="show-subcomments">
+                                            <div class="hidden">
+                                                {{'components.comment.viewall' | translate }} {{ comment.comments.length}}
+                                                <i class="arrow-down"></i>
+                                            </div>
+
+                                            <div class="shown">
+                                                {{'components.comment.hideall' | translate }} {{ comment.comments.length}}
+                                                <i class="arrow-up"></i>
+                                            </div>
+                                        </a>
+
+                                        <div class="collapse" id="root_subcomments_{{i}}">
+                                            <app-childcomment #childComment (update)="UpdateComments()" [comments]="comment.comments" [level]="level + 1" [root]="i" [user]="user" [ids]="returnID(comment.id)" [isAuthorized]="isAuthenticated()"></app-childcomment>
+
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

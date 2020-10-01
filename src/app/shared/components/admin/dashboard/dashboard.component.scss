@@ -1,0 +1,108 @@
+body {
+  font-family: Roboto,sans-serif;
+}
+
+.line-chart{
+  padding: 5%;
+  margin-top: -1rem;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius: 7px;
+}
+
+.cascading-admin-card .admin-up {
+  margin: 0.25rem 4% 4%;
+}
+.cascading-admin-card .admin-up .data {
+  float: right;
+  margin-top: 1rem;
+  text-align: right;
+}
+.cascading-admin-card .admin-up .fab, .cascading-admin-card .admin-up .far, .cascading-admin-card .admin-up .fas {
+  padding: 1.7rem;
+  font-size: 2rem;
+  color: #fff;
+  text-align: left;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.progress, .progress .progress-bar {
+  height: 6px;
+}
+.cascading-admin-card .admin-up .data p {
+  color: #999;
+  font-size: 12px;
+  text-align:right;
+}
+.card.card-cascade .view.view-cascade.gradient-card-header {
+  padding: 1.6rem 1rem;
+  text-align: center;
+}
+.indigo-gradient-reverse{
+  color:white;
+  background: rgb(52,67,149);
+  background: linear-gradient(90deg, rgba(52,67,149,1) 0%, rgba(2,0,36,1) 100%);
+}
+.indigo-gradient{
+  color:white;
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(63,81,181,1) 100%, rgba(27,142,166,1) 100%);
+}
+.indigo-gradient-darker{
+  background: rgb(19,10,90);
+  background: linear-gradient(90deg, rgba(19,10,90,1) 0%, rgba(7,1,110,1) 100%, rgba(14,11,136,1) 100%);
+
+}
+
+.reset{
+  padding: 0;
+  max-width: 80px;
+  margin: -3rem 0 -1.25rem;
+}
+.reset-button{
+  width: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top: 20px;
+}
+.line-chart-header {
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-top: -1rem;
+  border-radius: 7px;
+  color:white;
+}
+.small-chart{
+  margin-top:2rem;
+}
+.side-chart{
+  max-width: 32%;
+}
+.chart-header, .bar-header {
+  margin: -1rem 2% 1rem;
+  border-radius: 7px;
+  color:white;
+}
+.bar-header{
+  margin-right: 1.5rem;
+}
+
+.bar-chart{
+  margin-left: 0;
+  margin-right: 1%;
+}
+
+@media(max-width: 1250px){
+  .line-chart{
+    margin-top: 0.25rem;
+  }
+  #line-chart{
+    order: 2;
+  }
+  #line-chart-header{
+    order: 1;
+  }
+  .side-chart{
+    max-width: initial;
+  }
+}

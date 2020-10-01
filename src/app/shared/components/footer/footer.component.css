@@ -1,0 +1,10 @@
+.contacts{
+  float: right;
+  margin-right: 20px;
+  width: auto;
+  height: auto;
+}
+.gradient-background{
+  background: rgb(57,55,73);
+  background: linear-gradient(90deg, rgba(57,55,73,1) 0%, rgba(11,11,22,1) 51%, rgba(75,122,152,1) 100%);
+}

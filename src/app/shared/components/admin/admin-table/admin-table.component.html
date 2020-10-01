@@ -1,0 +1,95 @@
+<div class="table-responsive">
+  <table
+    matSort
+    (matSortChange)="onHeaderClicked($event)"
+    [matSortDisableClear]="true"
+    [matSortActive]="sortParams.orderByField"
+    [matSortDirection]="sortParams.orderByAscending ? 'asc' : 'desc'"
+    class="table table-hover mb-0"
+  >
+    <thead>
+      <tr>
+        <ng-container *ngFor="let name of displayColumns; let i = index">
+          <th
+            scope="col"
+            mat-sort-header="{{ dataProperties[i] }}"
+            [ngClass]="isBooleanHeader(i)"
+          >
+            {{ name | translate }}
+          </th>
+        </ng-container>
+        <th scope="col" class="text-center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let item of data; let i = index">
+        <tr
+          id="{{ i }}"
+          (click)="onSelectedRowChange(item)"
+          [ngClass]="{ isSelected: selectedRows?.includes(item) }"
+          class="isSelected"
+        >
+          <td *ngFor="let column of dataProperties" class="align-middle">
+            <ng-template
+              [ngIf]="isNotBoolean(item[column])"
+              [ngIfElse]="BooleanColumn"
+            >
+              {{ item[column] }}
+            </ng-template>
+
+            <ng-template #BooleanColumn>
+              <div class="text-center">
+                <ng-container *ngIf="item[column] == false; else TrueIcon">
+                  <button
+                    *ngIf="
+                      booleanButtonClicked.observers.length > 0;
+                      else FalseIcon
+                    "
+                    class="btn btn-md admin-button px-3"
+                    (click)="onBooleanButtonClick(item, $event)"
+                  >
+                    {{ booleanButtonText }}
+                  </button>
+                  <ng-template #FalseIcon>
+                    <i class="fas fa-lg red-text fa-times-circle"></i>
+                  </ng-template>
+                </ng-container>
+                <ng-template #TrueIcon>
+                  <i class="fas fa-lg green-text fa-check-circle"></i>
+                </ng-template>
+              </div>
+            </ng-template>
+          </td>
+          <td>
+            <div class="manage-btns row d-flex text-center">
+              <button
+                *ngIf="canView"
+                class="btn btn-md admin-button px-3"
+                (click)="onView(item, $event)"
+                title="View"
+              >
+                <i class="fas fa-eye"></i>
+              </button>
+              <button
+                *ngIf="canEdit"
+                class="btn btn-md admin-button px-3"
+                (click)="onEdit(item, $event)"
+                title="Edit"
+              >
+                <i class="far fa-edit"></i>
+              </button>
+              <button
+                *ngIf="canDelete"
+                class="btn btn-md admin-button px-3"
+                (click)="onDelete(item, $event)"
+                title="Delete"
+              >
+                <i class="fa fa-trash-alt"></i>
+              </button>
+            </div>
+          </td></tr
+      ></ng-container>
+    </tbody>
+  </table>
+</div>

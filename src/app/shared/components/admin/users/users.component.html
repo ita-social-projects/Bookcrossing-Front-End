@@ -1,0 +1,106 @@
+<ng-template appRef>
+  <!--Add Form-->
+</ng-template>
+
+<div class="container my-5">
+  <section>
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-list">
+          <div class="card-header white row no-gutters align-items-center py-3">
+            <p class="h5-responsive font-weight-bold mb-1 mr-2 col-2">
+              {{ "components.admin.users.users" | translate }}
+            </p>
+
+            <!-- header search -->
+            <div class="col">
+              <form
+                (ngSubmit)="search(searchField.value)"
+                [formGroup]="searchForm"
+              >
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="{{ 'components.admin.search' | translate }}"
+                    aria-label="Search"
+                    formControlName="searchField"
+                    (input)="checkLength(searchField)"
+                    [ngClass]="{
+                      'is-invalid': searchField.touched && searchField.errors
+                    }"
+                  />
+                  <div class="input-group-append">
+                    <button class="input-group-text btn-light" type="submit">
+                      <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-2">
+              <div class="custom-control custom-checkbox ml-auto text-right">
+                <input type="checkbox" class="custom-control-input" id="showDeleted" [checked]="showDeleted" (change)="onShowDeletedChange()">
+                <label class="custom-control-label" for="showDeleted">{{"components.admin.users.show-deleted" | translate}}</label>
+              </div>
+            </div>
+
+            <div class="w-100"></div>
+
+            <div
+              class="col offset-1"
+              *ngIf="searchField?.touched && searchField?.errors?.maxlength"
+            >
+              <p class="my-0 mr-0 ml-2 validation-error">
+                {{
+                  "common-errors.validation-max-length"
+                    | translate
+                      : { value: searchField.errors?.maxlength?.requiredLength }
+                }}
+              </p>
+            </div>
+
+            <small class="ml-auto mt-2 text-muted">
+              {{
+                "components.admin.users.found-number"
+                  | translate: { value: totalSize || 0 }
+              }}
+            </small>
+          </div>
+
+          <!-- Table -->
+          <div *ngIf="usersLoaded" class="card-body">
+            <app-admin-table
+              *ngIf="users && users.length > 0; else EmptyList"
+              [data]="users"
+              [dataProperties]="usersProperties"
+              [displayColumns]="usersDisplayColumns"
+              [(sortParams)]="queryParams.sort"
+              [canView]="true"
+              [canEdit]="false"
+              [canDelete]="false"
+              (viewClicked)="onViewButtonClicked($event)"
+              (selectedHeaderChange)="onSortHeaderChanged()"
+            >
+            </app-admin-table>
+
+            <ng-template #EmptyList>
+              <p class="text-center my-5 display-4 font-weight-bold">
+                No users found
+              </p>
+            </ng-template>
+
+            <app-pagination
+              *ngIf="users && users.length > 0"
+              [arraySize]="totalSize"
+              [pageSize]="queryParams.pageSize"
+              [selectedPage]="queryParams.page"
+              (PageChange)="onPageChanged($event)"
+            >
+            </app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

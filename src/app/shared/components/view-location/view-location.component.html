@@ -1,0 +1,74 @@
+<div class="container my-5">
+  <section>
+    <div class="row">
+      <div class="col">
+        <div class="card card-list">
+          <div class="card-header white d-flex align-items-center py-3">
+            <p class="h5-responsive font-weight-bold mb-0 mr-2">Locations</p>
+            <!-- header search -->
+            <div class="col">
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Search"
+                  aria-label="Search"
+                  [(ngModel)]="searchField"
+                />
+                <div class="input-group-append">
+                  <button class="input-group-text btn-light">
+                    <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="card-body">
+            <table class="table table-hover mb-0 my-custom-scrollbar table-wrapper-scroll-y">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">City</th>
+                  <th  width="30%" scope="col">Street</th>
+                  <th  scope="col">Office</th>
+                  <th width="20%" scope="col" *ngIf="isAdmin">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container
+                  *ngFor="
+                    let location of locations |contentFilter:searchField:['city', 'street', 'officeName'];let i = index "
+                >
+                  <tr>
+                    <th scope="row">
+                      <a class="text-primary">{{ i }}</a>
+                    </th>
+                    <td >{{ location.city }}</td>
+                    <td >{{ location.street }}</td>
+                    <td >{{ location.officeName }}</td>
+                    <!-- Actions -->
+                    <td *ngIf="isAdmin">
+                      <div class="row d-flex">
+                        <button class="btn btn-md btn-md px-3 m-1" (click)="onEditLocation(location, i)">
+                          <i class="far fa-edit"></i>
+                        </button>
+                        <button
+                          class="btn btn-md btn-outline-danger z-depth-0 waves-effect px-3 m-1"
+                          (click)="onDeleteLocation(location.id, i)"
+                        >
+                          <i class="fas fa-ban"></i>
+                        </button>
+                      </div>
+                    </td></tr
+                ></ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

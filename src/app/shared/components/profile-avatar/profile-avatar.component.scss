@@ -1,0 +1,20 @@
+#avatar{
+    height: 30px;
+}
+.avatar{
+      padding: 0px;
+      margin: 0px;
+}
+
+.dropdown-unclickable-item{
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+@media (max-width: 990px){
+  .avatar{
+      position: relative;
+      padding-top:3px;
+      right: 2px;
+  }
+}

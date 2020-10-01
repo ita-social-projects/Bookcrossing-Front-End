@@ -1,0 +1,28 @@
+  <div class="view jarallax" data-jarallax='{"speed": 0.2}'
+       style="background-image: url(https://assets.entrepreneur.com/content/3x2/2000/20191219170611-GettyImages-1152794789.jpeg);">
+    <div class="full-bg-img mask rgba-black-light">
+      <div class="container flex-center">
+        <div class="row pt-5 mt-3 w-100">
+          <div class="col-md-12">
+            <div class="text-center">
+              <div class="aphorismStyle">
+              <i>"{{aphorism?.phrase}}"</i>
+              <br>
+              <i>-{{aphorism?.phraseAuthor}}</i>
+              </div>
+              <h2 class="h1 h1-reponsive white-text font-up font-bold mb-3 wow fadeInDown" data-wow-delay="0.3s">
+                <strong>Bookcrossing</strong>
+              </h2>
+              <hr class="hr-light mt-4 wow fadeInDown" data-wow-delay="0.4s">
+              <h5 class="font-up mb-5 white-text wow fadeInDown" data-wow-delay="0.4s">
+                <strong>SoftServe</strong>
+              </h5>
+              <button mat-stroked-button class="home-button" routerLink="rules">{{'components.home.rules' | translate}}</button>
+              <button *ngIf="isAuthenticated()" mat-stroked-button class="home-button" routerLink="book" >{{'components.home.register' | translate}}</button>
+              <button *ngIf="!isAuthenticated()" mat-stroked-button class="home-button" (click)="redirectToLogin()" >{{'components.home.register' | translate}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

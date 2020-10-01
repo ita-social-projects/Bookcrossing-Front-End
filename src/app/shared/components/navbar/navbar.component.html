@@ -1,0 +1,54 @@
+<nav class="blue-gradient navbar navbar-expand-lg navbar-dark indigo" id="navbar">
+
+  <div class="container">
+
+    <a class="navbar-brand md-tabs nav-justified py-0 " id="logo" routerLink=""><i class="fas white-text fa-book"></i> Bookcrossing</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
+      aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="basicExampleNav">
+
+      <ul class="navbar-nav mr-auto text-uppercase">
+
+        <!--add new links here  -->
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}">
+          <a class="nav-link">{{'common.home' | translate}}</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active" [routerLink]="['books']">
+          <a class="nav-link">{{'common.books' | translate}}</a>
+        </li>
+        <li *appHideProd class="nav-item" routerLinkActive="active" [routerLink]="['demo']">
+          <a class="nav-link">{{'common.routes' | translate}}</a>
+        </li>
+        <ng-template #login>
+          <div class="collapse navbar-collapse " id="basicExampleNav">
+            <ul class="navbar-nav ml-auto text-uppercase">
+            <div class="search-bar">
+              <app-search-bar> </app-search-bar>
+            </div>
+            <li class="nav-item" routerLinkActive="active" (click)="redirectToLogin()">
+              <a class="nav-link">{{'common.login' | translate}}</a>
+            </li>
+            <ng-template [ngIf]="canRegister">
+              <li class="nav-item" routerLinkActive="active" [routerLink]="['registration']">
+                <a class="nav-link">{{'common.registration' | translate}}</a>
+              </li>
+            </ng-template>
+          </ul>
+          </div>
+        </ng-template>
+      </ul>
+      <ng-template [ngIf]="isLoggedIn" [ngIfElse]="login">
+        <app-search-bar> </app-search-bar>
+        <app-notification hidden></app-notification>
+        <app-notification-bell></app-notification-bell>
+        <app-profile-avatar></app-profile-avatar>
+      </ng-template>
+    </div>
+  </div>
+
+</nav>

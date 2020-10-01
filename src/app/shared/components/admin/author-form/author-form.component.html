@@ -1,0 +1,77 @@
+<section class="d-flex justify-content-center row justify-content-center">
+
+  <form class="border border-light form-container col-sm" [formGroup]="form" (ngSubmit)="submit()">
+    <h3 class="text-center p-2">
+      <strong>{{title | translate}}</strong>
+    </h3>
+    <div class="form">
+      <div class="mt-2">
+        <label for="AuthorFormFirstname">{{'components.admin.authors.first-name' | translate}} <span class="asterisk"> *</span></label>
+        <input type="text" id="AuthorFormFirstname" class="form-control" formControlName="firstName"
+               name="firstName">
+      </div>
+      <div *ngIf="form.get('firstName').errors && form.get('firstName').touched">
+        <div *ngIf="form.get('firstName').errors?.required" class="validation-error">
+          {{'common-errors.validation-required' | translate}}
+        </div>
+        <div *ngIf="form.get('firstName').errors.minlength" class="validation-error">
+          {{'common-errors.validation-min-length' | translate:{value:form.get('firstName').errors?.minlength?.requiredLength} }}
+        </div>
+        <div *ngIf="form.get('firstName').errors.maxlength" class="validation-error">
+          {{'common-errors.validation-max-length' | translate:{value:form.get('firstName').errors?.maxlength?.requiredLength} }}
+        </div>
+        <div *ngIf="form.get('firstName').errors.pattern" class="validation-error">
+          {{'common-errors.validation-letter-symbol-pattern' | translate}}
+          <span class="bold-symbol">' -</span>
+          {{'common-errors.validation-are-acceptable' | translate}}
+        </div>
+      </div>
+
+      <div class="mt-3">
+        <label for="AuthorFormLastname">{{'components.admin.authors.last-name' | translate}}  <span class="asterisk"> *</span></label>
+        <input type="text" id="AuthorFormLastname" class="form-control" formControlName="lastName"
+               name="lastName"></div>
+      <div *ngIf="form.get('lastName').errors && form.get('lastName').touched">
+        <div *ngIf="form.get('lastName').errors?.required" class="validation-error">
+          {{'common-errors.validation-required' | translate}}
+        </div>
+        <div *ngIf="form.get('lastName').errors.minlength" class="validation-error">
+          {{'common-errors.validation-min-length' | translate:{value:form.get('lastName').errors?.minlength?.requiredLength} }}
+        </div>
+        <div *ngIf="form.get('lastName').errors.maxlength" class="validation-error">
+          {{'common-errors.validation-max-length' | translate:{value:form.get('lastName').errors?.maxlength?.requiredLength} }}
+        </div>
+        <div *ngIf="form.get('firstName').errors.pattern" class="validation-error">
+          {{'common-errors.validation-letter-symbol-pattern' | translate}}
+          <span class="bold-symbol">' -</span>
+          {{'common-errors.validation-are-acceptable' | translate}}
+        </div>
+      </div>
+
+    </div>
+    <div class="text-center mt-3">
+      <button class="btn btn-info" type="submit" name="submit">
+        {{submitButtonText | translate}}
+      </button>
+      <input type="button" class="btn" (click)="cancel()" value="{{'common.cancel' | translate}}"/>
+    </div>
+  </form>
+
+
+  <aside *ngIf="authorsMerge?.length > 1" class="author-container border border-light col">
+    <h3 class="text-center p-2">
+      <strong>{{'components.admin.authors-form.merge-selected' | translate}}: </strong>
+    </h3>
+    <div class="p-1">
+      <ul>
+        <li *ngFor="let a of authorsMerge" (click)="changeMergeAuthor(a)" class="selectable">
+          {{a.firstName}} {{a.lastName}}
+        </li>
+      </ul>
+      <p class="pl-1"><em> {{'components.admin.authors-form.merge-msg' | translate}}: </em></p>
+      <span class="author-result">{{form.value.firstName}} {{form.value.lastName}}</span>
+    </div>
+  </aside>
+
+</section>
+
