@@ -1,0 +1,40 @@
+<div class="map">
+  <div id="map" class="map-container"></div>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="radius-control">
+      <span>{{ 'components.search-map.radius' | translate }}</span>
+      <input [(ngModel)]="radiusInKm"
+             (ngModelChange)="onRadiusChange()"
+             min="0.5"
+             type="number"
+             class="form-control"
+             placeholder="Radius"
+      >
+      <button class="btn btn-info set-btn" (click)="filterLocations()">
+        {{ 'components.search-map.set' | translate }}
+      </button>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+  <div class="col-md-5">
+    <div class="btn-group locations" data-toggle="buttons">
+      <ng-template [ngIf]="userHasDefinedLocation">
+        <label class="btn btn-primary location-btn" (click)="changeToHomeLocation()">
+          <input id="option1" type="radio" name="options">
+          {{ 'components.search-map.home' | translate }}
+        </label>
+      </ng-template>
+      <label class="btn btn-primary location-btn" (click)="changeToCurrentLocation()">
+        <input id="option2" type="radio" name="options">
+        {{ 'components.search-map.current' | translate }}
+      </label>
+      <label class="btn btn-primary location-btn active" (click)="changeToCustomMarker()">
+        <input id="option3" type="radio" name="options" checked>
+        {{ 'components.search-map.marker' | translate }}
+      </label>
+    </div>
+  </div>
+</div>

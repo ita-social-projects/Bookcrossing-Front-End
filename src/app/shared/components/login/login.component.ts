@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormControl, NgForm} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -11,19 +12,19 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
+
   redirectUrl: string;
   loading = false;
   Isinvalid = false;
   submitted = false;
   returnUrl: string;
   error = '';
-  password: string;
-
+@ViewChild('loginElement', {static: true, read: NgForm}) loginForm: NgForm;
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private authenticationService: AuthenticationService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private cookieService: CookieService) {
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/books']);
     }
@@ -33,20 +34,30 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/registration']);
   }
 
-
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.redirectUrl = params.returnUrl;
     });
-    /*    this.loginForm = this.formBuilder.group({
-          username: ['', Validators.required],
-          password: ['', Validators.required]
-        });*/
+
+    if (this.cookieService.get('remember') !== undefined) {
+      if (this.cookieService.get('remember') === 'Yes') {
+        this.loginForm.control.value.Email = this.cookieService.get('email');
+        this.loginForm.control.value.Password = this.cookieService.get('password');
+      }
+    }
   }
 
-
-  singIn(loginFrom) {
-    this.authenticationService.login(loginFrom.value)
+  singIn(loginForm) {
+    if (loginForm.value.RememberMe) {
+      this.cookieService.set('remember', 'Yes');
+      this.cookieService.set('email', loginForm.value.Email);
+      this.cookieService.set('password', loginForm.value.Password);
+    } else {
+      this.cookieService.set('remember', 'No');
+      this.cookieService.set('email', '');
+      this.cookieService.set('password', '');
+    }
+    this.authenticationService.login(loginForm.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -60,7 +71,6 @@ export class LoginComponent implements OnInit {
           this.Isinvalid = true;
           this.error = error;
           this.loading = false;
-          this.password = '';
         });
   }
 }

@@ -54,7 +54,7 @@ export class MapboxService {
     this.map.addControl(this.geocoder);
     this.map.addControl(this.geolocator);
 
-    this.marker.addTo(this.map);
+    // this.marker.addTo(this.map);
 
     this.geocoder.on('result', (result) => {
       this.setMarkerLngLat(result.result.center[0], result.result.center[1]);
@@ -111,6 +111,19 @@ export class MapboxService {
           officeName: result?.features[0]?.text,
         };
         this.currentAddressSource.next(address);
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  public getCoordinatesByAddress(query: string) {
+    const apiUrl = this.geocoderApiUrl + `${query}.json?access_token=${this.ACCESS_TOKEN}`;
+    console.log(apiUrl);
+    this.http.get(apiUrl).subscribe(
+      (result) => {
+        console.log(result);
       },
       (error) => {
         alert(error.message);

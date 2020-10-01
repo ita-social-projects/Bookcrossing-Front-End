@@ -23,6 +23,7 @@ import { ChildcommentComponent } from './shared/components/comment/childcomment/
 import { NgContentAst } from '@angular/compiler';
 import { ContactsComponent } from './shared/components/contacts/contacts.component';
 import { LocationsComponent } from './shared/components/admin/locations/locations.component';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
 import { GenresComponent } from './shared/components/admin/genres/genres.component';
 import { DashboardComponent } from './shared/components/admin/dashboard/dashboard.component';
 import { ProfileComponent } from './shared/components/profile/profile.component';
@@ -41,6 +42,9 @@ import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { TimespansComponent } from './shared/components/admin/timespans/timespans/timespans.component';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
+import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
 
 // @ts-ignore
 const routes: Routes = [
@@ -60,6 +64,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: Role.Admin },
     children: [
+      { path: 'timespans', component: TimespansComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'authors', component: AuthorsComponent },
       { path: 'locations', component: LocationsComponent },
@@ -70,6 +75,9 @@ const routes: Routes = [
       { path: 'language-form', component: LanguageFormComponent },
       { path: 'users', component: UsersComponent },
       { path: 'user/:id', component: UserViewComponent },
+      { path: 'issues', component: IssuesComponent },
+      { path: 'issue-form', component: IssueFormComponent },
+      { path: 'suggestion-message', component: SuggestionMessageComponent }
     ],
   },
   {
@@ -125,7 +133,11 @@ const routes: Routes = [
     component: CommentComponent,
     children: [{ path: 'subcomment', component: ChildcommentComponent }],
   },
-  { path: 'contacts', component: ContactsComponent },
+  {
+    path: 'contacts',
+    component: ContactsComponent,
+    canActivate: [AuthGuard],
+   },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   {
     path: 'password',

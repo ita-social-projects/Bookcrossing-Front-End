@@ -1,0 +1,89 @@
+@media (max-width: 800px) {
+    .action{
+      width:auto;
+    }
+    .card-header {
+      display: block !important;
+    }
+    ul {
+      margin: 8px;
+    }
+  }
+  
+  .header-checkbox {
+    padding-left: 2rem !important;
+  }
+  .selectable-row-checkbox{
+    padding-left:1.75rem;
+  }
+  .isSelected{
+    background-color:rgba(0,0,0,0.125);
+    border-left: 2px solid deepskyblue;
+    border-right: 2px solid deepskyblue;
+  }
+  .table td:nth-child(1){
+    color: #4285f4 !important;
+  }
+  .table.table td {
+    padding: 0.75rem;
+  }
+  .table {
+    width: 99%;
+    margin-bottom: 1rem;
+  }
+  .table thead th {
+    font-size: .95rem;
+    font-weight: 500;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    vertical-align: bottom;
+    border-bottom: 2px solid rgba(0,0,0,.06);
+  }
+  .table tbody td {
+    font-size: 1rem;
+  }
+  .active-header{
+    background-color: #eceff1;
+  }
+  .admin-button{
+    margin-left: 0;
+  }
+  
+  .manage-btns {
+    justify-content: space-around;
+    margin-right: 1rem;
+  }
+  
+  .admin-checkbtn{
+    padding-top: 0.8rem;
+    margin-right: 1rem;
+  }
+  
+  @media (max-width: 800px) {
+    .action{
+      width:auto;
+    }
+  }
+  .dropdown-item{
+    margin-bottom: 0.5rem;
+  }
+
+  select{
+		font-family: fontAwesome
+  }
+  
+  select {
+    font-family: 'FontAwesome', 'Second Font name'
+  }
+
+  a{
+    margin-left: 0;
+  }
+
+  .cursor-pointer{
+    cursor: pointer;
+  }
+
+  .popoverBtn{
+    text-decoration: none;
+  }

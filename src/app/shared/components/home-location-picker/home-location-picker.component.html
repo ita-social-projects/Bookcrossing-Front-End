@@ -1,0 +1,33 @@
+<div class="container p-3 align-middle">
+    <div>
+        <div class="map-container">
+            <app-mapbox>
+
+            </app-mapbox>
+        </div>
+    </div>
+    <div class="form-group m-3">
+        <div class="row justify-content-center">
+            <div class="col-sm">
+                <button (click)="saveLocation()" aria-disabled="!canSubmitLocationHome" class="btn btn-primary btn-block w-100" [ngClass]="{ 'disabled' : canSubmitLocationHome == false }">{{ 'components.profile.picker.pick' | translate }}</button>
+            </div>
+            <div class="col-sm">
+                <button class="btn w-100 btn-block" [mat-dialog-close]="false">{{ 'components.profile.picker.close' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    <ng-template [ngIf]="locationHomePost != null" [ngIfElse]="noHomeLocation">
+        <div class="row justify-content-center">
+            <div class="form-control text-center">
+                <a class="padding-left">{{ locationHomePost.city }}</a><a class="padding-left">, {{ locationHomePost.street }}</a>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #noHomeLocation>
+        <div class="row justify-content-center">
+            <div>
+                <span class="padding-left text-center form-control">{{ 'components.profile.edit.noHomeLocationEditMessage' | translate }}</span>
+            </div>
+        </div>
+    </ng-template>
+</div>

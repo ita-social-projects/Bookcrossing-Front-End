@@ -198,7 +198,7 @@ export class CommentComponent implements OnInit {
       return;
     }
 
-    input.classList.add('invalid');
+    input.classList.add('has-error');
     const div = this.renderer.createElement('div');
     this.renderer.addClass(div, 'validation-error');
     div.append(this.translate.instant('common-errors.validation-max-length', {value: maxLength}));

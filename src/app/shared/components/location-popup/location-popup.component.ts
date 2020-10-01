@@ -10,6 +10,8 @@ import { IUserPut } from 'src/app/core/models/userPut';
 import { IRoomLocation } from 'src/app/core/models/roomLocation';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { LocationHomeService } from 'src/app/core/services/locationHome/locationHome.service';
+import { ILocationHomePost } from 'src/app/core/models/locationHomePost';
 
 @Component({
   selector: 'app-location-popup',
@@ -20,17 +22,25 @@ export class LocationPopupComponent implements OnInit {
   locations: ILocation[] = [];
 
   locationForm: FormGroup;
+  locationHomeForm: FormGroup;
+  public locationDialogIsOpen: boolean;
+  public canSubmitLocationHome = false;
+  public tooltip = this.translate.instant('components.locationpopup.chooseone');
+  public locationHomePost: ILocationHomePost;
   private locationFormMasks: string[] = ['UserRoomId'];
 
   constructor(
     public dialogRef: MatDialogRef<LocationPopupComponent>,
     private locationService: LocationService,
+    private locationHomeService: LocationHomeService,
+    private translate: TranslateService,
     private userService: UserService,
     private translateService: TranslateService,
     private notificationService: NotificationService,
     private formBuilder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) private user: IUserInfo
   ) {
+    this.locationDialogIsOpen = false;
     this.locationForm = this.formBuilder.group({
       location: ['', Validators.required],
       roomNumber: [
@@ -42,8 +52,14 @@ export class LocationPopupComponent implements OnInit {
         ],
       ],
     });
+    this.locationHomeForm = this.formBuilder.group({
+      locationHome: ['', Validators.required, Validators.pattern(/^(?!\s*$).+/)]
+    });
   }
 
+  get locationHome() {
+    return this.locationHomeForm.get('locatinHome');
+  }
   get location() {
     return this.locationForm.get('location');
   }
@@ -52,6 +68,17 @@ export class LocationPopupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.locationHomeService.locationHomePost$.subscribe(location => {
+      this.locationHomePost = location;
+      this.locationHomePost.UserId = this.user?.id;
+      this.locationDialogIsOpen = false;
+      this.tooltip = location?.city + ', ' + location?.street;
+      this.canSubmitLocationHome = true;
+    },
+    (error) => {
+      console.log(error);
+    });
+
     this.locationService.getLocation().subscribe(
       (data) => {
         this.locations = data;
@@ -71,7 +98,33 @@ export class LocationPopupComponent implements OnInit {
     }
   }
 
-  onSubmit(): void {
+  public saveLocationHome(): void {
+    this.locationHomeService.postLocationHome(this.locationHomePost).subscribe(
+      (data) => {
+        this.locationHomeService.submitLocationHomePost(this.locationHomePost);
+        this.notificationService.success(
+          this.translate.instant('components.profile.edit.locationUpdate'),
+          'X'
+        );
+      },
+      () => {
+        this.notificationService.error(
+          this.translate.instant('common-error.error-message'),
+          'X'
+        );
+      }
+    );
+  }
+
+  public onSubmitLocationHome(): void {
+    if (!this.user) {
+      return;
+    }
+    this.saveLocationHome();
+    this.dialogRef.close(true);
+  }
+
+  onSubmitLocation(): void {
     if (this.locationForm.invalid) {
       return;
     }

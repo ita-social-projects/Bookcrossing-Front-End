@@ -11,6 +11,8 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 import { BookService } from 'src/app/core/services/book/book.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
+import {DialogService} from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   templateUrl: './user-view.component.html',
@@ -20,7 +22,6 @@ export class UserViewComponent implements OnInit {
   public user: IUserInfo;
   public books: IBook[];
   public activeBooksExist: boolean;
-
   public currentUserId: number;
 
   constructor(
@@ -29,7 +30,8 @@ export class UserViewComponent implements OnInit {
     private usersService: UserService,
     private booksService: BookService,
     private notificationService: NotificationService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialogService: DialogService
   ) {
     this.currentUserId = authService.currentUserValue.id;
   }
@@ -60,38 +62,46 @@ export class UserViewComponent implements OnInit {
     });
   }
 
-  public onDeleteUserButtonClick(): void {
-    const isConfirmed: boolean = confirm(
-      `Do you want to delete the ${this.user.firstName} ${this.user.lastName} from the list of users?`
-    );
-
-    if (isConfirmed) {
-      this.usersService.deleteUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onDeleteUserButtonClick(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.delete',
+          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.deleteUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
-  public onRecoverUserButtonClick() {
-    const isConfirmed: boolean = confirm(
-      `Do you want to recover the ${this.user.firstName} ${this.user.lastName}?`
-    );
-
-    if (isConfirmed) {
-      this.usersService.recoverUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onRecoverUserButtonClick() {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.recover',
+          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.recoverUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
   public getFormData(book: IBookPut): FormData {
@@ -116,7 +126,7 @@ export class UserViewComponent implements OnInit {
 
   public onTakeOwnershipButtonClick(bookId: number): void {
     const isConfirmed: boolean = confirm(
-      'Do you want to take ownership of this book?'
+      this.translate.instant('components.admin.user-view.confirmation.take-ownership')
     );
     if (!isConfirmed) { return; }
 
@@ -136,7 +146,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onActivateButtonClick(bookId: number) {
-    const isConfirmed: boolean = confirm('Do you want to activate the book?');
+    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.activate'));
     if (!isConfirmed) { return; }
 
     this.booksService.activateBook(bookId).subscribe(
@@ -150,7 +160,7 @@ export class UserViewComponent implements OnInit {
   }
 
   public onDeactivateBookButtonClick(bookId: number): void {
-    const isConfirmed: boolean = confirm('Do you want to deactivate the book?');
+    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.deactivate'));
     if (!isConfirmed) { return; }
 
     this.booksService.deactivateBook(bookId).subscribe(

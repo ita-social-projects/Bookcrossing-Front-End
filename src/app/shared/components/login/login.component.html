@@ -12,16 +12,16 @@
       <div class="col-md-6">
 
 
-        <form class="text-center" #loginFrom="ngForm">
+        <form class="text-center" #loginFrom="ngForm" #loginElement>
 
           <span class="h4 mb-4">Log in</span>
 
 
-          <input type="email" [email]="true" required ngModel name="Email"  id="defaultLoginFormEmail" class="form-control mb-4 underheader" [ngClass]="{
+          <input type="email" [email]="true" required [(ngModel)]='this.loginForm.control.value.Email' name="Email"  id="defaultLoginFormEmail" class="form-control mb-4 underheader" [ngClass]="{
             'is-invalid': Isinvalid}" placeholder="E-mail">
 
 
-          <input type="password" id="defaultLoginFormPassword" required  [(ngModel)]='password' name="Password" class="form-control mb-4 password" [ngClass]="{
+          <input type="password" id="defaultLoginFormPassword" required  [(ngModel)]='this.loginForm.control.value.Password' name="Password" class="form-control mb-4 password" [ngClass]="{
             'is-invalid': Isinvalid}" placeholder="Password">
 
 

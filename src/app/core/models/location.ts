@@ -5,4 +5,6 @@ export interface ILocation {
     officeName?: string;
     isActive?: boolean;
     rooms?: string[];
+    longitude?: number;
+    latitude?: number;
 }

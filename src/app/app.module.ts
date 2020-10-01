@@ -121,7 +121,17 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+import { HideProdDirective } from './shared/directives/hideIfProduction.directive';
+import { MatSelectFilterModule } from 'mat-select-filter';
+import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
+import { SuggestionMessageService } from './core/services/suggestion-message/suggestion-message.service';
+import { SuggestionMessageComponent } from './shared/components/admin/suggestion-message/suggestion-message/suggestion-message.component';
+import { TimespansComponent } from './shared/components/admin/timespans/timespans/timespans.component';
+import { LocationHomeService } from './core/services/locationHome/locationHome.service';
+import { SearchBooksMapComponent } from './shared/components/search-books-map/search-books-map.component';
+import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
 
 @NgModule({
   declarations: [
@@ -190,13 +200,21 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    RequestFromCompanyComponent
+    HideProdDirective,
+    IssuesComponent,
+    RequestFromCompanyComponent,
+    IssueFormComponent,
+    SearchBooksMapComponent,
+    TimespansComponent,
+    HomeLocationPickerComponent,
+    SuggestionMessageComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
     InputTrimModule,
+    MatSelectFilterModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -252,6 +270,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
     CookieService,
     JwtHelperService,
     LocationService,
+    LocationHomeService,
     GenreService,
     DialogService,
     UserService,
@@ -274,6 +293,7 @@ import { RequestFromCompanyComponent } from './shared/components/request-from-co
       useFactory: MSALAngularConfigFactory
     },
     StatisticsService,
+    SuggestionMessageService
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],

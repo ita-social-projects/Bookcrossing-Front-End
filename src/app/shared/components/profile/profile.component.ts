@@ -9,6 +9,8 @@ import { UserService } from '../../../core/services/user/user.service';
 import { AuthenticationService } from '../../../core/services/authentication/authentication.service';
 import { ILocation } from '../../../core/models/location';
 import { LocationService } from '../../../core/services/location/location.service';
+import { ILocationHome } from '../../../core/models/locationHome';
+import { LocationHomeService } from '../../../core/services/locationHome/locationHome.service';
 import { RefDirective } from '../../directives/ref.derictive';
 import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 
@@ -24,20 +26,22 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private authentication: AuthenticationService,
     private locationService: LocationService,
+    private locationHomeService: LocationHomeService,
     private resolver: ComponentFactoryResolver
   ) {}
 
   public user: IUserInfo;
   public id: number;
+  public locationHomeId: number;
   public isEditing = false;
   public locations: ILocation[];
+  public locationHome: ILocationHome;
 
   public ngOnInit(): void {
     this.userInfo();
   }
 
   public async getUserId(): Promise<number> {
-    const recieve = 100;
 
     const promice = new Promise<number>((resolve) => {
       this.authentication.getUserId().subscribe({
@@ -53,7 +57,6 @@ export class ProfileComponent implements OnInit {
     });
 
     await promice.then((value) => (this.id = value));
-    console.log('id :' + this.id);
 
     return this.id;
   }
@@ -62,9 +65,18 @@ export class ProfileComponent implements OnInit {
     await this.getUserId().then(() => this.getUserById());
   }
 
+  public getHomeLocationById(locationHomeId: number): void {
+    this.locationHomeService.getLocationHomeById(locationHomeId).subscribe((locationHome: ILocationHome) => {
+      this.locationHome = locationHome;
+    });
+  }
+
   public getUserById(): void {
     this.userService.getUserById(this.id).subscribe((user) => {
       this.user = user;
+      if (user.role.user[0].locationHomeId != null) {
+        this.getHomeLocationById(user.role.user[0]?.locationHomeId);
+      }
     });
   }
 

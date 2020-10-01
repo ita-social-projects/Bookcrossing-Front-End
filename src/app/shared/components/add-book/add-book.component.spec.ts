@@ -54,6 +54,7 @@ describe('#AddBookComponent .addAuthor(), .getGenreById(id), .isAuthorTyped(stri
     const newGenre: IGenre = {
       id: genreId,
       name: 'Fantasy',
+      nameUk: 'Фантазія'
     };
     addBookComponent.genres = [newGenre];
 

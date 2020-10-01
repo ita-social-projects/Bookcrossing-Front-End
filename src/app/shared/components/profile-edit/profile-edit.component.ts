@@ -1,13 +1,16 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IUserInfo } from '../../../core/models/userInfo';
+import { ILocationHome } from '../../../core/models/locationHome';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocationService } from '../../../core/services/location/location.service';
 import { ILocation } from '../../../core/models/location';
 import { DialogService } from '../../../core/services/dialog/dialog.service';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../../core/services/user/user.service';
+import { LocationHomeService } from '../../../core/services/locationHome/locationHome.service';
 import { NotificationService } from '../../../core/services/notification/notification.service';
 import { IUserPut } from '../../../core/models/userPut';
+import { ILocationHomePost } from 'src/app/core/models/locationHomePost';
 
 @Component({
   selector: 'app-profile-edit',
@@ -18,14 +21,15 @@ export class ProfileEditComponent implements OnInit {
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
   @Input() user: IUserInfo;
 
+  public canPostLocation: boolean;
   public password: string;
-
   public editUserForm: FormGroup;
-
   public firstName: string;
   public lastName: string;
   public room: number;
   public location: ILocation;
+  public locationHome: ILocationHome;
+  public locationHomePost: ILocationHomePost;
   public changingLocation = false;
   public locations: ILocation[] = [];
   public isEmail: boolean;
@@ -37,19 +41,43 @@ export class ProfileEditComponent implements OnInit {
     'UserRoomId',
     'IsEmailAllowed',
   ];
-  private notificationService: NotificationService;
 
   constructor(
     private userService: UserService,
+    private locationHomeService: LocationHomeService,
     private translate: TranslateService,
     private dialogService: DialogService,
-    private locationService: LocationService
-  ) {}
+    private locationService: LocationService,
+    private notificationService: NotificationService
+  ) { }
 
   public ngOnInit(): void {
+    this.locationHomeService.locationHomePost$.subscribe(location => {
+      this.canPostLocation = true;
+      this.locationHomePost = location;
+      this.locationHomePost.id = this.locationHome?.id;
+      this.locationHome = this.locationHomePost;
+    });
     this.buildForm();
     this.getAllLocations();
+    this.getLocationHome();
     this.password = localStorage.getItem('password');
+  }
+
+  public openLocationPickerDialog(): void {
+    this.dialogService.openHomeLocationDialog(this.user.id);
+  }
+
+  public getLocationHome(): void {
+    if (this.user.role.user[0]?.locationHomeId != null) {
+      this.locationHomeService.getLocationHomeById(this.user.role.user[0]?.locationHomeId).subscribe((location: ILocationHome) => {
+        this.locationHome = location;
+      },
+      (error) => {
+        console.log(error);
+      }
+      );
+    }
   }
 
   public getAllLocations(): void {
@@ -90,7 +118,56 @@ export class ProfileEditComponent implements OnInit {
     });
   }
 
+  public saveLocationHome(): void {
+    this.locationHomeService.postLocationHome(this.locationHomePost).subscribe(
+      (data) => {
+        this.locationHomeService.submitLocationHomePost(this.locationHomePost);
+        this.notificationService.success(
+          this.translate.instant('components.profile.edit.locationUpdate'),
+          'X'
+        );
+      },
+      () => {
+        this.notificationService.error(
+          this.translate.instant('common-error.error-message'),
+          'X'
+        );
+      }
+    );
+  }
+
+  public useHomeLocationEdit(): void {
+    if (this.locationHome != null) {
+      this.locationHomeService.editLocationHome(this.locationHome).subscribe(
+        (data) => {
+          this.locationHomeService.submitLocationHome(this.locationHome);
+          if (this.locationHome?.isActive) {
+            this.notificationService.success(
+              this.translate.instant('components.profile.edit.homeLocationUpdate'),
+              'X'
+            );
+          } else if (this.locationHome?.isActive === false) {
+            this.notificationService.success(
+              this.translate.instant('components.profile.edit.officeLocationUpdate'),
+              'X'
+            );
+          }
+        },
+        () => {
+          this.notificationService.error(
+            this.translate.instant('common-errors.error-message'),
+            'X'
+          );
+        }
+      );
+    }
+  }
+
   public onSubmit(): void {
+    if (this.canPostLocation) {
+      this.saveLocationHome();
+    }
+    this.useHomeLocationEdit();
     this.editUserForm.markAllAsTouched();
     if (this.editUserForm.invalid) {
       return;
@@ -146,7 +223,7 @@ export class ProfileEditComponent implements OnInit {
     this.changingLocation = false;
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Are yo sure want to cancel?').toPromise()
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
       )
       .afterClosed()
       .subscribe(async (res) => {

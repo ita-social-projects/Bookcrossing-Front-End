@@ -9,6 +9,7 @@ import { DonateDialogComponent } from '../../../shared/components/donate-dialog/
 import { LocationPopupComponent } from 'src/app/shared/components/location-popup/location-popup.component';
 import { IUserInfo } from 'src/app/core/models/userInfo';
 import { MessageDialogComponent } from 'src/app/shared/components/message-dialog/message-dialog.component';
+import { HomeLocationPickerComponent } from 'src/app/shared/components/home-location-picker/home-location-picker.component';
 
 @Injectable({
   providedIn: 'root',
@@ -50,8 +51,20 @@ export class DialogService {
   ): MatDialogRef<LocationPopupComponent> {
     return this.dialog.open(LocationPopupComponent, {
       ariaLabelledBy: '#locationPopupTitle',
-      maxWidth: '512px',
+      minWidth: '600px',
+      maxWidth: '600px',
+      maxHeight: '95%',
       data: user,
+    });
+  }
+
+  public openHomeLocationDialog(
+    userId: number
+  ): MatDialogRef<HomeLocationPickerComponent> {
+    return this.dialog.open(HomeLocationPickerComponent, {
+      minWidth: '1100px',
+      maxWidth: '1100px',
+      data: userId,
     });
   }
 

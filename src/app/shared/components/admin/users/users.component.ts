@@ -27,7 +27,6 @@ export class UsersComponent implements OnInit {
   public users: IUserInfo[];
   public usersDisplayColumns: Array<string>;
   public usersProperties: Array<string> = [
-    'id',
     'firstName',
     'lastName',
     'email',
@@ -37,7 +36,7 @@ export class UsersComponent implements OnInit {
   public queryParams: CompletePaginationParams = new CompletePaginationParams();
   public totalSize: number;
   public showDeleted: boolean;
-  private isDeletedDispalyName = 'Is deleted';
+  private isDeletedDispalyName = this.translate.instant('components.admin.users.is-active');
   private IsDeletedPropertyName = 'isDeleted';
 
   public searchForm: FormGroup;
@@ -58,7 +57,6 @@ export class UsersComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.usersDisplayColumns = [
-      '#',
       translate.instant('components.admin.users.first-name'),
       translate.instant('components.admin.users.last-name'),
       'Email',
@@ -229,6 +227,7 @@ export class UsersComponent implements OnInit {
         for (const user of this.users) {
           user.registeredDate = new Date(user.registeredDate);
           user.registeredDate.toString = Date.prototype.toLocaleDateString;
+          user.isDeleted = !user.isDeleted;
         }
 
         this.totalSize = pageData.totalCount;

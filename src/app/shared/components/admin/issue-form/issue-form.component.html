@@ -1,0 +1,37 @@
+<section class="d-flex justify-content-center row justify-content-center">
+
+    <form class="border border-light form-container col-sm" [formGroup]="form" (ngSubmit)="submit()">
+      <h3 class="text-center p-2">
+        <strong>{{title | translate}}</strong>
+      </h3>
+      <div class="form">
+        <div class="mt-2">
+          <label for="IssueFormName"><span class="asterisk"> *</span></label>
+          <input #IssueName type="text" id="IssueFormName" class="form-control" formControlName="name"
+                 name="name" (input)="checkLength(IssueName, 30)">
+        </div>
+        <div *ngIf="form.get('name').errors && form.get('name').touched">
+          <div *ngIf="form.get('name').errors?.required" class="validation-error">
+            {{'common-errors.validation-required' | translate}}
+          </div>
+          <div *ngIf="form.get('name').errors.minlength" class="validation-error">
+            {{'common-errors.validation-min-length' | translate:{value:form.get('name').errors?.minlength?.requiredLength} }}
+          </div>
+          <div *ngIf="form.get('name').errors.maxlength" class="validation-error">
+            {{'common-errors.validation-max-length' | translate:{value:form.get('name').errors?.maxlength?.requiredLength} }}
+          </div>
+          <div *ngIf="form.get('name').errors.pattern" class="validation-error">
+            {{'common-errors.validation-letter-symbol-pattern' | translate}}
+            <span class="bold-symbol">' -</span>
+            {{'common-errors.validation-are-acceptable' | translate}}
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-info" type="submit" name="submit">
+          {{submitButtonText | translate}}
+        </button>
+        <input type="button" class="btn" (click)="cancel()" value="{{'common.cancel' | translate}}"/>
+      </div>
+    </form>
+  </section>

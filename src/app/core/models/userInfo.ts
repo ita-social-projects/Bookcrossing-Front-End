@@ -7,4 +7,5 @@ export interface IUserInfo extends IUser {
   role: IRole;
   token: IToken;
   isDeleted: boolean;
+  locationHomeId?: number;
 }
