@@ -14,6 +14,7 @@ export class HomeLocationPickerComponent implements OnInit {
   @Input() isDialog = true;
   public address: ILocation;
   public locationHomePost: ILocationHomePost;
+  public canSubmitLocationHome = false;
   constructor(
     @Inject(MAT_DIALOG_DATA) public userId: number,
     public dialogRef: MatDialogRef<HomeLocationPickerComponent>,
@@ -30,6 +31,7 @@ export class HomeLocationPickerComponent implements OnInit {
           longitude: this.mapboxService.lng,
           UserId: this.userId,
         };
+        this.canSubmitLocationHome = true;
       });
     }
 

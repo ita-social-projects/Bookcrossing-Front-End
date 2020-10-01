@@ -27,9 +27,14 @@ input {
 }
 
 .set-btn {
-  width: 95px;
+  width: 136px;
   border-radius: 0;
-  margin-left: 5px;
+  margin: 0 0 0 10px;
+}
+
+.btn-primary:not([disabled]):not(.disabled).active {
+  background-color: #33b5e5 !important;
+  border-color: #17a2b8;
 }
 
 /* Location triggers */
