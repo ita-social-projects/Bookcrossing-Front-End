@@ -5,11 +5,11 @@
     (ngSubmit)="onSubmit()"
     class="border border-light p-5"
   >
-    <p class="h2 mb-4 title">Register book</p>
+    <p class="h2 mb-4 title">{{'components.book-edit.register-book'| translate}}</p>
     <div>
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Book title:<span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.book-edit.booktitle'| translate}}:<span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <!-- Book title -->
@@ -29,7 +29,8 @@
               "
               class="validation-error"
             >
-              This field is required.
+              {{'components.home.field-required'| translate}}
+
             </div>
             <div
               *ngIf="addBookForm.get('title').errors?.maxlength"
@@ -50,7 +51,7 @@
       <!-- Author -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Author:<span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.book-edit.author'| translate}}:<span class="asterisk"> *</span></p>
           <div class="custom-control custom-checkbox" style="text-align: left;">
             <input
               type="checkbox"
@@ -60,7 +61,7 @@
               (change)="changeAuthorInput()"
             />
             <label class="custom-control-label" for="uncheckedAuthor"
-              >Without author</label
+              >{{'components.book-edit.withoutauthor'| translate}}</label
             >
           </div>
         </div>
@@ -97,7 +98,7 @@
                 "
                 class="validation-error"
               >
-                This field is required.
+              {{'components.home.field-required'| translate}}
               </div>
               <div
                 *ngIf="
@@ -134,7 +135,7 @@
             "
             class="new-author-warning"
           >
-            <span>Entered author is saved as 'not confirmed'</span>
+            <span>{{'components.home.author-not-confirmed'| translate}}</span>
           </div>
         </div>
         <div class="col">
@@ -178,7 +179,7 @@
       <!-- Category -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Category:<span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.book-edit.category'| translate}}:<span class="asterisk"> *</span></p>
         </div>
         <!-- Select multiple genres -->
         <div class="col-4">
@@ -218,7 +219,7 @@
             class="validation-error"
           >
             <div *ngIf="addBookForm.get('genres').errors.required">
-              This field is required.
+              {{'components.home.field-required'| translate}}
             </div>
           </div>
         </div>
@@ -227,7 +228,7 @@
       <!-- Language -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Language:<span class="asterisk"> *</span></p>
+          <p class="input-label">{{'components.book-edit.language'| translate}}:<span class="asterisk"> *</span></p>
         </div>
         <div class="col-4">
           <mat-select
@@ -249,7 +250,7 @@
             class="validation-error"
           >
             <div *ngIf="addBookForm.get('languageId').errors.required">
-              This field is required.
+              {{'components.home.field-required'| translate}}
             </div>
           </div>
         </div>
@@ -258,7 +259,7 @@
       <!-- Publisher -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Publishing house:</p>
+          <p class="input-label">{{'components.book-edit.publishinghouse'| translate}}:</p>
         </div>
         <div class="col-4">
           <input
@@ -288,7 +289,7 @@
       <!-- ISBN -->
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">ISBN:</p>
+          <p class="input-label">{{'components.book.ISBN'| translate}}:</p>
         </div>
         <div class="col-4">
           <input
@@ -317,7 +318,7 @@
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Notice:</p>
+          <p class="input-label">{{'components.book-edit.notice'| translate}}:</p>
         </div>
         <div class="col-4">
           <textarea
@@ -353,7 +354,7 @@
             (click)="setSearchTerm(searchTerm.value)"
             class="btn btn-info"
           >
-            Find by ISBN/BookTitle/Author
+            {{'components.admin.issues-form.find-by'| translate}} {{'components.searchBar.searchPlaceholder'| translate}}
           </button>
         </div>
         <div class="col-4">
@@ -384,13 +385,13 @@
 
       <div class="form-row mb-4">
         <button type="button" class="btn btn-info" (click)="fileInput.click()">
-          Add image
+          {{'common.add'| translate}} {{'components.book-edit.image'| translate}}:
         </button>
       </div>
 
       <div class="form-row mb-4">
         <div class="col-3">
-          <p class="input-label">Image:</p>
+          <p class="input-label">{{'common.add'| translate}} {{'components.book-edit.image'| translate}}:</p>
         </div>
         <div class="file-upload-wrapper">
           <input
@@ -423,8 +424,8 @@
 
     <!-- Add book button -->
     <div class="center">
-      <button class="btn btn-info" type="submit" name="submit">Save</button>
-      <button class="btn" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-info" type="submit" name="submit"> {{'common.save'| translate}}</button>
+      <button class="btn" (click)="onCancel()">{{'common.cancel'| translate}}</button>
     </div>
   </form>
 </div>
