@@ -6,7 +6,7 @@
         <div class="col-md-12">
           <div class="text-center">
             <h2 class="h1 h1-reponsive white-text font-up font-bold mb-3 wow fadeInDown" data-wow-delay="0.3s">
-              <strong>Contacts</strong>
+              <strong>{{'components.contact-us.contacts' | translate }}</strong>
             </h2>
           </div>
         </div>
@@ -40,22 +40,27 @@
               #select
               class="form-control" 
               formControlName="summary"
-              placeholder="Summary"
+              placeholder="{{ 'components.contact-us.summary' | translate }}"
               >
               <mat-select-filter
                 #MatFilter
                 [array]="summaryStates" 
                 (filteredReturn)="filteredStates = $event"
-                [placeholder]="'Search'"></mat-select-filter>
-                  <mat-option *ngFor = "let state of filteredStates"
-                  [value] = "state">{{state}}</mat-option>
+                placeholder="{{ 'components.contact-us.search' | translate }}"></mat-select-filter>
+                  <ng-template [ngIf]="isEn()" [ngIfElse]="uk">
+                    <mat-option *ngFor="let state of filteredStates" [value]="state.name">{{ state.name}}</mat-option>
+                </ng-template>
+                <ng-template #uk>
+                    <mat-option *ngFor="let state of filteredStates" [value]="state.nameUk">{{ state.nameUk}}</mat-option>
+                </ng-template>
             </mat-select>
             <div *ngIf="contactsForm.get('summary').errors">
               <div 
               *ngIf="contactsForm.get('summary').touched &&
               contactsForm.get('summary').errors?.required"
               class="validation-error">
-                <small>You must choose an option</small>
+                <small *ngIf="isEn()">You must choose an option</small>
+                <small *ngIf="!isEn()">Потрібно вибрати один з варіантів</small>
               </div>
           </div>
           </div>
@@ -69,7 +74,7 @@
             rows="8" 
             maxlength="500" 
             style="resize: none;" 
-            placeholder="We appreciate your time to describe this matter"></textarea>
+            placeholder="{{'components.contact-us.textMessage' | translate }}"></textarea>
           </div>
         </div>
 

@@ -22,13 +22,14 @@ export class ContactsComponent implements OnInit {
   email = 'support@bookcrossing.tech';
   emailString: string;
   contactsForm: FormGroup;
-  summaryStates: Array<string>;
-  public filteredStates: Array<string>;
+  summaryStates: Array<IIssue>;
+  public filteredStates: Array<IIssue>;
   public id: number;
   private user: IUserInfo;
 
   constructor(
     private messageService: SuggestionMessageService,
+    private translate: TranslateService,
     private authentification: AuthenticationService,
     private userService: UserService,
     private translationService: TranslateService,
@@ -41,7 +42,6 @@ export class ContactsComponent implements OnInit {
     this.buildForm();
     this.userInfo();
   }
-
   openEmail() {
     this.emailString = 'mailto:' + this.email + '?subject=Need support';
   }
@@ -78,8 +78,8 @@ export class ContactsComponent implements OnInit {
   public getAllIssues(): void {
     this.issueService.getIssue().subscribe(
       (data) => {
-        this.summaryStates = data.map(a => a.name);
-        this.filteredStates = this.summaryStates.slice();
+        this.summaryStates = data;
+        this.filteredStates = this.summaryStates;
       },
       (error) => {
         console.log(error);
@@ -88,8 +88,6 @@ export class ContactsComponent implements OnInit {
   }
 
   public async getUserId(): Promise<number> {
-    const recieve = 100;
-
     const promice = new Promise<number>((resolve) => {
       this.authentification.getUserId().subscribe({
         next: (value: number) => {
@@ -117,6 +115,8 @@ export class ContactsComponent implements OnInit {
     });
   }
 
-
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 
 }

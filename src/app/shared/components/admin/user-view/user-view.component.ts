@@ -11,6 +11,8 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 import { BookService } from 'src/app/core/services/book/book.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
+import {DialogService} from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   templateUrl: './user-view.component.html',
@@ -28,7 +30,8 @@ export class UserViewComponent implements OnInit {
     private usersService: UserService,
     private booksService: BookService,
     private notificationService: NotificationService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialogService: DialogService
   ) {
     this.currentUserId = authService.currentUserValue.id;
   }
@@ -59,40 +62,46 @@ export class UserViewComponent implements OnInit {
     });
   }
 
-  public onDeleteUserButtonClick(): void {
-    const isConfirmed: boolean = confirm(
-      this.translate.instant('components.admin.user-view.confirmation.delete',
-      { firstName: this.user.firstName, lastName: this.user.lastName})
-    );
-
-    if (isConfirmed) {
-      this.usersService.deleteUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onDeleteUserButtonClick(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.delete',
+          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.deleteUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
-  public onRecoverUserButtonClick() {
-    const isConfirmed: boolean = confirm(
-      this.translate.instant('components.admin.user-view.confirmation.recover',
-      { firstName: this.user.firstName, lastName: this.user.lastName})
-    );
-
-    if (isConfirmed) {
-      this.usersService.recoverUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onRecoverUserButtonClick() {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.recover',
+          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.recoverUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
   public getFormData(book: IBookPut): FormData {

@@ -27,7 +27,6 @@ export class UsersComponent implements OnInit {
   public users: IUserInfo[];
   public usersDisplayColumns: Array<string>;
   public usersProperties: Array<string> = [
-    'id',
     'firstName',
     'lastName',
     'email',
@@ -58,7 +57,6 @@ export class UsersComponent implements OnInit {
     private translate: TranslateService
   ) {
     this.usersDisplayColumns = [
-      '#',
       translate.instant('components.admin.users.first-name'),
       translate.instant('components.admin.users.last-name'),
       'Email',

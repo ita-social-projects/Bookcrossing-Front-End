@@ -7,11 +7,6 @@ import { Location } from '@angular/common';
 import { IIssue } from 'src/app/core/models/issue';
 import { IssueService } from 'src/app/core/services/issue/issue.service';
 
-enum FormAction {
-  Edit = 'edit',
-  Add = 'add',
-}
-
 @Component({
   selector: 'app-issue-form',
   templateUrl: './issue-form.component.html',
@@ -20,7 +15,6 @@ enum FormAction {
 
 export class IssueFormComponent implements OnInit {
   issue: IIssue;
-  action: FormAction = FormAction.Add;
   title: string;
   submitButtonText: string;
   form: FormGroup;
@@ -44,24 +38,18 @@ export class IssueFormComponent implements OnInit {
   public getRequestType(): void {
     if (this.issueService.formIssue?.id) {
       this.issue = this.issueService.formIssue;
-      this.action = FormAction.Edit;
-    } else {
-      const newIssue: IIssue = {
-        name: '',
-      };
-      this.action = FormAction.Add;
-      this.issue = newIssue;
     }
     this.translateText();
   }
 
   private translateText(): void {
-    this.title = 'components.admin.issues-form.' + this.action + '-title';
+    this.title = 'components.admin.issues-form.edit-title';
     this.submitButtonText =
-      'components.admin.issues-form.' + this.action + '-button';
+      'components.admin.issues-form.edit-button';
   }
 
   public buildForm(): void {
+    if (this.isEn()) {
     this.form = new FormGroup({
       id: new FormControl({ value: this.issue.id, disabled: true }),
       name: new FormControl(this.issue.name, [
@@ -69,10 +57,23 @@ export class IssueFormComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(30),
         /* tslint:disable */
-        Validators.pattern("^([(a-zA-Z ||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+        Validators.pattern("^([(a-zA-Z )'-]+)$"),
         /* tslint:enable */
       ]),
     });
+    } else {
+      this.form = new FormGroup({
+        id: new FormControl({ value: this.issue.id, disabled: true }),
+        name: new FormControl(this.issue.nameUk, [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30),
+          /* tslint:disable */
+          Validators.pattern("^([(а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+          /* tslint:enable */
+        ]),
+      });
+    }
   }
 
   public submit(): void {
@@ -81,44 +82,23 @@ export class IssueFormComponent implements OnInit {
       return;
     }
     this.submitted = true;
-    this.issue = {
-      name: this.form.get('name').value,
-    };
-    if (this.action !== FormAction.Add) {
-      this.issue.id = this.form.get('id').value;
+    if  (this.isEn()) {
+      this.issue = {
+        name: this.form.get('name').value,
+        nameUk: this.issue.nameUk
+      };
+    } else {
+      this.issue = {
+        name: this.issue.name,
+        nameUk: this.form.get('nameUk').value
+      };
     }
-    switch (this.action) {
-      case FormAction.Edit:
-        this.updateIssue(this.issue);
-        break;
-      default:
-        this.addIssue(this.issue);
-        break;
-    }
+    this.issue.id = this.form.get('id').value;
+    this.updateIssue(this.issue);
   }
 
   public cancel(): void {
     this.location.back();
-  }
-
-  public addIssue(issue: IIssue): void {
-    this.issueService.addIssue(issue).subscribe(
-      (data: IIssue) => {
-        this.issueService.submitIssue(issue);
-        this.cancel();
-        this.notificationService.success(
-          this.translate.instant('components.admin.issues.add-success'),
-          'X'
-        );
-      },
-      () => {
-        this.submitted = false;
-        this.notificationService.error(
-          this.translate.instant('common-errors.error-message'),
-          'X'
-        );
-      }
-    );
   }
 
   public updateIssue(issue: IIssue): void {
@@ -155,6 +135,10 @@ export class IssueFormComponent implements OnInit {
         this.form.controls[input.name].markAsTouched();
       }, 2000);
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 
 }

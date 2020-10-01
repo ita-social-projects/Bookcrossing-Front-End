@@ -16,6 +16,8 @@ import {RegistrationService} from '../registration/registration.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Account, UserAgentApplication} from 'msal';
 import { CookieService } from 'ngx-cookie-service';
+import { ILocationHome } from '../../models/locationHome';
+import { LocationHomeService } from '../locationHome/locationHome.service';
 
 export enum AuthenticationMethod {
   AzureActiveDirectory,
@@ -34,6 +36,7 @@ export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<IUserInfo>;
   public currentUser: Observable<IUserInfo>;
   public AuthMethod: AuthenticationMethod;
+  public isValid = false;
 
   private static azureLogout(): void {
     // make window appearing in center
@@ -60,6 +63,7 @@ export class AuthenticationService {
               private userService: UserService,
               private msalService: MsalService,
               private router: Router,
+              private locationHomeService: LocationHomeService,
               private registrationService: RegistrationService,
               private http: HttpClient,
               private cookie: CookieService) {
@@ -72,19 +76,29 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
+
   login(form) {
     return this.http.post<IUserInfo>(this.baseUrl, form)
       .pipe(map(user => {
         if (user && user.token) {
           localStorage.setItem('RememberMe', form.RememberMe);
+
           localStorage.setItem('currentUser', JSON.stringify(user));
           console.log('user creds is ', user);
           this.currentUserSubject.next(user);
           this.loginEvent.emit();
 
           this.userService.getUserById(user.id).subscribe(userInfo => {
-            if (!userInfo.userLocation?.location?.isActive) {
-              this.dialogService.openLocationDialog(userInfo);
+            if (user.role?.user[0]?.locationHomeId != null) {
+              this.locationHomeService.getLocationHomeById(user.role?.user[0]?.locationHomeId).subscribe(location => {
+                if ((location?.isActive || userInfo?.userLocation?.location?.isActive) === false) {
+                  this.dialogService.openLocationDialog(userInfo);
+                }
+              });
+            } else {
+              if (userInfo?.userLocation?.location?.isActive === false) {
+                this.dialogService.openLocationDialog(userInfo);
+              }
             }
           });
         }
@@ -159,16 +173,25 @@ export class AuthenticationService {
   }
 
   public async validateLocation(): Promise<boolean> {
-    const userId = this.currentUserValue.id;
-    const userInfo = await this.userService.getUserById(userId).toPromise();
-
-    const hasActiveLocation = userInfo.userLocation?.location?.isActive;
-    if (!hasActiveLocation) {
+    const userInfo = await this.userService.getUserById(this.currentUserValue.id).toPromise();
+    const locationId = userInfo?.role?.user[0]?.locationHomeId;
+    const This = this;
+    if (locationId != null) {
+      this.locationHomeService.getLocationHomeById(locationId).subscribe(location => {
+        This.isValid = (location?.isActive || userInfo?.userLocation?.location?.isActive);
+        if (This.isValid === false) {
+          return this.dialogService.openLocationDialog(userInfo)
+            .afterClosed().toPromise();
+        }
+      });
+    } else {
+      This.isValid = userInfo?.userLocation?.location?.isActive;
+      if (This.isValid === false) {
       return this.dialogService.openLocationDialog(userInfo)
-        .afterClosed().toPromise();
+            .afterClosed().toPromise();
+      }
     }
-
-    return hasActiveLocation;
+    return This.isValid;
   }
 
   public isAuthenticated(): boolean {

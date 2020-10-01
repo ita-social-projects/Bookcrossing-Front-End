@@ -42,6 +42,7 @@ import { BasicAuthOnlyGuard } from './core/guards/basicAuthOnly.guard';
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
+import { TimespansComponent } from './shared/components/admin/timespans/timespans/timespans.component';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { IssueFormComponent } from './shared/components/admin/issue-form/issue-form.component';
 
@@ -63,6 +64,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     data: { roles: Role.Admin },
     children: [
+      { path: 'timespans', component: TimespansComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'authors', component: AuthorsComponent },
       { path: 'locations', component: LocationsComponent },

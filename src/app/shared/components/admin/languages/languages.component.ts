@@ -26,10 +26,9 @@ export class BookLanguagesComponent implements OnInit {
 
   languages: ILanguage[];
   languagesDisplayColumns: string[] = [
-    '#',
     'components.admin.languages.language',
   ];
-  languagesProperties: string[] = ['id', 'name'];
+  languagesProperties: string[] = ['name'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'name';

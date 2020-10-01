@@ -1,16 +1,15 @@
-<h2 mat-dialog-title >{{data.message}}</h2>
+<h2 mat-dialog-title>{{data.message}}</h2>
 <mat-dialog-actions>
     <ng-container>
         <div class="container">
             <div class="row">
-              <div class="col-sm">
-                <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient" [mat-dialog-close]="true">Yes</button>
-              </div>
-              <div class="col-sm">
-                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient" [mat-dialog-close]="false">No</button>
-              </div>
+                <div class="col-sm">
+                    <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient" [mat-dialog-close]="true">{{ 'common.yes' | translate }}</button>
+                </div>
+                <div class="col-sm">
+                    <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient" [mat-dialog-close]="false">{{ 'common.no' | translate }}</button>
+                </div>
             </div>
-          </div>
+        </div>
     </ng-container>
 </mat-dialog-actions>
-

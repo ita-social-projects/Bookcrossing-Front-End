@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AdminComponent implements OnInit, OnDestroy {
   public isSideBarOpened = false;
   public showTableManagement = false;
+  public showTimeSpans = false;
   constructor(private router: Router, private routeActive: ActivatedRoute) {}
 
   public ngOnInit(): void {

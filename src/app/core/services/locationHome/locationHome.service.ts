@@ -2,8 +2,12 @@ import { locationHomeUrl } from '../../../configs/api-endpoint.constants';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ILocationHome } from '../../models/locationHome';
+import {Observable, Subject} from 'rxjs';
+import {CompletePaginationParams} from '../../models/Pagination/completePaginationParameters';
+import {IPage} from '../../models/page';
+import {PaginationService} from '../pagination/pagination.service';
+import {IMapHomeLocation} from '../../models/books-map/map-homeLocation';
 import { ILocationHomePost } from '../../models/locationHomePost';
-import { Subject } from 'rxjs';
 
 @Injectable()
 export class LocationHomeService {
@@ -46,5 +50,9 @@ export class LocationHomeService {
 
   editLocationHome(locationHome: ILocationHome) {
     return this.http.put(this.apiUrl, locationHome);
+  }
+
+  public getBooksQuantityOnLocations(): Observable<IMapHomeLocation[]> {
+    return this.http.get<IMapHomeLocation[]>(this.apiUrl + 'locations');
   }
 }

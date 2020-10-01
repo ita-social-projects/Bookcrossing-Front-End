@@ -69,13 +69,15 @@ export class ProfileEditComponent implements OnInit {
   }
 
   public getLocationHome(): void {
-    this.locationHomeService.getLocationHomeById(this.user.role.user[0]?.locationHomeId).subscribe((location: ILocationHome) => {
-      this.locationHome = location;
-    },
-    (error) => {
-      console.log(error);
+    if (this.user.role.user[0]?.locationHomeId != null) {
+      this.locationHomeService.getLocationHomeById(this.user.role.user[0]?.locationHomeId).subscribe((location: ILocationHome) => {
+        this.locationHome = location;
+      },
+      (error) => {
+        console.log(error);
+      }
+      );
     }
-    );
   }
 
   public getAllLocations(): void {
@@ -135,28 +137,30 @@ export class ProfileEditComponent implements OnInit {
   }
 
   public useHomeLocationEdit(): void {
-    this.locationHomeService.editLocationHome(this.locationHome).subscribe(
-      (data) => {
-        this.locationHomeService.submitLocationHome(this.locationHome);
-        if (this.locationHome?.isActive) {
-          this.notificationService.success(
-            this.translate.instant('components.profile.edit.homeLocationUpdate'),
-            'X'
-          );
-        } else if (this.locationHome?.isActive === false) {
-          this.notificationService.success(
-            this.translate.instant('components.profile.edit.officeLocationUpdate'),
+    if (this.locationHome != null) {
+      this.locationHomeService.editLocationHome(this.locationHome).subscribe(
+        (data) => {
+          this.locationHomeService.submitLocationHome(this.locationHome);
+          if (this.locationHome?.isActive) {
+            this.notificationService.success(
+              this.translate.instant('components.profile.edit.homeLocationUpdate'),
+              'X'
+            );
+          } else if (this.locationHome?.isActive === false) {
+            this.notificationService.success(
+              this.translate.instant('components.profile.edit.officeLocationUpdate'),
+              'X'
+            );
+          }
+        },
+        () => {
+          this.notificationService.error(
+            this.translate.instant('common-errors.error-message'),
             'X'
           );
         }
-      },
-      () => {
-        this.notificationService.error(
-          this.translate.instant('common-errors.error-message'),
-          'X'
-        );
-      }
-    );
+      );
+    }
   }
 
   public onSubmit(): void {
