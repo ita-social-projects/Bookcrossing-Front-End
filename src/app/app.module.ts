@@ -121,6 +121,7 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+import { HideProdDirective } from './shared/directives/hideIfProduction.directive';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
@@ -199,15 +200,14 @@ import { HomeLocationPickerComponent } from './shared/components/home-location-p
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    SearchBooksMapComponent,
+    HideProdDirective,
     IssuesComponent,
     RequestFromCompanyComponent,
     IssueFormComponent,
-    SuggestionMessageComponent,
-    RequestFromCompanyComponent,
+    SearchBooksMapComponent,
     TimespansComponent,
     HomeLocationPickerComponent,
-    SuggestionMessageComponent
+    SuggestionMessageComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({
