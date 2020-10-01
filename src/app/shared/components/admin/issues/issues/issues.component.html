@@ -41,14 +41,14 @@
             <div class="card-body">
               <app-admin-table
                 [data]="issues"
-                [dataProperties]="issueProperties"
                 [displayColumns]="issuesDisplayColumns"
                 [(sortParams)]="queryParams.sort"
                 (editClicked)="editIssue($event)"
                 [canEdit]="true"
                 [canDelete]="true"
                 (deleteClicked)="deleteIssue($event)"
-                (selectedHeaderChange)="onChangeSort()">
+                (selectedHeaderChange)="onChangeSort()"
+                [dataProperties]="issueProperties">
               </app-admin-table>
   
               <app-pagination *ngIf="issues && issues.length > 0" [arraySize]="totalSize"

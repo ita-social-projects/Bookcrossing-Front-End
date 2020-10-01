@@ -49,6 +49,7 @@ export class IssueFormComponent implements OnInit {
   }
 
   public buildForm(): void {
+    if (this.isEn()) {
     this.form = new FormGroup({
       id: new FormControl({ value: this.issue.id, disabled: true }),
       name: new FormControl(this.issue.name, [
@@ -56,10 +57,23 @@ export class IssueFormComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(30),
         /* tslint:disable */
-        Validators.pattern("^([(a-zA-Z ||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+        Validators.pattern("^([(a-zA-Z )'-]+)$"),
         /* tslint:enable */
       ]),
     });
+    } else {
+      this.form = new FormGroup({
+        id: new FormControl({ value: this.issue.id, disabled: true }),
+        name: new FormControl(this.issue.nameUk, [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30),
+          /* tslint:disable */
+          Validators.pattern("^([(а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+          /* tslint:enable */
+        ]),
+      });
+    }
   }
 
   public submit(): void {
@@ -68,9 +82,17 @@ export class IssueFormComponent implements OnInit {
       return;
     }
     this.submitted = true;
-    this.issue = {
-      name: this.form.get('name').value,
-    };
+    if  (this.isEn()) {
+      this.issue = {
+        name: this.form.get('name').value,
+        nameUk: this.issue.nameUk
+      };
+    } else {
+      this.issue = {
+        name: this.issue.name,
+        nameUk: this.form.get('nameUk').value
+      };
+    }
     this.issue.id = this.form.get('id').value;
     this.updateIssue(this.issue);
   }
@@ -113,6 +135,10 @@ export class IssueFormComponent implements OnInit {
         this.form.controls[input.name].markAsTouched();
       }, 2000);
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 
 }
