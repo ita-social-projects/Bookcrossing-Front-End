@@ -7,6 +7,7 @@ import { MapboxService } from 'src/app/core/services/mapbox/mapbox.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
+import { ILngLat } from 'src/app/core/models/books-map/lngLat';
 
 @Component({
   selector: 'app-location-form',
@@ -28,7 +29,16 @@ export class LocationFormComponent implements OnInit {
     private ngLocation: Location
   ) {
     mapboxService.currentAddressChanged$.subscribe((address) => {
-      this.address = address;
+      this.address = {
+        city: address.city,
+        street: address.street,
+        officeName: address.officeName,
+        latitude: this.mapboxService.lat,
+        longitude: this.mapboxService.lng,
+        isActive: true
+      };
+      this.locationEdit.latitude = this.address.latitude;
+      this.locationEdit.longitude = this.address.longitude;
       this.setLocationFormValues(address);
     });
   }
@@ -36,9 +46,17 @@ export class LocationFormComponent implements OnInit {
   addLocationForm: FormGroup;
 
   public ngOnInit(): void {
+
     this.buildForm();
     if (this.router.snapshot.paramMap.has('id')) {
-      this.locationEdit.id = +this.router.snapshot.paramMap.get('id');
+      const locationid = +this.router.snapshot.paramMap.get('id');
+      this.locationService.getLocationById(locationid).subscribe(
+        (location) => {
+          this.locationEdit.longitude = location.longitude;
+          this.locationEdit.latitude = location.latitude;
+        }
+      );
+      this.locationEdit.id = locationid;
       this.locationEdit.city = this.router.snapshot.paramMap.get('city');
       this.locationEdit.officeName = this.router.snapshot.paramMap.get(
         'officeName'
@@ -46,6 +64,7 @@ export class LocationFormComponent implements OnInit {
       this.locationEdit.street = this.router.snapshot.paramMap.get('street');
       this.locationEdit.isActive =
         this.router.snapshot.paramMap.get('isActive') === 'true';
+
       this.isEdited = true;
       this.setLocationFormValues(this.locationEdit);
     }
@@ -66,8 +85,9 @@ export class LocationFormComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50),
       ]),
-      isActive: new FormControl(null, Validators.required),
+      isActive: new FormControl(true, Validators.required)
     });
+
     if (!this.isEdited) {
       /* tslint:disable */
       this.addLocationForm.controls['isActive'].setValue(true);
@@ -80,16 +100,20 @@ export class LocationFormComponent implements OnInit {
     if (this.addLocationForm.invalid) {
       return;
     }
+
     const location: ILocation = {
+      id: this.locationEdit.id,
       city: this.addLocationForm.get('city').value,
       street: this.addLocationForm.get('street').value,
       officeName: this.addLocationForm.get('officeName').value,
       isActive: this.addLocationForm.get('isActive').value,
+      longitude: this.locationEdit.longitude,
+      latitude: this.locationEdit.latitude
     };
+
     if (!this.isEdited) {
       this.postLocation(location);
     } else {
-      location.id = this.locationEdit.id;
       this.editLocation(location);
     }
   }
@@ -145,8 +169,12 @@ export class LocationFormComponent implements OnInit {
     this.addLocationForm.patchValue({
       ['isActive']: location.isActive,
     });
+    if (!this.isEdited) {
+      this.addLocationForm.patchValue({
+        ['isActive']: true,
+      });
+    }
   }
-
   public onCancel(): void {
     this.ngLocation.back();
   }
