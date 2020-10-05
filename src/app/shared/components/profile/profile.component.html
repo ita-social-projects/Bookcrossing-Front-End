@@ -23,12 +23,20 @@
             <td scope="row">{{ 'components.profile.home.location' | translate }}</td>
             <td class="location"><span>{{user.userLocation.location.city}}</span><span>{{user.userLocation.location.street}}</span>
                 <span>{{user.userLocation.location.rooms}}</span>
+                <div *ngIf="locationHome?.isActive == false" class="float-right">
+                    <i class="fa fa-circle" aria-hidden="true"></i>
+                    <span class="ml-1">{{ 'components.admin.locations.active' | translate }}</span>
+                </div>
             </td>
         </tr>
         <tr>
             <td scope="row">{{ 'components.profile.home.homeLocation' | translate }}</td>
             <td class="location" *ngIf="locationHome != null">
                 <span>{{ locationHome.city }}</span><span>{{ locationHome.street }}</span>
+                <div *ngIf="locationHome?.isActive == true" class="float-right">
+                    <i class="fa fa-circle" aria-hidden="true"></i>
+                    <span class="ml-1">{{ 'components.admin.locations.active' | translate }}</span>
+                </div>
             </td>
             <td class="" *ngIf="locationHome == null">
                 <span>{{ 'components.profile.home.noHomeLocationMessage' | translate }}</span>
