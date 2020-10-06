@@ -1,18 +1,21 @@
-.padding-0{
-  padding-right:0;
-  padding-left:0;
-}
-.select-dropdown{
-  min-width: 5rem;
-  width: 14rem;
+.padding-0 {
+    padding-right: 0;
+    padding-left: 0;
 }
 
-.clear-icon, .search-icon{
-  display: inline-block;
-  fill: currentColor;
-  position: relative;
+.select-dropdown {
+    min-width: 5rem;
+    width: 14rem;
 }
-.clear-icon{
+
+.clear-icon,
+.search-icon {
+    display: inline-block;
+    fill: currentColor;
+    position: relative;
+}
+
+.clear-icon {
     color: #80868b;
     margin-left: 2px;
     margin-right: 7px;
@@ -22,101 +25,120 @@
 }
 
 .card-height {
-  min-height: 200px;
-  max-height: 100%;
-}
-.photo-padding{
-  padding: 0px;
-  width: 200px;
-  height: 200px;
-}
-::ng-deep mat-tooltip-component{
-  & .mat-tooltip{
-    background: white;
-    font-size: 15px;
-    color: black;
-    font-weight: bold;
-    border: 2px inset #007bff;
-    overflow: visible;
-    text-overflow: clip;
-    max-width: 500px;
-  }
+    min-height: 200px;
+    max-height: 100%;
 }
 
-
-.img-height{
-  min-height: 240px;
-  height: 265px;
-  max-height: 100%;
-}
-.img-width{
-  min-width: 200px;
+.photo-padding {
+    padding: 0px;
+    width: 200px;
+    height: 200px;
 }
 
-.hidden{
-  visibility: hidden;
-}
-.mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
-  background: blue;
-  background-image: initial;
-  background-position-x: initial;
-  background-position-y: initial;
-  background-size: initial;
-  background-attachment: initial;
-  background-origin: initial;
-  background-clip: initial;
-  background-color: blue;
-}
-
-.mat-select>.mat-option{position:relative;}
-.mat-select>.mat-option[data-tooltip]:hover::after {
-   content: attr(data-tooltip);
-   position: absolute;
-   left: 40px;
-   top: 10px;
-   min-width: 75px;
-   border: 1px solid rgba(0,0,0,.15);
-   border-radius: 2px;
-   background: white;
-   padding: 3px;
-   color: #000000;
-   font-size: 11px;
-   box-shadow: 0 6px 12px rgba(0,0,0,.175);
-}
-
-@media (max-width: 780px){
-  .select-dropdown{
-    min-width: 8rem;
-    width: auto;
-  }
-}
-@media (max-width: 550px){
-  .card-header.d-flex{
-    display: block !important;
-  .select-dropdown{
-    width:88%;
-    margin: 0.5rem;
+::ng-deep mat-tooltip-component {
+    & .mat-tooltip {
+        background: white;
+        font-size: 15px;
+        color: black;
+        font-weight: bold;
+        border: 2px inset #007bff;
+        overflow: visible;
+        text-overflow: clip;
+        max-width: 500px;
     }
-  .custom-control-label{
-    margin-left:24px;
-  }
-  .form-inline{
-    flex-flow:nowrap;
-  }
-  }
 }
 
-.heartbox
-{
-  position: absolute;
-  z-index: 1;
-  top: 1.2px;
-  right: 3px;
-  outline:none; 
+.img-height {
+    min-height: 240px;
+    height: 265px;
+    max-height: 100%;
 }
 
-.heart 
-{
-  color:black !important;
-  border-color: black !important;
+.img-width {
+    min-width: 200px;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
+    background: blue;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: blue;
+}
+
+.mat-select>.mat-option {
+    position: relative;
+}
+
+.mat-select>.mat-option[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 40px;
+    top: 10px;
+    min-width: 75px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 2px;
+    background: white;
+    padding: 3px;
+    color: #000000;
+    font-size: 11px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+@media (max-width: 780px) {
+    .select-dropdown {
+        min-width: 8rem;
+        width: auto;
+    }
+}
+
+@media (max-width: 550px) {
+    .card-header.d-flex {
+        display: block !important;
+        .select-dropdown {
+            width: 88%;
+            margin: 0.5rem;
+        }
+        .custom-control-label {
+            margin-left: 24px;
+        }
+        .form-inline {
+            flex-flow: nowrap;
+        }
+    }
+}
+
+.heartbox {
+    position: absolute;
+    z-index: 1;
+    top: 1.2px;
+    right: 3px;
+    outline: none;
+}
+
+.counterbox {
+    position: absolute;
+    z-index: 1;
+    top: 1.2px;
+    right: 14px;
+    outline: none;
+}
+
+.heartcounter {
+    color: #f44336 !important;
+    font-size: 11px;
+    margin-left: 0.1px;
+}
+
+.heart {
+    color: black !important;
+    border-color: black !important;
 }

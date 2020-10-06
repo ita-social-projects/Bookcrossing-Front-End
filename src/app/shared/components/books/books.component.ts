@@ -38,6 +38,8 @@ export class BooksComponent implements OnInit, OnDestroy {
     undefined,
     undefined,
   ];
+
+  public clickCounter = 0;
   public requestIds: object = {};
   public disabledButton = false;
   public books: IBook[];
@@ -293,30 +295,39 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public changeWishList(book: IBook): void {
-    if (book.isWished) {
-      this.wishListService.removeFromWishList(book.id).subscribe(
-        (data) => {
-          book.isWished = false;
-        },
-        (error) => {
-          this.notificationService.error(
-            this.translate.instant('Something went wrong'),
-            'X'
-          );
-        }
-      );
-    } else {
-      this.wishListService.addToWishList(book.id).subscribe(
-        (data) => {
-          book.isWished = true;
-        },
-        (error) => {
-          this.notificationService.error(
-            this.translate.instant('Cannot add own book to the wish list'),
-            'X'
-          );
-        }
-      );
+    this.clickCounter += 1;
+    if (this.clickCounter <= 1) {
+      if (book.isWished) {
+        book.wishCount -= 1;
+        this.wishListService.removeFromWishList(book.id).subscribe(
+          (data) => {
+            book.isWished = false;
+            this.clickCounter = 0;
+          },
+          (error) => {
+            this.clickCounter = 0;
+            this.notificationService.error(
+              this.translate.instant('Something went wrong'),
+              'X'
+            );
+          }
+        );
+      } else {
+        book.wishCount += 1;
+        this.wishListService.addToWishList(book.id).subscribe(
+          (data) => {
+            book.isWished = true;
+            this.clickCounter = 0;
+          },
+          (error) => {
+            this.clickCounter = 0;
+            this.notificationService.error(
+              this.translate.instant('Cannot add own book to the wish list'),
+              'X'
+            );
+          }
+        );
+      }
     }
   }
 
