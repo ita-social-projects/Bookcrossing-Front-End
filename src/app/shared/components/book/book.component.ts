@@ -58,6 +58,7 @@ export class BookComponent implements OnInit {
   previousBooksPage: booksPage;
   rating = 0;
   public clickCounter = 0;
+  public tooltip = this.translate.instant('components.books.likeTooltip');
 
   constructor(
     private translate: TranslateService,
