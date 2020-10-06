@@ -39,6 +39,7 @@ export class BooksComponent implements OnInit, OnDestroy {
     undefined,
   ];
 
+  tooltip = this.translate.instant('components.books.likeTooltip');
   public clickCounter = 0;
   public requestIds: object = {};
   public disabledButton = false;

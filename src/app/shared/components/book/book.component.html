@@ -60,7 +60,7 @@
                       </button>
                     </ng-template>
                     <ng-template [ngIf]="isAuthenticated() && isBookOwner">
-                        <div class="counterbox m-3 mr-4">
+                        <div [matTooltip]="tooltip" matTooltipPosition="left" class="counterbox m-2 mr-4">
                             <div class="row mb-2">
                                 <i class="fa fa-address-book fa-lg" aria-hidden="true"></i>
                             </div>
