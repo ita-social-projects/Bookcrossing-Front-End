@@ -122,6 +122,7 @@ describe('#BookService getBookPage,getCurrentOwnedBooks,getRequestedBooks,getRea
       rating: 5,
       location: null,
       language: null,
+      wishCount: 0
     };
 
     bookService

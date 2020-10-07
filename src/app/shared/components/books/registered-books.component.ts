@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
 
 export class RegisteredBooksComponent extends BooksComponent {
 
+    tooltip = this.translate.instant('components.books.likeTooltip');
     booksPage = booksPage.Registered;
 
     public getBooks(params: BookQueryParams): void {
