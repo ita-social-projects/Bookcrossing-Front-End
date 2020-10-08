@@ -440,7 +440,7 @@ constructor(
 
   // returns false if less than 2 words
   checkAuthorLastName(input: string): boolean {
-
+    
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
