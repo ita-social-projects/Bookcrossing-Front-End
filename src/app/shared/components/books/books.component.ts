@@ -46,6 +46,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
   public selectedGenres: number[];
+  public selectedStates: bookState[];
   public selectedLanguages: number[];
   public selectedLocations: ILocationFilter;
   public route = this.router.url;
@@ -192,6 +193,7 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   public onFilterChange(filterChanged: boolean): void {
     this.queryParams.genres = this.selectedGenres;
+    this.queryParams.bookStates = this.selectedStates;
     this.queryParams.languages = this.selectedLanguages;
     this.queryParams.locations = this.selectedLocations?.locationIds?.length > 0
       ? this.selectedLocations.locationIds
@@ -209,8 +211,17 @@ export class BooksComponent implements OnInit, OnDestroy {
     if (this.queryParams.searchTerm) {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
-    if (typeof this.queryParams.showAvailable === 'undefined') {
-      this.queryParams.showAvailable = true;
+    // if (typeof this.queryParams.showAvailable === 'undefined') {
+    //   this.queryParams.showAvailable = true;
+    // }
+    if (this.queryParams.bookStates) {
+      let stateEl: bookState[];
+      if (Array.isArray(this.queryParams.bookStates)) {
+        stateEl = this.queryParams.bookStates.map((s) => s);
+      } else {
+        stateEl = [];
+      }
+      this.selectedStates = stateEl;
     }
     if (this.queryParams.genres) {
       let genres: number[];
