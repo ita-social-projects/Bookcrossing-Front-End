@@ -4,11 +4,9 @@
             <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
         </mdb-breadcrumb>
     </div>
-
     <app-book-filter-bar [(selectedGenres)]="selectedGenres"
                          [(selectedStates)]="selectedStates"
                          [(selectedLanguages)]="selectedLanguages"
-                         [(availableSelected)]="queryParams.showAvailable"
                          [(orderByField)]="queryParams.orderByField"
                          [(orderByFieldAscending)]="queryParams.orderByAscending"
                          [(selectedLocations)]="selectedLocations"
@@ -54,10 +52,24 @@
                                                     </ng-template>
                                                 </div>
                                                 <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
-                                                    <button mat-icon-button class="heartbox" aria-hidden="true" change type="default" color="warn" (click)=changeWishList(book)>
-                                  <mat-icon *ngIf="book.isWished">favorite</mat-icon>
-                                  <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-                                </button>
+                                                    <button mat-icon-button class="heartbox" change type="default" aria-hidden="true" target="_blank" color="warn" (click)=changeWishList(book)>
+                                                    <div class="row">
+                                                      <mat-icon *ngIf="book.isWished">favorite</mat-icon>
+                                                      <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
+                                                      <span class="ml-0">{{ book.wishCount }}</span>
+                                                    </div>
+                                                  </button>
+                                                </ng-template>
+                                                <ng-template [ngIf]="isAuthenticated() && book.userId == userId">
+                                                    <div [matTooltip]="tooltip" matTooltipPosition="left" class="counterbox m-1 mr-4">
+                                                        <div class="row mb-2">
+                                                            <i class="fa fa-address-book fa-lg" aria-hidden="true"></i>
+                                                        </div>
+                                                        <div class="row heartcounter">
+                                                            <i class="fa fa-heart" aria-hidden="true"></i>
+                                                            <span class="m-0 p-0">{{ book.wishCount }}</span>
+                                                        </div>
+                                                    </div>
                                                 </ng-template>
                                                 <div class="col-lg-8 m2">
                                                     <div class="card-block m-2 px-2">
@@ -190,9 +202,23 @@
                 </div>
                 <ng-template [ngIf]="isAuthenticated() && book.userId != userId">
                     <button mat-icon-button class="heartbox" change type="default" aria-hidden="true" target="_blank" color="warn" (click)=changeWishList(book)>
-              <mat-icon *ngIf="book.isWished">favorite</mat-icon>
-              <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-            </button>
+                      <div class="row">
+                        <mat-icon *ngIf="book.isWished">favorite</mat-icon>
+                        <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
+                        <span class="ml-0">{{ book.wishCount }}</span>
+                      </div>
+                    </button>
+                </ng-template>
+                <ng-template [ngIf]="isAuthenticated() && book.userId == userId">
+                    <div [matTooltip]="tooltip" matTooltipPosition="left" class="counterbox m-1 mr-4">
+                        <div class="row mb-2">
+                            <i class="fa fa-address-book fa-lg" aria-hidden="true"></i>
+                        </div>
+                        <div class="row heartcounter">
+                            <i class="fa fa-heart" aria-hidden="true"></i>
+                            <span class="m-0 p-0">{{ book.wishCount }}</span>
+                        </div>
+                    </div>
                 </ng-template>
                 <div class="col m-2">
                     <div class="card-block px-2">

@@ -7,7 +7,7 @@
         </a>
         <div class="counter-body">
           <div class="title">
-            Added to wishlist
+            {{ 'components.statistics.wishlist' | translate }}
           </div>
           <div class="value">
             {{countersData?.wishedBooksCount}}
@@ -23,7 +23,7 @@
         </a>
         <div class="counter-body">
           <div class="title">
-            Requested
+            {{ 'components.statistics.request' | translate }}
           </div>
           <div class="value">
             {{countersData?.requestedBooksCount}}
@@ -34,12 +34,12 @@
 
     <div class="col-lg-3 col-md-6 col-sm-12">
       <div class="counter">
-        <a [routerLink]="['/books/read']" class="icon not-finished">
+        <a [routerLink]="['/books/currentlyread']" class="icon not-finished">
           <i class="fas fa-book-open"></i>
         </a>
         <div class="counter-body">
           <div class="title">
-            To be finished
+            {{ 'components.statistics.in-progress' | translate }}
           </div>
           <div class="value">
             {{countersData?.readBooksCount}}
@@ -55,7 +55,7 @@
         </div>
         <div class="counter-body">
           <div class="title">
-            Your books read
+            {{ 'components.statistics.books-were-read' | translate }}
           </div>
           <div class="value">
             {{countersData?.registeredBooksWereReadCount}}
@@ -75,12 +75,14 @@
       </div>
       <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
         <div class="card-title">
-          Reading statistics
+          {{ 'components.statistics.reading' | translate }}
         </div>
 
         <div class="params">
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">City</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.city' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="readingSelectedCities"
                           (openedChange)="onReadingStatisticsFilterChange($event)"
@@ -94,7 +96,9 @@
           </div>
 
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">Office</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.office' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="readingSelectedOffices"
                           (openedChange)="onReadingStatisticsFilterChange($event)"
@@ -108,7 +112,9 @@
           </div>
 
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">Genres</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.genre' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="readingSelectedGenres"
                           (openedChange)="onReadingStatisticsFilterChange($event)"
@@ -122,12 +128,16 @@
           </div>
 
           <div class="period">
-            <div class="parameter-title">Period</div>
+            <div class="parameter-title">
+              {{ 'components.statistics.period' | translate }}
+            </div>
 
 
             <div class="col-lg-6 parameter-date">
               <mat-form-field color="accent">
-                <mat-label>From</mat-label>
+                <mat-label>
+                  {{ 'components.statistics.from' | translate }}
+                </mat-label>
                 <input [(ngModel)]="readingFrom"
                        matInput
                        [matDatepicker]="picker1"
@@ -139,7 +149,9 @@
 
             <div class="col-lg-6 parameter-date">
               <mat-form-field color="accent">
-                <mat-label>To</mat-label>
+                <mat-label>
+                  {{ 'components.statistics.to' | translate }}
+                </mat-label>
                 <input [(ngModel)]="readingTo"
                        matInput
                        [matDatepicker]="picker2"
@@ -154,7 +166,7 @@
     </div>
   </div>
 
-  <!-- Reading statistics -->
+  <!-- Donation statistics -->
   <div class="reading">
     <div class="row">
       <div class="col-lg-8 col-md-7 col-sm-12 line-chart">
@@ -163,12 +175,14 @@
       </div>
       <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
         <div class="card-title">
-          Donation statistics
+          {{ 'components.statistics.donating' | translate }}
         </div>
 
         <div class="params">
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">City</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.city' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="donationSelectedCities"
                           (openedChange)="onDonationStatisticsFilterChange($event)"
@@ -182,7 +196,9 @@
           </div>
 
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">Office</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.office' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="donationSelectedOffices"
                           (openedChange)="onDonationStatisticsFilterChange($event)"
@@ -196,7 +212,9 @@
           </div>
 
           <div class="parameter">
-            <div class="col-lg-6 parameter-title">Genres</div>
+            <div class="col-lg-6 parameter-title">
+              {{ 'components.statistics.genre' | translate }}
+            </div>
             <div class="col-lg-6 select">
               <mat-select [(ngModel)]="donationSelectedGenres"
                           (openedChange)="onDonationStatisticsFilterChange($event)"
@@ -210,12 +228,16 @@
           </div>
 
           <div class="period">
-            <div class="parameter-title">Period</div>
+            <div class="parameter-title">
+              {{ 'components.statistics.period' | translate }}
+            </div>
 
 
             <div class="col-lg-6 parameter-date">
               <mat-form-field color="accent">
-                <mat-label>From</mat-label>
+                <mat-label>
+                  {{ 'components.statistics.from' | translate }}
+                </mat-label>
                 <input [(ngModel)]="donationFrom"
                        matInput
                        [matDatepicker]="picker3"
@@ -227,7 +249,9 @@
 
             <div class="col-lg-6 parameter-date">
               <mat-form-field color="accent">
-                <mat-label>To</mat-label>
+                <mat-label>
+                  {{ 'components.statistics.to' | translate }}
+                </mat-label>
                 <input [(ngModel)]="donationTo"
                        matInput
                        [matDatepicker]="picker4"
@@ -247,7 +271,7 @@
     <div class="card">
       <div class="">
         <div class="card-title">
-          Donated
+          {{ 'components.statistics.donated' | translate }}
         </div>
         <div class="pie-chart"
              echarts
@@ -263,7 +287,7 @@
           </ng-container>
           <ng-template #DidNotDonateAnyBook>
             <div class="total-none">
-              You didn't donate any book yet
+              {{ 'components.statistics.lack-donation-stats' | translate }}
             </div>
           </ng-template>
         </div>
@@ -279,7 +303,9 @@
             <mat-option
               [value]="DateRangeEnumValues.Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
             <mat-option
-              [value]="DateRangeEnumValues.AllTime">All time</mat-option>
+              [value]="DateRangeEnumValues.AllTime">
+              {{ 'components.statistics.all-time' | translate }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -287,7 +313,7 @@
     <div class="card">
       <div class="">
         <div class="card-title">
-          Books read
+          {{ 'components.statistics.read' | translate }}
         </div>
         <div class="pie-chart"
              echarts
@@ -303,7 +329,7 @@
           </ng-container>
           <ng-template #DidNotReadAnyBook>
             <div class="total-none">
-              You didn't read any book yet
+              {{ 'components.statistics.lack-reading-stats' | translate }}
             </div>
           </ng-template>
         </div>
@@ -312,7 +338,7 @@
     <div class="card">
       <div class="">
         <div class="card-title">
-          Book languages
+          {{ 'components.statistics.languages' | translate }}
         </div>
         <div class="pie-chart"
              echarts
@@ -328,7 +354,7 @@
           </ng-container>
           <ng-template #DidNotReadAnyBook>
             <div class="total-none">
-              You didn't read any book yet
+              {{ 'components.statistics.lack-reading-stats' | translate }}
             </div>
           </ng-template>
         </div>

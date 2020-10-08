@@ -1,21 +1,20 @@
 import { BooksComponent } from './books.component';
-import { BookQueryParams } from 'src/app/core/models/bookQueryParams';
+import {BookQueryParams} from 'src/app/core/models/bookQueryParams';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-current-books',
+  selector: 'app-current-read-books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.scss']
 })
 
-export class CurrentlyOwnedBooksComponent extends BooksComponent {
+export class CurrentlyReadBooksComponent extends BooksComponent {
 
-    tooltip = this.translate.instant('components.books.likeTooltip');
-    booksPage = booksPage.CurrentOwned;
+    booksPage = booksPage.CurrentRead;
 
     public getBooks(params: BookQueryParams): void {
-        this.bookService.getCurrentOwnedBooks(params)
+        this.bookService.getCurrentReadBooks(params)
           .subscribe( {
             next: pageData => {
               this.books = pageData.page;
@@ -27,9 +26,9 @@ export class CurrentlyOwnedBooksComponent extends BooksComponent {
                 this.totalSize = pageData.totalCount;
               }
             },
-            error: err => {
+            error: error => {
               this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+              .instant('Something went wrong!'), 'X');
             }
           });
       }
