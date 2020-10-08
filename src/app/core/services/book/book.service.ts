@@ -26,7 +26,6 @@ export class BookService {
     ) {}
 
   public getBooksPage(bookParams: BookQueryParams): Observable<IPage<IBook>> {
-    console.log(bookParams);
     return this.pagination.getBookPage<IBook>(bookUrl, bookParams);
   }
 

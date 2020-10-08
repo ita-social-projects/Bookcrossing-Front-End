@@ -31,10 +31,6 @@ export class BookQueryParams extends PageableParameters {
     book.locations = params.locations ? params.locations : undefined;
     book.homeLocations = params.homeLocations ? params.homeLocations : undefined;
     book.searchTerm = params.searchTerm ? params.searchTerm : undefined;
-    // book.showAvailable =
-      // typeof params.showAvailable === 'undefined'
-      //   ? undefined
-      //   : JSON.parse(params.showAvailable);
     book.bookStates = params.bookStates ? params.bookStates : undefined;
     book.genres = params.genres ? params.genres : undefined;
     book.languages = params.languages ? params.languages : undefined;
@@ -66,9 +62,6 @@ export class BookQueryParams extends PageableParameters {
         params = params.append('homeLocations', id.toString());
       }
     }
-    // if (typeof this.showAvailable !== 'undefined') {
-    //   params = params.set('showAvailable', this.showAvailable.toString());
-    // }
     if (this.bookStates?.length > 0) {
       for (const stateEl of this.bookStates) {
         params = params.append('bookStates', stateEl);
