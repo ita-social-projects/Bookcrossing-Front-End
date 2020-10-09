@@ -4,9 +4,17 @@
             <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
         </mdb-breadcrumb>
     </div>
-
-    <app-book-filter-bar [(selectedGenres)]="selectedGenres" [(selectedLanguages)]="selectedLanguages" [(availableSelected)]="queryParams.showAvailable" [(orderByField)]="queryParams.orderByField" [(orderByFieldAscending)]="queryParams.orderByAscending" [(selectedLocations)]="selectedLocations"
-        [showAvailable]="booksPage!==2" [showMap]="true" [(showMapSelected)]="queryParams.locationFilterOn" (filterChange)="onFilterChange($event)" (viewMode)="onViewModeChange($event)">
+    <app-book-filter-bar [(selectedGenres)]="selectedGenres"
+                         [(selectedStates)]="selectedStates"
+                         [(selectedLanguages)]="selectedLanguages"
+                         [(orderByField)]="queryParams.orderByField"
+                         [(orderByFieldAscending)]="queryParams.orderByAscending"
+                         [(selectedLocations)]="selectedLocations"
+                         [showAvailable]="booksPage!==2"
+                         [showMap]="true"
+                         [(showMapSelected)]="queryParams.locationFilterOn"
+                         (filterChange)="onFilterChange($event)"
+                         (viewMode)="onViewModeChange($event)">
     </app-book-filter-bar>
 
     <ng-template [ngIf]="books?.length==0" [ngIfElse]="booksExist">
