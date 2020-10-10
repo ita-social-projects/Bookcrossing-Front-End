@@ -131,6 +131,7 @@ import { TimespansComponent } from './shared/components/admin/timespans/timespan
 import { LocationHomeService } from './core/services/locationHome/locationHome.service';
 import { SearchBooksMapComponent } from './shared/components/search-books-map/search-books-map.component';
 import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
+import { TimespansPopupComponent } from './shared/components/admin/timespans-popup/timespans-popup.component';
 
 @NgModule({
   declarations: [
@@ -206,6 +207,7 @@ import { HomeLocationPickerComponent } from './shared/components/home-location-p
     SuggestionMessageComponent,
     RequestFromCompanyComponent,
     TimespansComponent,
+    TimespansPopupComponent,
     HomeLocationPickerComponent,
     SuggestionMessageComponent
   ],

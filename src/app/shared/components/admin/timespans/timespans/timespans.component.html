@@ -1,28 +1,21 @@
-<div class="container my-5">
-<section>
-    <div class="row">
-        <div class="col-12">
-            <div class="card card-list">
-                <!-- Table -->
-                <div class="card-body">
-                    <button placeholder="Span Name">Current Span</button>
-                    <button style="margin-left: 200px;" (click)="isOpened = !isOpened">Change</button>
-                    <button style="margin-left: 10px;" (click)="isClicked = !isClicked" >Reset</button>
-                    <span style="margin-left: 200px;"  *ngIf="isClicked">Resets to 10 days by default</span>
-                </div>
-                <div class="block2" *ngIf="isOpened">
-                    <input style="margin-left: 10px;" type="number" name="t" value="0" min="0" max="60" step="1">
-                    <label>Minutes</label>
-                    <input style="margin-left: 10px;" type="number" name="t" value="0" min="0" max="24" step="1">
-                    <label>Hours</label>
-                    <input style="margin-left: 10px;" type="number" name="t" value="0" min="0" max="30" step="1">
-                    <label >Days</label>
-                    <button style="margin-left: 30px;">Set</button>
-                    <button style="margin-left: 10px;">Cancel</button>
-                </div>
-            </div>
-         </div>
-    </div>
-</section>
+<div class="container">
+  <ng-container *ngFor="let item of settings;">
+    <section>
+      <div class="card card-cascade narrower mt-3">
+        <p class="h2 mt-2 mb-1 title text-center">{{ item.name }}</p>
+        <div class="card-body card-body-cascade pb-0">
+          <div class="description">
+            <p>{{item?.description}}</p>
+          </div>
+          <div class="text-right">
+            <span class="h2-responsive mr-4 text-center align-middle"style="font-family: 'Orbitron', sans-serif;">{{
+              item?.value
+            }}</span>
+            <button class="btn btn-default blue-gradient" (click)="changeTimeSpan(item)">Change</button>
+            <button class="btn btn-small btn-danger" (click)="resetTimeSpan(item)">Reset</button>    
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
 </div>
-`
