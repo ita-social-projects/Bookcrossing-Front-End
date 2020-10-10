@@ -34,6 +34,7 @@ import { BookComponent } from './shared/components/book/book.component';
 import { CurrentlyOwnedBooksComponent } from './shared/components/books/currently-owned-books.component';
 import { RegisteredBooksComponent } from './shared/components/books/registered-books.component';
 import { ReadBooksComponent } from './shared/components/books/read-books.component';
+import { CurrentlyReadBooksComponent } from './shared/components/books/currently-read-books.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
@@ -121,6 +122,7 @@ import { BroadcastService, MSAL_CONFIG, MSAL_CONFIG_ANGULAR, MsalAngularConfigur
 import { UserViewComponent } from './shared/components/admin/user-view/user-view.component';
 import { StatisticsComponent } from './shared/components/statistics/statistics.component';
 import { StatisticsService } from './core/services/statistics/statistics.service';
+import { HideProdDirective } from './shared/directives/hideIfProduction.directive';
 import { MatSelectFilterModule } from 'mat-select-filter';
 import { IssuesComponent } from './shared/components/admin/issues/issues/issues.component';
 import { RequestFromCompanyComponent } from './shared/components/request-from-company/request-from-company.component';
@@ -147,6 +149,7 @@ import { TimespansPopupComponent } from './shared/components/admin/timespans-pop
     RegisteredBooksComponent,
     CurrentlyOwnedBooksComponent,
     ReadBooksComponent,
+    CurrentlyReadBooksComponent,
     LocationFormComponent,
     MapboxComponent,
     AuthorsComponent,
@@ -200,16 +203,15 @@ import { TimespansPopupComponent } from './shared/components/admin/timespans-pop
     NotificationBellComponent,
     UserViewComponent,
     StatisticsComponent,
-    SearchBooksMapComponent,
+    HideProdDirective,
     IssuesComponent,
     RequestFromCompanyComponent,
     IssueFormComponent,
-    SuggestionMessageComponent,
-    RequestFromCompanyComponent,
+    SearchBooksMapComponent,
     TimespansComponent,
     TimespansPopupComponent,
     HomeLocationPickerComponent,
-    SuggestionMessageComponent
+    SuggestionMessageComponent,
   ],
   imports: [
     NgxEchartsModule.forRoot({

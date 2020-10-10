@@ -82,6 +82,7 @@ export class AuthenticationService {
       .pipe(map(user => {
         if (user && user.token) {
           localStorage.setItem('RememberMe', form.RememberMe);
+
           localStorage.setItem('currentUser', JSON.stringify(user));
           console.log('user creds is ', user);
           this.currentUserSubject.next(user);
@@ -178,6 +179,7 @@ export class AuthenticationService {
     if (locationId != null) {
       this.locationHomeService.getLocationHomeById(locationId).subscribe(location => {
         This.isValid = (location?.isActive || userInfo?.userLocation?.location?.isActive);
+        console.log(This.isValid);
         if (This.isValid === false) {
           return this.dialogService.openLocationDialog(userInfo)
             .afterClosed().toPromise();
@@ -185,6 +187,9 @@ export class AuthenticationService {
       });
     } else {
       This.isValid = userInfo?.userLocation?.location?.isActive;
+      if (!This.isValid) {
+        This.isValid = false;
+      }
       if (This.isValid === false) {
       return this.dialogService.openLocationDialog(userInfo)
             .afterClosed().toPromise();

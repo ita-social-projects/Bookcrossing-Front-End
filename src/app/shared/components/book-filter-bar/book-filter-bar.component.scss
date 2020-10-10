@@ -7,29 +7,27 @@
     width: 14rem;
   }
   .clear-icon, .search-icon{
+    cursor: pointer;
     display: inline-block;
     fill: currentColor;
     position: relative;
   }
   .clear-icon{
       color: #80868b;
-      margin-left: 2px;
-      margin-right: 7px;
-      height: 24px;
-      line-height: 24px;
-      width: 24px;
   }
   .hidden{
     visibility: hidden;
   }
 
+.sign {
+  cursor: pointer !important;
+}
+
   .block
   {
+    display: flex;
     top: 100000;
-    margin: 0.25%;
-    margin-top: 3% !important;
-    margin-bottom: 0.2% !important;
-    width: 18% !important;
+    width: 16% !important;
   }
 
   .mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
@@ -41,9 +39,12 @@
     background-attachment: initial;
     background-origin: initial;
     background-clip: initial;
-    background-color: blue;
   }
-  
+
+  .custom-control-label {
+    cursor: pointer;
+  }
+
   .mat-select>.mat-option{position:relative;}
   .mat-select>.mat-option[data-tooltip]:hover::after {
      content: attr(data-tooltip);
@@ -59,7 +60,11 @@
      font-size: 11px;
      box-shadow: 0 6px 12px rgba(0,0,0,.175);
   }
-  
+
+  .custom-checkbox {
+    margin-left: 1%;
+  }
+
   @media (max-width: 780px){
     .select-dropdown{
       min-width: 8rem;
@@ -81,4 +86,3 @@
     }
     }
   }
-  

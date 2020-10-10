@@ -38,6 +38,9 @@ export class BooksComponent implements OnInit, OnDestroy {
     undefined,
     undefined,
   ];
+
+  tooltip = this.translate.instant('components.books.likeTooltip');
+  public clickCounter = 0;
   public requestIds: object = {};
   public disabledButton = false;
   public books: IBook[];
@@ -46,6 +49,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
   public selectedGenres: number[];
+  public selectedStates: bookState[];
   public selectedLanguages: number[];
   public selectedLocations: ILocationFilter;
   public route = this.router.url;
@@ -192,6 +196,7 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   public onFilterChange(filterChanged: boolean): void {
     this.queryParams.genres = this.selectedGenres;
+    this.queryParams.bookStates = this.selectedStates;
     this.queryParams.languages = this.selectedLanguages;
     this.queryParams.locations = this.selectedLocations?.locationIds?.length > 0
       ? this.selectedLocations.locationIds
@@ -209,8 +214,17 @@ export class BooksComponent implements OnInit, OnDestroy {
     if (this.queryParams.searchTerm) {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
-    if (typeof this.queryParams.showAvailable === 'undefined') {
-      this.queryParams.showAvailable = true;
+    // if (typeof this.queryParams.showAvailable === 'undefined') {
+    //   this.queryParams.showAvailable = true;
+    // }
+    if (this.queryParams.bookStates) {
+      let stateEl: bookState[];
+      if (Array.isArray(this.queryParams.bookStates)) {
+        stateEl = this.queryParams.bookStates.map((s) => s);
+      } else {
+        stateEl = [];
+      }
+      this.selectedStates = stateEl;
     }
     if (this.queryParams.genres) {
       let genres: number[];
@@ -293,30 +307,39 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public changeWishList(book: IBook): void {
-    if (book.isWished) {
-      this.wishListService.removeFromWishList(book.id).subscribe(
-        (data) => {
-          book.isWished = false;
-        },
-        (error) => {
-          this.notificationService.error(
-            this.translate.instant('Something went wrong'),
-            'X'
-          );
-        }
-      );
-    } else {
-      this.wishListService.addToWishList(book.id).subscribe(
-        (data) => {
-          book.isWished = true;
-        },
-        (error) => {
-          this.notificationService.error(
-            this.translate.instant('Cannot add own book to the wish list'),
-            'X'
-          );
-        }
-      );
+    this.clickCounter += 1;
+    if (this.clickCounter <= 1) {
+      if (book.isWished) {
+        book.wishCount -= 1;
+        this.wishListService.removeFromWishList(book.id).subscribe(
+          (data) => {
+            book.isWished = false;
+            this.clickCounter = 0;
+          },
+          (error) => {
+            this.clickCounter = 0;
+            this.notificationService.error(
+              this.translate.instant('Something went wrong'),
+              'X'
+            );
+          }
+        );
+      } else {
+        book.wishCount += 1;
+        this.wishListService.addToWishList(book.id).subscribe(
+          (data) => {
+            book.isWished = true;
+            this.clickCounter = 0;
+          },
+          (error) => {
+            this.clickCounter = 0;
+            this.notificationService.error(
+              this.translate.instant('Cannot add own book to the wish list'),
+              'X'
+            );
+          }
+        );
+      }
     }
   }
 

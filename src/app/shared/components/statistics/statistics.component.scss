@@ -45,6 +45,10 @@
   font-weight: 500;
   color: #7F7F7F;
   font-size: 14px;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .counter .counter-body .value {

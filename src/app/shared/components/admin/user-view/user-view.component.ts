@@ -11,8 +11,8 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 import { BookService } from 'src/app/core/services/book/book.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import {IRootDeleteComment} from '../../../../core/models/comments/root-comment/rootDelete';
-import {DialogService} from '../../../../core/services/dialog/dialog.service';
+import { IRootDeleteComment } from '../../../../core/models/comments/root-comment/rootDelete';
+import { DialogService } from '../../../../core/services/dialog/dialog.service';
 
 @Component({
   templateUrl: './user-view.component.html',
@@ -58,7 +58,7 @@ export class UserViewComponent implements OnInit {
 
     this.booksService.getCurrentBooksOfUser(this.user.id).subscribe((books) => {
       this.books = books;
-      this.activeBooksExist = this.books.some((book) => book.state !== 3);
+      this.activeBooksExist = this.books.some((book) => book.state !== 'Inactive');
     });
   }
 
@@ -66,7 +66,7 @@ export class UserViewComponent implements OnInit {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('components.admin.user-view.confirmation.delete',
-          { firstName: this.user.firstName, lastName: this.user.lastName}).toPromise()
+          { firstName: this.user.firstName, lastName: this.user.lastName }).toPromise()
       )
       .afterClosed()
       .subscribe(async (res) => {
@@ -83,22 +83,25 @@ export class UserViewComponent implements OnInit {
       });
   }
 
-  public onRecoverUserButtonClick() {
-    const isConfirmed: boolean = confirm(
-      this.translate.instant('components.admin.user-view.confirmation.recover',
-      { firstName: this.user.firstName, lastName: this.user.lastName})
-    );
-
-    if (isConfirmed) {
-      this.usersService.recoverUser(this.user.id).subscribe(
-        (data) => this.loadUser(this.user.id),
-        (error) =>
-          this.notificationService.error(
-            this.translate.instant('common-errors.error-message'),
-            'X'
-          )
-      );
-    }
+  public async onRecoverUserButtonClick() {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('components.admin.user-view.confirmation.recover',
+          { firstName: this.user.firstName, lastName: this.user.lastName }).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.usersService.recoverUser(this.user.id).subscribe(
+            (data) => this.loadUser(this.user.id),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
   public getFormData(book: IBookPut): FormData {
@@ -121,52 +124,70 @@ export class UserViewComponent implements OnInit {
     return formData;
   }
 
-  public onTakeOwnershipButtonClick(bookId: number): void {
-    const isConfirmed: boolean = confirm(
-      this.translate.instant('components.admin.user-view.confirmation.take-ownership')
-    );
-    if (!isConfirmed) { return; }
-
-    const bookPut: IBookPut = {
-      id: bookId,
-      userId: this.authService.currentUserValue.id,
-      fieldMasks: ['UserId'],
-    };
-    this.booksService.putBook(bookId, this.getFormData(bookPut)).subscribe(
-      (data) => this.loadUsersBooks(),
-      (error) =>
-        this.notificationService.error(
-          this.translate.instant('common-errors.error-message'),
-          'X'
-        )
-    );
+  public async onTakeOwnershipButtonClick(bookId: number): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.admin.user-view.confirmation.take-ownership')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          const bookPut: IBookPut = {
+            id: bookId,
+            userId: this.authService.currentUserValue.id,
+            fieldMasks: ['UserId'],
+          };
+          this.booksService.putBook(bookId, this.getFormData(bookPut)).subscribe(
+            (data) => this.loadUsersBooks(),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
-  public onActivateButtonClick(bookId: number) {
-    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.activate'));
-    if (!isConfirmed) { return; }
+  public async onActivateButtonClick(bookId: number): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.admin.user-view.confirmation.activate')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
 
-    this.booksService.activateBook(bookId).subscribe(
-      (data) => this.loadUsersBooks(),
-      (error) =>
-        this.notificationService.error(
-          this.translate.instant('common-errors.error-message'),
-          'X'
-        )
-    );
+          this.booksService.activateBook(bookId).subscribe(
+            (data) => this.loadUsersBooks(),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 
-  public onDeactivateBookButtonClick(bookId: number): void {
-    const isConfirmed: boolean = confirm(this.translate.instant('components.admin.user-view.confirmation.deactivate'));
-    if (!isConfirmed) { return; }
+  public async onDeactivateBookButtonClick(bookId: number): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.admin.user-view.confirmation.deactivate')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
 
-    this.booksService.deactivateBook(bookId).subscribe(
-      (data) => this.loadUsersBooks(),
-      (error) =>
-        this.notificationService.error(
-          this.translate.instant('common-errors.error-message'),
-          'X'
-        )
-    );
+          this.booksService.deactivateBook(bookId).subscribe(
+            (data) => this.loadUsersBooks(),
+            (error) =>
+              this.notificationService.error(
+                this.translate.instant('common-errors.error-message'),
+                'X'
+              )
+          );
+        }
+      });
   }
 }

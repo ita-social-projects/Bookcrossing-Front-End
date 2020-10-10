@@ -1,62 +1,71 @@
-.book-name{
-  font-size: 22px;
-  word-wrap: break-word;
+.book-name {
+    font-size: 22px;
+    word-wrap: break-word;
 }
 
 .read-by-margin {
-  margin-top: 3px;
+    margin-top: 3px;
 }
 
-.borderless td, .borderless th {
-  border: none;
-  margin: 0;
-  padding: 10px;
+.counterbox {
+    position: absolute;
+    z-index: 1;
+    top: 1.2px;
+    right: 14px;
+    outline: none;
+}
+
+.heartcounter {
+    color: #f44336 !important;
+    font-size: 11px;
+    margin-left: 0.1px;
+}
+
+.borderless td,
+.borderless th {
+    border: none;
+    margin: 0;
+    padding: 10px;
 }
 
 td {
-  padding-left: 50px;
+    padding-left: 50px;
 }
 
 table {
-  table-layout: fixed;
+    table-layout: fixed;
 }
 
-.badge{
-display: initial;
+.badge {
+    display: initial;
 }
 
-
-.heartbox
-{
-  position: absolute;
-  z-index: 1;
-  top: -8px;
-  right:0px;
-  outline:none; 
+.heartbox {
+    position: absolute;
+    z-index: 1;
+    top: -8px;
+    right: 0px;
+    outline: none;
 }
 
-.emailbutton
-{
-  outline:none; 
+.emailbutton {
+    outline: none;
 }
 
-.heart 
-{
-  color:black !important;
-  border-color: black !important;
+.heart {
+    color: black !important;
+    border-color: black !important;
 }
 
-.fontsize{
-  font-size: 16px;
+.fontsize {
+    font-size: 16px;
 }
 
-.contact
-{
-  text-decoration: underline;
-  cursor: pointer !important;
+.contact {
+    text-decoration: underline;
+    cursor: pointer !important;
 }
 
-.bluetext
-{
-  color: rgb(6, 173, 250);
+.bluetext {
+    color: rgb(6, 173, 250);
 }

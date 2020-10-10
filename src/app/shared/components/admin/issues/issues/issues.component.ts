@@ -16,9 +16,10 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 export class IssuesComponent implements OnInit {
   issues: IIssue[];
   issuesDisplayColumns: string[] = [
-    'components.admin.issues.issues',
+    'components.admin.issues.issues'
   ];
   issueProperties: string[] = ['name'];
+  issuePropertiesUk: string[] = ['nameUk'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
   searchField = 'name';
@@ -30,7 +31,6 @@ export class IssuesComponent implements OnInit {
     private notificationService: NotificationService,
     private issueService: IssueService,
     private translate: TranslateService,
-    private dialog: MatDialog
   ) {}
 
   public ngOnInit(): void {
@@ -51,6 +51,11 @@ export class IssuesComponent implements OnInit {
     }
     this.queryParams.page = 1;
     this.queryParams.filters = [];
+    if (!this.isEn()) {
+      this.searchField = 'nameUk';
+    } else {
+      this.searchField = 'name';
+    }
     this.queryParams.filters[0] = {
       propertyName: this.searchField,
       value: this.searchText,
@@ -93,11 +98,6 @@ export class IssuesComponent implements OnInit {
     });
   }
 
-  public addIssue(): void {
-    this.issueService.formIssue = null;
-    this.router.navigate(['admin/issue-form']);
-  }
-
   public editIssue(issue: IIssue): void {
     this.issueService.formIssue = issue;
     this.router.navigate(['admin/issue-form']);
@@ -131,5 +131,9 @@ export class IssuesComponent implements OnInit {
         }
       },
     });
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }

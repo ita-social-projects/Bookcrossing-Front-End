@@ -1,8 +1,12 @@
 import { PageableParameters } from './Pagination/pageableParameters';
 import { HttpParams } from '@angular/common/http';
+import { bookState } from './bookState.enum';
+import { element } from 'protractor';
+import { state } from '@angular/animations';
 
 export class BookQueryParams extends PageableParameters {
   showAvailable?: boolean;
+  bookStates?: bookState[];
   searchTerm?: string;
   locations?: number[];
   homeLocations?: number[];
@@ -18,16 +22,16 @@ export class BookQueryParams extends PageableParameters {
     defaultPageSize: number = 8
   ): BookQueryParams {
     const book = new BookQueryParams();
-    book.locationFilterOn = params.locationFilterOn ? params.locationFilterOn : undefined;
+    book.locationFilterOn =
+      typeof params.locationFilterOn === 'undefined'
+        ? undefined
+        : JSON.parse(params.locationFilterOn);
     book.page = params.page ? +params.page : defaultPage;
     book.pageSize = params.pageSize ? +params.pageSize : defaultPageSize;
     book.locations = params.locations ? params.locations : undefined;
     book.homeLocations = params.homeLocations ? params.homeLocations : undefined;
     book.searchTerm = params.searchTerm ? params.searchTerm : undefined;
-    book.showAvailable =
-      typeof params.showAvailable === 'undefined'
-        ? undefined
-        : JSON.parse(params.showAvailable);
+    book.bookStates = params.bookStates ? params.bookStates : undefined;
     book.genres = params.genres ? params.genres : undefined;
     book.languages = params.languages ? params.languages : undefined;
     book.orderByField = params.orderByField ? params.orderByField : undefined;
@@ -58,8 +62,10 @@ export class BookQueryParams extends PageableParameters {
         params = params.append('homeLocations', id.toString());
       }
     }
-    if (typeof this.showAvailable !== 'undefined') {
-      params = params.set('showAvailable', this.showAvailable.toString());
+    if (this.bookStates?.length > 0) {
+      for (const stateEl of this.bookStates) {
+        params = params.append('bookStates', stateEl);
+      }
     }
     if (this.genres?.length > 0) {
       for (const id of this.genres) {

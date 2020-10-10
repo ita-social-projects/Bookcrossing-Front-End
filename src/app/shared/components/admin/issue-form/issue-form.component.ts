@@ -56,9 +56,17 @@ export class IssueFormComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(30),
         /* tslint:disable */
-        Validators.pattern("^([(a-zA-Z ||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+        Validators.pattern("^([(a-zA-Z )'-]+)$"),
         /* tslint:enable */
       ]),
+      nameUk: new FormControl(this.issue.nameUk, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(30),
+        /* tslint:disable */
+        Validators.pattern("^([(а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ )'-]+)$"),
+        /* tslint:enable */
+      ])
     });
   }
 
@@ -70,7 +78,8 @@ export class IssueFormComponent implements OnInit {
     this.submitted = true;
     this.issue = {
       name: this.form.get('name').value,
-    };
+      nameUk: this.form.get('nameUk').value
+      };
     this.issue.id = this.form.get('id').value;
     this.updateIssue(this.issue);
   }
@@ -113,6 +122,10 @@ export class IssueFormComponent implements OnInit {
         this.form.controls[input.name].markAsTouched();
       }, 2000);
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 
 }

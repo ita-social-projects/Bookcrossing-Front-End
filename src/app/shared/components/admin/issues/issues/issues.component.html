@@ -25,31 +25,36 @@
                   </div>
                 </div>
               </div>
-  
-              <!-- header buttons -->
-              <!-- <ul class="list-unstyled d-flex align-items-center mb-1">
-                <li>
-                  <button class="btn btn-md px-3 my-0 mr-0" (click)="addIssue()">
-                    <i class="fas fa-plus pr-1"></i>
-                    <span class="button-label">{{'components.admin.add' | translate}}</span>
-                  </button>
-                </li>
-              </ul> -->
             </div>
   
             <!-- Table -->
             <div class="card-body">
-              <app-admin-table
-                [data]="issues"
-                [dataProperties]="issueProperties"
-                [displayColumns]="issuesDisplayColumns"
-                [(sortParams)]="queryParams.sort"
-                (editClicked)="editIssue($event)"
-                [canEdit]="true"
-                [canDelete]="true"
-                (deleteClicked)="deleteIssue($event)"
-                (selectedHeaderChange)="onChangeSort()">
-              </app-admin-table>
+              <ng-template [ngIf]="isEn()" [ngIfElse]="en">
+                <app-admin-table
+                  [data]="issues"
+                  [displayColumns]="issuesDisplayColumns"
+                  [(sortParams)]="queryParams.sort"
+                  (editClicked)="editIssue($event)"
+                  [canEdit]="true"
+                  [canDelete]="true"
+                  (deleteClicked)="deleteIssue($event)"
+                  (selectedHeaderChange)="onChangeSort()"
+                  [dataProperties]="issueProperties">
+                </app-admin-table>
+              </ng-template>
+              <ng-template #en>
+                <app-admin-table
+                  [data]="issues"
+                  [displayColumns]="issuesDisplayColumns"
+                  [(sortParams)]="queryParams.sort"
+                  (editClicked)="editIssue($event)"
+                  [canEdit]="true"
+                  [canDelete]="true"
+                  (deleteClicked)="deleteIssue($event)"
+                  (selectedHeaderChange)="onChangeSort()"
+                  [dataProperties]="issuePropertiesUk">
+                </app-admin-table>
+              </ng-template>
   
               <app-pagination *ngIf="issues && issues.length > 0" [arraySize]="totalSize"
                               [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">

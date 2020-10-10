@@ -5,6 +5,7 @@ import { LoginComponent } from './shared/components/login/login.component';
 import { RegistrationComponent } from './shared/components/registration/registration.component';
 import { BookComponent } from './shared/components/book/book.component';
 import { CurrentlyOwnedBooksComponent } from './shared/components/books/currently-owned-books.component';
+import { CurrentlyReadBooksComponent } from './shared/components/books/currently-read-books.component';
 import { RegisteredBooksComponent } from './shared/components/books/registered-books.component';
 import { ReadBooksComponent } from './shared/components/books/read-books.component';
 import { RequestsComponent } from './shared/components/requests/requests.component';
@@ -114,6 +115,11 @@ const routes: Routes = [
   {
     path: 'books/current',
     component: CurrentlyOwnedBooksComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'books/currentlyread',
+    component: CurrentlyReadBooksComponent,
     canActivate: [AuthGuard],
   },
   { path: 'books', component: BooksComponent },

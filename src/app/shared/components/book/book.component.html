@@ -51,10 +51,24 @@
                 </div>
                 <div class="col-lg-7 text-center text-md-left">
                     <ng-template [ngIf]="isAuthenticated() && !isBookOwner">
-                        <button mat-icon-button class="heartbox" aria-hidden="true" target="_blank" change type="default" color="warn" (click)=changeWishList(book)>
-              <mat-icon *ngIf="isWished">favorite</mat-icon>
-              <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
-            </button>
+                        <button mat-icon-button class="heartbox" change type="default" aria-hidden="true" target="_blank" color="warn" (click)=changeWishList(book)>
+                        <div class="row">
+                          <mat-icon *ngIf="isWished">favorite</mat-icon>
+                          <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
+                          <span class="ml-0">{{ book.wishCount }}</span>
+                        </div>
+                      </button>
+                    </ng-template>
+                    <ng-template [ngIf]="isAuthenticated() && isBookOwner">
+                        <div [matTooltip]="tooltip" matTooltipPosition="left" class="counterbox m-2 mr-4">
+                            <div class="row mb-2">
+                                <i class="fa fa-address-book fa-lg" aria-hidden="true"></i>
+                            </div>
+                            <div class="row heartcounter">
+                                <i class="fa fa-heart" aria-hidden="true"></i>
+                                <span class="m-0 p-0">{{ book.wishCount }}</span>
+                            </div>
+                        </div>
                     </ng-template>
                     <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-1 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
                     <div class="row">
@@ -106,14 +120,14 @@
                                         <strong>{{ 'components.book.currentowner' | translate }}: </strong>
                                     </th>
                                     <td class="align-middle" class="fontsize contactowner">{{ currentOwner?.firstName + " " + currentOwner?.lastName}} <br>
-                                      <ng-template [ngIf]="isAuthenticated()">
-                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
-                                          <mat-icon> email </mat-icon> 
+                                        <ng-template [ngIf]="isAuthenticated()">
+                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="openEmail()">
+                                          <mat-icon> email </mat-icon>
                                         </button>
-                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessage()">
-                                          <mat-icon> chat_bubble </mat-icon> 
+                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="sendMessage()">
+                                          <mat-icon> chat_bubble </mat-icon>
                                         </button>
-                                      </ng-template>
+                                        </ng-template>
                                     </td>
                                 </tr>
                                 <tr *ngIf="firstOwner !== null">
@@ -127,14 +141,14 @@
                                         <strong>{{ 'components.book.requestedby' | translate }}: </strong>
                                     </th>
                                     <td class="align-middle" class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} <br>
-                                      <ng-template [ngIf]="isAuthenticated()">
-                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="openEmail()">
-                                          <mat-icon> email </mat-icon> 
+                                        <ng-template [ngIf]="isAuthenticated()">
+                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="openEmail()">
+                                          <mat-icon> email </mat-icon>
                                         </button>
-                                        <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank"  change type="default" (click)="sendMessageRequester()">
-                                          <mat-icon> chat_bubble </mat-icon> 
+                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="sendMessageRequester()">
+                                          <mat-icon> chat_bubble </mat-icon>
                                         </button>
-                                      </ng-template>
+                                        </ng-template>
                                     </td>
                                 </tr>
                                 <tr *ngIf="book?.publisher != null">
@@ -142,6 +156,12 @@
                                         <strong>{{ 'components.book.publisher' | translate }}:</strong>
                                     </th>
                                     <td class="fontsize align-middle">{{ book?.publisher }} </td>
+                                </tr>
+                                <tr *ngIf="book?.isbn != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>ISBN:</strong>
+                                    </th>
+                                    <td class="fontsize align-middle">{{ book?.isbn }} </td>
                                 </tr>
                                 <tr *ngIf="book?.state != null">
                                     <th scope="row" class="fontsize">

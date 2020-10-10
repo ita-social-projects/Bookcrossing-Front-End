@@ -9,6 +9,7 @@ import { BookService } from './book.service';
 import { BookQueryParams } from '../../models/bookQueryParams';
 import { IPage } from '../../models/page';
 import { IBook } from '../../models/book';
+import { bookState } from '../../models/bookState.enum';
 
 // Testing of BookService
 describe('#BookService getBookPage,getCurrentOwnedBooks,getRequestedBooks,getReadBooks,getBookById,activateBook,deactivateBook', () => {
@@ -108,7 +109,6 @@ describe('#BookService getBookPage,getCurrentOwnedBooks,getRequestedBooks,getRea
     );
     expect(req.request.method).toEqual('GET');
   });
-
   // Test case 5
   it('should send Book id and get IBook, GET method', () => {
     const id = 1;
@@ -116,12 +116,13 @@ describe('#BookService getBookPage,getCurrentOwnedBooks,getRequestedBooks,getRea
       id: 1,
       name: 'Book',
       userId: 1,
-      state: 1,
+      state: bookState.requested,
       authors: null,
       genres: null,
       rating: 5,
       location: null,
       language: null,
+      wishCount: 0
     };
 
     bookService
