@@ -3,11 +3,22 @@ button {
     border: 1px white;
     box-shadow: 1px 0px 7px rgba(0,0,0,0.5); 
 }
-.block2 { 
-    width: 500px; 
-    background:white; 
-    box-shadow: 1px 0px 7px rgba(0,0,0,0.5); 
-    position: relative; 
-    left: 550px; 
-    padding-top: 5px;
-   }
+
+body{
+  font-family: Roboto,sans-serif;
+	text-align: center;
+	background: #00ECB9;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+.description{
+    border-bottom: 2px solid #eee;
+}

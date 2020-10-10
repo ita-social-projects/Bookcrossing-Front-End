@@ -27,3 +27,4 @@ export const statisticsUrl = baseUrl + 'statistics';
 export const messagesUrl = baseUrl + 'messages';
 export const issueUrl = baseUrl + 'issue/';
 export const suggestionMessageUrl = baseUrl + 'suggestionmessage/';
+export const settingUrl = baseUrl + 'settings';
