@@ -27,12 +27,12 @@ import { ITimespan } from '../../models/timespans/timespan';
       return this.http.get<ISetting>(settingUrl + '/' + key);
     }
 
-    public getTimeSpan(format: string): ITimespan {
-      const tokens = format.split(':');
+    public getTimeSpan(strTimeSpan: string): ITimespan {
+      const times = strTimeSpan.split(':');
       const timeSpan = {
-        days: +tokens[0],
-        hours: +tokens[1],
-        minutes: +tokens[2]
+        days: +times[0],
+        hours: +times[1],
+        minutes: +times[2]
       };
       return timeSpan;
     }
