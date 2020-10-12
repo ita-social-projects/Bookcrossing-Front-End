@@ -25,7 +25,12 @@ export class UsersComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
   public users: IUserInfo[];
-  public usersDisplayColumns: Array<string>;
+  public usersDisplayColumns: string[] = [
+    'components.admin.users.first-name',
+    'components.admin.users.last-name',
+    'Email',
+    'components.admin.users.register-date'
+  ];
   public usersProperties: Array<string> = [
     'firstName',
     'lastName',
@@ -56,12 +61,6 @@ export class UsersComponent implements OnInit {
     private notificationService: NotificationService,
     private translate: TranslateService
   ) {
-    this.usersDisplayColumns = [
-      translate.instant('components.admin.users.first-name'),
-      translate.instant('components.admin.users.last-name'),
-      'Email',
-      translate.instant('components.admin.users.register-date'),
-    ];
   }
 
   public ngOnInit(): void {
