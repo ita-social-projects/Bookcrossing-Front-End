@@ -6,11 +6,13 @@ import {Observable} from 'rxjs';
 import {IPieChartData} from '../../models/statistics/userDonationsData';
 import {map} from 'rxjs/operators';
 import {IStatisticsData} from '../../models/statistics/IStatisticsData';
+import {LanguageService} from '../language/language.service';
+import {Language} from '../../models/languages.enum';
 
 @Injectable()
 export class StatisticsService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private languageService: LanguageService) {}
 
   public getCounters(): Observable<ICountersSet> {
     return this.http.get<ICountersSet>(`${statisticsUrl}/counters`);
@@ -20,6 +22,15 @@ export class StatisticsService {
     let params = new HttpParams();
     if (days) {
       params = params.set('amountOfDays', days.toString());
+    }
+
+    const currentLanguage = this.languageService.getCurrentLang();
+    if (currentLanguage) {
+      if (currentLanguage === Language.en) {
+        params = params.set('language', 'en');
+      } else {
+        params = params.set('language', 'ua');
+      }
     }
 
     return this.http.get<IPieChartData>(`${statisticsUrl}/userDonations`, { params })
@@ -34,7 +45,17 @@ export class StatisticsService {
   }
 
   public getUserRead() {
-    return this.http.get<IPieChartData>(`${statisticsUrl}/userRead`)
+    let params = new HttpParams();
+    const currentLanguage = this.languageService.getCurrentLang();
+    if (currentLanguage) {
+      if (currentLanguage === Language.en) {
+        params = params.set('language', 'en');
+      } else {
+        params = params.set('language', 'ua');
+      }
+    }
+
+    return this.http.get<IPieChartData>(`${statisticsUrl}/userRead`, {params})
       .pipe(
         map((userReadData: any) => {
           const chartData = Object.keys(userReadData.data).map((key) => {
@@ -46,7 +67,17 @@ export class StatisticsService {
   }
 
   public getUserMostReadLanguages() {
-    return this.http.get<IPieChartData>(`${statisticsUrl}/bookLanguages`)
+    let params = new HttpParams();
+    const currentLanguage = this.languageService.getCurrentLang();
+    if (currentLanguage) {
+      if (currentLanguage === Language.en) {
+        params = params.set('language', 'en');
+      } else {
+        params = params.set('language', 'ua');
+      }
+    }
+
+    return this.http.get<IPieChartData>(`${statisticsUrl}/bookLanguages`, {params})
       .pipe(
         map((userMostReadLanguagesData: any) => {
           const chartData = Object.keys(userMostReadLanguagesData.data).map((key) => {
@@ -83,6 +114,15 @@ export class StatisticsService {
 
     if (to) {
       params = params.set('to', to.toLocaleDateString());
+    }
+
+    const currentLanguage = this.languageService.getCurrentLang();
+    if (currentLanguage) {
+      if (currentLanguage === Language.en) {
+        params = params.set('language', 'en');
+      } else {
+        params = params.set('language', 'ua');
+      }
     }
 
     return this.http.get<IStatisticsData>(`${statisticsUrl}/reading`, {params})
