@@ -32,6 +32,8 @@
           <i class="far fa-clock"></i></mat-option>
         <mat-option value="Name" (click)="onOrderByCurrent()">{{ 'components.booksfilter.bookstitle'| translate }} <i
           class="fab fa-amilia"></i></mat-option>
+        <mat-option value="WishCount" (click)="onOrderByCurrent()">Wanted <i
+          class="fas fa-heart"></i></mat-option>
       </mat-select>
       <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-2x sign" (click)="onOrderByAscendingChange()"></i>
     <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-amount-up fa-2x sign" (click)="onOrderByAscendingChange()"></i>
