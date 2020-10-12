@@ -10,6 +10,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLanguage.service';
 import {BookService} from '../../../core/services/book/book.service';
 import {ILocationFilter} from '../../../core/models/books-map/location-filter';
+import { bookState } from 'src/app/core/models/bookState.enum';
 
 @Component({
   selector: 'app-book-filter-bar',
@@ -23,12 +24,15 @@ export class BookFilterBarComponent implements OnInit {
   @Output() selectedLanguagesChange: EventEmitter<number[]> = new EventEmitter<number[]>();
   @Output() selectedLocationsChange: EventEmitter<ILocationFilter> = new EventEmitter<ILocationFilter>();
   @Output() availableSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() selectedStatesChange: EventEmitter<bookState[]> = new EventEmitter<bookState[]>();
   @Output() viewMode: EventEmitter<string> = new EventEmitter<string>();
   @Output() orderByFieldChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() orderByFieldAscendingChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   genres: IGenre[];
+  bookStates: bookState[];
   languages: ILanguage[];
   selectedMode: string;
+  @Input() selectedStates: bookState[];
   @Input() selectedGenres: number[];
   @Input() selectedLanguages: number[];
   @Input() selectedLocations: ILocationFilter;
@@ -51,6 +55,7 @@ export class BookFilterBarComponent implements OnInit {
   ngOnInit(): void {
     this.getAllGenres();
     this.getAllLanguages();
+    this.setbookStates();
     this.getViewMode();
   }
 
@@ -100,13 +105,6 @@ export class BookFilterBarComponent implements OnInit {
     this.notifyFilterChange();
   }
 
-  // Available
-  toggleAvailable(selected) {
-    this.availableSelected = selected;
-    this.availableSelectedChange.emit(selected);
-    this.notifyFilterChange();
-  }
-
   public toggleMap(selected): void {
     this.showMapSelected = selected;
     this.showMapSelectedChange.emit(selected);
@@ -115,6 +113,25 @@ export class BookFilterBarComponent implements OnInit {
       this.selectedLocationsChange.emit(null);
       this.notifyFilterChange();
     }
+  }
+
+  // States
+  setbookStates() {
+    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 'Inactive');
+    this.selectedStates = new Array<bookState>();
+    this.onStatesChange(false);
+  }
+
+  onStatesChange(isOpened: boolean) {
+    if (!isOpened) {
+      this.selectedStatesChange.emit(this.selectedStates);
+      this.notifyFilterChange();
+    }
+  }
+
+  onStatesReset() {
+    this.selectedStatesChange.emit([]);
+    this.notifyFilterChange();
   }
 
   getAllGenres() {

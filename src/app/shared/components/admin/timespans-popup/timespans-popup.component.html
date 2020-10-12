@@ -1,0 +1,63 @@
+<h2 mat-dialog-title >Please, set the timespan for '{{data.name}}'</h2>
+
+    <ng-container>
+      <form #ngForm="ngForm" [formGroup]="changeTimeSpanForm" (ngSubmit)="setTimeSpan()">
+      <div class="container" >
+        <mat-dialog-content class="mb-2">
+          <div class="time-span row">
+            <div class="col">
+                <input  formControlName="minutes" class="form-control" type="number"  name="t" value="0" min="0" max="60" step="1"
+                [ngClass]="{'is-invalid': ngForm.submitted && minutes.invalid}">
+                <label class="mr-2">Minutes</label>
+                <div *ngIf="changeTimeSpanForm.get('minutes').errors && changeTimeSpanForm.get('minutes').touched">
+                  <div *ngIf="changeTimeSpanForm.get('minutes').errors?.required" class="validation-error">
+                      <small class="text-danger">{{'common-errors.validation-required' | translate}}</small>
+                  </div>
+                  <div *ngIf="changeTimeSpanForm.get('minutes').errors?.max" class="validation-error">
+                      <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"60"} }}</small>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col">
+              <input formControlName="hours" class="form-control" type="number" name="t"  value="0" min="0" max="24" step="1"
+              [ngClass]="{'is-invalid': ngForm.submitted && hours.invalid}">
+              <label class="mr-2">Hours</label>
+              <div *ngIf="changeTimeSpanForm.get('hours').errors && changeTimeSpanForm.get('hours').touched">
+                <div *ngIf="changeTimeSpanForm.get('hours').errors?.required" class="validation-error">
+                    <small class="text-danger">{{'common-errors.validation-required' | translate}}</small>
+                </div>
+                <div *ngIf="changeTimeSpanForm.get('hours').errors?.max" class="validation-error">
+                  <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"24"} }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <input formControlName="days" class="form-control" type="number" name="t"  value="0" min="0" max="30" step="1"
+              [ngClass]="{'is-invalid': ngForm.submitted && days.invalid}">
+              <label class="mr-2">Days</label>
+              <div *ngIf="changeTimeSpanForm.get('days').errors && changeTimeSpanForm.get('days').touched">
+                <div *ngIf="changeTimeSpanForm.get('days').errors?.required" class="validation-error">
+                    <small class="text-danger">{{'common-errors.validation-required' | translate}}</small>
+                </div>
+                <div *ngIf="changeTimeSpanForm.get('days').errors?.max" class="validation-error">
+                    <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"30"} }}</small>
+                </div>
+              </div>
+            </div>
+        </div>
+        </mat-dialog-content>
+
+        <div class="row text-center">
+          <div class="col-sm">
+            <button mat-button type="submit" id="yes-button" class="btn btn-default btn-block blue-gradient button">Set</button>
+          </div>
+          <div class="col-sm">
+            <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button" [mat-dialog-close]="false">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+

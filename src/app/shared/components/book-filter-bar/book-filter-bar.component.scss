@@ -10,7 +10,7 @@
     cursor: pointer;
     display: inline-block;
     fill: currentColor;
-    position: relative; 
+    position: relative;
   }
   .clear-icon{
       color: #80868b;
@@ -25,12 +25,9 @@
 
   .block
   {
-    display: inline-flex;
+    display: flex;
     top: 100000;
-    margin: 0.25%;
     width: 16% !important;
-    margin-right: 6px !important;
-    margin-left: 14px !important;
   }
 
   .mat-pseudo-checkbox.mat-option-pseudo-checkbox.ng-star-inserted.mat-pseudo-checkbox-checked {
@@ -62,6 +59,10 @@
      color: #000000;
      font-size: 11px;
      box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  }
+
+  .custom-checkbox {
+    margin-left: 1%;
   }
 
   @media (max-width: 780px){

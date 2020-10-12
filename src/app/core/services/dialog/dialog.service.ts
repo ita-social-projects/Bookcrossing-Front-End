@@ -10,6 +10,8 @@ import { LocationPopupComponent } from 'src/app/shared/components/location-popup
 import { IUserInfo } from 'src/app/core/models/userInfo';
 import { MessageDialogComponent } from 'src/app/shared/components/message-dialog/message-dialog.component';
 import { HomeLocationPickerComponent } from 'src/app/shared/components/home-location-picker/home-location-picker.component';
+import { TimespansPopupComponent } from 'src/app/shared/components/admin/timespans-popup/timespans-popup.component';
+import { ISetting } from '../../models/timespans/setting';
 
 @Injectable({
   providedIn: 'root',
@@ -79,6 +81,14 @@ export class DialogService {
       data: {
         to: name
       },
+    });
+  }
+
+  public openTimespanDialog(timespan: ISetting) {
+    return this.dialog.open(TimespansPopupComponent, {
+      width: '40%',
+      disableClose: true,
+      data: timespan
     });
   }
 }

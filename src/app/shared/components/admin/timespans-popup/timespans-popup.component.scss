@@ -1,0 +1,40 @@
+.dialog
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;    
+}
+
+.text
+{
+    height: 40%;
+    padding-top: -2% !important;
+    margin-top: -2% !important;
+    padding-bottom: 0.5% !important;
+    margin-bottom: 0.5% !important;
+}
+
+
+.button
+{
+    text-align: center;
+    width: 60%;
+    margin-left: -5%;
+    justify-content: center;
+}
+
+
+#message
+{
+   visibility: visible;
+}
+
+textarea
+{
+    resize: none;
+}
+
+.mat-slider-thumb{
+    background-color: green;
+}
