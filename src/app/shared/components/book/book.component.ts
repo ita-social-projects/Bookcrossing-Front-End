@@ -286,12 +286,12 @@ export class BookComponent implements OnInit {
       .subscribe(async (res) => {
         if (res) {
           this.authentication.getUserId().subscribe(
-            (id) => {
+            (user_id) => {
               this.disabledButton = true;
               const book: IBookPut = {
                 id: this.book.id,
-                userId: id,
-                fieldMasks: ['State'],
+                userId: user_id,
+                fieldMasks: ['State', 'UserId'],
                 state: bookState.available,
               };
               const formData = this.getFormData(book);
