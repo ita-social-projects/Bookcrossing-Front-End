@@ -108,8 +108,10 @@ export class AddBookComponent implements OnInit {
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
     this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
+    this.addBookForm.get('description').setValue(this.outerBook.description);
     for (const author of this.outerBook.authors) {
-      this.addBookForm.get('authorFirstname').setValue(author.fullName);
+      const field = (this.addBookForm.get('authorFirstname').value ?? '') + ' ' + author.fullName;
+      this.addBookForm.get('authorFirstname').setValue(field);
     }
     fetch(this.outerBook.imageUrl)
       .then((response) => response.blob())
