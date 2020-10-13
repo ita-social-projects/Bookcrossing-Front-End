@@ -286,12 +286,12 @@ export class BookComponent implements OnInit {
       .subscribe(async (res) => {
         if (res) {
           this.authentication.getUserId().subscribe(
-            (id) => {
+            (userId) => {
               this.disabledButton = true;
               const book: IBookPut = {
                 id: this.book.id,
-                userId: id,
-                fieldMasks: ['State'],
+                userId,
+                fieldMasks: ['State', 'UserId'],
                 state: bookState.available,
               };
               const formData = this.getFormData(book);
@@ -525,29 +525,36 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe((Newmessage) => {
         if (Newmessage !== null && Newmessage !== false) {
-          this.notificationBellService
-            .addToNotification(
-              'To ' +
-                this.currentOwner.firstName +
-                ' ' +
-                this.currentOwner.lastName +
-                ': ' +
-                Newmessage
-            )
-            .subscribe(() => {
-              this.notificationService.success(
-                this.translate.instant('Message is successfully sent'),
-                'X'
-              );
-            });
-          const currentUser = this.authentication.currentUserValue;
-          Newmessage =
-            `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
-          const newMessage: IMessage = {
-            message: Newmessage,
-            userId: this.currentOwner.id,
-          };
-          this.notificationBellService.addNotification(newMessage).subscribe();
+          if (String(Newmessage).length > 500) {
+            this.notificationService.error(
+              this.translate.instant('Message is longer than 500!'),
+              'X'
+            );
+          } else {
+            this.notificationBellService
+              .addToNotification(
+                'To ' +
+                  this.currentOwner.firstName +
+                  ' ' +
+                  this.currentOwner.lastName +
+                  ': ' +
+                  Newmessage
+              )
+              .subscribe(() => {
+                this.notificationService.success(
+                  this.translate.instant('Message is successfully sent'),
+                  'X'
+                );
+              });
+            const currentUser = this.authentication.currentUserValue;
+            Newmessage =
+              `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+            const newMessage: IMessage = {
+              message: Newmessage,
+              userId: this.currentOwner.id,
+            };
+            this.notificationBellService.addNotification(newMessage).subscribe();
+          }
         }
       });
   }
@@ -561,30 +568,37 @@ export class BookComponent implements OnInit {
         .afterClosed()
         .subscribe((Newmessage) => {
           if (Newmessage !== null && Newmessage !== false) {
-            const currentUser = this.authentication.currentUserValue;
-            Newmessage =
-              `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
-            const newMessage: IMessage = {
-              message: Newmessage,
-              userId: this.userWhoRequested.id,
-            };
-            this.notificationBellService
-              .addNotification(newMessage)
-              .subscribe(() => {
-                this.notificationService.success(
-                  this.translate.instant('Message is successfully sent'),
-                  'X'
-                );
-              });
-            this.notificationBellService
-              .addToNotification(
-                'To ' +
-                  this.userWhoRequested.firstName +
-                  ' ' +
-                  this.userWhoRequested.lastName
-              )
-              .subscribe();
-          }
+            if (String(Newmessage).length > 500) {
+              this.notificationService.error(
+                this.translate.instant('Message is longer than 500!'),
+                'X'
+              );
+            } else {
+              const currentUser = this.authentication.currentUserValue;
+              Newmessage =
+                `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
+              const newMessage: IMessage = {
+                message: Newmessage,
+                userId: this.userWhoRequested.id,
+              };
+              this.notificationBellService
+                .addNotification(newMessage)
+                .subscribe(() => {
+                  this.notificationService.success(
+                    this.translate.instant('Message is successfully sent'),
+                    'X'
+                  );
+                });
+              this.notificationBellService
+                .addToNotification(
+                  'To ' +
+                    this.userWhoRequested.firstName +
+                    ' ' +
+                    this.userWhoRequested.lastName
+                )
+                .subscribe();
+              }
+            }
         });
     }
   }

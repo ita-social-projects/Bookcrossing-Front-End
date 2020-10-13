@@ -10,6 +10,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {LocationService} from '../../../core/services/location/location.service';
 import {ILocation} from '../../../core/models/location';
 import {IStatisticsData} from '../../../core/models/statistics/IStatisticsData';
+import {LanguageService} from '../../../core/services/language/language.service';
 
 enum DateRangeEnum {
   Week = 7,
@@ -64,7 +65,8 @@ export class StatisticsComponent implements OnInit {
               private genreService: GenreService,
               private notificationService: NotificationService,
               private translate: TranslateService,
-              private locationService: LocationService) { }
+              private locationService: LocationService,
+              private languageService: LanguageService) { }
 
   ngOnInit(): void {
     this.updateCounters();
@@ -72,6 +74,17 @@ export class StatisticsComponent implements OnInit {
     this.getAllLocations();
     this.createGeneralStatisticsCharts();
     this.createPieCharts();
+    this.languageService.languageUpdated.subscribe(
+      async (data) => {
+        this.createPieCharts();
+        await this.getReadingStatisticsData();
+        this.generateReadingChart();
+      }
+    );
+  }
+
+  public getCategoriesLanguage(): boolean {
+    return this.translate.currentLang === 'en';
   }
 
   public updateCounters(): void {

@@ -63,7 +63,7 @@ export class SuggestionMessageComponent implements OnInit {
   public searchField = 'summary';
   public totalSize: number;
 
-  constructor(
+  public constructor(
     private routeActive: ActivatedRoute,
     private router: Router,
     private translate: TranslateService,
@@ -71,7 +71,7 @@ export class SuggestionMessageComponent implements OnInit {
     private notificationService: NotificationService
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.routeActive.queryParams.subscribe((params: Params) => {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField
@@ -83,12 +83,12 @@ export class SuggestionMessageComponent implements OnInit {
           this.queryParams.page > this.totalSize
             ? this.totalSize
             : this.queryParams.page;
-      this.getMessages(this.queryParams);
+      this.setMessages(this.queryParams);
       this.messages.forEach(msg => msg.isChecked = false);
     });
   }
 
-  public getMessages(params: CompletePaginationParams): void {
+  public setMessages(params: CompletePaginationParams): void {
     this.messageService.getMessagePage(params).subscribe({
       next: (pageData) => {
         this.messages = pageData.page;
@@ -177,7 +177,7 @@ export class SuggestionMessageComponent implements OnInit {
         if (this.messages.length === 1 && this.queryParams.page > 1) {
           this.queryParams.page -= 1;
         }
-        this.getMessages(this.queryParams);
+        this.setMessages(this.queryParams);
         this.notificationService.success(
           this.translate.instant('components.admin.suggestion-message.delete-success'),
           'X'
@@ -259,6 +259,6 @@ public onHeaderClicked($event: Sort): void {
 }
 
 public onReply(item: ISuggestionMessage) {
-  this.emailString = 'mailto:' + item.userEmail + '?subject=' + item.summary + '&body=' + item.text + '%20goes%20here';
+  this.emailString = 'mailto:' + item.userEmail + '?subject=' + item.summary + '&body=' + item.text;
   }
 }
