@@ -26,7 +26,7 @@ export class MapboxService {
     placeholder: 'Search',
     mapboxgl,
     marker: false,
-    language: 'en-GB',
+    language: 'en-GB'
   });
 
   geolocator = new mapboxgl.GeolocateControl({
@@ -50,7 +50,7 @@ export class MapboxService {
       style: this.style,
       zoom: this.zoom,
       center: [this.lng, this.lat],
-      language: 'en-GB',
+      language: 'en-GB'
     });
 
     this.map.addControl(this.geocoder);
