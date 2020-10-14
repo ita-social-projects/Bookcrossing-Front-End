@@ -525,12 +525,6 @@ export class BookComponent implements OnInit {
       .afterClosed()
       .subscribe((Newmessage) => {
         if (Newmessage !== null && Newmessage !== false) {
-          if (String(Newmessage).length > 500) {
-            this.notificationService.error(
-              this.translate.instant('Message is longer than 500!'),
-              'X'
-            );
-          } else {
             this.notificationBellService
               .addToNotification(
                 'To ' +
@@ -554,7 +548,6 @@ export class BookComponent implements OnInit {
               userId: this.currentOwner.id,
             };
             this.notificationBellService.addNotification(newMessage).subscribe();
-          }
         }
       });
   }
@@ -568,12 +561,6 @@ export class BookComponent implements OnInit {
         .afterClosed()
         .subscribe((Newmessage) => {
           if (Newmessage !== null && Newmessage !== false) {
-            if (String(Newmessage).length > 500) {
-              this.notificationService.error(
-                this.translate.instant('Message is longer than 500!'),
-                'X'
-              );
-            } else {
               const currentUser = this.authentication.currentUserValue;
               Newmessage =
                 `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
@@ -597,7 +584,6 @@ export class BookComponent implements OnInit {
                     this.userWhoRequested.lastName
                 )
                 .subscribe();
-              }
             }
         });
     }
