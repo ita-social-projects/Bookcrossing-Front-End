@@ -11,6 +11,7 @@ export interface IBook {
   state: bookState;
   authors: IAuthor[];
   rating: number;
+  predictedRating: number;
   genres: IGenre[];
   imagePath?: string;
   notice?: string;
