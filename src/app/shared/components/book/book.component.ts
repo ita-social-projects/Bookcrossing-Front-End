@@ -32,6 +32,7 @@ import { CommentComponent } from '../comment/comment.component';
 import { BookRatingQueryParams } from '../../../core/models/bookRatingQueryParams';
 import { IMessage } from 'src/app/core/models/message';
 import { NotificationBellService } from 'src/app/core/services/notification-bell/notification-bell.service';
+import { CommentService } from 'src/app/core/services/commment/comment.service';
 
 @Component({
   selector: 'app-book',
@@ -58,6 +59,8 @@ export class BookComponent implements OnInit {
   previousBooksPage: booksPage;
   rating = 0;
   public clickCounter = 0;
+  public $aiRatingEvent: boolean;
+  public currentAiRatingStatusEvent: boolean;
   public tooltip = this.translate.instant('components.books.likeTooltip');
 
   constructor(
@@ -72,7 +75,8 @@ export class BookComponent implements OnInit {
     private authentication: AuthenticationService,
     private resolver: ComponentFactoryResolver,
     private wishListService: WishListService,
-    private notificationBellService: NotificationBellService
+    private notificationBellService: NotificationBellService,
+    private commentService: CommentService
   ) {}
 
   public ngOnInit(): void {
@@ -82,6 +86,7 @@ export class BookComponent implements OnInit {
 
     this.bookService.getBookById(this.bookId).subscribe((value: IBook) => {
       this.book = value;
+
       this.getOwners(this.book.userId);
       if (value.state !== bookState.available) {
         this.getUserWhoRequested();
@@ -106,6 +111,19 @@ export class BookComponent implements OnInit {
       this.getReadCount(value.id);
     });
     this.previousBooksPage = history.state.booksPage;
+
+    this.commentService.currentEventState.subscribe($event => {
+      if (this.$aiRatingEvent !== $event) {
+        this.onAiRatingStatusChanged();
+      }
+      this.$aiRatingEvent = $event;
+    });
+  }
+
+  public onAiRatingStatusChanged(): void {
+    this.bookService.getBookById(this.bookId).subscribe(book => {
+      this.book.predictedRating = book.predictedRating;
+    });
   }
 
   public navigate(): void {

@@ -120,6 +120,7 @@ describe('#BookService getBookPage,getCurrentOwnedBooks,getRequestedBooks,getRea
       authors: null,
       genres: null,
       rating: 5,
+      predictedRating: 2,
       location: null,
       language: null,
       wishCount: 0

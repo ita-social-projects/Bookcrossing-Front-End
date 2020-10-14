@@ -128,6 +128,10 @@ export class CommentComponent implements OnInit {
     return ids;
   }
 
+  public onCommentAction(): void {
+    this.commentservice.fireCommentActionEvent();
+  }
+
   UpdateComments() {
     this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[]) => {
       this.comments = value;
@@ -136,6 +140,7 @@ export class CommentComponent implements OnInit {
         return new Date(b.date) - new Date(a.date);
       });
     });
+    this.onCommentAction();
   }
 
   public PostComment(text: string): void {
@@ -144,6 +149,7 @@ export class CommentComponent implements OnInit {
     };
     this.commentservice.postComment(postComment).subscribe(() => this.UpdateComments());
     this.text = '';
+    this.onCommentAction();
   }
 
   public PostChildComment(subcomment: string, ids: string[]): void {
@@ -152,6 +158,7 @@ export class CommentComponent implements OnInit {
     };
 
     this.commentservice.postChildComment(postComment).subscribe(() => this.UpdateComments());
+    this.onCommentAction();
   }
 
   public async onDeleteComment(id): Promise<void> {
@@ -168,6 +175,8 @@ export class CommentComponent implements OnInit {
           this.commentservice.deleteComment(deleteComment).subscribe(() => this.UpdateComments());
         }
       });
+
+    this.onCommentAction();
   }
 
   public updateComment(id, text): void {
@@ -175,6 +184,7 @@ export class CommentComponent implements OnInit {
       id, ownerId: this.user.id, text
     };
     this.commentservice.updateComment(updateComment).subscribe(() => this.UpdateComments());
+    this.onCommentAction();
   }
 
   onEditRatingSet($event: number) {
