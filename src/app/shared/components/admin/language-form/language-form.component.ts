@@ -67,7 +67,7 @@ export class LanguageFormComponent implements OnInit {
         Validators.minLength(2),
         Validators.maxLength(20),
         /* tslint:disable */
-        Validators.pattern("^([(a-zA-Z||а-щА-ЩЬьЮюЯяЇїІіЄєҐґыЫэЭ)'-]+)$"),
+        Validators.pattern("^([^\u002E-\u0040\u0000-\u002C\u005B-\u005F\u007B-\u00BE]+)$"),
         /* tslint:enable */
       ]),
     });
