@@ -292,12 +292,6 @@ export class NotificationBellComponent implements OnInit {
         .afterClosed()
         .subscribe((Newmessage) => {
           if (Newmessage !== null && Newmessage !== false) {
-            if (String(Newmessage).length > 500) {
-              this.notificationService.error(
-                this.translateService.instant('Message is longer than 500!'),
-                'X'
-              );
-            } else {
               this.notificationBellService
                 .addToNotification(
                   'To ' + user.firstName + ' ' + user.lastName + ': ' + Newmessage
@@ -318,7 +312,6 @@ export class NotificationBellComponent implements OnInit {
                     'X'
                   );
                 });
-              }
             }
         });
     });
