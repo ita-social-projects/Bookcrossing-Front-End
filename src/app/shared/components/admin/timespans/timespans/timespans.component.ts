@@ -77,6 +77,10 @@ export class TimespansComponent implements OnInit {
 
     const isRequestAbRemind = this.settingService.isRequestGreaterRemind(requstTimespan, remindTimespan);
     if (!isRequestAbRemind) {
+      this.notificationService.error(
+        this.translate.instant('components.admin.timespans.error-changed'),
+        'X'
+      );
       return;
     }
 
