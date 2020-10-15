@@ -84,7 +84,6 @@ export class AuthenticationService {
           localStorage.setItem('RememberMe', form.RememberMe);
 
           localStorage.setItem('currentUser', JSON.stringify(user));
-          console.log('user creds is ', user);
           this.currentUserSubject.next(user);
           this.loginEvent.emit();
 

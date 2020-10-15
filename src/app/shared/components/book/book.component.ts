@@ -122,7 +122,7 @@ export class BookComponent implements OnInit {
 
   public onAiRatingStatusChanged(): void {
     this.bookService.getBookById(this.bookId).subscribe(book => {
-      this.book.predictedRating = book.predictedRating;
+      this.book.predictedRating = book?.predictedRating;
     });
   }
 
