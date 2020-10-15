@@ -66,21 +66,6 @@ export class TimespansPopupComponent implements OnInit {
   }
 
 
-  public CompareTimespans(request: ITimespan, remind: ITimespan): boolean {
-    console.log(request);
-    console.log(remind);
-    if (request.days > remind.days ||
-    request.days === remind.days && request.hours > request.hours ||
-    request.days === remind.days && request.hours === request.hours && request.minutes > remind.minutes) {
-      return true;
-    } else {
-      this.notificationService.error(
-        'Timespan for reminding must be less than timespan for autocancel',
-        'X'
-      );
-      return false;
-    }
-  }
 
 
 
@@ -88,45 +73,43 @@ export class TimespansPopupComponent implements OnInit {
     if (this.changeTimeSpanForm.invalid) {
       return;
     }
-
-    const indexObj = this.settingService.sharedSettings.findIndex(x => x.key !== this.data.key);
-    const strTimeSpan: string = this.settingService.sharedSettings[indexObj].value;
+    const strTimeSpan: string = this.settingService.sharedSettings.find(x => x.key !== this.data.key).value;
     const timespanToCompare: ITimespan = this.settingService.getTimeSpan(strTimeSpan);
     this.timespan = {days : this.days.value, hours: this.hours.value, minutes: this.minutes.value};
 
     let isRequestAbRemind = false;
     if (this.data.key === SettingKey.RequestAutoCancelTimespan) {
-      isRequestAbRemind = this.CompareTimespans(this.timespan, timespanToCompare);
+      isRequestAbRemind = this.settingService.isRequestGreaterRemind(this.timespan, timespanToCompare);
     } else {
-      isRequestAbRemind = this.CompareTimespans(timespanToCompare, this.timespan);
+      isRequestAbRemind = this.settingService.isRequestGreaterRemind(timespanToCompare, this.timespan);
     }
 
     if (!isRequestAbRemind) {
+      this.notificationService.error(
+        this.translate.instant('components.admin.timespans.error-changed'),
+        'X'
+      );
       return;
     }
 
 
     const hours = this.timespan.hours < 10 ? '0' + this.timespan.hours : this.timespan.hours;
     const minutes = this.timespan.minutes < 10 ? '0' + this.timespan.minutes : this.timespan.minutes;
-    const timeSpan = this.timespan.days + ':' + hours + ':' + minutes + ':00';
+    const timeSpan = this.timespan.days + '.' + hours + ':' + minutes + ':00';
     this.editTimeSpan(timeSpan);
   }
 
   public editTimeSpan(timeSpan: string) {
-    const setting: ISetting = {
-      defaultValue: this.data.defaultValue,
-      value: timeSpan,
-      key: this.data.key,
-      description: this.data.description,
-      name: this.data.name
-    };
-
+    if (timeSpan === this.data.value) {
+      return;
+    }
+    const setting = {...this.data, value: timeSpan};
     this.dialogRef.close(true);
     this.settingService.editSetting(setting).subscribe({
       next: () => {
         this.notificationService.success(
-          `You have successfully changed the time period for '
-          ${setting.name} ' from [${this.data.value}] to [${timeSpan}]`,
+          this.translate.instant('components.admin.timespans.successfully-changed', {name : this.translate.instant(setting.name),
+            oldTimePeriod: this.data.value, newTimePeriod: timeSpan}),
           'X'
         );
 
