@@ -135,6 +135,7 @@ export class CommentComponent implements OnInit {
   UpdateComments() {
     this.commentservice.getComments(this.bookId).subscribe((value: IRootComment[]) => {
       this.comments = value;
+      console.log(value);
       this.comments.sort((a, b) => {
         // @ts-ignore
         return new Date(b.date) - new Date(a.date);

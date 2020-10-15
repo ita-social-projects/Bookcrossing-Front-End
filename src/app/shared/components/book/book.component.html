@@ -54,7 +54,7 @@
                         <div class="row">
                           <mat-icon *ngIf="isWished">favorite</mat-icon>
                           <mat-icon *ngIf="!isWished" class="heart">favorite_border</mat-icon>
-                          <span class="ml-0">{{ book.wishCount }}</span>
+                          <span class="ml-0">{{ book?.wishCount }}</span>
                         </div>
                       </button>
                     </ng-template>
@@ -65,19 +65,19 @@
                             </div>
                             <div class="row heartcounter">
                                 <i class="fa fa-heart" aria-hidden="true"></i>
-                                <span class="m-0 p-0">{{ book.wishCount }}</span>
+                                <span class="m-0 p-0">{{ book?.wishCount }}</span>
                             </div>
                         </div>
                     </ng-template>
                     <div class="m-0 p-0 mb-1 row">
                         <h2 class="h2-responsive text-center text-md-left product-name font-weight-bold dark-text mb-0 ml-xl-0 ml-4 book-name" style="padding-left: 10px;">{{ book?.name }}</h2>
-                        <div *ngIf="book.predictedRating > 0" class="btnCustom mb-1 ml-2 p-0 d-inline" [ngClass]="{ 'scoreLow' : book.predictedRating < 2, 'scoreMedium' : book.predictedRating >= 2 && book.predictedRating < 4, 'scoreHigh' : book.predictedRating >= 4}">
+                        <div *ngIf="book?.predictedRating > 0" class="btnCustom mb-1 ml-2 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
                             <div class="m-0 p-0 ai-label">
                                 <i class="fa fa-star fa-lg m-0 p-1" aria-hidden="true"></i>
-                                <div class="counter-ai-label m-0 p-0">{{ book.predictedRating.toFixed(1) }}</div>
+                                <div class="counter-ai-label m-0 p-0">{{ book?.predictedRating.toFixed(1) }}</div>
                             </div>
                         </div>
-                        <div *ngIf="book.predictedRating > 0" class="counter-ai-text m-0 ml-2 mt-1 p-0 d-inline">{{ 'components.book.aiscore' | translate }}</div>
+                        <div *ngIf="book?.predictedRating > 0" class="counter-ai-text m-0 ml-2 mt-1 p-0 d-inline">{{ 'components.book.aiscore' | translate }}</div>
                     </div>
                     <div class="row">
                         <div class="col-3">

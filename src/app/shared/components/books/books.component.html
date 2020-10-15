@@ -47,7 +47,7 @@
                                                     <div class="row">
                                                       <mat-icon *ngIf="book.isWished">favorite</mat-icon>
                                                       <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-                                                      <span class="ml-0">{{ book.wishCount }}</span>
+                                                      <span class="ml-0">{{ book?.wishCount }}</span>
                                                     </div>
                                                   </button>
                                                 </ng-template>
@@ -58,7 +58,7 @@
                                                         </div>
                                                         <div class="row heartcounter">
                                                             <i class="fa fa-heart" aria-hidden="true"></i>
-                                                            <span class="m-0 p-0">{{ book.wishCount }}</span>
+                                                            <span class="m-0 p-0">{{ book?.wishCount }}</span>
                                                         </div>
                                                     </div>
                                                 </ng-template>
@@ -77,10 +77,10 @@
                                                             </a>
                                                         </ng-template>
                                                         <div class="row ml-1">
-                                                            <div *ngIf="book.predictedRating > 0" class="btnCustom mb-1 mr-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book.predictedRating < 2, 'scoreMedium' : book.predictedRating >= 2 && book.predictedRating < 4, 'scoreHigh' : book.predictedRating >= 4}">
+                                                            <div *ngIf="book?.predictedRating > 0" class="btnCustom mb-1 mr-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
                                                                 <div class="m-0 p-0 ai-label">
                                                                     <i class="fa fa-star fa-lg m-0 p-1" aria-hidden="true"></i>
-                                                                    <div class="counter-ai-label m-0 p-0">{{ book.predictedRating.toFixed(1) }}</div>
+                                                                    <div class="counter-ai-label m-0 p-0">{{ book?.predictedRating.toFixed(1) }}</div>
                                                                     <div class="text-label">ai</div>
                                                                 </div>
                                                             </div>
@@ -205,7 +205,7 @@
                       <div class="row">
                         <mat-icon *ngIf="book.isWished">favorite</mat-icon>
                         <mat-icon *ngIf="!book.isWished" class="heart">favorite_border</mat-icon>
-                        <span class="ml-0">{{ book.wishCount }}</span>
+                        <span class="ml-0">{{ book?.wishCount }}</span>
                       </div>
                     </button>
                 </ng-template>
@@ -216,7 +216,7 @@
                         </div>
                         <div class="row heartcounter">
                             <i class="fa fa-heart" aria-hidden="true"></i>
-                            <span class="m-0 p-0">{{ book.wishCount }}</span>
+                            <span class="m-0 p-0">{{ book?.wishCount }}</span>
                         </div>
                     </div>
                 </ng-template>
@@ -226,13 +226,13 @@
                             <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4>
                             </a>
-                            <div *ngIf="book.predictedRating > 0" class="btnCustom m-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book.predictedRating < 2, 'scoreMedium' : book.predictedRating >= 2 && book.predictedRating < 4, 'scoreHigh' : book.predictedRating >= 4}">
+                            <div *ngIf="book?.predictedRating > 0" class="btnCustom m-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
                                 <div class="m-0 p-0 ai-label">
                                     <i class="fa fa-star fa-lg m-0 p-1" aria-hidden="true"></i>
-                                    <div class="counter-ai-label m-0 p-0">{{ book.predictedRating.toFixed(1) }}</div>
+                                    <div class="counter-ai-label m-0 p-0">{{ book?.predictedRating.toFixed(1) }}</div>
                                 </div>
                             </div>
-                            <div *ngIf="book.predictedRating > 0" class="counter-ai-text m-0 mt-2 p-0 d-inline">{{ 'components.book.aiscore' | translate }}</div>
+                            <div *ngIf="book?.predictedRating > 0" class="counter-ai-text m-0 mt-2 p-0 d-inline">{{ 'components.book.aiscore' | translate }}</div>
                         </div>
 
                         <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
