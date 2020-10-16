@@ -183,7 +183,8 @@ export class AddBookComponent implements OnInit {
 
     // parse selected genres
     const selectedGenres: IGenre[] = [];
-    for (const id of this.addBookForm.get('genres').value) {
+    for (const genre of this.addBookForm.get('genres').value) {
+      const id = genre;
       selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
@@ -307,7 +308,7 @@ export class AddBookComponent implements OnInit {
   }
 
 
-  getGenreById(id: number) {
+  public getGenreById(id: number) {
     if (this.isEn() ) {
       return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
     } else {
