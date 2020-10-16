@@ -309,7 +309,7 @@ export class AddBookComponent implements OnInit {
 
 
   public getGenreById(id: number) {
-    if (this.isEn() ) {
+    if (this.isEn()) {
       return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
     } else {
       return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
