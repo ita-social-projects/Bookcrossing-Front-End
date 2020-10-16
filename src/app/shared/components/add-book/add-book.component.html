@@ -187,7 +187,11 @@
             formControlName="genres"
             class="form-control"
             multiple
-            placeholder="Select"
+            placeholder="{{ ('components.admin.issues-form.select') | translate }}"
+            [(ngModel)]="selectedGenres"
+            [ngClass]="{
+              'is-invalid': submitted && addBookForm.controls.genres.errors
+            }"
           >
             <mat-select-trigger>
               {{
@@ -207,9 +211,14 @@
                 }})
               </span>
             </mat-select-trigger>
-            <mat-option *ngFor="let genre of genres" [value]="genre.id">{{
-              genre.name
-            }}</mat-option>
+            <mat-option *ngFor="let genre of genres" [value]="genre.id">
+              <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                {{genre?.name}}
+              </ng-template>
+              <ng-template #uk>
+                {{genre?.nameUk}}
+              </ng-template>
+            </mat-option>
           </mat-select>
           <div
             *ngIf="
@@ -234,7 +243,7 @@
           <mat-select
             class="form-control"
             formControlName="languageId"
-            placeholder="Select"
+            placeholder="{{ ('components.admin.issues-form.select') | translate }}"
           >
             <mat-option
               *ngFor="let language of languages"
@@ -354,7 +363,7 @@
             (click)="setSearchTerm(searchTerm.value)"
             class="btn btn-info"
           >
-            {{'components.admin.issues-form.find-by'| translate}} {{'components.searchBar.searchPlaceholder'| translate}}
+            {{'components.admin.issues-form.find-by'| translate}} {{'components.admin.issues-form.searchHolder'| translate}}
           </button>
         </div>
         <div class="col-4">

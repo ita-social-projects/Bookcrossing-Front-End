@@ -58,6 +58,7 @@ export class AddBookComponent implements OnInit {
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
   outerBook: IOuterBook;
+  selectedGenres = [];
   hideErrorInterval: NodeJS.Timeout;
 
   public ngOnInit(): void {
@@ -182,7 +183,8 @@ export class AddBookComponent implements OnInit {
 
     // parse selected genres
     const selectedGenres: IGenre[] = [];
-    for (const id of this.addBookForm.get('genres').value) {
+    for (const genre of this.addBookForm.get('genres').value) {
+      const id = genre;
       selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
@@ -305,10 +307,13 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  public getGenreById(id: number): string {
-    return this.genres
-      ? this.genres.find((genre) => genre.id === id)?.name
-      : '';
+
+  public getGenreById(id: number) {
+    if (this.isEn()) {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    } else {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
+    }
   }
 
   public getAllGenres(): void {
@@ -469,5 +474,9 @@ export class AddBookComponent implements OnInit {
         this.addBookForm.controls[fieldName]?.markAsTouched();
       }, 2000);
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }

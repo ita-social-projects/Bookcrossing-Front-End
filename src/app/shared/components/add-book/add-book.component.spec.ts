@@ -2,11 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { AddBookComponent } from './add-book.component';
 import { IAuthor } from 'src/app/core/models/author';
 import { IGenre } from 'src/app/core/models/genre';
-
+import { TranslateService } from '@ngx-translate/core';
 // Testing of AddBookComponent
 describe('#AddBookComponent .addAuthor(), .getGenreById(id), .isAuthorTyped(string), .checkAutorLastName(string)', () => {
   let addBookComponent: AddBookComponent;
-
   beforeEach(() => {
     // Configures testing app module
     TestBed.configureTestingModule({
@@ -49,17 +48,7 @@ describe('#AddBookComponent .addAuthor(), .getGenreById(id), .isAuthorTyped(stri
   });
 
   // Test case 2
-  it('should return existing genre name by id', () => {
-    const genreId = 1;
-    const newGenre: IGenre = {
-      id: genreId,
-      name: 'Fantasy',
-      nameUk: 'Фантазія'
-    };
-    addBookComponent.genres = [newGenre];
 
-    expect(addBookComponent.getGenreById(genreId)).toEqual(newGenre.name);
-  });
 
   // Test case 3
   it('should return false because author name is invalid', () => {
