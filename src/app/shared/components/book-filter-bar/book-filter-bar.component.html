@@ -25,7 +25,7 @@
                 <mat-option value="DateAdded" (click)="onOrderByCurrent()">{{ 'components.booksfilter.dateadded'| translate }}
                     <i class="far fa-clock"></i></mat-option>
                 <mat-option value="Name" (click)="onOrderByCurrent()">{{ 'components.booksfilter.bookstitle'| translate }} <i class="fab fa-amilia"></i></mat-option>
-                <mat-option value="WishCount" (click)="onOrderByCurrent()">Wanted <i class="fas fa-heart"></i></mat-option>
+                <mat-option value="WishCount" (click)="onOrderByCurrent()">{{ 'components.booksfilter.wish'| translate }} <i class="fas fa-heart"></i></mat-option>
                 <mat-option value="PredictedRating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.airating'| translate }} <i class="fa fa-comments"></i></mat-option>
             </mat-select>
             <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-2x sign" (click)="onOrderByAscendingChange()"></i>
@@ -34,13 +34,19 @@
         </div>
 
         <div class="block col-sm">
-            <mat-select [(ngModel)]="selectedStates" placeholder="Book State" multiple class="form-control select-dropdown" (openedChange)="onStatesChange($event)">
+            <mat-select [(ngModel)]="selectedStates" placeholder="{{ 'components.booksfilter.state' | translate }}" multiple class="form-control select-dropdown" (openedChange)="onStatesChange($event)">
                 <mat-option *ngFor="let state of bookStates" [value]="state">
-                    <ng-template [ngIf]="state == 'RequestedFromCompany'" [ngIfElse]="other">
-                        Unavailable
+                    <ng-template [ngIf]="state == 'RequestedFromCompany'">
+                        {{ 'components.book.statuses.unavailable' | translate }}
                     </ng-template>
-                    <ng-template #other>
-                        {{ state }}
+                    <ng-template [ngIf]="state == 'Available'">
+                        {{ 'components.book.statuses.available' | translate }}
+                    </ng-template>
+                    <ng-template [ngIf]="state == 'Requested'">
+                        {{ 'components.book.statuses.requested' | translate }}
+                    </ng-template>
+                    <ng-template [ngIf]="state == 'Reading'">
+                        {{ 'components.book.statuses.reading' | translate }}
                     </ng-template>
                 </mat-option>
             </mat-select>
