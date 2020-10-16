@@ -1,87 +1,72 @@
 <div class="card">
-  <div class="card-header white d-flex align-items-center py-3 px-1 justify-content-center">
-    <div class="block col-sm">
-      <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoriesChange($event)"
-                  class="form-control select-dropdown" multiple
-                  placeholder="{{'components.books.categories' | translate}}">
-        <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
-          <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
-        </ng-template>
-        <ng-template #uk>
-          <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk}}</mat-option>
-        </ng-template>
-      </mat-select>
-      <i [ngClass]="{'d-none': !(selectedGenres && selectedGenres.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onCategoriesReset()"></i>
-    </div>
-
-    <div class="block col-sm">
-      <mat-select [(ngModel)]="selectedLanguages" (openedChange)="onLanguagesChange($event)"
-                  class="form-control select-dropdown" multiple
-                  placeholder="{{'components.books.languages' | translate}}">
-        <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.name}}</mat-option>
-      </mat-select>
-      <i [ngClass]="{'d-none': !(selectedLanguages && selectedLanguages.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onLanguagesReset()"></i>
-    </div>
-
-    <div class="block col-sm">
-      <mat-select placeholder="{{ 'components.booksfilter.sortby'| translate }}" [(ngModel)]="orderByField"
-                  (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
-        <mat-option value="Rating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.rating'| translate }} <i
-          class="fas fa-star"></i></mat-option>
-        <mat-option value="DateAdded" (click)="onOrderByCurrent()">{{ 'components.booksfilter.dateadded'| translate }}
-          <i class="far fa-clock"></i></mat-option>
-        <mat-option value="Name" (click)="onOrderByCurrent()">{{ 'components.booksfilter.bookstitle'| translate }} <i
-          class="fab fa-amilia"></i></mat-option>
-        <mat-option value="WishCount" (click)="onOrderByCurrent()">Wanted <i
-          class="fas fa-heart"></i></mat-option>
-      </mat-select>
-      <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-2x sign" (click)="onOrderByAscendingChange()"></i>
-    <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-amount-up fa-2x sign" (click)="onOrderByAscendingChange()"></i>
-    <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
-    </div>
-
-    <div class="block col-sm">
-      <mat-select
-        [(ngModel)]="selectedStates"
-        placeholder="Book State"
-        multiple
-        class="form-control select-dropdown"
-        (openedChange)="onStatesChange($event)">
-        <mat-option *ngFor="let state of bookStates" [value]="state">
-          <ng-template [ngIf]="state == 'RequestedFromCompany'" [ngIfElse]="other">
-            Unavailable
-          </ng-template>
-          <ng-template #other>
-            {{ state }}
-          </ng-template>
-        </mat-option>
-      </mat-select>
-      <i [ngClass]="{'d-none': !(selectedStates && selectedStates.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onStatesReset()"></i>
-    </div>
-
-    <div class="block col-sm">
-      <ng-template [ngIf]="showMap">
-        <div class="custom-control custom-checkbox pl-2  p-2 sign">
-          <input type="checkbox" class="custom-control-input sign" id="showMap" [checked]="showMapSelected"
-                (change)="toggleMap($event.target.checked)">
-          <label class="custom-control-label"
-                for="showMap">{{ 'components.search-map.search' | translate }}</label>
+    <div class="card-header white d-flex align-items-center py-3 px-1 justify-content-center">
+        <div class="block col-sm">
+            <mat-select [(ngModel)]="selectedGenres" (openedChange)="onCategoriesChange($event)" class="form-control select-dropdown" multiple placeholder="{{'components.books.categories' | translate}}">
+                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
+                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name}}</mat-option>
+                </ng-template>
+                <ng-template #uk>
+                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk}}</mat-option>
+                </ng-template>
+            </mat-select>
+            <i [ngClass]="{'d-none': !(selectedGenres && selectedGenres.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onCategoriesReset()"></i>
         </div>
-      </ng-template>
+
+        <div class="block col-sm">
+            <mat-select [(ngModel)]="selectedLanguages" (openedChange)="onLanguagesChange($event)" class="form-control select-dropdown" multiple placeholder="{{'components.books.languages' | translate}}">
+                <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.name}}</mat-option>
+            </mat-select>
+            <i [ngClass]="{'d-none': !(selectedLanguages && selectedLanguages.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onLanguagesReset()"></i>
+        </div>
+
+        <div class="block col-sm">
+            <mat-select placeholder="{{ 'components.booksfilter.sortby'| translate }}" [(ngModel)]="orderByField" (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
+                <mat-option value="Rating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.rating'| translate }} <i class="fas fa-star"></i></mat-option>
+                <mat-option value="DateAdded" (click)="onOrderByCurrent()">{{ 'components.booksfilter.dateadded'| translate }}
+                    <i class="far fa-clock"></i></mat-option>
+                <mat-option value="Name" (click)="onOrderByCurrent()">{{ 'components.booksfilter.bookstitle'| translate }} <i class="fab fa-amilia"></i></mat-option>
+                <mat-option value="WishCount" (click)="onOrderByCurrent()">Wanted <i class="fas fa-heart"></i></mat-option>
+                <mat-option value="PredictedRating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.airating'| translate }} <i class="fa fa-comments"></i></mat-option>
+            </mat-select>
+            <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-2x sign" (click)="onOrderByAscendingChange()"></i>
+            <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-amount-up fa-2x sign" (click)="onOrderByAscendingChange()"></i>
+            <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
+        </div>
+
+        <div class="block col-sm">
+            <mat-select [(ngModel)]="selectedStates" placeholder="Book State" multiple class="form-control select-dropdown" (openedChange)="onStatesChange($event)">
+                <mat-option *ngFor="let state of bookStates" [value]="state">
+                    <ng-template [ngIf]="state == 'RequestedFromCompany'" [ngIfElse]="other">
+                        Unavailable
+                    </ng-template>
+                    <ng-template #other>
+                        {{ state }}
+                    </ng-template>
+                </mat-option>
+            </mat-select>
+            <i [ngClass]="{'d-none': !(selectedStates && selectedStates.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onStatesReset()"></i>
+        </div>
+
+        <div class="block col-sm">
+            <ng-template [ngIf]="showMap">
+                <div class="custom-control custom-checkbox pl-2  p-2 sign">
+                    <input type="checkbox" class="custom-control-input sign" id="showMap" [checked]="showMapSelected" (change)="toggleMap($event.target.checked)">
+                    <label class="custom-control-label" for="showMap">{{ 'components.search-map.search' | translate }}</label>
+                </div>
+            </ng-template>
+        </div>
+        <mat-button-toggle-group [ngClass]="{'': !showAvailable}" class="mr-3" #group="matButtonToggleGroup" [value]="selectedMode" (change)="onViewModeChange($event.value)">
+            <mat-button-toggle value="list">
+                <mat-icon>format_list_bulleted</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="block">
+                <mat-icon>view_module</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
     </div>
-    <mat-button-toggle-group [ngClass]="{'': !showAvailable}" class="mr-3" #group="matButtonToggleGroup"
-                             [value]="selectedMode" (change)="onViewModeChange($event.value)">
-      <mat-button-toggle value="list">
-        <mat-icon>format_list_bulleted</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle value="block">
-        <mat-icon>view_module</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
 </div>
 
 <ng-template [ngIf]="showMapSelected">
-  <app-search-books-map (locationsChange)="onLocationChange($event)">
-  </app-search-books-map>
+    <app-search-books-map (locationsChange)="onLocationChange($event)">
+    </app-search-books-map>
 </ng-template>

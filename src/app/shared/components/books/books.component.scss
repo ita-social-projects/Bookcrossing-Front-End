@@ -214,9 +214,10 @@ fieldset[disabled] a.btnCustom {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%);
+    transform: translate(-50%, -50%);
     font-size: 8px;
     color: white;
+    font-weight: 900;
 }
 
 .text-label {
