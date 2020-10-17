@@ -23,12 +23,17 @@ import { TranslateService } from '@ngx-translate/core';
 export class GenresComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
+  public searchOptions = [
+    {id: 1, name: 'components.admin.genres.genres'},
+    {id: 2, name: 'components.admin.genres.genresUk'}
+  ];
+  public selectedSearchTerm = this.translate.currentLang === 'en' ? this.searchOptions[0] : this.searchOptions[1];
+
   genres: IGenre[];
   genresDisplayColumns: string[] = ['components.admin.genres.genres', 'components.admin.genres.genresUk'];
   genresProperties: string[] = ['name', 'nameUk'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
   searchText: string;
-  searchField = 'lastName';
   totalSize: number;
 
   constructor(
@@ -58,8 +63,9 @@ export class GenresComponent implements OnInit {
     }
     this.queryParams.page = 1;
     this.queryParams.filters = [];
+    const searchField = this.selectedSearchTerm.id === 1 ? this.genresProperties[0] : this.genresProperties[1];
     this.queryParams.filters[0] = {
-      propertyName: this.searchField,
+      propertyName: searchField,
       value: this.searchText,
     } as FilterParameters;
     this.changeUrl();
