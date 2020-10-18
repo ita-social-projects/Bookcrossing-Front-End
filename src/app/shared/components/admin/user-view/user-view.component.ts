@@ -44,15 +44,6 @@ export class UserViewComponent implements OnInit {
       });
   }
 
-  @HostListener('window:popstate', ['$event'])
-  onPopState() {
-    this.onBackButtonClick();
-  }
-
-  private onBackButtonClick() {
-    history.back();
-  }
-
   private loadUser(id: number): void {
     this.usersService.getUserById(id).subscribe((user) => {
       this.user = user;
