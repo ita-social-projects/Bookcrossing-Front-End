@@ -1,67 +1,35 @@
 <div>
-  <form
-    [formGroup]="addBookForm"
-    #ngForm="ngForm"
-    (ngSubmit)="onSubmit()"
-    class="border border-light p-5"
-  >
-    <p class="h2 mb-4 title">{{'components.book-edit.register-book'| translate}}</p>
-    <div>
-      <div class="form-row mb-4">
-        <div class="col-3">
-          <p class="input-label">{{'components.book-edit.booktitle'| translate}}:<span class="asterisk"> *</span></p>
-        </div>
-        <div class="col-4">
-          <!-- Book title -->
-          <input
-            #Title
-            formControlName="title"
-            type="text"
-            class="form-control"
-            (input)="checkLength(Title, 150)"
-            trim="blur"
-          />
-          <div *ngIf="addBookForm.get('title').errors">
-            <div
-              *ngIf="
+    <form [formGroup]="addBookForm" #ngForm="ngForm" (ngSubmit)="onSubmit()" class="border border-light p-5">
+        <p class="h2 mb-4 title">{{'components.book-edit.register-book'| translate}}</p>
+        <div>
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{'components.book-edit.booktitle'| translate}}:<span class="asterisk"> *</span></p>
+                </div>
+                <div class="col-4">
+                    <!-- Book title -->
+                    <input #Title formControlName="title" type="text" class="form-control" (input)="checkLength(Title, 150)" trim="blur" />
+                    <div *ngIf="addBookForm.get('title').errors">
+                        <div *ngIf="
                 addBookForm.get('title').errors?.required &&
                 addBookForm.get('title').touched
-              "
-              class="validation-error"
-            >
-              {{'components.home.field-required'| translate}}
+              " class="validation-error">
+                            {{'components.home.field-required'| translate}}
 
+                        </div>
+                        <div *ngIf="addBookForm.get('title').errors?.maxlength" class="validation-error">
+                            {{ "common-errors.validation-max-length" | translate : { value: addBookForm.get("title").errors?.maxlength ?.requiredLength } }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div
-              *ngIf="addBookForm.get('title').errors?.maxlength"
-              class="validation-error"
-            >
-              {{
-                "common-errors.validation-max-length"
-                  | translate
-                    : {
-                        value: addBookForm.get("title").errors?.maxlength
-                          ?.requiredLength
-                      }
-              }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Author -->
-      <div class="form-row mb-4">
-        <div class="col-3">
-          <p class="input-label">{{'components.book-edit.author'| translate}}:<span class="asterisk"> *</span></p>
-          <div class="custom-control custom-checkbox" style="text-align: left;">
-            <input
-              type="checkbox"
-              class="custom-control-input"
-              id="uncheckedAuthor"
-              [checked]="withoutAuthorChecked"
-              (change)="changeAuthorInput()"
-            />
-            <label class="custom-control-label" for="uncheckedAuthor"
-              >{{'components.book-edit.withoutauthor'| translate}}</label
+            <!-- Author -->
+            <div class="form-row mb-4">
+                <div class="col-3">
+                    <p class="input-label">{{'components.book-edit.author'| translate}}:<span class="asterisk"> *</span></p>
+                    <div class="custom-control custom-checkbox" style="text-align: left;">
+                        <input type="checkbox" class="custom-control-input" id="uncheckedAuthor" [checked]="withoutAuthorChecked" (change)="changeAuthorInput()" />
+                        <label class="custom-control-label" for="uncheckedAuthor">{{'components.book-edit.withoutauthor'| translate}}</label
             >
           </div>
         </div>
@@ -334,7 +302,7 @@
             #Description
             formControlName="description"
             type="text"
-            class="form-control"
+            class="form-control max-hight"
             (input)="checkLength(Description, 250)"
             trim="blur"
           >
@@ -408,7 +376,7 @@
             formControlName="image"
             style="display: none;"
             type="file"
-            accept="image/png, image/jpeg"
+            accept="image/x-png,image/gif,image/jpeg"
             (change)="onFileSelected($event)"
           />
         </div>

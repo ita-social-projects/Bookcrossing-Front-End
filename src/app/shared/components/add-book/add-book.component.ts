@@ -346,7 +346,17 @@ export class AddBookComponent implements OnInit {
   }
 
   public onFileSelected(event): void {
-    this.selectedFile = event.target.files[0];
+    const fileName = event.target.files[0].name;
+    const idxDot = fileName.lastIndexOf('.') + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile === 'jpg' || extFile === 'jpeg' || extFile === 'png') {
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.notificationService.info(
+        this.translate.instant('common-errors.file-type-error'),
+        'X'
+      );
+    }
   }
 
   public onAuthorSelect(event): void {
