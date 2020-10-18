@@ -5,10 +5,11 @@ import { ISuggestionMessage } from 'src/app/core/models/suggestion-message/sugge
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { IUserInfo } from 'src/app/core/models/userInfo';
-import { IssueService} from 'src/app/core/services/issue/issue';
+import { IssueService } from 'src/app/core/services/issue/issue';
 import { IIssue } from 'src/app/core/models/issue';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -35,7 +36,8 @@ export class ContactsComponent implements OnInit {
     private translationService: TranslateService,
     private notificationService: NotificationService,
     private issueService: IssueService,
-    private router: Router) {}
+    private dialogService: DialogService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.getAllIssues();
@@ -69,8 +71,8 @@ export class ContactsComponent implements OnInit {
         this.messageService.submitMessage(message);
         this.notificationService.success(
           this.translationService.instant('components.admin.suggestion-message.message-sent-success'),
-        'X'
-      );
+          'X'
+        );
         this.router.navigate(['.']);
       });
   }
@@ -113,6 +115,19 @@ export class ContactsComponent implements OnInit {
     this.userService.getUserById(this.id).subscribe((user) => {
       this.user = user;
     });
+  }
+
+  public async Cancel(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get('Are you sure want to cancel?').toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          window.history.back();
+        }
+      });
   }
 
   public isEn(): boolean {
