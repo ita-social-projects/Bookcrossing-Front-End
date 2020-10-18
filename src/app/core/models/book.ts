@@ -11,12 +11,13 @@ export interface IBook {
   state: bookState;
   authors: IAuthor[];
   rating: number;
+  predictedRating?: number;
   genres: IGenre[];
   imagePath?: string;
   notice?: string;
   location: IRoomLocation;
   language: ILanguage;
   isbn?: string;
-  wishCount: number;
+  wishCount?: number;
   isWished?: boolean;
 }

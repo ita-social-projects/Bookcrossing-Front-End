@@ -15,6 +15,7 @@ import { SortParameters } from '../../../../core/models/Pagination/sortParameter
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Sort } from '@angular/material/sort';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-locations',
@@ -36,11 +37,14 @@ export class LocationsComponent implements OnInit {
     'isActive',
   ];
   public queryParams: CompletePaginationParams = new CompletePaginationParams();
-  public searchText: string;
-  public searchField = 'street';
+  public fieldsForSearch = ['city', 'street', 'officeName'];
   public totalSize: number;
   public showInactive: boolean;
+  public searchForm: FormGroup;
 
+  public get searchField(): AbstractControl {
+    return this.searchForm.get('searchField');
+  }
   constructor(
     private routeActive: ActivatedRoute,
     private router: Router,
@@ -66,7 +70,10 @@ export class LocationsComponent implements OnInit {
       } else if (!this.queryParams.filters[0]) {
         this.showInactive = true;
       }
-      this.searchText = this.queryParams?.filters[1]?.value;
+      const searchFilter: FilterParameters = this.queryParams?.filters?.find(
+        (filter) => this.fieldsForSearch.includes(filter.propertyName)
+      );
+      this.buildSearchForm(searchFilter?.value);
       this.queryParams.page =
         this.queryParams.page > this.totalSize
           ? this.totalSize
@@ -91,16 +98,36 @@ export class LocationsComponent implements OnInit {
   }
 
   // Pagination/URL
-  public search(): void {
-    if (this.queryParams?.filters[1]?.value === this.searchText) {
+  public search(searchText: string): void {
+    const searchFilter: FilterParameters = this.queryParams?.filters?.find(
+      (filter) => this.fieldsForSearch.includes(filter.propertyName)
+    );
+    if (searchFilter?.value === searchText) {
       return;
     }
+
     this.queryParams.page = 1;
-    this.queryParams.filters[1] = {
-      propertyName: this.searchField,
-      value: this.searchText,
-    };
+    for (const fieldForSearch of this.fieldsForSearch) {
+      const searchFilterIndex: number = this.queryParams?.filters?.findIndex(
+        (filter) => filter.propertyName === fieldForSearch
+      );
+      if (searchFilterIndex !== -1) {
+        this.queryParams?.filters?.splice(searchFilterIndex, 1);
+      }
+
+      this.queryParams.filters.push({
+        propertyName: fieldForSearch,
+        value: searchText,
+      });
+    }
+
     this.changeUrl();
+  }
+
+  private buildSearchForm(searchText: string): void {
+    this.searchForm = new FormGroup({
+      searchField: new FormControl(searchText, Validators.maxLength(60)),
+    });
   }
 
   public onChangeSort(): void {
@@ -135,18 +162,6 @@ export class LocationsComponent implements OnInit {
         this.locations = pageData.page;
         if (pageData.totalCount) {
           this.totalSize = pageData.totalCount;
-        }
-        // Redirect in page refreshed but no longer longer has content. We redirect to last viable page.
-        if (
-          pageData?.page?.length < 1 &&
-          this.queryParams.page >
-            pageData.totalCount / this.queryParams.pageSize
-        ) {
-          this.queryParams.page = Math.ceil(
-            pageData.totalCount / this.queryParams.pageSize
-          );
-          console.log(this.queryParams.page);
-          this.changeUrl();
         }
       },
       error: () => {

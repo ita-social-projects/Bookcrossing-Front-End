@@ -16,15 +16,28 @@
 
             <!-- header search -->
             <div class="col">
-              <div class="input-group">
-                <input class="form-control" type="text" placeholder="{{'components.admin.search' | translate}}" aria-label="Search"
-                  [(ngModel)]="searchText" (keyup.enter)="search()">
-                <div class="input-group-append">
-                  <button class="input-group-text btn-light" (click)="search()">
-                    <i class="fas fa-search text-grey" aria-hidden="true"></i>
-                  </button>
+              <form
+                (ngSubmit)="search(searchField.value)"
+                [formGroup]="searchForm"
+              >
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="{{ 'components.admin.search' | translate }}"
+                    aria-label="Search"
+                    formControlName="searchField"
+                    [ngClass]="{
+                      'is-invalid': searchField.touched && searchField.errors
+                    }"
+                  />
+                  <div class="input-group-append">
+                    <button class="input-group-text btn-light" type="submit">
+                      <i class="fas fa-search text-grey" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
 
             <!-- header buttons -->

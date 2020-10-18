@@ -8,19 +8,25 @@ import {IChildDeleteComment} from '../../models/comments/child-comment/childDele
 import {IChildUpdateComment} from '../../models/comments/child-comment/childUpdate';
 import {IChildInsertComment} from '../../models/comments/child-comment/childInsert';
 import {IRootComment} from '../../models/comments/root-comment/root';
-import {Observable} from 'rxjs';
-import {IPage} from '../../models/page';
-import {IBook} from '../../models/book';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
+
+  private $commentActionEvent = new BehaviorSubject<boolean>(false);
+  public currentEventState = this.$commentActionEvent.asObservable();
+
   readonly rootUrl = commentRootUrl;
 
   readonly childUrl = commentChildUrl;
 
   constructor(private http: HttpClient) {
+  }
+
+  public fireCommentActionEvent(): void {
+    this.$commentActionEvent.next(!this.$commentActionEvent.getValue());
   }
 
   public getComments(id): Observable<IRootComment[]> {
