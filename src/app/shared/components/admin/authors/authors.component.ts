@@ -14,6 +14,7 @@ import { FilterParameters } from 'src/app/core/models/Pagination/filterParameter
 import { TranslateService } from '@ngx-translate/core';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { DialogService } from '../../../../core/services/dialog/dialog.service';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-authors',
@@ -31,9 +32,9 @@ export class AuthorsComponent implements OnInit {
   ];
   authorProperties: string[] = ['firstName', 'lastName', 'isConfirmed'];
   queryParams: CompletePaginationParams = new CompletePaginationParams();
-  searchText: string;
-  searchField = 'lastName';
+  fieldsForSearch: string[] = ['firstName', 'lastName'];
   totalSize: number;
+  searchForm: FormGroup;
 
   selectedRows: any = [];
 
@@ -53,19 +54,23 @@ export class AuthorsComponent implements OnInit {
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField
         ? this.queryParams.sort.orderByField
         : 'id';
-      this.getSearchTerm(this.queryParams.filters);
+      const searchFilter: FilterParameters = this.queryParams?.filters?.find(
+        (filter) => this.fieldsForSearch.includes(filter.propertyName)
+      );
+      this.buildSearchForm(searchFilter?.value);
       this.getAuthors(this.queryParams);
     });
   }
 
-  private getSearchTerm(filters: FilterParameters[]): void {
-    let searchTerm = '';
-    if (filters?.length > 0) {
-      for (const filter of filters) {
-        searchTerm += filter.value + ' ';
-      }
-    }
-    this.searchText = searchTerm.trim();
+
+  public get searchField(): AbstractControl {
+      return this.searchForm.get('searchField');
+  }
+
+  private buildSearchForm(searchText: string): void {
+    this.searchForm = new FormGroup({
+      searchField: new FormControl(searchText, Validators.maxLength(60)),
+    });
   }
 
   private onAuthorEdited(): void {
@@ -79,31 +84,51 @@ export class AuthorsComponent implements OnInit {
     });
   }
 
-  // Pagination/URL
-  public search(): void {
-    if (this.queryParams?.filters[0]?.value === this.searchText) {
+
+
+  public search(searchText: string): void {
+    const searchFilter: FilterParameters = this.queryParams?.filters?.find(
+      (filter) => this.fieldsForSearch.includes(filter.propertyName));
+
+    if (searchFilter?.value === searchText) {
       return;
     }
+
     this.queryParams.page = 1;
     this.queryParams.filters = [];
-    const searchTerm = this.searchText.split(' ');
-    if (searchTerm.length > 1) {
-      this.queryParams.filters[0] = {
-        propertyName: 'firstName',
-        value: searchTerm[0],
-        operand: 'And',
-      } as FilterParameters;
-      this.queryParams.filters[1] = {
-        propertyName: 'lastName',
-        value: searchTerm[searchTerm.length - 1],
-      } as FilterParameters;
-    } else {
-      this.queryParams.filters[0] = {
-        propertyName: this.searchField,
-        value: this.searchText,
-      } as FilterParameters;
+    for (const fieldForSearch of this.fieldsForSearch) {
+      const searchTerm = searchText.split(' ');
+
+      if (searchTerm.length === this.fieldsForSearch.length) {
+        this.searchByFirstAndLastName(searchTerm);
+      } else {
+        this.queryParams.filters.push({
+        propertyName: fieldForSearch,
+        value: searchText,
+      });
     }
-    this.changeUrl();
+
+      this.changeUrl();
+  }
+}
+
+  public searchByFirstAndLastName(searchTerm: string[]) {
+    this.queryParams.filters = [];
+    this.queryParams.filters[0] = {
+      propertyName: 'lastName',
+      value: searchTerm.join(' '),
+    } as FilterParameters;
+
+    for (const fieldForSearch of this.fieldsForSearch) {
+      this.queryParams.filters.push({
+        propertyName: fieldForSearch,
+        value: searchTerm[searchTerm.length - 1]
+      });
+      this.queryParams.filters.push({
+        propertyName: fieldForSearch,
+        value: searchTerm[0]
+      });
+    }
   }
 
   public onChangeSort(): void {
@@ -177,7 +202,6 @@ export class AuthorsComponent implements OnInit {
     this.authorService.formMergeAuthors = null;
     this.authorService.formAuthor = author;
     this.router.navigate(['admin/author-form']);
-    console.log(this.authorService.formAuthor);
   }
 
   // Get

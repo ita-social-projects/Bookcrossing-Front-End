@@ -15,8 +15,6 @@ import { ITimespan } from 'src/app/core/models/timespans/timespan';
 })
 export class TimespansComponent implements OnInit {
   @ViewChild(RefDirective, {static: false}) refDir: RefDirective;
-  isClicked = false;
-  isOpened = false;
   settings: ISetting[] = [];
 
   public constructor(
@@ -33,37 +31,26 @@ export class TimespansComponent implements OnInit {
     this.dialogService.openTimespanDialog(item);
   }
 
-  public resetTimeSpan(item: ISetting) {
-    let requstTimespan: ITimespan;
-    let remindTimespan: ITimespan;
-
-    if (item.key === SettingKey.RequestAutoCancelTimespan) {
-       requstTimespan = this.settingService.getTimeSpan(item.defaultValue);
-       remindTimespan = this.settingService.getTimeSpan(this.settingService.sharedSettings[1].value);
-    } else {
-      requstTimespan = this.settingService.getTimeSpan(this.settingService.sharedSettings[0].value);
-      remindTimespan = this.settingService.getTimeSpan(item.defaultValue);
-    }
-    const isRequestAbRemind = this.CompareTimespans(requstTimespan, remindTimespan);
-    if (!isRequestAbRemind) {
-      return;
-    }
-
-    this.editSetting(item);
+  public setSetting() {
+    this.getSetting(SettingKey.RequestAutoCancelTimespan,
+      this.translate.instant('components.admin.timespans.request.autocancel'),
+      this.translate.instant('components.admin.timespans.request.description'));
+    this.getSetting(SettingKey.RequestAutoCancelRemindTimespan,
+      this.translate.instant('components.admin.timespans.reminder.forUser'),
+      this.translate.instant('components.admin.timespans.reminder.description'));
   }
 
-  public editSetting(item: ISetting) {
-    const oldTimePeriaod = item.value;
-    item.value = item.defaultValue;
-    this.settingService.editSetting(item).subscribe({
-      next: () => {
-        this.notificationService.success(
-          `You have successfully changed the time period for '
-          ${item.name}  ' from [${oldTimePeriaod}] to [${item.defaultValue}]`,
-          'X'
-        );
-        const indexObj = this.settingService.sharedSettings.findIndex(x => x.key === item.key);
-        this.settingService.sharedSettings[indexObj] = item;
+  public getSetting(key: SettingKey, name: string, description: string): void {
+    this.settingService.getSettingByKey(key).subscribe({
+      next: (pageData) => {
+        pageData.name = name;
+        pageData.description = description;
+        if (pageData.value === null) {
+          pageData.value = pageData.defaultValue;
+        }
+        const indexObj = this.settingService.sharedSettings.findIndex(x => x.key === pageData.key);
+        this.settingService.sharedSettings[indexObj] = pageData;
+        this.settings = this.settingService.sharedSettings;
       },
       error: () => {
         this.notificationService.error(
@@ -74,36 +61,47 @@ export class TimespansComponent implements OnInit {
     });
   }
 
-  public CompareTimespans(request: ITimespan, remind: ITimespan): boolean {
-    if (request.days > remind.days ||
-    request.days === remind.days && request.hours > request.hours ||
-    request.days === remind.days && request.hours === request.hours && request.minutes > remind.minutes) {
-      return true;
+  public resetTimeSpan(item: ISetting) {
+    let requstTimespan: ITimespan;
+    let remindTimespan: ITimespan;
+
+    if (item.key === SettingKey.RequestAutoCancelTimespan) {
+       requstTimespan = this.settingService.getTimeSpan(item.defaultValue);
+       remindTimespan = this.settingService.getTimeSpan(
+         this.settingService.sharedSettings.find(x => x.key !== item.key).value);
     } else {
+      requstTimespan = this.settingService.getTimeSpan(
+        this.settingService.sharedSettings.find(x => x.key !== item.key).value);
+      remindTimespan = this.settingService.getTimeSpan(item.defaultValue);
+    }
+
+    const isRequestAbRemind = this.settingService.isRequestGreaterRemind(requstTimespan, remindTimespan);
+    if (!isRequestAbRemind) {
       this.notificationService.error(
-        'Timespan for reminding must be less than timespan for autocancel',
+        this.translate.instant('components.admin.timespans.error-changed'),
         'X'
       );
-      return false;
+      return;
     }
+
+    this.editSetting(item, item.defaultValue);
   }
 
-  public setSetting() {
-    this.getSetting(SettingKey.RequestAutoCancelTimespan, 'Request Autocancel');
-    this.getSetting(SettingKey.RequestAutoCancelRemindTimespan, 'Reminder for user');
-  }
-
-  public getSetting(key: SettingKey, name: string): void {
-    this.settingService.getSettingByKey(key).subscribe({
-      next: (pageData) => {
-        pageData.name = name;
-        if (pageData.value === null) {
-          pageData.value = pageData.defaultValue;
-        }
-        const indexObj = this.settingService.sharedSettings.findIndex(x => x.key === pageData.key);
-        this.settingService.sharedSettings[indexObj] = pageData;
-        this.settingService.sharedSettings[indexObj].name = name;
-        this.settings = this.settingService.sharedSettings;
+  public editSetting(item: ISetting, timespan: string) {
+    const oldTime = item.value;
+    if (oldTime === timespan) {
+      return;
+    }
+    item.value = timespan;
+    this.settingService.editSetting(item).subscribe({
+      next: () => {
+        this.notificationService.success(
+          this.translate.instant('components.admin.timespans.successfully-changed', {name : this.translate.instant(item.name),
+            oldTimePeriod: oldTime, newTimePeriod: item.defaultValue}),
+          'X'
+        );
+        const indexObj = this.settingService.sharedSettings.findIndex(x => x.key === item.key);
+        this.settingService.sharedSettings[indexObj] = item;
       },
       error: () => {
         this.notificationService.error(

@@ -1,11 +1,15 @@
 @media (max-width: 800px) {
-  .action{
-    width:auto;
-  }
-  .card-header {
-    display: block !important;
-  }
-  ul {
-    margin: 8px;
-  }
+    .action {
+        width: auto;
+    }
+    .card-header {
+        display: block !important;
+    }
+    ul {
+        margin: 8px;
+    }
+}
+
+.select {
+    min-width: 200px;
 }

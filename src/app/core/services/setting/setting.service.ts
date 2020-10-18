@@ -27,8 +27,16 @@ import { ITimespan } from '../../models/timespans/timespan';
       return this.http.get<ISetting>(settingUrl + '/' + key);
     }
 
+    public isRequestGreaterRemind(request: ITimespan, remind: ITimespan): boolean {
+      console.log(request);
+      console.log(remind);
+      return request.days > remind.days ||
+        request.days === remind.days && request.hours > remind.hours ||
+        request.days === remind.days && request.hours === remind.hours && request.minutes > remind.minutes;
+    }
+
     public getTimeSpan(strTimeSpan: string): ITimespan {
-      const times = strTimeSpan.split(':');
+      const times = strTimeSpan.split(/[:.]/);
       const timeSpan = {
         days: +times[0],
         hours: +times[1],

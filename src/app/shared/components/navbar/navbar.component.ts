@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from '../../../core/services/language/language.service';
 import {Language} from '../../../core/models/languages.enum';
 import {AuthenticationMethod, AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +15,11 @@ export class NavbarComponent implements OnInit {
   languages: Language[];
   isLoggedIn: boolean;
   canRegister: boolean;
+  isOnHomePage: boolean;
 
   constructor(private authenticationService: AuthenticationService,
-              private translate: TranslateService,
-              public languageService: LanguageService)  { }
+              private router: Router,
+              public languageService: LanguageService)  {}
 
   ngOnInit() {
     this.isLoggedIn = this.authenticationService.isAuthenticated();
@@ -29,6 +31,7 @@ export class NavbarComponent implements OnInit {
     this.authenticationService.getLogoutEmitter().subscribe(() => {
       this.isLoggedIn = false;
     });
+    this.router.events.subscribe(() => this.isOnHomePage = this.router.url === '/');
   }
 
   redirectToLogin() {

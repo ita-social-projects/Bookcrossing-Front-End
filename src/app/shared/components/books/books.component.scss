@@ -142,3 +142,93 @@
     color: black !important;
     border-color: black !important;
 }
+
+// ai counter
+.counter-ai-text {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.scoreHigh {
+    background-color: #00c851;
+}
+
+.scoreMedium {
+    background-color: #fad600;
+}
+
+.scoreLow {
+    background-color: #f44336;
+}
+
+.btnCustom {
+    display: inline-block;
+    padding: 6px 12px;
+    max-height: 25px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: context-menu;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.btnCustom:hover,
+.btnCustom:focus,
+.btnCustom.focus {
+    text-decoration: none;
+    cursor: context-menu;
+}
+
+.btnCustom:active,
+.btnCustom.active {
+    background-image: none;
+}
+
+.btnCustom.disabled,
+.btnCustom[disabled],
+fieldset[disabled] .btnCustom {
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    opacity: .65;
+}
+
+a.btnCustom.disabled,
+fieldset[disabled] a.btnCustom {
+    pointer-events: none;
+}
+
+.counter-ai-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    color: white;
+    font-weight: 900;
+}
+
+.text-label {
+    position: absolute;
+    font-weight: 900;
+    font-size: 7px;
+    bottom: 1px;
+    right: 1px;
+}
+
+.ai-label {
+    position: relative;
+    text-align: center;
+}

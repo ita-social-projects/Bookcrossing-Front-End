@@ -58,6 +58,7 @@ export class AddBookComponent implements OnInit {
   withoutAuthorChecked = false;
   languages: ILanguage[] = [];
   outerBook: IOuterBook;
+  selectedGenres = [];
   hideErrorInterval: NodeJS.Timeout;
 
   public ngOnInit(): void {
@@ -182,7 +183,8 @@ export class AddBookComponent implements OnInit {
 
     // parse selected genres
     const selectedGenres: IGenre[] = [];
-    for (const id of this.addBookForm.get('genres').value) {
+    for (const genre of this.addBookForm.get('genres').value) {
+      const id = genre;
       selectedGenres.push({ id, name, nameUk: this.getGenreById(id) });
     }
 
@@ -305,10 +307,13 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  public getGenreById(id: number): string {
-    return this.genres
-      ? this.genres.find((genre) => genre.id === id)?.name
-      : '';
+
+  public getGenreById(id: number) {
+    if (this.isEn()) {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.name : '';
+    } else {
+      return this.genres ? this.genres.find((genre) => genre.id === id)?.nameUk : '';
+    }
   }
 
   public getAllGenres(): void {
@@ -341,7 +346,17 @@ export class AddBookComponent implements OnInit {
   }
 
   public onFileSelected(event): void {
-    this.selectedFile = event.target.files[0];
+    const fileName = event.target.files[0].name;
+    const idxDot = fileName.lastIndexOf('.') + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile === 'jpg' || extFile === 'jpeg' || extFile === 'png') {
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.notificationService.info(
+        this.translate.instant('common-errors.file-type-error'),
+        'X'
+      );
+    }
   }
 
   public onAuthorSelect(event): void {
@@ -469,5 +484,9 @@ export class AddBookComponent implements OnInit {
         this.addBookForm.controls[fieldName]?.markAsTouched();
       }, 2000);
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }
