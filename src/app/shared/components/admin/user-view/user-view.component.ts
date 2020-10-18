@@ -1,11 +1,11 @@
 import { Location } from '@angular/common';
+import { HostListener } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { switchMap } from 'rxjs/operators';
 import { IBook } from 'src/app/core/models/book';
 import { IBookPut } from 'src/app/core/models/bookPut';
-import { BookQueryParams } from 'src/app/core/models/bookQueryParams';
 import { IUserInfo } from 'src/app/core/models/userInfo';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { BookService } from 'src/app/core/services/book/book.service';
