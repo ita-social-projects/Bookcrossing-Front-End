@@ -33,11 +33,11 @@ export class TimespansComponent implements OnInit {
 
   public setSetting() {
     this.getSetting(SettingKey.RequestAutoCancelTimespan,
-      this.translate.instant('components.admin.timespans.request.autocancel'),
-      this.translate.instant('components.admin.timespans.request.description'));
+      'components.admin.timespans.request.autocancel',
+      'components.admin.timespans.request.description');
     this.getSetting(SettingKey.RequestAutoCancelRemindTimespan,
-      this.translate.instant('components.admin.timespans.reminder.forUser'),
-      this.translate.instant('components.admin.timespans.reminder.description'));
+      'components.admin.timespans.reminder.forUser',
+      'components.admin.timespans.reminder.description');
   }
 
   public getSetting(key: SettingKey, name: string, description: string): void {
