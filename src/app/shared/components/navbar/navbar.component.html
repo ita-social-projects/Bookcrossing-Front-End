@@ -16,13 +16,13 @@
       <ul class="navbar-nav mr-auto text-uppercase">
 
         <!--add new links here  -->
-        <li class="nav-item" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}">
+        <li class="nav-item nav-block" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}">
           <a class="nav-link">{{'common.home' | translate}}</a>
         </li>
-        <li class="nav-item" routerLinkActive="active" [routerLink]="['books']">
+        <li class="nav-item nav-block" routerLinkActive="active" [routerLink]="['books']">
           <a class="nav-link">{{'common.books' | translate}}</a>
         </li>
-        <li *appHideProd class="nav-item" routerLinkActive="active" [routerLink]="['demo']">
+        <li *appHideProd class="nav-item nav-block" routerLinkActive="active" [routerLink]="['demo']">
           <a class="nav-link">{{'common.routes' | translate}}</a>
         </li>
         <ng-template #login>

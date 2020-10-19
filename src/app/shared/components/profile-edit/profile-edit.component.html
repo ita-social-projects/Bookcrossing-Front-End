@@ -90,17 +90,17 @@
                 <p class="input-label padding-left">{{ 'components.profile.home.homeLocation' | translate }}:<span class="asterisk"> *</span></p>
             </div>
             <ng-template [ngIf]="locationHome != null" [ngIfElse]="noHomeLocation">
-                <div class="row">
+                <div class="row location">
                     <div class="form-control mr-1 col-md">
                         <a class="padding-left text-nowrap">{{ locationHome?.city }}, {{ locationHome?.street }}</a>
                     </div>
-                    <button class="btn col-md" type="button" (click)="openLocationPickerDialog()"> 
+                    <button class="btn col-md loc" type="button" (click)="openLocationPickerDialog()"> 
                       <i class="fa fa-map-marker"></i>
                     </button>
                 </div>
             </ng-template>
             <ng-template #noHomeLocation>
-                <div class="row">
+                <div class="row location">
                     <div class="col-sm">
                         <span class="padding-left text-nowrap form-control">{{ 'components.profile.edit.noHomeLocationEditMessage' | translate }}</span>
                     </div>
