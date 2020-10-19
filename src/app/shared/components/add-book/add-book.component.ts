@@ -319,7 +319,7 @@ export class AddBookComponent implements OnInit {
   public getAllGenres(): void {
     this.genreService.getGenre().subscribe(
       (data) => {
-        this.genres = data.filter(g => g.id !== 1);
+        this.genres = data;
       },
       (error) => {
         console.log(error);
