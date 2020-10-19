@@ -374,6 +374,7 @@ export class AddBookComponent implements OnInit {
   }
 
   public async onCancel(): Promise<void> {
+    this.submittedValid = true;
     this.dialogService
       .openConfirmDialog(
         await this.translate.get('Are you sure want to cancel?').toPromise()
