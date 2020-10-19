@@ -12,7 +12,8 @@
               item?.value
             }}</span>
             <button class="btn btn-default blue-gradient" (click)="changeTimeSpan(item)">{{'components.admin.timespans.change' | translate}}</button>
-            <button class="btn btn-small btn-danger" (click)="resetTimeSpan(item)">{{'components.admin.timespans.reset' | translate}}</button>    
+            <button class="btn btn-small btn-danger" (click)="resetTimeSpan(item)" [disabled]="item?.value === item?.defaultValue"
+              >{{'components.admin.timespans.reset' | translate}}</button>    
           </div>
         </div>
       </div>
