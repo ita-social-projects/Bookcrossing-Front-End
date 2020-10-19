@@ -23,11 +23,12 @@ import { TranslateService } from '@ngx-translate/core';
 export class GenresComponent implements OnInit {
   @ViewChild(RefDirective, { static: false }) refDir: RefDirective;
 
+  public cyrillicPattern = /^[\u0400-\u04FF]+$/;
   public searchOptions = [
     {id: 1, name: 'components.admin.genres.genres'},
     {id: 2, name: 'components.admin.genres.genresUk'}
   ];
-  public selectedSearchTerm = this.translate.currentLang === 'en' ? this.searchOptions[0] : this.searchOptions[1];
+  public selectedSearchTerm = this.searchOptions[0];
 
   genres: IGenre[];
   genresDisplayColumns: string[] = ['components.admin.genres.genres', 'components.admin.genres.genresUk'];
@@ -58,8 +59,10 @@ export class GenresComponent implements OnInit {
 
   // Pagination/URL
   public search(): void {
-    if (this.queryParams?.filters[0]?.value === this.searchText) {
-      return;
+    if (this.cyrillicPattern.test(this.searchText)) {
+      this.selectedSearchTerm = this.searchOptions[1];
+    } else {
+      this.selectedSearchTerm = this.searchOptions[0];
     }
     this.queryParams.page = 1;
     this.queryParams.filters = [];
