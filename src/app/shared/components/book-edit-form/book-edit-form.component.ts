@@ -484,6 +484,20 @@ constructor(
       );
     }
   }
+
+  public async onCancel(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.cancel.emit();
+        }
+      });
+  }
+
   public isEn(): boolean {
     return this.translate.currentLang === 'en';
   }
