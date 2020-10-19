@@ -401,7 +401,7 @@
 
     <!-- Add book button -->
     <div class="center">
-      <button class="btn btn-info" type="submit" name="submit"> {{'common.save'| translate}}</button>
+      <button class="btn btn-info" (click)="onSubmit()"> {{'common.save'| translate}}</button>
       <button class="btn" (click)="onCancel()">{{'common.cancel'| translate}}</button>
     </div>
   </form>
