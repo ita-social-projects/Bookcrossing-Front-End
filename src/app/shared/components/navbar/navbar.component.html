@@ -16,13 +16,23 @@
       <ul class="navbar-nav mr-auto text-uppercase">
 
         <!--add new links here  -->
-        <li class="nav-item nav-block" routerLinkActive="active" [routerLink]="['/']" [routerLinkActiveOptions]="{exact: true}">
+        <li class="nav-item nav-block"
+          routerLinkActive="active"
+          [routerLink]="['/']"
+          [routerLinkActiveOptions]="{exact: true}" (keyup.enter)="router.navigate(['/'])">
           <a class="nav-link">{{'common.home' | translate}}</a>
         </li>
-        <li class="nav-item nav-block" routerLinkActive="active" [routerLink]="['books']">
+        <li class="nav-item nav-block"
+          routerLinkActive="active"
+          [routerLink]="['books']"
+          (keyup.enter)="router.navigate(['books'])">
           <a class="nav-link">{{'common.books' | translate}}</a>
         </li>
-        <li *appHideProd class="nav-item nav-block" routerLinkActive="active" [routerLink]="['demo']">
+        <li *appHideProd
+          class="nav-item nav-block"
+          routerLinkActive="active"
+          [routerLink]="['demo']"
+          (keyup.enter)="router.navigate(['demo'])">
           <a class="nav-link">{{'common.routes' | translate}}</a>
         </li>
         <ng-template #login>
@@ -31,11 +41,17 @@
             <div class="search-bar">
               <app-search-bar> </app-search-bar>
             </div>
-            <li class="nav-item" routerLinkActive="active" (click)="redirectToLogin()">
+            <li class="nav-item"
+              routerLinkActive="active"
+              (click)="redirectToLogin()"
+              (keyup.enter)="redirectToLogin()">
               <a class="nav-link">{{'common.login' | translate}}</a>
             </li>
             <ng-template [ngIf]="canRegister">
-              <li class="nav-item" routerLinkActive="active" [routerLink]="['registration']">
+              <li class="nav-item"
+                routerLinkActive="active"
+                [routerLink]="['registration']"
+                (keyup.enter)="router.navigate(['registration'])">
                 <a class="nav-link">{{'common.registration' | translate}}</a>
               </li>
             </ng-template>
@@ -46,8 +62,8 @@
       <ng-template [ngIf]="isLoggedIn" [ngIfElse]="login">
         <app-search-bar> </app-search-bar>
         <app-notification hidden></app-notification>
-        <app-notification-bell></app-notification-bell>
-        <app-profile-avatar></app-profile-avatar>
+        <app-notification-bell tabindex="0" #notificationBell (keyup.enter)="openNotifications()"></app-notification-bell>
+        <app-profile-avatar tabindex="0" #profileAvatar (keyup.enter)="openAvatarMenu()"></app-profile-avatar>
       </ng-template>
     </div>
   </div>
