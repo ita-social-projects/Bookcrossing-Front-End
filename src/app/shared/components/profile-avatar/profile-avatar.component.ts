@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
   styleUrls: ['./profile-avatar.component.scss']
 })
 export class ProfileAvatarComponent implements OnInit {
-
+  @ViewChild('mainElem') mainElem: ElementRef;
   userName = 'unidentified';
 
   constructor(
@@ -24,6 +24,10 @@ export class ProfileAvatarComponent implements OnInit {
   }
   logout() {
     this.authenticationService.logout();
+  }
+
+  toggleOpen() {
+    this.mainElem.nativeElement.click();
   }
 
 }
