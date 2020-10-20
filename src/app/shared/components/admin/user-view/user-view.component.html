@@ -1,4 +1,4 @@
-<div *ngIf="books.length" class="container user-info mt-3 mb-5">
+<div *ngIf="books.length >= 0" class="container user-info mt-3 mb-5">
     <h1 class="mb-3 text-center font-weight-bold">{{ "components.admin.user-view.user-details" | translate }}</h1>
     <span *ngIf="user?.isDeleted" class="d-block w-100 text-danger h4 mb-5 text-center">
       {{ "components.admin.user-view.user-deleted" | translate }}</span>

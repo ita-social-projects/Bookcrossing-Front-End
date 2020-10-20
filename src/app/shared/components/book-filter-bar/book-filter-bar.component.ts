@@ -137,7 +137,7 @@ export class BookFilterBarComponent implements OnInit {
   getAllGenres() {
     this.genreService.getGenre().subscribe({
       next: (data) => {
-        this.genres = data.filter(genre => genre.id !== 1);
+        this.genres = data;
       },
       error: () => {
         this.notificationService.error(this.translate
