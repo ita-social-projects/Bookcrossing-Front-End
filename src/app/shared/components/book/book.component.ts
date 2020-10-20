@@ -120,6 +120,13 @@ export class BookComponent implements OnInit {
     });
   }
 
+  public onBookRatingChanged(): void {
+    this.bookService.getBookById(this.bookId).subscribe(book => {
+      this.book.rating = book?.rating;
+      console.log(this.book.rating);
+    });
+  }
+
   public onAiRatingStatusChanged(): void {
     this.bookService.getBookById(this.bookId).subscribe(book => {
       this.book.predictedRating = book?.predictedRating;
@@ -487,6 +494,7 @@ export class BookComponent implements OnInit {
     this.bookService.setUserRating(params).subscribe((response: boolean) => {
       if (response) {
         this.rating = $event;
+        this.onBookRatingChanged();
       }
     });
   }
