@@ -7,11 +7,11 @@
                 </div>
                 <i class="fas fa-bell" (click)="showOrHideNotificationBar(); $event.stopPropagation()"></i>
                 <div id = "box" (click)="$event.stopPropagation()">
-                    <div class = "display">
+                    <div class = "display" tabindex="-1">
                         <div *ngIf="notifications.length == 0; then nothing else cont"></div>
                         <ng-template #nothing>
-                            <div class = "nothing"> 
-                                <i class="fas fa-child stick"></i> 
+                            <div class = "nothing">
+                                <i class="fas fa-child stick"></i>
                                 <div class = "cent">You have no notifications at this time</div>
                             </div>
                         </ng-template>
@@ -20,7 +20,7 @@
                                 <div class="block">
                                     <p class="clear" (click)="deleteAll()"> {{'common.clear-all'| translate}} </p> 
                                     <p class="seen" (click)="makeAllSeen()">Mark all as read</p>
-                                </div> 
+                                </div>
                                 <div *ngFor="let notification of notifications">
                                     <div *ngIf="notification.isSeen == false; then newBlock else oldBlock"></div>
                                     <ng-template #newBlock>
@@ -36,6 +36,11 @@
                                             <button *ngIf="checkIfRequest(notification.action)" class="btn btn-primary ml-0 button" (click)="requestBook(notification.bookId)">{{'components.notification.request'| translate}}</button>
                                             <button *ngIf="checkIfStartReading(notification.action)" class="btn btn-primary ml-0 button" (click)="startReadingBook(notification.bookId)">{{'components.notification.start-reading'| translate}}</button>
                                             <button *ngIf="checkIfMessage(notification.action)" class="btn btn-primary ml-0 button" (click)="sendMessage(notification.receiverUserId)">{{'components.notification.reply'| translate}}</button>
+<!--                                             <div class = "txt">{{notification.message}}</div>
+                                            <button *ngIf="checkIfOpen(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="navigateToBook(notification.bookId)">Open</button>
+                                            <button *ngIf="checkIfRequest(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="requestBook(notification.bookId)">Request</button>
+                                            <button *ngIf="checkIfStartReading(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="startReadingBook(notification.bookId)">Start Reading</button>
+                                            <button *ngIf="checkIfMessage(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="sendMessage(notification.receiverUserId)">Reply</button> -->
                                             <div class = "sub">{{formatDate(notification.date)}}</div>
                                         </div>
                                     </ng-template>
@@ -52,6 +57,11 @@
                                             <button *ngIf="checkIfRequest(notification.action)" class="btn btn-primary ml-0 button" (click)="requestBook(notification.bookId)">{{'components.notification.request'| translate}}</button>
                                             <button *ngIf="checkIfStartReading(notification.action)" class="btn btn-primary ml-0 button" (click)="startReadingBook(notification.bookId)">{{'components.notification.start-reading'| translate}}</button>
                                             <button *ngIf="checkIfMessage(notification.action)" class="btn btn-primary ml-0 button" (click)="sendMessage(notification.receiverUserId)">{{'components.notification.reply'| translate}}</button>
+<!--                                             <div class = "txt">{{notification.message}}</div>
+                                            <button *ngIf="checkIfOpen(notification.action)"  tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="navigateToBook(notification.bookId)">Open</button>
+                                            <button *ngIf="checkIfRequest(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="requestBook(notification.bookId)">Request</button>
+                                            <button *ngIf="checkIfStartReading(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="startReadingBook(notification.bookId)">Start Reading</button>
+                                            <button *ngIf="checkIfMessage(notification.action)" tabindex="-1" id="clickButton" class="btn btn-primary ml-0 button" (click)="sendMessage(notification.receiverUserId)">Reply</button> -->
                                             <div class = "sub">{{formatDate(notification.date)}}</div>
                                         </div>
                                     </ng-template>
