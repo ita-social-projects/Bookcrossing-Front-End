@@ -19,6 +19,7 @@ import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { IMessage } from 'src/app/core/models/message';
 
+
 @Component({
   selector: 'app-notification-bell',
   templateUrl: './notification-bell.component.html',
@@ -36,6 +37,7 @@ export class NotificationBellComponent implements OnInit {
     private bookService: BookService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
+    private translate: TranslateService,
     private dialogService: DialogService,
     private requestService: RequestService,
     private notificationBellService: NotificationBellService,
@@ -315,5 +317,9 @@ export class NotificationBellComponent implements OnInit {
             }
         });
     });
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }
