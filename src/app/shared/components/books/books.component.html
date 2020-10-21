@@ -1,7 +1,7 @@
 <div class="container my-4">
     <div>
         <mdb-breadcrumb>
-            <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+            <mdb-breadcrumb-item class="active">{{booksPageName}}</mdb-breadcrumb-item>
         </mdb-breadcrumb>
     </div>
     <app-book-filter-bar [(selectedGenres)]="selectedGenres" [(selectedStates)]="selectedStates" [(selectedLanguages)]="selectedLanguages" [(orderByField)]="queryParams.orderByField" [(orderByFieldAscending)]="queryParams.orderByAscending" [(selectedLocations)]="selectedLocations"
@@ -65,13 +65,13 @@
                                                 <div class="col-lg-8 m2">
                                                     <div class="card-block m-2 px-2">
                                                         <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
-                                                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                                                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong>
                                                                 </h4>
                                                             </a>
                                                         </ng-template>
                                                         <ng-template #bookTitleElse>
-                                                            <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                                                            <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                                                 <h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
                                                                 </h4>
                                                             </a>
@@ -223,7 +223,7 @@
                 <div class="col m-2">
                     <div class="card-block px-2">
                         <div class="row ml-2">
-                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4>
                             </a>
                             <div *ngIf="book?.predictedRating > 0" class="btnCustom m-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
