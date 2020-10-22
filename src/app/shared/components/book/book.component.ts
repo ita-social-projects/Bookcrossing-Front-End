@@ -111,8 +111,6 @@ export class BookComponent implements OnInit {
       this.getReadCount(value.id);
     });
     this.previousBooksPageName = history.state.booksPageName;
-    
-
     this.commentService.currentEventState.subscribe($event => {
       if (this.$aiRatingEvent !== $event) {
         this.onAiRatingStatusChanged();

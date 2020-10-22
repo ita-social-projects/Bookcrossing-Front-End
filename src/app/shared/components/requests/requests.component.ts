@@ -29,7 +29,7 @@ export class RequestsComponent implements OnInit {
   disabledButton = false;
   viewMode: string;
   requests: IRequest[];
-  booksPageName: string = 'common.requested';
+  booksPageName = 'common.requested';
   booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
@@ -68,7 +68,7 @@ export class RequestsComponent implements OnInit {
         this.route =  this.router.url;
       }
     });
-    this.translate.get(this.booksPageName).subscribe(name => { 
+    this.translate.get(this.booksPageName).subscribe(name => {
       this.booksPageName = name;
     });
   }

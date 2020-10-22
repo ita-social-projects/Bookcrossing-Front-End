@@ -41,7 +41,7 @@ export class WishListComponent implements OnInit, OnDestroy {
   public disabledButton = false;
   public books: IBook[];
   public totalSize: number;
-  public booksPageName: string = 'common.wishlist';
+  public booksPageName = 'common.wishlist';
   public booksPage: booksPage = booksPage.WishList;
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
@@ -71,7 +71,7 @@ export class WishListComponent implements OnInit, OnDestroy {
         this.route = this.router.url;
       }
     });
-    this.translate.get(this.booksPageName).subscribe(name => { 
+    this.translate.get(this.booksPageName).subscribe(name => {
       this.booksPageName = name;
     });
   }
