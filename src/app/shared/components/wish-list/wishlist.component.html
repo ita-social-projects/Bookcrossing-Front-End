@@ -1,7 +1,7 @@
 <div class="container my-4">
     <div>
       <mdb-breadcrumb>
-        <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="active">{{booksPageName}}</mdb-breadcrumb-item>
       </mdb-breadcrumb>
     </div>
 
@@ -34,7 +34,7 @@
             </button>
             <div class="col m-2">
               <div class="card-block px-2">
-                <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
+                <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
                 <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
                 <p class="card-text">
                   <ng-template [ngIf]="book.authors.length > 0">
