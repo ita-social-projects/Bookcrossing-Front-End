@@ -257,6 +257,10 @@ export class BooksComponent implements OnInit, OnDestroy {
     });
   }
 
+  public hasLocation(value: bookState): boolean {
+    return value?.toString() !== '4' && value.toString() !== '5';
+  }
+
   private resetPageIndex(): void {
     this.queryParams.page = 1;
     this.queryParams.firstRequest = true;

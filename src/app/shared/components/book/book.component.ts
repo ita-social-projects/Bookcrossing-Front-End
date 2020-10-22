@@ -33,6 +33,7 @@ import { BookRatingQueryParams } from '../../../core/models/bookRatingQueryParam
 import { IMessage } from 'src/app/core/models/message';
 import { NotificationBellService } from 'src/app/core/services/notification-bell/notification-bell.service';
 import { CommentService } from 'src/app/core/services/commment/comment.service';
+import { LocationHomeService } from 'src/app/core/services/locationHome/locationHome.service';
 
 @Component({
   selector: 'app-book',
@@ -76,7 +77,8 @@ export class BookComponent implements OnInit {
     private resolver: ComponentFactoryResolver,
     private wishListService: WishListService,
     private notificationBellService: NotificationBellService,
-    private commentService: CommentService
+    private commentService: CommentService,
+    private locationHomeServise: LocationHomeService
   ) {}
 
   public ngOnInit(): void {
@@ -145,8 +147,15 @@ export class BookComponent implements OnInit {
     return this.authentication.isAdmin();
   }
 
+  public hasLocation(value: bookState): boolean {
+    return value?.toString() !== '4' && value.toString() !== '5';
+  }
+
   public getOwners(userId: number): void {
     this.userService.getUserById(userId).subscribe((value: IUserInfo) => {
+      this.locationHomeServise.getLocationHomeById(value.role.user[0]?.locationHomeId).subscribe(location => {
+        value.locationHome = location;
+      });
       this.currentOwner = value;
       if (this.isAuthenticated()) {
         this.authentication.getUserId().subscribe(

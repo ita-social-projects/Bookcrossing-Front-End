@@ -72,6 +72,10 @@ export class WishListComponent implements OnInit, OnDestroy {
     });
   }
 
+  public hasLocation(value: bookState): boolean {
+    return value?.toString() !== '4' && value.toString() !== '5';
+  }
+
   public isAuthenticated(): boolean {
     return this.authentication.isAuthenticated();
   }
