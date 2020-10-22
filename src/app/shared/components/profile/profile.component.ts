@@ -13,6 +13,7 @@ import { ILocationHome } from '../../../core/models/locationHome';
 import { LocationHomeService } from '../../../core/services/locationHome/locationHome.service';
 import { RefDirective } from '../../directives/ref.derictive';
 import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +28,8 @@ export class ProfileComponent implements OnInit {
     private authentication: AuthenticationService,
     private locationService: LocationService,
     private locationHomeService: LocationHomeService,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private translate: TranslateService
   ) {}
 
   public user: IUserInfo;
@@ -93,5 +95,9 @@ export class ProfileComponent implements OnInit {
       this.ngOnInit();
       this.isEditing = false;
     });
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }

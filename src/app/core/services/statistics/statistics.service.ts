@@ -109,11 +109,11 @@ export class StatisticsService {
     }
 
     if (from) {
-      params = params.set('from', from.toLocaleDateString());
+      params = params.set('from', from.toUTCString());
     }
 
     if (to) {
-      params = params.set('to', to.toLocaleDateString());
+      params = params.set('to', to.toUTCString());
     }
 
     const currentLanguage = this.languageService.getCurrentLang();
@@ -162,11 +162,11 @@ export class StatisticsService {
     }
 
     if (from) {
-      params = params.set('from', from.toLocaleDateString());
+      params = params.set('from', from.toUTCString());
     }
 
     if (to) {
-      params = params.set('to', to.toLocaleDateString());
+      params = params.set('to', to.toUTCString());
     }
 
     return this.http.get<IStatisticsData>(`${statisticsUrl}/donation`, {params})
