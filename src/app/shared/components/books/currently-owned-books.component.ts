@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 export class CurrentlyOwnedBooksComponent extends BooksComponent {
 
     tooltip = this.translate.instant('components.books.likeTooltip');
+    booksPageName = 'common.currentlyOwned';
     booksPage = booksPage.CurrentOwned;
 
     public getBooks(params: BookQueryParams): void {

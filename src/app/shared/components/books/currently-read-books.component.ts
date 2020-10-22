@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 export class CurrentlyReadBooksComponent extends BooksComponent {
 
     booksPage = booksPage.CurrentRead;
+    booksPageName = 'common.currentlyRead';
 
     public getBooks(params: BookQueryParams): void {
         this.bookService.getCurrentReadBooks(params)

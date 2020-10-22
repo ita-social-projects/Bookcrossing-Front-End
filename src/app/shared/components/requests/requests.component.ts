@@ -29,6 +29,7 @@ export class RequestsComponent implements OnInit {
   disabledButton = false;
   viewMode: string;
   requests: IRequest[];
+  booksPageName = 'common.requested';
   booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
@@ -66,6 +67,9 @@ export class RequestsComponent implements OnInit {
       if ( this.router.url !== '') {
         this.route =  this.router.url;
       }
+    });
+    this.translate.get(this.booksPageName).subscribe(name => {
+      this.booksPageName = name;
     });
   }
 

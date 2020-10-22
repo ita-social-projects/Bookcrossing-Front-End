@@ -57,7 +57,7 @@ export class BookComponent implements OnInit {
   firstOwner: IUserInfo = null;
   imagePath: string;
   disabledButton = false;
-  previousBooksPage: booksPage;
+  previousBooksPageName: string;
   rating = 0;
   public clickCounter = 0;
   public $aiRatingEvent: boolean;
@@ -112,8 +112,7 @@ export class BookComponent implements OnInit {
       this.imagePath = environment.apiUrl + '/' + this.book.imagePath;
       this.getReadCount(value.id);
     });
-    this.previousBooksPage = history.state.booksPage;
-
+    this.previousBooksPageName = history.state.booksPageName;
     this.commentService.currentEventState.subscribe($event => {
       if (this.$aiRatingEvent !== $event) {
         this.onAiRatingStatusChanged();
