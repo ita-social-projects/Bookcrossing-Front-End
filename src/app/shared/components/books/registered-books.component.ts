@@ -13,6 +13,7 @@ export class RegisteredBooksComponent extends BooksComponent {
 
     tooltip = this.translate.instant('components.books.likeTooltip');
     booksPage = booksPage.Registered;
+    booksPageName = 'common.registered';
 
     public getBooks(params: BookQueryParams): void {
         this.bookService.getRegisteredBooks(params)

@@ -8,4 +8,5 @@ export interface INotification {
   action: NotifyAction;
   isSeen: boolean;
   date: Date;
+  messageUk: string;
 }

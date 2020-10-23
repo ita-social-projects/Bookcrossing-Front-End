@@ -500,7 +500,7 @@
             </span>
           </mat-select-trigger>
           <mat-option *ngFor="let genre of genres" [value]="genre.id">
-            <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+            <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse] = "uk">
               {{genre?.name}}
             </ng-template>
             <ng-template #uk>
@@ -660,7 +660,7 @@
         <button class="btn btn-info" type="submit" name="submit">
       {{ 'components.book-edit.save' | translate }}
     </button>
-        <input type="button" class="btn" (click)="cancel.emit()" value="{{ 'components.book-edit.cancel' | translate }}" />
+        <input type="button" class="btn" (click)="onCancel()" value="{{ 'components.book-edit.cancel' | translate }}" />
     </form>
 </section>
 

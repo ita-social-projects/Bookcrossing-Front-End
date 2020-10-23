@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {LanguageService} from '../../../core/services/language/language.service';
 import {Language} from '../../../core/models/languages.enum';
 import {AuthenticationMethod, AuthenticationService} from 'src/app/core/services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { NotificationBellComponent } from '../notification-bell/notification-bell.component';
+import { ProfileAvatarComponent } from '../profile-avatar/profile-avatar.component';
 
 @Component({
   selector: 'app-navbar',
@@ -12,13 +13,15 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   @ViewChild('menu', {static: false}) menu: any;
+  @ViewChild('notificationBell') notificationBell: NotificationBellComponent;
+  @ViewChild('profileAvatar') profileAvatar: ProfileAvatarComponent;
   languages: Language[];
   isLoggedIn: boolean;
   canRegister: boolean;
   isOnHomePage: boolean;
 
   constructor(private authenticationService: AuthenticationService,
-              private router: Router,
+              public router: Router,
               public languageService: LanguageService)  {}
 
   ngOnInit() {
@@ -37,4 +40,13 @@ export class NavbarComponent implements OnInit {
   redirectToLogin() {
     this.authenticationService.redirectToLogin();
   }
+
+  openNotifications() {
+    this.notificationBell.showOrHideNotificationBar();
+  }
+
+  openAvatarMenu() {
+    this.profileAvatar.toggleOpen();
+  }
+
 }

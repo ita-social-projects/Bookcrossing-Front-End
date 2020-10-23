@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogService } from '../../../core/services/dialog/dialog.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-message-dialog',
@@ -8,9 +10,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class MessageDialogComponent implements OnInit {
 
-  constructor( public dialogRef: MatDialogRef<MessageDialogComponent>,
-               @Inject(MAT_DIALOG_DATA) public data
-    ) { }
+  constructor(public dialogRef: MatDialogRef<MessageDialogComponent>,
+              @Inject(MAT_DIALOG_DATA) public data,
+              private dialogService: DialogService,
+              private translate: TranslateService,
+  ) { }
 
   public ngOnInit(): void {
   }
@@ -19,7 +23,16 @@ export class MessageDialogComponent implements OnInit {
     this.dialogRef.close(msg);
   }
 
-  public closeDialog(): void {
-    this.dialogRef.close(null);
+  public async closeDialog(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.dialogRef.close(null);
+        }
+      });
   }
 }

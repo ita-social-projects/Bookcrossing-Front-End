@@ -45,6 +45,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public disabledButton = false;
   public books: IBook[];
   public totalSize: number;
+  public booksPageName = 'common.books';
   public booksPage: booksPage = booksPage.List;
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
@@ -77,6 +78,9 @@ export class BooksComponent implements OnInit, OnDestroy {
       if (this.router.url !== '') {
         this.route = this.router.url;
       }
+    });
+    this.translate.get(this.booksPageName).subscribe(name => {
+      this.booksPageName = name;
     });
   }
 
@@ -255,6 +259,10 @@ export class BooksComponent implements OnInit, OnDestroy {
       top: 0,
       behavior: 'smooth',
     });
+  }
+
+  public hasLocation(value: bookState): boolean {
+    return value?.toString() !== '4' && value.toString() !== '5';
   }
 
   private resetPageIndex(): void {

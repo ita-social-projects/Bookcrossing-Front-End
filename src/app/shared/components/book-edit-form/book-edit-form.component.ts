@@ -299,12 +299,26 @@ constructor(
   getAllGenres() {
     this.genreService.getGenre().subscribe(
       (data) => {
-        this.genres = data;
+        if (this.translate.currentLang === 'en') {
+        this.genres = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+        } else {
+          this.genres = data.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+        }
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      return true;
+    } else {
+      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      return false;
+    }
   }
 
   getAllLanguages() {
@@ -510,7 +524,18 @@ constructor(
       }, 2000);
     }
   }
-
+  public async onCancel(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.cancel.emit();
+        }
+      });
+  }
   public isEn(): boolean {
     return this.translate.currentLang === 'en';
   }

@@ -2,6 +2,7 @@ import { BooksComponent } from './books.component';
 import {BookQueryParams} from 'src/app/core/models/bookQueryParams';
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-read-books',
@@ -13,6 +14,7 @@ export class ReadBooksComponent extends BooksComponent {
 
     tooltip = this.translate.instant('components.books.likeTooltip');
     booksPage = booksPage.Read;
+    booksPageName = 'common.read';
 
     public getBooks(params: BookQueryParams): void {
         this.bookService.getReadBooks(params)

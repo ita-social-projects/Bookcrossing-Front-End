@@ -80,6 +80,7 @@
 
         <div class="form-row justify-content-center mb-3">
           <button class="btn btn-primary" type="submit" [disabled]="select.value === '' || textarea.value === ''">{{ 'components.contact-us.send' | translate }}</button>
+          <input type="button" class="btn" (click)="Cancel()" value="{{ 'common.cancel' | translate }}" />
         </div>
 
       </form>

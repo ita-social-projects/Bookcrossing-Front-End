@@ -4,7 +4,7 @@
 <div class="container my-4">
 
     <mdb-breadcrumb>
-        <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+        <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPageName}}</mdb-breadcrumb-item>
         <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
     </mdb-breadcrumb>
 
@@ -84,7 +84,7 @@
                             <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin" style="padding-left: 10px;">{{ 'components.book.readby' | translate }}: <span class="font-weight-normal">{{readCount}}</span></div>
                         </div>
                         <div class="col-3">
-                            <ngx-star-rating [filledColor]="'#FF8800'" [rating]="5" readonly="true"></ngx-star-rating>
+                            <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
                         </div>
                     </div>
                     <br>
@@ -117,12 +117,22 @@
                                     </th>
                                     <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
                                 </tr>
-                                <tr *ngIf="book?.location != null">
-                                    <th scope="row" class="fontsize">
-                                        <strong>{{ 'components.book.location' | translate }}: </strong>
-                                    </th>
-                                    <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
-                                </tr>
+                                <ng-template [ngIf]="hasLocation(book?.state)">
+                                    <tr *ngIf="currentOwner && !currentOwner?.locationHome.isActive; else locationhome">
+                                        <th scope="row" class="fontsize">
+                                            <strong>{{ 'components.book.location' | translate }}: </strong>
+                                        </th>
+                                        <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                                    </tr>
+                                    <ng-template #locationhome>
+                                        <tr *ngIf="currentOwner">
+                                            <th scope="row" class="fontsize">
+                                                <strong>{{ 'components.book.location' | translate }}: </strong>
+                                            </th>
+                                            <td class="align-middle" class="fontsize"> {{ currentOwner.locationHome.city + " " + currentOwner.locationHome.street}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </ng-template>
                                 <tr *ngIf="currentOwner !== null">
                                     <th scope="row" class="fontsize">
                                         <strong>{{ 'components.book.currentowner' | translate }}: </strong>

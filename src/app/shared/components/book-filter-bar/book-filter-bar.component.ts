@@ -11,6 +11,7 @@ import { BookLanguageService } from 'src/app/core/services/bookLanguage/bookLang
 import {BookService} from '../../../core/services/book/book.service';
 import {ILocationFilter} from '../../../core/models/books-map/location-filter';
 import { bookState } from 'src/app/core/models/bookState.enum';
+import { ArrayDataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-book-filter-bar',
@@ -72,8 +73,10 @@ export class BookFilterBarComponent implements OnInit {
 
   getCategoriesLanguage() {
     if (this.translate.currentLang === 'en') {
+      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
       return true;
     } else {
+      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
       return false;
     }
   }
@@ -137,7 +140,7 @@ export class BookFilterBarComponent implements OnInit {
   getAllGenres() {
     this.genreService.getGenre().subscribe({
       next: (data) => {
-        this.genres = data.filter(genre => genre.id !== 1);
+        this.genres = data;
       },
       error: () => {
         this.notificationService.error(this.translate

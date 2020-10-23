@@ -316,15 +316,29 @@ export class AddBookComponent implements OnInit {
     }
   }
 
-  public getAllGenres(): void {
+  getAllGenres() {
     this.genreService.getGenre().subscribe(
       (data) => {
-        this.genres = data;
+        if (this.translate.currentLang === 'en') {
+        this.genres = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+        } else {
+          this.genres = data.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+        }
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      return true;
+    } else {
+      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      return false;
+    }
   }
 
   public getAllLanguages(): void {
@@ -391,9 +405,10 @@ export class AddBookComponent implements OnInit {
   }
 
   public async onCancel(): Promise<void> {
+    this.submittedValid = true;
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Are you sure want to cancel?').toPromise()
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
       )
       .afterClosed()
       .subscribe(async (res) => {

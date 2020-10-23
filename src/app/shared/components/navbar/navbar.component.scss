@@ -16,3 +16,18 @@
   z-index: 9;
   margin-top: 1.5%;
 }
+
+.nav-block
+{
+  outline: none;
+}
+
+:focus
+{
+  background: rgba($color: #ffffff, $alpha: 0.15);
+}
+
+app-profile-avatar:focus, app-notification-bell:focus
+{
+  outline: none;
+}
