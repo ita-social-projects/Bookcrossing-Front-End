@@ -298,12 +298,26 @@ constructor(
   getAllGenres() {
     this.genreService.getGenre().subscribe(
       (data) => {
-        this.genres = data;
+        if (this.translate.currentLang === 'en') {
+        this.genres = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+        } else {
+          this.genres = data.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+        }
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      return true;
+    } else {
+      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      return false;
+    }
   }
 
   getAllLanguages() {

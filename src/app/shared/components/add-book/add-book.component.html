@@ -180,7 +180,7 @@
               </span>
             </mat-select-trigger>
             <mat-option *ngFor="let genre of genres" [value]="genre.id">
-              <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+              <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse] = "uk">
                 {{genre?.name}}
               </ng-template>
               <ng-template #uk>
