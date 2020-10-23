@@ -219,4 +219,8 @@ export class RequestsComponent implements OnInit {
   public onLocationFilterChange(filter: ILocationFilter) {
     this.selectedLocations = filter.locationIds;
   }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
 }

@@ -91,7 +91,7 @@ import { DonateDialogComponent } from './shared/components/donate-dialog/donate-
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { EllipsisPipe } from './shared/pipes/elipsis.pipe';
 import { NotificationComponent } from './shared/components/notification/notification.component';
-import { MatLineModule, MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatLineModule, MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { UserNamePipe } from './shared/pipes/userName.pipe';
@@ -134,6 +134,8 @@ import { LocationHomeService } from './core/services/locationHome/locationHome.s
 import { SearchBooksMapComponent } from './shared/components/search-books-map/search-books-map.component';
 import { HomeLocationPickerComponent } from './shared/components/home-location-picker/home-location-picker.component';
 import { TimespansPopupComponent } from './shared/components/admin/timespans-popup/timespans-popup.component';
+import { UkDataAdapter } from './core/models/dataAdapterUk';
+
 
 @NgModule({
   declarations: [
@@ -211,7 +213,7 @@ import { TimespansPopupComponent } from './shared/components/admin/timespans-pop
     TimespansComponent,
     TimespansPopupComponent,
     HomeLocationPickerComponent,
-    SuggestionMessageComponent,
+    SuggestionMessageComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
@@ -297,7 +299,11 @@ import { TimespansPopupComponent } from './shared/components/admin/timespans-pop
       useFactory: MSALAngularConfigFactory
     },
     StatisticsService,
-    SuggestionMessageService
+    SuggestionMessageService,
+    {
+      provide: DateAdapter,
+      useClass: UkDataAdapter
+    }
   ],
   entryComponents: [AuthorFormComponent, LocationPopupComponent],
   bootstrap: [AppComponent],
