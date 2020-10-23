@@ -43,6 +43,7 @@ editBookForm: FormGroup;
   newAuthor: IAuthor;
   selectedGenres = [];
   languages: ILanguage[] = [];
+  hideErrorInterval: NodeJS.Timeout;
 
 constructor(
   private translate: TranslateService,
@@ -448,7 +449,7 @@ constructor(
     }
     return true;
   }
-
+/*
   checkLength(fieldName: string, event: any, maxLength: number) {
     const value = event.target.value;
     if (value.length > maxLength) {
@@ -483,7 +484,33 @@ constructor(
         'X'
       );
     }
+  }*/
+
+  public checkLength(element: HTMLElement, maxLength: number): void {
+    const input =
+      (element as HTMLInputElement) != null
+        ? (element as HTMLInputElement)
+        : (element as HTMLTextAreaElement);
+
+    if (input.value.length > maxLength) {
+      /* tslint:disable:no-string-literal */
+      const fieldName = input.attributes['formControlName']?.value;
+      /* tslint:enable:no-string-literal */
+      input.value = input.value.substr(0, maxLength);
+
+      this.editBookForm.controls[fieldName]?.setErrors({
+        maxlength: { requiredLength: maxLength },
+      });
+      this.editBookForm.controls[fieldName]?.markAsTouched();
+
+      clearInterval(this.hideErrorInterval);
+      this.hideErrorInterval = setTimeout(() => {
+        this.editBookForm.controls[fieldName]?.setErrors(null);
+        this.editBookForm.controls[fieldName]?.markAsTouched();
+      }, 2000);
+    }
   }
+
   public isEn(): boolean {
     return this.translate.currentLang === 'en';
   }
