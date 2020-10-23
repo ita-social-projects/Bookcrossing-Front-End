@@ -117,12 +117,22 @@
                                     </th>
                                     <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
                                 </tr>
-                                <tr *ngIf="book?.location != null">
-                                    <th scope="row" class="fontsize">
-                                        <strong>{{ 'components.book.location' | translate }}: </strong>
-                                    </th>
-                                    <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
-                                </tr>
+                                <ng-template [ngIf]="hasLocation(book?.state)">
+                                    <tr *ngIf="currentOwner && !currentOwner?.locationHome.isActive; else locationhome">
+                                        <th scope="row" class="fontsize">
+                                            <strong>{{ 'components.book.location' | translate }}: </strong>
+                                        </th>
+                                        <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                                    </tr>
+                                    <ng-template #locationhome>
+                                        <tr *ngIf="currentOwner">
+                                            <th scope="row" class="fontsize">
+                                                <strong>{{ 'components.book.location' | translate }}: </strong>
+                                            </th>
+                                            <td class="align-middle" class="fontsize"> {{ currentOwner.locationHome.city + " " + currentOwner.locationHome.street}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </ng-template>
                                 <tr *ngIf="currentOwner !== null">
                                     <th scope="row" class="fontsize">
                                         <strong>{{ 'components.book.currentowner' | translate }}: </strong>
@@ -208,8 +218,9 @@
 
         </section>
 
-        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="!isAuthenticated()">
+        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="rating !== 0 || !isAuthenticated()">
         </ngx-star-rating>
+
         <app-comment [bookId]="bookId" #comment></app-comment>
     </div>
 </div>

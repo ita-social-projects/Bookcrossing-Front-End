@@ -91,7 +91,7 @@
                                                                 <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
                                                                     {{ 'components.books.author' | translate }}:
                                                                 </ng-template>
-                                                                <ng-template #manyAuthors>Authors:</ng-template>
+                                                                <ng-template #manyAuthors>{{ 'components.books.authors' | translate}}:</ng-template>
                                                                 <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
                                                                     <ng-template [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
                                                         book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength" [ngIfElse]="manyAuthorsEllipsis">
@@ -150,10 +150,12 @@
                                                             <span>
                                     {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                                   </span>
-                                                            <br>
-                                                            <span>
+                                                            <ng-template [ngIf]="hasLocation(book?.state) && book.location != null">
+                                                                <br>
+                                                                <span>
                                     {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                                   </span>
+                                                            </ng-template>
                                                             <br>
                                                             <span>
                                     {{ 'components.books.status' | translate }}:
@@ -299,10 +301,12 @@
                             <span>
                   {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                 </span>
-                            <br>
-                            <span>
+                            <ng-template [ngIf]="hasLocation(book?.state) && book.location != null">
+                                <br>
+                                <span>
                   {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                 </span>
+                            </ng-template>
                             <br>
                             <span>{{ 'components.books.status' | translate }}:</span>
                             <span [ngSwitch]="book?.state">

@@ -17,7 +17,8 @@
         </tr>
         <tr>
             <td scope="row">{{ 'components.profile.home.bithdate' | translate }}</td>
-            <td>{{user.birthDate | date }}</td>
+            <td *ngIf="!isEn()">{{user.birthDate | date:'dd.MM.yyyy' }}</td>
+            <td *ngIf="isEn()">{{user.birthDate | date:'MM/dd/yyyy' }}</td>
         </tr>
         <tr class="table-primary" *ngIf="user?.userLocation?.location">
             <td scope="row">{{ 'components.profile.home.location' | translate }}</td>

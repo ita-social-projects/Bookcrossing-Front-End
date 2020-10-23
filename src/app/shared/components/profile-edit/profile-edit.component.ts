@@ -11,6 +11,7 @@ import { LocationHomeService } from '../../../core/services/locationHome/locatio
 import { NotificationService } from '../../../core/services/notification/notification.service';
 import { IUserPut } from '../../../core/models/userPut';
 import { ILocationHomePost } from 'src/app/core/models/locationHomePost';
+import { DateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-profile-edit',
@@ -48,7 +49,8 @@ export class ProfileEditComponent implements OnInit {
     private translate: TranslateService,
     private dialogService: DialogService,
     private locationService: LocationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private adapter: DateAdapter<any>
   ) { }
 
   public ngOnInit(): void {
@@ -58,6 +60,11 @@ export class ProfileEditComponent implements OnInit {
       this.locationHomePost.id = this.locationHome?.id;
       this.locationHome = this.locationHomePost;
     });
+
+    this.isEn() ? this.setEngDate() : this.setUkDate();
+    this.translate.onLangChange.subscribe(
+      () => this.isEn() ? this.setEngDate() : this.setUkDate()
+    );
     this.buildForm();
     this.getAllLocations();
     this.getLocationHome();
@@ -236,5 +243,17 @@ export class ProfileEditComponent implements OnInit {
 
   public onIsEmailChange(isChecked: boolean): void {
     this.isEmail = isChecked;
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
+
+  public setEngDate() {
+    this.adapter.setLocale('en');
+  }
+
+  public setUkDate() {
+    this.adapter.setLocale('ua');
   }
 }
