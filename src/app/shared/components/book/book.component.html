@@ -29,20 +29,20 @@
                     </div>
                     <div class="text-center text-md-left text-md-right mt-2">
                         <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
+                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.startreading' | translate }}</button>
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.cancelrequest' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="4">
-                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeOrderedAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                 </span>
