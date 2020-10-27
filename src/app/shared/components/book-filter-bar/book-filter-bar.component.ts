@@ -62,7 +62,7 @@ export class BookFilterBarComponent implements OnInit {
   notifyFilterChange(isSurelyChanged: boolean) {
     this.filterChange.emit(isSurelyChanged);
   }
-  
+
   // Categories
   onCategoriesChange(isOpened: boolean) {
     if (!isOpened) {

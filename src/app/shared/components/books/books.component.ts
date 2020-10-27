@@ -18,7 +18,7 @@ import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { IBookPut } from '../../../core/models/bookPut';
 import { FormGroup } from '@angular/forms';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
-import {ILocationFilter} from '../../../core/models/books-map/location-filter';
+import { ILocationFilter } from '../../../core/models/books-map/location-filter';
 
 @Component({
   selector: 'app-books',
@@ -204,27 +204,37 @@ export class BooksComponent implements OnInit, OnDestroy {
 
   public onFilterChange(filterChanged: boolean): void {
     if (filterChanged === false) {
-      filterChanged = (!this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
-      !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
-      !this.compareArrays(this.queryParams.languages, this.selectedLanguages) ||
-      !this.compareArrays(this.queryParams.locations, this.selectedLocations.locationIds) ||
-      !this.compareArrays(this.queryParams.homeLocations, this.selectedLocations.homeLocationIds));
+      filterChanged =
+        !this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
+        !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
+        !this.compareArrays(
+          this.queryParams.languages,
+          this.selectedLanguages
+        ) ||
+        !this.compareArrays(
+          this.queryParams.locations,
+          this.selectedLocations.locationIds
+        ) ||
+        !this.compareArrays(
+          this.queryParams.homeLocations,
+          this.selectedLocations.homeLocationIds
+        );
     }
-      this.queryParams.genres = this.selectedGenres;
-      this.queryParams.bookStates = this.selectedStates;
-      this.queryParams.languages = this.selectedLanguages;
-      this.queryParams.locations =
-        this.selectedLocations?.locationIds?.length > 0
-          ? this.selectedLocations.locationIds
-          : undefined;
-      this.queryParams.homeLocations =
-        this.selectedLocations?.homeLocationIds?.length > 0
-          ? this.selectedLocations.homeLocationIds
-          : undefined;
-      if (filterChanged) {
-        this.resetPageIndex();
-        this.changeUrl();
-      }
+    this.queryParams.genres = this.selectedGenres;
+    this.queryParams.bookStates = this.selectedStates;
+    this.queryParams.languages = this.selectedLanguages;
+    this.queryParams.locations =
+      this.selectedLocations?.locationIds?.length > 0
+        ? this.selectedLocations.locationIds
+        : undefined;
+    this.queryParams.homeLocations =
+      this.selectedLocations?.homeLocationIds?.length > 0
+        ? this.selectedLocations.homeLocationIds
+        : undefined;
+    if (filterChanged) {
+      this.resetPageIndex();
+      this.changeUrl();
+    }
   }
 
   private populateDataFromQuery(): void {
