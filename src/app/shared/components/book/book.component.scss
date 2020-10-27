@@ -141,6 +141,18 @@ table {
     font-size: 16px;
 }
 
+table tr th {
+    width: 30%;
+}
+
+table tr td {
+    width: 70%;
+}
+
+.min-width {
+    min-width: 200px;
+}
+
 .contact {
     text-decoration: underline;
     cursor: pointer !important;
