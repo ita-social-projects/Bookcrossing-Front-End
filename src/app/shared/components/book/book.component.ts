@@ -200,7 +200,7 @@ export class BookComponent implements OnInit {
       },
       (err) => {
         this.notificationService.error(
-          this.translate.instant('Something went wrong (Read by counter)!'),
+          this.translate.instant('common-errors.error-message'),
           'X'
         );
       }
@@ -268,7 +268,7 @@ export class BookComponent implements OnInit {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to share book? The book will be available for request!'
+            'components.admin.user-view.confirmation.share'
           )
           .toPromise()
       )
@@ -288,7 +288,7 @@ export class BookComponent implements OnInit {
               this.ngOnInit();
               this.notificationService.success(
                 this.translate.instant(
-                  'Your Book`s status changed to available.'
+                  'components.admin.user-view.confirmation.share'
                 ),
                 'X'
               );
@@ -296,7 +296,7 @@ export class BookComponent implements OnInit {
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('common-errors.error-message'),
                 'X'
               );
             }
@@ -311,7 +311,7 @@ export class BookComponent implements OnInit {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to make book available? The book will be available for request!'
+            'components.admin.user-view.confirmation.share'
           )
           .toPromise()
       )
@@ -334,7 +334,7 @@ export class BookComponent implements OnInit {
                   this.ngOnInit();
                   this.notificationService.success(
                     this.translate.instant(
-                      'Book`s status changed to available.'
+                      'components.admin.user-view.notification.make-available'
                     ),
                     'X'
                   );
@@ -342,7 +342,7 @@ export class BookComponent implements OnInit {
                 (err) => {
                   this.disabledButton = false;
                   this.notificationService.error(
-                    this.translate.instant('Something went wrong!'),
+                    this.translate.instant('common-errors.error-message'),
                     'X'
                   );
                 }
@@ -360,7 +360,7 @@ export class BookComponent implements OnInit {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to cancel request? Current owner will be notified about your cancelation.'
+            'components.admin.user-view.confirmation.cancel-request'
           )
           .toPromise()
       )
@@ -379,14 +379,14 @@ export class BookComponent implements OnInit {
                   this.disabledButton = false;
                   this.ngOnInit();
                   this.notificationService.success(
-                    this.translate.instant('Request is cancelled.'),
+                    this.translate.instant('components.admin.user-view.notification.cancel-request'),
                     'X'
                   );
                 },
                 (err) => {
                   this.disabledButton = false;
                   this.notificationService.error(
-                    this.translate.instant('Something went wrong!'),
+                    this.translate.instant('common-errors.error-message'),
                     'X'
                   );
                 }
@@ -400,7 +400,7 @@ export class BookComponent implements OnInit {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to start reading? You will be shown as current owner.'
+            'components.admin.user-view.confirmation.start-reading'
           )
           .toPromise()
       )
@@ -418,7 +418,7 @@ export class BookComponent implements OnInit {
                   this.disabledButton = false;
                   this.ngOnInit();
                   this.notificationService.success(
-                    this.translate.instant('Book’s owner has been changed.'),
+                    this.translate.instant('components.admin.user-view.notification.start-reading'),
                     'X'
                   );
                   this.Donate();
@@ -426,7 +426,7 @@ export class BookComponent implements OnInit {
                 (err) => {
                   this.disabledButton = false;
                   this.notificationService.error(
-                    this.translate.instant('Something went wrong!'),
+                    this.translate.instant('common-errors.error-message'),
                     'X'
                   );
                 }
@@ -441,7 +441,7 @@ export class BookComponent implements OnInit {
     this.dialogService
       .openDonateDialog(
         await this.translate
-          .get('You can donate some money for the project. It`s optional.')
+          .get('components.admin.user-view.confirmation.donate')
           .toPromise()
       )
       .afterClosed()
@@ -461,7 +461,7 @@ export class BookComponent implements OnInit {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to request this book? Current owner will be notified about your request.'
+            'components.admin.user-view.confirmation.request-book'
           )
           .toPromise()
       )
@@ -475,7 +475,7 @@ export class BookComponent implements OnInit {
               this.ngOnInit();
               this.notificationService.success(
                 this.translate.instant(
-                  'Book is successfully requested. Please contact with current owner to receive a book'
+                  'components.admin.user-view.notification.request-book'
                 ),
                 'X'
               );
@@ -483,7 +483,7 @@ export class BookComponent implements OnInit {
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('common-errors.error-message'),
                 'X'
               );
             }
@@ -520,7 +520,7 @@ export class BookComponent implements OnInit {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Something went wrong'),
+              this.translate.instant('common-errors.error-message'),
               'X'
             );
           }
@@ -535,7 +535,7 @@ export class BookComponent implements OnInit {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Cannot add own book to the wish list'),
+              this.translate.instant('components.admin.user-view.notification.add-own-book-error'),
               'X'
             );
           }
@@ -570,7 +570,7 @@ export class BookComponent implements OnInit {
               )
               .subscribe(() => {
                 this.notificationService.success(
-                  this.translate.instant('Message is successfully sent'),
+                  this.translate.instant('components.admin.user-view.notification.message-sent-succes'),
                   'X'
                 );
               });
@@ -606,7 +606,7 @@ export class BookComponent implements OnInit {
                 .addNotification(newMessage)
                 .subscribe(() => {
                   this.notificationService.success(
-                    this.translate.instant('Message is successfully sent'),
+                    this.translate.instant('components.admin.user-view.notification.message-sent-succes'),
                     'X'
                   );
                 });
