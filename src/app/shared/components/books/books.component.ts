@@ -203,11 +203,13 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public onFilterChange(filterChanged: boolean): void {
-    if (
-      !this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
+    if (filterChanged === false) {
+      filterChanged = (!this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
       !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
-      !this.compareArrays(this.queryParams.languages, this.selectedLanguages)
-    ) {
+      !this.compareArrays(this.queryParams.languages, this.selectedLanguages) ||
+      !this.compareArrays(this.queryParams.locations, this.selectedLocations.locationIds) ||
+      !this.compareArrays(this.queryParams.homeLocations, this.selectedLocations.homeLocationIds));
+    }
       this.queryParams.genres = this.selectedGenres;
       this.queryParams.bookStates = this.selectedStates;
       this.queryParams.languages = this.selectedLanguages;
@@ -223,7 +225,6 @@ export class BooksComponent implements OnInit, OnDestroy {
         this.resetPageIndex();
         this.changeUrl();
       }
-    }
   }
 
   private populateDataFromQuery(): void {
