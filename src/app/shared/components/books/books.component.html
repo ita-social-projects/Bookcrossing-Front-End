@@ -335,6 +335,6 @@
     </ng-template>
     </ng-template>
 
-    <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
+    <app-pagination *ngIf="books && totalSize > 8 && books.length !== 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
     </app-pagination>
 </div>
