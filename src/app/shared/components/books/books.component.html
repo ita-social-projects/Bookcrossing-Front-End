@@ -114,9 +114,11 @@
                                                                     </strong>
                                                                 </ng-template>
                                                             </ng-template>
-                                                            <br>
-                                                            <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
-                                                            <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                                                            <ng-template [ngIf]="book.genres.length!=0">
+                                                                <br>
+                                                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                                                                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                                                            </ng-template>
 
                                                             <ng-template [ngIf]="book.genres.length<=3" [ngIfElse]="manyGenresEllipsis">
                                                                 <strong *ngFor="let genre of book.genres;let i = index">
@@ -265,10 +267,11 @@
                   </strong>
                                 </ng-template>
                             </ng-template>
-                            <br>
-                            <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
-                            <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
-
+                            <ng-template [ngIf]="book.genres.length!=0">
+                                <br>
+                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                            </ng-template>
                             <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
                                 <span *ngFor="let genre of book.genres;let i = index">
                     <ng-template [ngIf]="i!=0">,</ng-template>
