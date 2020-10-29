@@ -98,7 +98,7 @@
                                     </th>
                                     <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
                                 </tr>
-                                <tr *ngIf="book?.genres != null">
+                                <tr *ngIf="book?.genres != null && book?.genres.length > 0">
                                     <th scope="row" class="fontsize">
                                         <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>{{ 'components.book.category' | translate }}: </strong></ng-template>
                                         <ng-template #manyGenres><strong>{{ 'components.book.categories' | translate }}: </strong></ng-template>
