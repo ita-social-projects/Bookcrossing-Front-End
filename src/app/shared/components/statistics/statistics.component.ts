@@ -311,12 +311,13 @@ export class StatisticsComponent implements OnInit {
 
     this.readingStatisticsChartOption = {
       legend: {
-        data: titles
+        data: titles,
       },
       grid: {
         right: 15,
         left: 45,
         bottom: 30,
+        top: '20%'
       },
       xAxis: {
         type: 'category',

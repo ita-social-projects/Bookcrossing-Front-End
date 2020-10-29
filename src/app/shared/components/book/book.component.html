@@ -197,19 +197,17 @@
                                         </span>
                                     </td>
                                 </tr>
+                                <tr *ngIf="book?.notice != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.notice' | translate }}: </strong>
+                                    </th>
+                                    <td class="fontsize">
+                                        <p style="word-wrap: break-word;">{{ book?.notice }}</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <tr *ngIf="book?.notice != null">
-                        <th scope="row" class="fontsize">
-                            <strong style="margin-left: 10%;">{{ 'components.book.notice' | translate }}: </strong>
-                        </th>
-                        <td class="fontsize">
-                            <p style="margin-left: 5%; word-wrap: break-word;">{{ book?.notice }}</p>
-                        </td>
-                    </tr>
-
-
                 </div>
                 <div class="col-lg-1">
                     <div class=" row d-flex">
