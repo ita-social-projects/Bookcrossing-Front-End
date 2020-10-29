@@ -16,6 +16,9 @@
                   <div *ngIf="changeTimeSpanForm.get('minutes').errors?.max" class="validation-error">
                       <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"60"} }}</small>
                   </div>
+                  <div *ngIf="changeTimeSpanForm.get('minutes').errors?.min" class="validation-error">
+                    <small class="text-danger">{{'common-errors.validation-min-length' | translate:{value:"0"} }}</small>
+                  </div>
                 </div>
             </div>
 
@@ -30,6 +33,9 @@
                 <div *ngIf="changeTimeSpanForm.get('hours').errors?.max" class="validation-error">
                   <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"24"} }}</small>
                 </div>
+                <div *ngIf="changeTimeSpanForm.get('minutes').errors?.min" class="validation-error">
+                  <small class="text-danger">{{'common-errors.validation-min-length' | translate:{value:"0"} }}</small>
+                </div>
               </div>
             </div>
 
@@ -43,6 +49,9 @@
                 </div>
                 <div *ngIf="changeTimeSpanForm.get('days').errors?.max" class="validation-error">
                     <small class="text-danger">{{'common-errors.validation-max-length' | translate:{value:"30"} }}</small>
+                </div>
+                <div *ngIf="changeTimeSpanForm.get('minutes').errors?.min" class="validation-error">
+                  <small class="text-danger">{{'common-errors.validation-min-length' | translate:{value:"0"} }}</small>
                 </div>
               </div>
             </div>
