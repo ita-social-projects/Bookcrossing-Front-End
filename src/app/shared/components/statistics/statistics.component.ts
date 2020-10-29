@@ -311,7 +311,7 @@ export class StatisticsComponent implements OnInit {
 
     this.readingStatisticsChartOption = {
       legend: {
-        data: titles,
+        data: titles
       },
       grid: {
         right: 15,
