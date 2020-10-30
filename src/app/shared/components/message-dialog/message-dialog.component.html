@@ -1,16 +1,16 @@
-<h2 mat-dialog-title >To: {{data.to}}</h2>
+<h2 mat-dialog-title >{{ 'components.statistics.to' | translate }}: {{data.to}}</h2>
 <mat-dialog-actions>
     <ng-container>
         <div class="container">
             <div class="text">
-                <textarea #content name="message" maxlength="500" class="form-control" id="message" cols="80" rows="10" placeholder="Write your message:"></textarea>
+                <textarea #content name="message" maxlength="500" class="form-control" id="message" cols="80" rows="10" placeholder="{{ ('components.admin.suggestion-message.write-your-message') | translate }}"></textarea>
             </div>
             <div class="row">
               <div class="col-sm">
-                <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient button1" (click)="sendMessage(content.value)">Send</button>
+                <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient button1" (click)="sendMessage(content.value)">{{ 'components.contact-us.send' | translate }}</button>
               </div>
               <div class="col-sm">
-                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button" [mat-dialog-close]="false">Cancel</button>
+                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button"  (click)="closeDialog()">{{ 'common.cancel' | translate }}</button>
               </div>
             </div>
           </div>

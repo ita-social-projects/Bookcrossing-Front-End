@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RefDirective } from '../../../directives/ref.derictive';
 import { CompletePaginationParams } from '../../../../core/models/Pagination/completePaginationParameters';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router, RoutesRecognized } from '@angular/router';
 import { SortParameters } from '../../../../core/models/Pagination/sortParameters';
 import { NotificationService } from '../../../../core/services/notification/notification.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +13,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Location } from '@angular/common';
 import { Sort } from '@angular/material/sort';
 import { FilterParameters } from 'src/app/core/models/Pagination/filterParameters';
 
@@ -59,7 +60,8 @@ export class UsersComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private notificationService: NotificationService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private location: Location
   ) {
   }
 
@@ -69,19 +71,20 @@ export class UsersComponent implements OnInit {
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField
         ? this.queryParams.sort.orderByField
         : 'id';
-
+      console.log(this.queryParams);
       this.initShowDeleted();
       const searchFilter: FilterParameters = this.queryParams?.filters?.find(
-        (filter) => this.fieldsForSearch.includes(filter.propertyName)
+        (queryFilter) => this.fieldsForSearch.includes(queryFilter.propertyName)
       );
       this.buildSearchForm(searchFilter?.value);
       this.getUsers(this.queryParams);
     });
+    console.log(this.queryParams);
   }
 
   public search(searchText: string): void {
     const searchFilter: FilterParameters = this.queryParams?.filters?.find(
-      (filter) => this.fieldsForSearch.includes(filter.propertyName)
+      (queryFilter) => this.fieldsForSearch.includes(queryFilter.propertyName)
     );
     if (searchFilter?.value === searchText) {
       return;
@@ -90,7 +93,7 @@ export class UsersComponent implements OnInit {
     this.queryParams.page = 1;
     for (const fieldForSearch of this.fieldsForSearch) {
       const searchFilterIndex: number = this.queryParams?.filters?.findIndex(
-        (filter) => filter.propertyName === fieldForSearch
+        (queryFilter) => queryFilter.propertyName === fieldForSearch
       );
       if (searchFilterIndex !== -1) {
         this.queryParams?.filters?.splice(searchFilterIndex, 1);
@@ -109,10 +112,11 @@ export class UsersComponent implements OnInit {
     this.showDeleted = !this.showDeleted;
     if (this.showDeleted) {
       const isDeletedFilterIndex = this.queryParams?.filters?.findIndex(
-        (filter) => filter.propertyName === this.IsDeletedPropertyName
+        (queryFilter) => queryFilter.propertyName === this.IsDeletedPropertyName
       );
       if (isDeletedFilterIndex !== -1) {
         this.queryParams?.filters?.splice(isDeletedFilterIndex, 1);
+        this.userService.isShowDeleted = true;
       }
     } else {
       this.queryParams.filters.push({
@@ -121,6 +125,7 @@ export class UsersComponent implements OnInit {
         method: 'Equal',
         operand: 'And',
       });
+      this.userService.isShowDeleted = false;
     }
 
     this.changeUrl();
@@ -165,18 +170,22 @@ export class UsersComponent implements OnInit {
 
   private initShowDeleted() {
     const isDeletedFilterIndex: number = this.queryParams?.filters?.findIndex(
-      (filter) => filter.propertyName === this.IsDeletedPropertyName
+      (queryFilter) => queryFilter.propertyName === this.IsDeletedPropertyName
     );
     if (isDeletedFilterIndex !== -1) {
-      this.showDeleted = false;
+        this.showDeleted = false;
     } else if (this.showDeleted === undefined) {
-      this.showDeleted = false;
-      this.queryParams.filters.push({
-        propertyName: this.IsDeletedPropertyName,
-        value: 'false',
-        method: 'Equal',
-        operand: 'And',
-      });
+      if (this.userService.isShowDeleted === false) {
+        this.showDeleted = false;
+        this.queryParams.filters.push({
+          propertyName: this.IsDeletedPropertyName,
+          value: 'false',
+          method: 'Equal',
+          operand: 'And',
+        });
+      } else {
+        this.showDeleted = true;
+      }
     } else {
       this.showDeleted = true;
     }

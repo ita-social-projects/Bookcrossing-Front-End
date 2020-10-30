@@ -102,18 +102,18 @@
                           <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
                           [innerHTML]="messagesStatusHtml[i]">
                           </button>
-                          <div class="dropdown-menu text-center">
+                          <div class="dropdown-menu">
                             <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Read, item)">
-                              <span class="mr-4">{{'components.admin.suggestion-message.read' | translate}} </span>
-                              <i class="fas fa-lg green-text fa-check-circle"></i>
+                              <span class="mr-3">{{'components.admin.suggestion-message.read' | translate}} </span>
+                              <i class="fas fa-lg green-text fa-check-circle float-right mt-1"></i>
                             </div>
                             <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Unread, item)">
-                              <span class="mr-2">{{'components.admin.suggestion-message.unread' | translate}} </span>
-                              <i class="fas fa-lg fa-dot-circle"></i>
+                              <span class="mr-3">{{'components.admin.suggestion-message.unread' | translate}} </span>
+                              <i class="fas fa-lg fa-dot-circle float-right mt-1"></i>
                             </div>
                             <div class="dropdown-item cursor-pointer" (click)="onStatusChanged(messageStatus.Declined, item)">
-                              <span class="mr-2">{{'components.admin.suggestion-message.decline' | translate}} </span>
-                              <i class="fas fa-lg red-text fa-times-circle"></i>
+                              <span class="mr-3">{{'components.admin.suggestion-message.decline' | translate}} </span>
+                              <i class="fas fa-lg red-text fa-times-circle float-right mt-1"></i>
                             </div>
                           </div>
                         </div>                       

@@ -1,7 +1,7 @@
 <div class="container my-4">
   <div>
     <mdb-breadcrumb>
-      <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+      <mdb-breadcrumb-item class="active">{{booksPageName}}</mdb-breadcrumb-item>
     </mdb-breadcrumb>
   </div>
 
@@ -22,7 +22,7 @@
     <div class="container my-5 py-5 z-depth-1">
 
       <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-        <h3 class="font-weight-bold">No books found</h3>
+        <h3 class="font-weight-bold">{{ 'components.books.nobooksfound' | translate }}</h3>
       </section>
 
     </div>
@@ -57,14 +57,14 @@
                         <div class="col-lg-8 m2" >
                           <div class="card-block m-2 px-2">
                             <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
-                              <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong>
+                              <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong>
                               </h4></a>
                             </ng-template>
                             <ng-template #bookTitleElse>
                               <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0"
                                  matTooltipClass="mat-tooltip"
                                  matTooltipPosition="right"
-                                 class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
+                                 class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
                               </h4>
                               </a>
                             </ng-template>
@@ -72,7 +72,7 @@
                             <p class="card-text">
                                 <ng-template [ngIf]="book.authors.length > 0">
                                   <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                                    Author :
+                                    {{ 'components.books.author' | translate }}:
                                   </ng-template>
                                   <ng-template #manyAuthors>Authors:</ng-template>
                                   <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
@@ -99,19 +99,29 @@
                                   </ng-template>
                                 </ng-template>
                                 <br>
-                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
-                                <ng-template #manyGenres>Categories:</ng-template>
+                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
 
                                 <ng-template [ngIf]="book.genres.length<=3" [ngIfElse]="manyGenresEllipsis">
                                   <strong *ngFor="let genre of book.genres;let i = index">
                                     <ng-template [ngIf]="i!=0">,</ng-template>
-                                    {{genre.name}}
+                                    <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                                      {{genre.name}}
+                                  </ng-template>
+                                  <ng-template #uk>
+                                      {{genre.nameUk}}
+                                  </ng-template>
                                   </strong>
                                 </ng-template>
                                 <ng-template #manyGenresEllipsis>
                                   <strong style="word-wrap: normal;" *ngFor="let genre of book.genres | slice:0:2;let i = index">
                                     <ng-template [ngIf]="i!=0">,</ng-template>
-                                    {{genre.name}}
+                                    <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                                      {{genre.name}}
+                                  </ng-template>
+                                  <ng-template #uk>
+                                      {{genre.nameUk}}
+                                  </ng-template>
                                   </strong>
                                   <strong>
                                     <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':2"
@@ -122,28 +132,28 @@
                                 </ng-template>
                                   <br>
                                   <span>
-                                    Language: {{ book?.language?.name }}
+                                    {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                                   </span>
                                   <br>
                                   <span>
-                                    Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
+                                    {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                                   </span>
                                   <br>
                                   <span>
-                                    Status:
+                                    {{ 'components.books.status' | translate }}:
                                   </span>
                                   <span [ngSwitch]="book?.state">
-                                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
+                                    <ng-template ngSwitchCase="0"><span class="badge badge-success product">{{ 'components.books.statuses.available' | translate }}</span>
                                       <br>
                                       <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && book.userId == userId" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
                                     </ng-template>
-                                    <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
+                                    <ng-template ngSwitchCase="1"><span class="badge badge-info product">{{ 'components.books.statuses.requested' | translate }}</span>
                                     <br>
-                                    <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
+                                    <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">{{ 'components.books.statuses.cancelrequest' | translate }}</button>
                                     </ng-template>
-                                    <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
+                                    <ng-template ngSwitchCase="2"><span class="badge badge-info product">{{ 'components.books.statuses.reading' | translate }}</span>
                                     </ng-template>
-                                    <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
+                                    <ng-template ngSwitchCase="3"><span class="badge badge-light product">{{ 'components.books.statuses.inactive' | translate }}</span>
                                     </ng-template>
                                   </span>
                             </p>
@@ -179,12 +189,12 @@
           </ng-template>
           <div class="col m-2">
             <div class="card-block px-2">
-              <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
+              <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}"><h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4></a>
               <ngx-star-rating class="mt-0" [filledColor]="'#FF8800'" [rating]="book.rating" readonly="true"></ngx-star-rating>
               <p class="card-text">
                 <ng-template [ngIf]="book.authors.length > 0">
                   <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
-                  Author:
+                    {{ 'components.books.author' | translate }}:
                 </ng-template>
 
                 <ng-template #manyAuthors>Authors:</ng-template>
@@ -208,19 +218,29 @@
                   </ng-template>
                 </ng-template>
                 <br>
-                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">Category:</ng-template>
-                <ng-template #manyGenres>Categories:</ng-template>
+                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
 
                 <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
                   <span *ngFor="let genre of book.genres;let i = index">
                     <ng-template [ngIf]="i!=0">,</ng-template>
-                    {{genre.name}}
+                    <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                      {{genre.name}}
+                  </ng-template>
+                  <ng-template #uk>
+                      {{genre.nameUk}}
+                  </ng-template>
                   </span>
                 </ng-template>
                 <ng-template #manyGenresEllipsis>
                   <strong *ngFor="let genre of book.genres | slice:0:7;let i = index">
                     <ng-template [ngIf]="i!=0">,</ng-template>
-                    {{genre.name}}
+                    <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+                      {{genre.name}}
+                  </ng-template>
+                  <ng-template #uk>
+                      {{genre.nameUk}}
+                  </ng-template>
                   </strong>
                   <strong>
                     <span matTooltipHideDelay="1000" [matTooltip]="book.genres | Ellipsis:'genres':7"
@@ -231,26 +251,26 @@
                 </ng-template>
                 <br>
                 <span>
-                  Language: {{ book?.language?.name }}
+                  {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                 </span>
                 <br>
                 <span>
-                  Location: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
+                  {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                 </span>
                 <br>
-                <span>Status: </span>
+                <span>{{ 'components.books.status' | translate }}: </span>
                 <span [ngSwitch]="book?.state">
-              <ng-template ngSwitchCase="0"><span class="badge badge-success product">Available</span>
+              <ng-template ngSwitchCase="0"><span class="badge badge-success product">{{ 'components.books.statuses.available' | translate }}</span>
                 <br>
                 <button role="button" class="btn btn-primary ml-0" [hidden]="!isAuthenticated() && book.userId == userId" [disabled]="disabledButton" (click)="requestBook(book.id)">Request</button>
               </ng-template>
-              <ng-template ngSwitchCase="1"><span class="badge badge-info product">Requested</span>
+              <ng-template ngSwitchCase="1"><span class="badge badge-info product">{{ 'components.books.statuses.requested' | translate }}</span>
               <br>
-              <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">Cancel request</button>
+              <button *ngIf="isRequester[key]" role="button" class="btn btn-primary ml-0" [disabled]="disabledButton" (click)="cancelRequest(book.id)">{{ 'components.books.statuses.cancelrequest' | translate }}</button>
               </ng-template>
-              <ng-template ngSwitchCase="2"><span class="badge badge-info product">Reading</span>
+              <ng-template ngSwitchCase="2"><span class="badge badge-info product">{{ 'components.books.statuses.reading' | translate }}</span>
               </ng-template>
-              <ng-template ngSwitchCase="3"><span class="badge badge-light product">Inactive</span>
+              <ng-template ngSwitchCase="3"><span class="badge badge-light product">{{ 'components.books.statuses.inactive' | translate }}</span>
               </ng-template>
             </span>
 

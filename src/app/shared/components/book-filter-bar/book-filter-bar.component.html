@@ -19,7 +19,7 @@
             <i [ngClass]="{'d-none': !(selectedLanguages && selectedLanguages.length > 0)}" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onLanguagesReset()"></i>
         </div>
 
-        <div class="block col-sm">
+        <div class="col-sm input-group">
             <mat-select placeholder="{{ 'components.booksfilter.sortby'| translate }}" [(ngModel)]="orderByField" (ngModelChange)="onOrderByFieldChange()" class="form-control select-dropdown">
                 <mat-option value="Rating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.rating'| translate }} <i class="fas fa-star"></i></mat-option>
                 <mat-option value="DateAdded" (click)="onOrderByCurrent()">{{ 'components.booksfilter.dateadded'| translate }}
@@ -28,9 +28,19 @@
                 <mat-option value="WishCount" (click)="onOrderByCurrent()">{{ 'components.booksfilter.wish'| translate }} <i class="fas fa-heart"></i></mat-option>
                 <mat-option value="PredictedRating" (click)="onOrderByCurrent()">{{ 'components.booksfilter.airating'| translate }} <i class="fa fa-comments"></i></mat-option>
             </mat-select>
-            <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-2x sign" (click)="onOrderByAscendingChange()"></i>
-            <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-amount-up fa-2x sign" (click)="onOrderByAscendingChange()"></i>
-            <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
+            <div class="input-group-append">
+                <div class="input-group-text btn-light" [ngClass]="{'m-0 p-0' : !orderByField}">
+                    <ng-template [ngIf]="orderByField !== 'Name'" [ngIfElse]="alph">
+                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-desc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-asc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                    </ng-template>
+                    <ng-template #alph>
+                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-alpha-asc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-alpha-desc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                    </ng-template>
+                    <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
+                </div>
+            </div>
         </div>
 
         <div class="block col-sm">

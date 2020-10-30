@@ -41,6 +41,7 @@ export class WishListComponent implements OnInit, OnDestroy {
   public disabledButton = false;
   public books: IBook[];
   public totalSize: number;
+  public booksPageName = 'common.wishlist';
   public booksPage: booksPage = booksPage.WishList;
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
@@ -70,6 +71,13 @@ export class WishListComponent implements OnInit, OnDestroy {
         this.route = this.router.url;
       }
     });
+    this.translate.get(this.booksPageName).subscribe(name => {
+      this.booksPageName = name;
+    });
+  }
+
+  public hasLocation(value: bookState): boolean {
+    return value?.toString() !== '4' && value.toString() !== '5';
   }
 
   public isAuthenticated(): boolean {
@@ -177,15 +185,6 @@ export class WishListComponent implements OnInit, OnDestroy {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
     this.changeUrl();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }
-
-  private resetPageIndex(): void {
-    this.queryParams.page = 1;
-    this.queryParams.firstRequest = true;
   }
 
   private changeUrl(): void {
@@ -229,7 +228,6 @@ export class WishListComponent implements OnInit, OnDestroy {
         this.routeActive.queryParams.subscribe((params: Params) => {
           this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
           this.getBooks(this.queryParams);
-          this.pageChanged(this.queryParams.page);
         });
       },
       () => {

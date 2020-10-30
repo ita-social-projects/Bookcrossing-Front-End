@@ -20,6 +20,7 @@ export class UserService {
   }
 
   readonly baseUrl = userUrl;
+  public isShowDeleted = false;
 
   public getUsers(params: CompletePaginationParams): Observable<IPage<IUserInfo>> {
     return this.paginationService.getPaginatedPage<IUserInfo>(this.baseUrl + '/paginated', params);

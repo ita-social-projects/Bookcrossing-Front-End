@@ -53,6 +53,11 @@ a[aria-expanded=true] .shown {
     font-size: 14px;
 }
 
+textarea
+{
+    resize: none;
+}
+
 a[aria-expanded=true] .hidden,
 a[aria-expanded=false] .shown {
     display: none;

@@ -43,6 +43,7 @@ editBookForm: FormGroup;
   newAuthor: IAuthor;
   selectedGenres = [];
   languages: ILanguage[] = [];
+  hideErrorInterval: NodeJS.Timeout;
 
 constructor(
   private translate: TranslateService,
@@ -298,12 +299,26 @@ constructor(
   getAllGenres() {
     this.genreService.getGenre().subscribe(
       (data) => {
-        this.genres = data;
+        if (this.translate.currentLang === 'en') {
+        this.genres = data.sort((a, b) => (a.name > b.name) ? 1 : -1);
+        } else {
+          this.genres = data.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+        }
       },
       (error) => {
         console.log(error);
       }
     );
+  }
+
+  getCategoriesLanguage() {
+    if (this.translate.currentLang === 'en') {
+      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      return true;
+    } else {
+      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      return false;
+    }
   }
 
   getAllLanguages() {
@@ -448,7 +463,7 @@ constructor(
     }
     return true;
   }
-
+/*
   checkLength(fieldName: string, event: any, maxLength: number) {
     const value = event.target.value;
     if (value.length > maxLength) {
@@ -483,6 +498,43 @@ constructor(
         'X'
       );
     }
+  }*/
+
+  public checkLength(element: HTMLElement, maxLength: number): void {
+    const input =
+      (element as HTMLInputElement) != null
+        ? (element as HTMLInputElement)
+        : (element as HTMLTextAreaElement);
+
+    if (input.value.length > maxLength) {
+      /* tslint:disable:no-string-literal */
+      const fieldName = input.attributes['formControlName']?.value;
+      /* tslint:enable:no-string-literal */
+      input.value = input.value.substr(0, maxLength);
+
+      this.editBookForm.controls[fieldName]?.setErrors({
+        maxlength: { requiredLength: maxLength },
+      });
+      this.editBookForm.controls[fieldName]?.markAsTouched();
+
+      clearInterval(this.hideErrorInterval);
+      this.hideErrorInterval = setTimeout(() => {
+        this.editBookForm.controls[fieldName]?.setErrors(null);
+        this.editBookForm.controls[fieldName]?.markAsTouched();
+      }, 2000);
+    }
+  }
+  public async onCancel(): Promise<void> {
+    this.dialogService
+      .openConfirmDialog(
+        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
+      )
+      .afterClosed()
+      .subscribe(async (res) => {
+        if (res) {
+          this.cancel.emit();
+        }
+      });
   }
   public isEn(): boolean {
     return this.translate.currentLang === 'en';

@@ -21,11 +21,6 @@
                                     <button class="input-group-text btn-light" (click)="search()">
                                       <i class="fas fa-search text-grey" aria-hidden="true"></i>
                                     </button>
-                                    <div class="select">
-                                        <mat-select [(ngModel)]="selectedSearchTerm" placeholder="{{ selectedSearchTerm.name | translate }}" class="form-control select-dropdown">
-                                            <mat-option *ngFor="let option of searchOptions" [value]="option.id">{{ option.name | translate }}</mat-option>
-                                        </mat-select>
-                                    </div>
                                 </div>
                             </div>
                         </div>

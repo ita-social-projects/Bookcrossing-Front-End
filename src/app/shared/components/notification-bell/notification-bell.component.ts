@@ -19,6 +19,7 @@ import { RequestQueryParams } from 'src/app/core/models/requestQueryParams';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { IMessage } from 'src/app/core/models/message';
 
+
 @Component({
   selector: 'app-notification-bell',
   templateUrl: './notification-bell.component.html',
@@ -36,6 +37,7 @@ export class NotificationBellComponent implements OnInit {
     private bookService: BookService,
     private notificationService: NotificationService,
     private translateService: TranslateService,
+    private translate: TranslateService,
     private dialogService: DialogService,
     private requestService: RequestService,
     private notificationBellService: NotificationBellService,
@@ -58,20 +60,32 @@ export class NotificationBellComponent implements OnInit {
       });
   }
 
+  private setMyAttributes(nodes: HTMLCollectionOf<Element>, num: number) {
+      // tslint:disable-next-line: prefer-for-of
+      for (let index = 0; index < nodes.length; ++index) {
+        nodes[index].setAttribute('tabindex', `${num}`);
+    }
+  }
+
   public showOrHideNotificationBar(): void {
+    const list = document.getElementsByClassName('button');
     if (document.getElementById('box').style.height === '60vh') {
       document.getElementById('box').style.height = '0vh';
+      this.setMyAttributes(list, -1);
       this.makeAllSeen();
       this.isOpened = false;
     } else {
       document.getElementById('box').style.height = '60vh';
+      this.setMyAttributes(list, 0);
       this.isOpened = true;
     }
   }
 
   @HostListener('document:click', ['$event']) onDocumentClick(event): void {
+    const list = document.getElementsByClassName('button');
     if (this.isOpened) {
       document.getElementById('box').style.height = '0vh';
+      this.setMyAttributes(list, -1);
       this.makeAllSeen();
       this.isOpened = false;
     }
@@ -130,8 +144,10 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public navigateToBook(bookId: number): void {
+    const list = document.getElementsByClassName('button');
     this.router.navigate(['/book/' + bookId]);
     document.getElementById('box').style.height = '0vh';
+    this.setMyAttributes(list, -1);
   }
 
   public async checkIfBookIsAvailable(bookId: number): Promise<boolean> {
@@ -315,5 +331,9 @@ export class NotificationBellComponent implements OnInit {
             }
         });
     });
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }
