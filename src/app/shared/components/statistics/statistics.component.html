@@ -227,12 +227,14 @@
                           class="form-control select-dropdown"
                           multiple
                           placeholder="All">
-                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
-                </ng-template>
-                <ng-template #uk>
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk }}</mat-option>
-                </ng-template>
+                <mat-option *ngFor="let genre of genres" [value]="genre.id">
+                  <ng-template ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
+                    {{genre?.name}}
+                  </ng-template>
+                  <ng-template #uk>
+                    {{genre?.nameUk}}
+                  </ng-template>
+                </mat-option>
               </mat-select>
             </div>
           </div>
