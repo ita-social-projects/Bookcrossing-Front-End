@@ -84,7 +84,7 @@
                             {{ 'components.statistics.city' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="readingSelectedCities" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="readingSelectedCities" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                             </mat-select>
                         </div>
@@ -95,7 +95,7 @@
                             {{ 'components.statistics.office' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="readingSelectedOffices" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="readingSelectedOffices" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
                             </mat-select>
                         </div>
@@ -106,7 +106,7 @@
                             {{ 'components.statistics.genre' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="readingSelectedGenres" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="readingSelectedGenres" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
                                     <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
                                 </ng-template>
@@ -169,7 +169,7 @@
                             {{ 'components.statistics.city' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="donationSelectedCities" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="donationSelectedCities" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
                             </mat-select>
                         </div>
@@ -180,7 +180,7 @@
                             {{ 'components.statistics.office' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="donationSelectedOffices" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="donationSelectedOffices" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
                             </mat-select>
                         </div>
@@ -191,7 +191,7 @@
                             {{ 'components.statistics.genre' | translate }}
                         </div>
                         <div class="col-lg-6 select">
-                            <mat-select [(ngModel)]="donationSelectedGenres" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="All">
+                            <mat-select [(ngModel)]="donationSelectedGenres" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
                                 <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
                                     <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
                                 </ng-template>
