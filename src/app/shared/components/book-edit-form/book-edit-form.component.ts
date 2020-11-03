@@ -510,12 +510,11 @@ constructor(
   }
 
   public isChanged(): boolean {
-    if(this.editBookForm.get('title').value !== this.book.name ||
+    if (this.editBookForm.get('title').value !== this.book.name ||
     this.editBookForm.get('publisher').value !== this.book.publisher ||
     this.editBookForm.get('isbn').value !== this.book.isbn ||
     this.editBookForm.get('description').value !== this.book.notice ||
-    this.editBookForm.get('languageId').value !== this.book.language.id)
-    {
+    this.editBookForm.get('languageId').value !== this.book.language.id) {
       return true;
     } else {
       return false;
@@ -523,7 +522,7 @@ constructor(
   }
 
   public async onCancel(): Promise<void> {
-    if(this.isChanged()){
+    if (this.isChanged()) {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
@@ -534,7 +533,7 @@ constructor(
           this.cancel.emit();
         }
       });
-    }else{
+    } else {
       this.cancel.emit();
     }
   }

@@ -226,21 +226,19 @@ export class ProfileEditComponent implements OnInit {
     this.changingLocation = true;
   }
 
-  public IsChanged(): boolean{
-    if(this.editUserForm.get('firstName').value != this.user.firstName ||
-    this.editUserForm.get('lastName').value != this.user.lastName ||
-    this.editUserForm.get('birthDate').value != this.user.birthDate ||
-    this.editUserForm.get('room').value != this.user.userLocation.roomNumber)
-    {
+  public IsChanged(): boolean {
+    if (this.editUserForm.get('firstName').value !== this.user.firstName ||
+    this.editUserForm.get('lastName').value !== this.user.lastName ||
+    this.editUserForm.get('birthDate').value !== this.user.birthDate ||
+    this.editUserForm.get('room').value !== this.user.userLocation.roomNumber) {
       return true;
-    } 
-    else {
+    } else {
       return false;
     }
   }
 
   public async Cancel(): Promise<void> {
-    if(this.IsChanged()) {
+    if (this.IsChanged()) {
     this.changingLocation = false;
     this.dialogService
       .openConfirmDialog(
@@ -253,8 +251,7 @@ export class ProfileEditComponent implements OnInit {
           this.editUserForm.reset();
         }
       });
-    }
-    else {
+    } else {
       this.cancel.emit();
       this.editUserForm.reset();
     }

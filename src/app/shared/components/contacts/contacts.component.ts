@@ -119,7 +119,7 @@ export class ContactsComponent implements OnInit {
   }
 
   public async Cancel(): Promise<void> {
-    if(this.contactsForm.get('description').value != '') {
+    if (this.contactsForm.get('description').value !== '') {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
