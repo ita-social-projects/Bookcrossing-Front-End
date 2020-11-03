@@ -139,6 +139,7 @@ table {
 
 .fontsize {
     font-size: 16px;
+    word-break: break-all;
 }
 
 .contact {
@@ -148,4 +149,8 @@ table {
 
 .bluetext {
     color: rgb(6, 173, 250);
+}
+
+.nameSize {
+    word-break: break-all;
 }

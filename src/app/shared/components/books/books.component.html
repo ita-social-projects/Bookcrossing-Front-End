@@ -225,9 +225,21 @@
                 <div class="col m-2">
                     <div class="card-block px-2">
                         <div class="row ml-2">
-                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                            <!-- <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4>
-                            </a>
+                            </a> -->
+                            <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
+                                <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                                    <h4 class="card-title mb-0"><strong>{{book.name}}</strong>
+                                    </h4>
+                                </a>
+                            </ng-template>
+                            <ng-template #bookTitleElse>
+                                <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                                    <h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
+                                    </h4>
+                                </a>
+                            </ng-template>
                             <div *ngIf="book?.predictedRating > 0" class="btnCustom m-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
                                 <div class="m-0 p-0 ai-label">
                                     <i class="fa fa-star fa-lg m-0 p-1" aria-hidden="true"></i>
