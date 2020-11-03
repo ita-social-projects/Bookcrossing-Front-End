@@ -60,14 +60,15 @@ export class BookFilterBarComponent implements OnInit {
     this.getViewMode();
   }
 
-  notifyFilterChange() {
-    this.filterChange.emit(true);
+  notifyFilterChange(isSurelyChanged: boolean) {
+    this.filterChange.emit(isSurelyChanged);
   }
+
   // Categories
   onCategoriesChange(isOpened: boolean) {
     if (!isOpened) {
       this.selectedGenresChange.emit(this.selectedGenres);
-      this.notifyFilterChange();
+      this.notifyFilterChange(false);
     }
   }
 
@@ -83,29 +84,29 @@ export class BookFilterBarComponent implements OnInit {
 
   onCategoriesReset() {
     this.selectedGenresChange.emit([]);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
   // Languages
   onLanguagesChange(isOpened: boolean) {
     if (!isOpened) {
       this.selectedLanguagesChange.emit(this.selectedLanguages);
-      this.notifyFilterChange();
+      this.notifyFilterChange(false);
     }
   }
   onLanguagesReset() {
     this.selectedLanguagesChange.emit([]);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   onLocationChange(filter: ILocationFilter) {
     this.selectedLocations = filter;
     this.selectedLocationsChange.emit(this.selectedLocations);
-    this.notifyFilterChange();
+    this.notifyFilterChange(false);
   }
 
   onLocationReset() {
     this.selectedLocationsChange.emit(null);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   public toggleMap(selected): void {
@@ -114,7 +115,7 @@ export class BookFilterBarComponent implements OnInit {
     if (!selected) {
       this.selectedLocations = null;
       this.selectedLocationsChange.emit(null);
-      this.notifyFilterChange();
+      this.notifyFilterChange(false);
     }
   }
 
@@ -122,19 +123,18 @@ export class BookFilterBarComponent implements OnInit {
   setbookStates() {
     this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 'Inactive');
     this.selectedStates = new Array<bookState>();
-    this.onStatesChange(false);
   }
 
   onStatesChange(isOpened: boolean) {
     if (!isOpened) {
       this.selectedStatesChange.emit(this.selectedStates);
-      this.notifyFilterChange();
+      this.notifyFilterChange(false);
     }
   }
 
   onStatesReset() {
     this.selectedStatesChange.emit([]);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   getAllGenres() {
@@ -180,12 +180,12 @@ export class BookFilterBarComponent implements OnInit {
 
   onOrderByFieldChange() {
     this.orderByFieldChange.emit(this.orderByField);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   onOrderByFieldReset() {
     this.orderByFieldChange.emit(null);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   onOrderByCurrent()  {
@@ -193,18 +193,18 @@ export class BookFilterBarComponent implements OnInit {
       this.orderByFieldAscending = false;
     }
     this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   onOrderByAscendingChange() {
     this.orderByFieldAscending = !this.orderByFieldAscending;
     this.orderByFieldAscendingChange.emit(this.orderByFieldAscending);
-    this.notifyFilterChange();
+    this.notifyFilterChange(true);
   }
 
   public onFilterChange(filterChanged: boolean): void {
     if (filterChanged) {
-      this.notifyFilterChange();
+      this.notifyFilterChange(true);
     }
   }
 }

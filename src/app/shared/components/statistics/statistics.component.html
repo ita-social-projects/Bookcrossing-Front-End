@@ -1,375 +1,316 @@
 <div class="container">
-  <div class="row counters">
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="counter">
-        <a [routerLink]="['/wishlist']" class="icon wishlist">
-          <i class="fas fa-heart"></i>
-        </a>
-        <div class="counter-body">
-          <div class="title">
-            {{ 'components.statistics.wishlist' | translate }}
-          </div>
-          <div class="value">
-            {{countersData?.wishedBooksCount}}
-          </div>
+    <div class="row counters">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="counter">
+                <a [routerLink]="['/wishlist']" class="icon wishlist parent-icon">
+                    <i class="fas fa-heart"></i>
+                </a>
+                <div class="counter-body">
+                    <div class="title">
+                        {{ 'components.statistics.wishlist' | translate }}
+                    </div>
+                    <div class="value">
+                        {{countersData?.wishedBooksCount}}
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="counter">
+                <a [routerLink]="['/books/requests']" class="icon requested parent-icon">
+                    <i class="fas fa-book"></i>
+                </a>
+                <div class="counter-body">
+                    <div class="title">
+                        {{ 'components.statistics.request' | translate }}
+                    </div>
+                    <div class="value">
+                        {{countersData?.requestedBooksCount}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="counter">
+                <a [routerLink]="['/books/currentlyread']" class="icon not-finished parent-icon">
+                    <i class="fas fa-book-open"></i>
+                </a>
+                <div class="counter-body">
+                    <div class="title">
+                        {{ 'components.statistics.in-progress' | translate }}
+                    </div>
+                    <div class="value">
+                        {{countersData?.readBooksCount}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="counter">
+                <div class="icon books-read parent-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="counter-body">
+                    <div class="title">
+                        {{ 'components.statistics.books-were-read' | translate }}
+                    </div>
+                    <div class="value">
+                        {{countersData?.registeredBooksWereReadCount}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="counter">
-        <a [routerLink]="['/books/requests']" class="icon requested">
-          <i class="fas fa-book"></i>
-        </a>
-        <div class="counter-body">
-          <div class="title">
-            {{ 'components.statistics.request' | translate }}
-          </div>
-          <div class="value">
-            {{countersData?.requestedBooksCount}}
-          </div>
+
+    <!-- Reading statistics -->
+    <div class="reading">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-12 line-chart">
+                <div class="chart-container" echarts [options]="readingStatisticsChartOption">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
+                <div class="card-title">
+                    {{ 'components.statistics.reading' | translate }}
+                </div>
+
+                <div class="params">
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.city' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="readingSelectedCities" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.office' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="readingSelectedOffices" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.genre' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="readingSelectedGenres" (openedChange)="onReadingStatisticsFilterChange($event)" (selectionChange)="readingFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
+                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
+                                </ng-template>
+                                <ng-template #uk>
+                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk }}</mat-option>
+                                </ng-template>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="period">
+                        <div class="parameter-title">
+                            {{ 'components.statistics.period' | translate }}
+                        </div>
+
+
+                        <div class="col-lg-6 parameter-date">
+                            <mat-form-field color="accent">
+                                <mat-label>
+                                    {{ 'components.statistics.from' | translate }}
+                                </mat-label>
+                                <input [(ngModel)]="readingFrom" matInput [matDatepicker]="picker1" (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-6 parameter-date">
+                            <mat-form-field color="accent">
+                                <mat-label>
+                                    {{ 'components.statistics.to' | translate }}
+                                </mat-label>
+                                <input [(ngModel)]="readingTo" matInput [matDatepicker]="picker2" (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="counter">
-        <a [routerLink]="['/books/currentlyread']" class="icon not-finished">
-          <i class="fas fa-book-open"></i>
-        </a>
-        <div class="counter-body">
-          <div class="title">
-            {{ 'components.statistics.in-progress' | translate }}
-          </div>
-          <div class="value">
-            {{countersData?.readBooksCount}}
-          </div>
+    <!-- Donation statistics -->
+    <div class="reading">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-12 line-chart">
+                <div class="chart-container" echarts [options]="donationStatisticsChartOption">
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
+                <div class="card-title">
+                    {{ 'components.statistics.donating' | translate }}
+                </div>
+
+                <div class="params">
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.city' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="donationSelectedCities" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.office' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="donationSelectedOffices" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="parameter">
+                        <div class="col-lg-6 parameter-title">
+                            {{ 'components.statistics.genre' | translate }}
+                        </div>
+                        <div class="col-lg-6 select">
+                            <mat-select [(ngModel)]="donationSelectedGenres" (openedChange)="onDonationStatisticsFilterChange($event)" (selectionChange)="donationFiltersChanged = true" class="form-control select-dropdown" multiple placeholder="{{ ('components.admin.dashboard.all') | translate }}">
+                                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
+                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
+                                </ng-template>
+                                <ng-template #uk>
+                                    <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk }}</mat-option>
+                                </ng-template>
+                            </mat-select>
+                        </div>
+                    </div>
+
+                    <div class="period">
+                        <div class="parameter-title">
+                            {{ 'components.statistics.period' | translate }}
+                        </div>
+
+
+                        <div class="col-lg-6 parameter-date">
+                            <mat-form-field color="accent">
+                                <mat-label>
+                                    {{ 'components.statistics.from' | translate }}
+                                </mat-label>
+                                <input [(ngModel)]="donationFrom" matInput [matDatepicker]="picker3" (dateChange)="donationFiltersChanged = true; onDonationStatisticsFilterChange(false)">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-lg-6 parameter-date">
+                            <mat-form-field color="accent">
+                                <mat-label>
+                                    {{ 'components.statistics.to' | translate }}
+                                </mat-label>
+                                <input [(ngModel)]="donationTo" matInput [matDatepicker]="picker4" (dateChange)="donationFiltersChanged = true; onDonationStatisticsFilterChange(false)">
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="counter">
-        <div class="icon books-read">
-          <i class="fas fa-user"></i>
+    <!-- Pie charts -->
+    <div class="pie-charts">
+        <div class="card">
+            <div class="">
+                <div class="card-title">
+                    {{ 'components.statistics.donated' | translate }}
+                </div>
+                <div class="pie-chart" echarts [options]="donatedPieChartOption" (mouseover)="DonatedTotal.style.display = 'none';" (mouseleave)="DonatedTotal.style.display = 'block';">
+                </div>
+                <div #DonatedTotal>
+                    <ng-container *ngIf="donatedPieData?.total !== 0; else DidNotDonateAnyBook">
+                        <div class="total">
+                            {{donatedPieData?.total}}
+                        </div>
+                    </ng-container>
+                    <ng-template #DidNotDonateAnyBook>
+                        <div class="total-none">
+                            {{ 'components.statistics.lack-donation-stats' | translate }}
+                        </div>
+                    </ng-template>
+                </div>
+                <mat-form-field class="picker">
+                    <mat-label>{{'components.admin.dashboard.choose-data-range' | translate}}</mat-label>
+                    <mat-select [(ngModel)]="selectedDonatedDataRange" (selectionChange)="onDonatedPieDateRangeChange()">
+                        <mat-option [value]="DateRangeEnumValues.Week">{{'components.admin.dashboard.week' | translate}}</mat-option>
+                        <mat-option [value]="DateRangeEnumValues.Month">{{'components.admin.dashboard.month' | translate}}</mat-option>
+                        <mat-option [value]="DateRangeEnumValues.HalfYear">{{'components.admin.dashboard.six-months' | translate}}</mat-option>
+                        <mat-option [value]="DateRangeEnumValues.Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
+                        <mat-option [value]="DateRangeEnumValues.AllTime">
+                            {{ 'components.statistics.all-time' | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
-        <div class="counter-body">
-          <div class="title">
-            {{ 'components.statistics.books-were-read' | translate }}
-          </div>
-          <div class="value">
-            {{countersData?.registeredBooksWereReadCount}}
-          </div>
+        <div class="card">
+            <div class="">
+                <div class="card-title">
+                    {{ 'components.statistics.read' | translate }}
+                </div>
+                <div class="pie-chart" echarts [options]="readPieChartOption" (mouseover)="ReadTotal.style.display = 'none';" (mouseleave)="ReadTotal.style.display = 'block';">
+                </div>
+                <div #ReadTotal>
+                    <ng-container *ngIf="readPieData?.total !== 0; else DidNotReadAnyBook">
+                        <div class="total">
+                            {{readPieData?.total}}
+                        </div>
+                    </ng-container>
+                    <ng-template #DidNotReadAnyBook>
+                        <div class="total-none">
+                            {{ 'components.statistics.lack-reading-stats' | translate }}
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="card">
+            <div class="">
+                <div class="card-title">
+                    {{ 'components.statistics.languages' | translate }}
+                </div>
+                <div class="pie-chart" echarts [options]="languagesPieChartOption" (mouseover)="LanguagesTotal.style.display = 'none';" (mouseleave)="LanguagesTotal.style.display = 'block';">
+                </div>
+                <div #LanguagesTotal>
+                    <ng-container *ngIf="languagesPieData?.total !== 0; else DidNotReadAnyBook">
+                        <div class="total">
+                            {{ languagesPieData?.chartData[0]?.name.substr(0, 3).toUpperCase() }}
+                        </div>
+                    </ng-container>
+                    <ng-template #DidNotReadAnyBook>
+                        <div class="total-none">
+                            {{ 'components.statistics.lack-reading-stats' | translate }}
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-
-  <!-- Reading statistics -->
-  <div class="reading">
-    <div class="row">
-      <div class="col-lg-8 col-md-7 col-sm-12 line-chart">
-        <div echarts [options]="readingStatisticsChartOption">
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
-        <div class="card-title">
-          {{ 'components.statistics.reading' | translate }}
-        </div>
-
-        <div class="params">
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.city' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="readingSelectedCities"
-                          (openedChange)="onReadingStatisticsFilterChange($event)"
-                          (selectionChange)="readingFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.office' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="readingSelectedOffices"
-                          (openedChange)="onReadingStatisticsFilterChange($event)"
-                          (selectionChange)="readingFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.genre' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="readingSelectedGenres"
-                          (openedChange)="onReadingStatisticsFilterChange($event)"
-                          (selectionChange)="readingFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
-                </ng-template>
-                <ng-template #uk>
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk }}</mat-option>
-                </ng-template>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="period">
-            <div class="parameter-title">
-              {{ 'components.statistics.period' | translate }}
-            </div>
-
-
-            <div class="col-lg-6 parameter-date">
-              <mat-form-field color="accent">
-                <mat-label>
-                  {{ 'components.statistics.from' | translate }}
-                </mat-label>
-                <input [(ngModel)]="readingFrom"
-                       matInput
-                       [matDatepicker]="picker1"
-                       (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
-                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-
-                <mat-datepicker #picker1></mat-datepicker>
-              </mat-form-field>
-            </div>
-
-            <div class="col-lg-6 parameter-date">
-              <mat-form-field color="accent">
-                <mat-label>
-                  {{ 'components.statistics.to' | translate }}
-                </mat-label>
-                <input [(ngModel)]="readingTo"
-                       matInput
-                       [matDatepicker]="picker2"
-                       (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                <mat-datepicker #picker2></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Donation statistics -->
-  <div class="reading">
-    <div class="row">
-      <div class="col-lg-8 col-md-7 col-sm-12 line-chart">
-        <div echarts [options]="donationStatisticsChartOption">
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-5 col-sm-12 line-chart-params">
-        <div class="card-title">
-          {{ 'components.statistics.donating' | translate }}
-        </div>
-
-        <div class="params">
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.city' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="donationSelectedCities"
-                          (openedChange)="onDonationStatisticsFilterChange($event)"
-                          (selectionChange)="donationFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.office' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="donationSelectedOffices"
-                          (openedChange)="onDonationStatisticsFilterChange($event)"
-                          (selectionChange)="donationFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <mat-option *ngFor="let office of offices" [value]="office">{{ office }}</mat-option>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="parameter">
-            <div class="col-lg-6 parameter-title">
-              {{ 'components.statistics.genre' | translate }}
-            </div>
-            <div class="col-lg-6 select">
-              <mat-select [(ngModel)]="donationSelectedGenres"
-                          (openedChange)="onDonationStatisticsFilterChange($event)"
-                          (selectionChange)="donationFiltersChanged = true"
-                          class="form-control select-dropdown"
-                          multiple
-                          placeholder="All">
-                <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse]="uk">
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</mat-option>
-                </ng-template>
-                <ng-template #uk>
-                  <mat-option *ngFor="let genre of genres" [value]="genre.id">{{ genre.nameUk }}</mat-option>
-                </ng-template>
-              </mat-select>
-            </div>
-          </div>
-
-          <div class="period">
-            <div class="parameter-title">
-              {{ 'components.statistics.period' | translate }}
-            </div>
-
-
-            <div class="col-lg-6 parameter-date">
-              <mat-form-field color="accent">
-                <mat-label>
-                  {{ 'components.statistics.from' | translate }}
-                </mat-label>
-                <input [(ngModel)]="donationFrom"
-                       matInput
-                       [matDatepicker]="picker3"
-                       (dateChange)="donationFiltersChanged = true; onDonationStatisticsFilterChange(false)">
-                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                <mat-datepicker #picker3></mat-datepicker>
-              </mat-form-field>
-            </div>
-
-            <div class="col-lg-6 parameter-date">
-              <mat-form-field color="accent">
-                <mat-label>
-                  {{ 'components.statistics.to' | translate }}
-                </mat-label>
-                <input [(ngModel)]="donationTo"
-                       matInput
-                       [matDatepicker]="picker4"
-                       (dateChange)="donationFiltersChanged = true; onDonationStatisticsFilterChange(false)">
-                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                <mat-datepicker #picker4></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pie charts -->
-  <div class="pie-charts">
-    <div class="card">
-      <div class="">
-        <div class="card-title">
-          {{ 'components.statistics.donated' | translate }}
-        </div>
-        <div class="pie-chart"
-             echarts
-             [options]="donatedPieChartOption"
-             (mouseover)="DonatedTotal.style.display = 'none';"
-             (mouseleave)="DonatedTotal.style.display = 'block';">
-        </div>
-        <div #DonatedTotal>
-          <ng-container *ngIf="donatedPieData?.total !== 0; else DidNotDonateAnyBook">
-            <div class="total">
-              {{donatedPieData?.total}}
-            </div>
-          </ng-container>
-          <ng-template #DidNotDonateAnyBook>
-            <div class="total-none">
-              {{ 'components.statistics.lack-donation-stats' | translate }}
-            </div>
-          </ng-template>
-        </div>
-        <mat-form-field class="picker">
-          <mat-label>{{'components.admin.dashboard.choose-data-range' | translate}}</mat-label>
-          <mat-select [(ngModel)]="selectedDonatedDataRange" (selectionChange)="onDonatedPieDateRangeChange()">
-            <mat-option
-              [value]="DateRangeEnumValues.Week">{{'components.admin.dashboard.week' | translate}}</mat-option>
-            <mat-option
-              [value]="DateRangeEnumValues.Month">{{'components.admin.dashboard.month' | translate}}</mat-option>
-            <mat-option
-              [value]="DateRangeEnumValues.HalfYear">{{'components.admin.dashboard.six-months' | translate}}</mat-option>
-            <mat-option
-              [value]="DateRangeEnumValues.Year">{{'components.admin.dashboard.year' | translate}}</mat-option>
-            <mat-option
-              [value]="DateRangeEnumValues.AllTime">
-              {{ 'components.statistics.all-time' | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="card">
-      <div class="">
-        <div class="card-title">
-          {{ 'components.statistics.read' | translate }}
-        </div>
-        <div class="pie-chart"
-             echarts
-             [options]="readPieChartOption"
-             (mouseover)="ReadTotal.style.display = 'none';"
-             (mouseleave)="ReadTotal.style.display = 'block';">
-        </div>
-        <div #ReadTotal>
-          <ng-container *ngIf="readPieData?.total !== 0; else DidNotReadAnyBook">
-            <div class="total">
-              {{readPieData?.total}}
-            </div>
-          </ng-container>
-          <ng-template #DidNotReadAnyBook>
-            <div class="total-none">
-              {{ 'components.statistics.lack-reading-stats' | translate }}
-            </div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="">
-        <div class="card-title">
-          {{ 'components.statistics.languages' | translate }}
-        </div>
-        <div class="pie-chart"
-             echarts
-             [options]="languagesPieChartOption"
-             (mouseover)="LanguagesTotal.style.display = 'none';"
-             (mouseleave)="LanguagesTotal.style.display = 'block';">
-        </div>
-        <div #LanguagesTotal>
-          <ng-container *ngIf="languagesPieData?.total !== 0; else DidNotReadAnyBook">
-            <div class="total">
-              {{ languagesPieData?.chartData[0]?.name.substr(0, 3).toUpperCase() }}
-            </div>
-          </ng-container>
-          <ng-template #DidNotReadAnyBook>
-            <div class="total-none">
-              {{ 'components.statistics.lack-reading-stats' | translate }}
-            </div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

@@ -20,7 +20,7 @@
                                 <div class="block">
                                     <p class="clear" (click)="deleteAll()"> {{'common.clear-all'| translate}} </p> 
                                     <p class="seen" (click)="makeAllSeen()"> {{'common.mark-all-as-read'| translate}}</p>
-                                </div>
+                                  </div>
                                 <div *ngFor="let notification of notifications">
                                     <div *ngIf="notification.isSeen == false; then newBlock else oldBlock"></div>
                                     <ng-template #newBlock>

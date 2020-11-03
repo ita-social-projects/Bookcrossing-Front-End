@@ -317,6 +317,7 @@ export class StatisticsComponent implements OnInit {
         right: 15,
         left: 45,
         bottom: 30,
+        top: '20%'
       },
       xAxis: {
         type: 'category',
