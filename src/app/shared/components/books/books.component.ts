@@ -70,7 +70,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+      this.queryParams = BookQueryParams.mapFromQuery(params);
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
