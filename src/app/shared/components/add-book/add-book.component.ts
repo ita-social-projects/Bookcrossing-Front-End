@@ -404,7 +404,17 @@ export class AddBookComponent implements OnInit {
     this.addBookForm.get('image').setValue('');
   }
 
+  public isFilled(): boolean {
+    if (this.addBookForm.get('title').value !== '' ||
+    this.addBookForm.get('image').value !== '') {
+       return true;
+      } else {
+      return false;
+    }
+  }
+
   public async onCancel(): Promise<void> {
+    if (this.isFilled()) {
     this.submittedValid = true;
     this.dialogService
       .openConfirmDialog(
@@ -416,6 +426,9 @@ export class AddBookComponent implements OnInit {
           this.goToPage('/');
         }
       });
+    } else {
+    this.goToPage('/');
+    }
   }
 
   public filterConfirmedAuthors(): IAuthor[] {

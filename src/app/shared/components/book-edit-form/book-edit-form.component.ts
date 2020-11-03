@@ -357,8 +357,18 @@ constructor(
     }
   }
 
-  onFileSelected(event) {
-    this.selectedFile = event.target.files[0];
+  public onFileSelected(event): void {
+    const fileName = event.target.files[0].name;
+    const idxDot = fileName.lastIndexOf('.') + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile === 'jpg' || extFile === 'jpeg' || extFile === 'png') {
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.notificationService.info(
+        this.translate.instant('common-errors.file-type-error'),
+        'X'
+      );
+    }
   }
 
   // parses string and returns IAuthor object
@@ -516,7 +526,6 @@ constructor(
         maxlength: { requiredLength: maxLength },
       });
       this.editBookForm.controls[fieldName]?.markAsTouched();
-
       clearInterval(this.hideErrorInterval);
       this.hideErrorInterval = setTimeout(() => {
         this.editBookForm.controls[fieldName]?.setErrors(null);
@@ -524,7 +533,22 @@ constructor(
       }, 2000);
     }
   }
+
+  public isChanged(): boolean {
+    if (this.editBookForm.get('title').value !== this.book.name ||
+    this.editBookForm.get('publisher').value !== this.book.publisher ||
+    this.editBookForm.get('isbn').value !== this.book.isbn ||
+    this.editBookForm.get('description').value !== this.book.notice ||
+    this.editBookForm.get('languageId').value !== this.book.language.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
   public async onCancel(): Promise<void> {
+    if (this.isChanged()) {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
@@ -535,6 +559,9 @@ constructor(
           this.cancel.emit();
         }
       });
+    } else {
+      this.cancel.emit();
+    }
   }
   public isEn(): boolean {
     return this.translate.currentLang === 'en';
