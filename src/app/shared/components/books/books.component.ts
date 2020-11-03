@@ -18,7 +18,7 @@ import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { IBookPut } from '../../../core/models/bookPut';
 import { FormGroup } from '@angular/forms';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
-import {ILocationFilter} from '../../../core/models/books-map/location-filter';
+import { ILocationFilter } from '../../../core/models/books-map/location-filter';
 
 @Component({
   selector: 'app-books',
@@ -70,7 +70,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+      this.queryParams = BookQueryParams.mapFromQuery(params);
       this.populateDataFromQuery();
       this.getBooks(this.queryParams);
     });
@@ -125,7 +125,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to cancel request? Current owner will be notified about your cancellation.'
+            'components.books.confirmation.cancel-request'
           )
           .toPromise()
       )
@@ -138,14 +138,14 @@ export class BooksComponent implements OnInit, OnDestroy {
               this.disabledButton = false;
               this.ngOnInit();
               this.notificationService.success(
-                this.translate.instant('Request is cancelled.'),
+                this.translate.instant('components.books.message.request-canceled'),
                 'X'
               );
             },
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('components.common-errors.error-message'),
                 'X'
               );
             }
@@ -167,7 +167,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to request this book? Current owner will be notified about your request.'
+            'components.books.confirmation.request'
           )
           .toPromise()
       )
@@ -181,7 +181,7 @@ export class BooksComponent implements OnInit, OnDestroy {
               this.ngOnInit();
               this.notificationService.success(
                 this.translate.instant(
-                  'Book is successfully requested. Please contact with current owner to receive a book'
+                  'components.books.message.succesfully-requested'
                 ),
                 'X'
               );
@@ -189,7 +189,7 @@ export class BooksComponent implements OnInit, OnDestroy {
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('components.common-errors.error-message'),
                 'X'
               );
             }
@@ -203,26 +203,37 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   public onFilterChange(filterChanged: boolean): void {
-    if (
-      !this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
-      !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
-      !this.compareArrays(this.queryParams.languages, this.selectedLanguages)
-    ) {
-      this.queryParams.genres = this.selectedGenres;
-      this.queryParams.bookStates = this.selectedStates;
-      this.queryParams.languages = this.selectedLanguages;
-      this.queryParams.locations =
-        this.selectedLocations?.locationIds?.length > 0
-          ? this.selectedLocations.locationIds
-          : undefined;
-      this.queryParams.homeLocations =
-        this.selectedLocations?.homeLocationIds?.length > 0
-          ? this.selectedLocations.homeLocationIds
-          : undefined;
-      if (filterChanged) {
-        this.resetPageIndex();
-        this.changeUrl();
-      }
+    if (filterChanged === false) {
+      filterChanged =
+        !this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
+        !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
+        !this.compareArrays(
+          this.queryParams.languages,
+          this.selectedLanguages
+        ) ||
+        !this.compareArrays(
+          this.queryParams.locations,
+          this.selectedLocations.locationIds
+        ) ||
+        !this.compareArrays(
+          this.queryParams.homeLocations,
+          this.selectedLocations.homeLocationIds
+        );
+    }
+    this.queryParams.genres = this.selectedGenres;
+    this.queryParams.bookStates = this.selectedStates;
+    this.queryParams.languages = this.selectedLanguages;
+    this.queryParams.locations =
+      this.selectedLocations?.locationIds?.length > 0
+        ? this.selectedLocations.locationIds
+        : undefined;
+    this.queryParams.homeLocations =
+      this.selectedLocations?.homeLocationIds?.length > 0
+        ? this.selectedLocations.homeLocationIds
+        : undefined;
+    if (filterChanged) {
+      this.resetPageIndex();
+      this.changeUrl();
     }
   }
 
@@ -307,7 +318,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.notificationService.error(
-          this.translate.instant('Something went wrong!'),
+          this.translate.instant('components.common-errors.error-message'),
           'X'
         );
       },
@@ -339,7 +350,7 @@ export class BooksComponent implements OnInit, OnDestroy {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Something went wrong'),
+              this.translate.instant('components.common-errors.error-message'),
               'X'
             );
           }
@@ -354,7 +365,7 @@ export class BooksComponent implements OnInit, OnDestroy {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Cannot add own book to the wish list'),
+              this.translate.instant('components.books.message.cannot-addToWishlist'),
               'X'
             );
           }

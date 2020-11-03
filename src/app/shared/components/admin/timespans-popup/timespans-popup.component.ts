@@ -28,18 +28,21 @@ export class TimespansPopupComponent implements OnInit {
         minutes: [0,
         [
           Validators.required,
+          Validators.min(0),
           Validators.max(60),
         ]
       ],
       hours: [0,
         [
           Validators.required,
+          Validators.min(0),
           Validators.max(24),
         ]
       ],
       days: [0,
         [
           Validators.required,
+          Validators.min(0),
           Validators.max(30),
         ]
       ],
