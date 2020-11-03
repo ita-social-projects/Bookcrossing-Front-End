@@ -125,7 +125,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to cancel request? Current owner will be notified about your cancellation.'
+            'components.books.confirmation.cancel-request'
           )
           .toPromise()
       )
@@ -138,14 +138,14 @@ export class BooksComponent implements OnInit, OnDestroy {
               this.disabledButton = false;
               this.ngOnInit();
               this.notificationService.success(
-                this.translate.instant('Request is cancelled.'),
+                this.translate.instant('components.books.message.request-canceled'),
                 'X'
               );
             },
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('components.common-errors.error-message'),
                 'X'
               );
             }
@@ -167,7 +167,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       .openConfirmDialog(
         await this.translate
           .get(
-            'Do you want to request this book? Current owner will be notified about your request.'
+            'components.books.confirmation.request'
           )
           .toPromise()
       )
@@ -181,7 +181,7 @@ export class BooksComponent implements OnInit, OnDestroy {
               this.ngOnInit();
               this.notificationService.success(
                 this.translate.instant(
-                  'Book is successfully requested. Please contact with current owner to receive a book'
+                  'components.books.message.succesfully-requested'
                 ),
                 'X'
               );
@@ -189,7 +189,7 @@ export class BooksComponent implements OnInit, OnDestroy {
             (err) => {
               this.disabledButton = false;
               this.notificationService.error(
-                this.translate.instant('Something went wrong!'),
+                this.translate.instant('components.common-errors.error-message'),
                 'X'
               );
             }
@@ -318,7 +318,7 @@ export class BooksComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.notificationService.error(
-          this.translate.instant('Something went wrong!'),
+          this.translate.instant('components.common-errors.error-message'),
           'X'
         );
       },
@@ -350,7 +350,7 @@ export class BooksComponent implements OnInit, OnDestroy {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Something went wrong'),
+              this.translate.instant('components.common-errors.error-message'),
               'X'
             );
           }
@@ -365,7 +365,7 @@ export class BooksComponent implements OnInit, OnDestroy {
           (error) => {
             this.clickCounter = 0;
             this.notificationService.error(
-              this.translate.instant('Cannot add own book to the wish list'),
+              this.translate.instant('components.books.message.cannot-addToWishlist'),
               'X'
             );
           }
