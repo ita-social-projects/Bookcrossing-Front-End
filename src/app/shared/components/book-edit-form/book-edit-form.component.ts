@@ -526,14 +526,14 @@ constructor(
         maxlength: { requiredLength: maxLength },
       });
       this.editBookForm.controls[fieldName]?.markAsTouched();
-            clearInterval(this.hideErrorInterval);
+      clearInterval(this.hideErrorInterval);
       this.hideErrorInterval = setTimeout(() => {
         this.editBookForm.controls[fieldName]?.setErrors(null);
         this.editBookForm.controls[fieldName]?.markAsTouched();
       }, 2000);
     }
   }
-      
+
   public isChanged(): boolean {
     if (this.editBookForm.get('title').value !== this.book.name ||
     this.editBookForm.get('publisher').value !== this.book.publisher ||
