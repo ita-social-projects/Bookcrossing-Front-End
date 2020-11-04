@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 export class CurrentlyReadBooksComponent extends BooksComponent {
 
     booksPage = booksPage.CurrentRead;
+    booksPageName = 'common.currentlyRead';
 
     public getBooks(params: BookQueryParams): void {
         this.bookService.getCurrentReadBooks(params)
@@ -28,7 +29,7 @@ export class CurrentlyReadBooksComponent extends BooksComponent {
             },
             error: error => {
               this.notificationService.error(this.translate
-              .instant('Something went wrong!'), 'X');
+              .instant('components.common-errors.error-message'), 'X');
             }
           });
       }

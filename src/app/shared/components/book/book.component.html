@@ -1,10 +1,10 @@
 <ng-template appRef>
     <!--Add Form-->
 </ng-template>
-<div class="container my-4">
+<div class="container my-4" style="word-break: break-word;">
 
-    <mdb-breadcrumb>
-        <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+    <mdb-breadcrumb >
+        <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPageName}}</mdb-breadcrumb-item>
         <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
     </mdb-breadcrumb>
 
@@ -29,20 +29,20 @@
                     </div>
                     <div class="text-center text-md-left text-md-right mt-2">
                         <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
+                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.startreading' | translate }}</button>
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.cancelrequest' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="4">
-                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeOrderedAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                 </span>
@@ -79,18 +79,18 @@
                         </div>
                         <div *ngIf="book?.predictedRating > 0" class="counter-ai-text m-0 ml-2 mt-1 p-0 d-inline">{{ 'components.book.aiscore' | translate }}</div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <div *ngIf="readCount !== null" class="font-weight-bold read-by-margin" style="padding-left: 10px;">{{ 'components.book.readby' | translate }}: <span class="font-weight-normal">{{readCount}}</span></div>
-                        </div>
-                        <div class="col-3">
-                            <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
-                        </div>
-                    </div>
                     <br>
-                    <div class="font-weight-normal" style="margin-right: 45%;">
+                    <div class="font-weight-normal" style="margin-right: 20%;">
                         <table class="table borderless">
                             <tbody>
+                                <tr>
+                                    <th>
+                                        <div *ngIf="readCount !== null" class="fontsize read-by-margin"><strong>{{ 'components.book.readby' | translate }}:</strong><span>{{readCount}}</span></div>
+                                    </th>
+                                    <td>
+                                        <ngx-star-rating [filledColor]="'#FF8800'" [rating]="book?.rating" readonly="true"></ngx-star-rating>
+                                    </td>
+                                </tr>
                                 <tr *ngIf="book?.authors != null">
                                     <th scope="row" class="fontsize">
                                         <ng-template [ngIf]="book?.authors.length==1" [ngIfElse]="manyAuthors"><strong>{{ 'components.book.author' | translate }}: </strong></ng-template>
@@ -98,7 +98,7 @@
                                     </th>
                                     <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
                                 </tr>
-                                <tr *ngIf="book?.genres != null">
+                                <tr *ngIf="book?.genres != null && book?.genres.length > 0">
                                     <th scope="row" class="fontsize">
                                         <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>{{ 'components.book.category' | translate }}: </strong></ng-template>
                                         <ng-template #manyGenres><strong>{{ 'components.book.categories' | translate }}: </strong></ng-template>
@@ -117,12 +117,22 @@
                                     </th>
                                     <td class="align-middle" class="fontsize">{{ book?.language?.name }}</td>
                                 </tr>
-                                <tr *ngIf="book?.location != null">
-                                    <th scope="row" class="fontsize">
-                                        <strong>{{ 'components.book.location' | translate }}: </strong>
-                                    </th>
-                                    <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
-                                </tr>
+                                <ng-template [ngIf]="hasLocation(book?.state)">
+                                    <tr *ngIf="currentOwner && !currentOwner?.locationHome.isActive; else locationhome">
+                                        <th scope="row" class="fontsize">
+                                            <strong>{{ 'components.book.location' | translate }}: </strong>
+                                        </th>
+                                        <td class="align-middle" class="fontsize"> {{ book?.location?.location?.city + " " + book?.location?.location?.officeName}}</td>
+                                    </tr>
+                                    <ng-template #locationhome>
+                                        <tr *ngIf="currentOwner">
+                                            <th scope="row" class="fontsize">
+                                                <strong>{{ 'components.book.location' | translate }}: </strong>
+                                            </th>
+                                            <td class="align-middle" class="fontsize"> {{ currentOwner.locationHome.city + " " + currentOwner.locationHome.street}}</td>
+                                        </tr>
+                                    </ng-template>
+                                </ng-template>
                                 <tr *ngIf="currentOwner !== null">
                                     <th scope="row" class="fontsize">
                                         <strong>{{ 'components.book.currentowner' | translate }}: </strong>
@@ -148,14 +158,17 @@
                                     <th scope="row" class="fontsize">
                                         <strong>{{ 'components.book.requestedby' | translate }}: </strong>
                                     </th>
-                                    <td class="align-middle" class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }} <br>
+                                    <td class="fontsize contactowner">{{ userWhoRequested?.firstName + " " + userWhoRequested?.lastName }}
                                         <ng-template [ngIf]="isAuthenticated()">
-                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="openEmail()">
-                                          <mat-icon> email </mat-icon>
-                                        </button>
-                                            <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="sendMessageRequester()">
-                                          <mat-icon> chat_bubble </mat-icon>
-                                        </button>
+                                            <br>
+                                            <div class="m-0 p-0" style="position: relative;">
+                                                <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252); position: relative; left: 0px;" aria-hidden="true" target="_blank" change type="default" (click)="openEmail()">
+                                                <mat-icon> email </mat-icon>
+                                              </button>
+                                                <button mat-icon-button class="emailbutton" style="-webkit-text-fill-color:rgb(73, 171, 252)" aria-hidden="true" target="_blank" change type="default" (click)="sendMessageRequester()">
+                                                <mat-icon> chat_bubble </mat-icon>
+                                              </button>
+                                            </div>
                                         </ng-template>
                                     </td>
                                 </tr>
@@ -184,19 +197,17 @@
                                         </span>
                                     </td>
                                 </tr>
+                                <tr *ngIf="book?.notice != null">
+                                    <th scope="row" class="fontsize">
+                                        <strong>{{ 'components.book.notice' | translate }}: </strong>
+                                    </th>
+                                    <td class="fontsize">
+                                        <p style="word-wrap: break-word;">{{ book?.notice }}</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    <tr *ngIf="book?.notice != null">
-                        <th scope="row" class="fontsize">
-                            <strong style="margin-left: 11px;">{{ 'components.book.notice' | translate }}: </strong>
-                        </th>
-                        <td class="fontsize">
-                            <p style="margin-left: 65px; word-wrap: break-word;">{{ book?.notice }}</p>
-                        </td>
-                    </tr>
-
-
                 </div>
                 <div class="col-lg-1">
                     <div class=" row d-flex">
@@ -208,8 +219,9 @@
 
         </section>
 
-        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="!isAuthenticated()">
+        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="rating !== 0 || !isAuthenticated()">
         </ngx-star-rating>
+
         <app-comment [bookId]="bookId" #comment></app-comment>
     </div>
 </div>

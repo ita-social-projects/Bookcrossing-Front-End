@@ -11,6 +11,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../core/services/dialog/dialog.service';
 import { Router } from '@angular/router';
+import { values } from 'lodash';
 
 @Component({
   selector: 'app-contacts',
@@ -118,6 +119,7 @@ export class ContactsComponent implements OnInit {
   }
 
   public async Cancel(): Promise<void> {
+    if (this.contactsForm.get('description').value !== '') {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
@@ -128,6 +130,8 @@ export class ContactsComponent implements OnInit {
           window.history.back();
         }
       });
+    }
+    window.history.back();
   }
 
   public isEn(): boolean {

@@ -11,6 +11,7 @@ import {LocationService} from '../../../core/services/location/location.service'
 import {ILocation} from '../../../core/models/location';
 import {IStatisticsData} from '../../../core/models/statistics/IStatisticsData';
 import {LanguageService} from '../../../core/services/language/language.service';
+import { DateAdapter } from '@angular/material/core';
 
 enum DateRangeEnum {
   Week = 7,
@@ -66,7 +67,8 @@ export class StatisticsComponent implements OnInit {
               private notificationService: NotificationService,
               private translate: TranslateService,
               private locationService: LocationService,
-              private languageService: LanguageService) { }
+              private languageService: LanguageService,
+              private adapter: DateAdapter<any>) { }
 
   ngOnInit(): void {
     this.updateCounters();
@@ -74,6 +76,10 @@ export class StatisticsComponent implements OnInit {
     this.getAllLocations();
     this.createGeneralStatisticsCharts();
     this.createPieCharts();
+    this.isEn() ? this.setEngDate() : this.setUkDate();
+    this.translate.onLangChange.subscribe(
+      () => this.isEn() ? this.setEngDate() : this.setUkDate()
+    );
     this.languageService.languageUpdated.subscribe(
       async (data) => {
         this.createPieCharts();
@@ -311,6 +317,7 @@ export class StatisticsComponent implements OnInit {
         right: 15,
         left: 45,
         bottom: 30,
+        top: '20%'
       },
       xAxis: {
         type: 'category',
@@ -504,5 +511,17 @@ export class StatisticsComponent implements OnInit {
 
       this.generateDonationChart();
     }
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
+  }
+
+  public setEngDate() {
+    this.adapter.setLocale('en');
+  }
+
+  public setUkDate() {
+    this.adapter.setLocale('ua');
   }
 }

@@ -2,25 +2,367 @@
 
     <form [formGroup]="editBookForm" #ngForm="ngForm" (ngSubmit)="onSubmit()" class="form-popup text-center border border-light p-5">
         <p class="h2 mb-4 title">{{ 'components.book-edit.editbook' | translate }}</p>
+        
         <div>
+          <div class="form-row mb-4">
+              <div class="col-3">
+                  <p class="input-label">{{'components.book-edit.booktitle'| translate}}:<span class="asterisk"> *</span></p>
+              </div>
+              <div class="col-4">
+                  <!-- Book title -->
+                  <input #Title formControlName="title" type="text" class="form-control" (input)="checkLength(Title, 150)" trim="blur" />
+                  <div *ngIf="editBookForm.get('title').errors">
+                      <div *ngIf="
+              editBookForm.get('title').errors?.required &&
+              editBookForm.get('title').touched
+            " class="validation-error">
+                          {{'components.home.field-required'| translate}}
+
+                      </div>
+                      <div *ngIf="editBookForm.get('title').errors?.maxlength" class="validation-error">
+                        <small class="text-danger">
+                          {{ "common-errors.validation-max-length" | translate : { value: editBookForm.get("title").errors?.maxlength ?.requiredLength } }}
+                        </small>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- Author -->
+          <div class="form-row mb-4">
+              <div class="col-3">
+                  <p class="input-label">{{'components.book-edit.author'| translate}}:<span class="asterisk"> *</span></p>
+                  <div class="custom-control custom-checkbox" style="text-align: left;">
+                      <input type="checkbox" class="custom-control-input" id="uncheckedAuthor" [checked]="withoutAuthorChecked" (change)="changeAuthorInput()" />
+                      <label class="custom-control-label" for="uncheckedAuthor">{{'components.book-edit.withoutauthor'| translate}}</label
+          >
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-row">
+          <div class="col">
+            <input
+              formControlName="authorFirstname"
+              #firstnameInput
+              type="text"
+              class="form-control"
+              [matAutocomplete]="FirstNameAuto"
+              (focus)="authorFocused = true"
+              (blur)="authorFocused = false"
+              (input)="checkLength(firstnameInput, 100)"
+              [ngClass]="{
+                'ng-invalid':
+                  editBookForm.get('authorFirstname').touched &&
+                  !selectedAuthors.length &&
+                  !editBookForm.controls.authorFirstname.value?.trim() &&
+                  !withoutAuthorChecked,
+                'not-confirmed':
+                  editBookForm.controls.authorFirstname.dirty &&
+                  editBookForm.controls.authorFirstname.value != '' &&
+                  !withoutAuthorChecked
+              }"
+            />
+            <div
+              *ngIf="
+                editBookForm.get('authorFirstname').touched &&
+                !selectedAuthors.length &&
+                !editBookForm.controls.authorFirstname.value?.trim() &&
+                !withoutAuthorChecked
+              "
+              class="validation-error"
+            >
+            <small class="text-danger">
+            {{'components.home.field-required'| translate}}</small>
+            </div>
+            <div
+              *ngIf="
+                submitted &&
+                !checkAuthorLastName(
+                  editBookForm.controls.authorFirstname.value
+                ) &&
+                !withoutAuthorChecked
+              "
+              class="validation-error"
+            >
+              Lastname is required.
+            </div>
+            <div
+              *ngIf="editBookForm.get('authorFirstname').errors?.maxlength"
+              class="validation-error"
+            ><small class="text-danger">
+              {{
+                "common-errors.validation-max-length"
+                  | translate
+                    : {
+                        value: editBookForm.get("authorFirstname").errors
+                          ?.maxlength?.requiredLength
+                      }
+              }}</small>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="
+            editBookForm.controls.authorFirstname.dirty &&
+            editBookForm.controls.authorFirstname.value != '' &&
+            !withoutAuthorChecked
+          "
+          class="new-author-warning"
+        >
+          <span>{{'components.home.author-not-confirmed'| translate}}</span>
+        </div>
+      </div>
+      <div class="col">
+        <div>
+          <ul class="list-group authors-list list-group-horizontal-sm">
+            <li
+              *ngFor="let author of selectedAuthors"
+              class="list-group-item"
+            >
+              <span>{{ author.firstName + "  " + author.lastName }}</span>
+              <span
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="onDeleteAuthor(author)"
+              >
+                <span aria-hidden="true">×</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <mat-autocomplete
+      #FirstNameAuto="matAutocomplete"
+      (optionSelected)="onAuthorSelect($event); firstnameInput.value = ''"
+    >
+      <mat-option
+        *ngFor="
+          let author of filterConfirmedAuthors()
+            | contentFilter
+              : firstnameInput.value.trim()
+              : ['firstName', 'lastName']
+        "
+        [value]="author"
+      >
+        {{ author.firstName + " " + author.lastName }}
+      </mat-option>
+    </mat-autocomplete>
+
+    <!-- Category -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">{{'components.book-edit.category'| translate}}:<span class="asterisk"> *</span></p>
+      </div>
+      <!-- Select multiple genres -->
+      <div class="col-4">
+        <mat-select
+          formControlName="genres"
+          class="form-control"
+          multiple
+          placeholder="{{ ('components.admin.issues-form.select') | translate }}"
+          [(ngModel)]="selectedGenres"
+          [ngClass]="{
+            'is-invalid': submitted && editBookForm.controls.genres.errors
+          }"
+        >
+          <mat-select-trigger>
+            {{
+              editBookForm.get("genres").value
+                ? getGenreById(editBookForm.get("genres").value[0])
+                : ""
+            }}
+            <span
+              *ngIf="editBookForm.get('genres').value?.length > 1"
+              class="additional-selection"
+            >
+              (+{{ editBookForm.get("genres").value.length - 1 }}
+              {{
+                editBookForm.get("genres").value.length === 2
+                  ? "other"
+                  : "others"
+              }})
+            </span>
+          </mat-select-trigger>
+          <mat-option *ngFor="let genre of genres" [value]="genre.id">
+            <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+              {{genre?.name}}
+            </ng-template>
+            <ng-template #uk>
+              {{genre?.nameUk}}
+            </ng-template>
+          </mat-option>
+        </mat-select>
+        <div
+          *ngIf="
+            editBookForm.get('genres').touched &&
+            editBookForm.get('genres').errors
+          "
+          class="validation-error"
+        >
+          <div *ngIf="editBookForm.get('genres').errors.required">
+            <small class="text-danger">
+            {{'components.home.field-required'| translate}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">{{'components.book-edit.language'| translate}}:<span class="asterisk"> *</span></p>
+      </div>
+      <div class="col-4">
+        <mat-select
+          class="form-control"
+          formControlName="languageId"
+          placeholder="{{ ('components.admin.issues-form.select') | translate }}"
+        >
+          <mat-option
+            *ngFor="let language of languages"
+            [value]="language.id"
+            >{{ language.name }}</mat-option
+          >
+        </mat-select>
+        <div
+          *ngIf="
+            editBookForm.get('languageId').touched &&
+            editBookForm.get('languageId').errors
+          "
+          class="validation-error"
+        >
+          <div *ngIf="editBookForm.get('languageId').errors.required">
+            <small class="text-danger">
+            {{'components.home.field-required'| translate}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publisher -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">{{'components.book-edit.publishinghouse'| translate}}:</p>
+      </div>
+      <div class="col-4">
+        <input
+          #Publisher
+          formControlName="publisher"
+          type="text"
+          class="form-control"
+          (input)="checkLength(Publisher, 150)"
+          trim="blur"
+        />
+        <div
+          *ngIf="editBookForm.get('publisher').errors?.maxlength"
+          class="validation-error"
+        >
+        <small class="text-danger">
+          {{
+            "common-errors.validation-max-length"
+              | translate
+                : {
+                    value: editBookForm.get("publisher").errors?.maxlength
+                      ?.requiredLength
+                  }
+          }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- ISBN -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">ISBN:</p>
+      </div>
+      <div class="col-4">
+        <input
+          #ISBN
+          formControlName="isbn"
+          type="text"
+          class="form-control"
+          (input)="checkLength(ISBN, 17)"
+          pattern="(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+"
+          trim="blur"
+        />
+        <div
+        *ngIf="editBookForm.get('isbn').errors?.pattern"
+        class="validation-error"
+        >
+        <small class="text-danger">
+        {{'common-errors.validation-pattern'| translate}}
+        </small>
+        </div>
+        <div
+          *ngIf="editBookForm.get('isbn').errors?.maxlength"
+          class="validation-error"
+        >
+        <small class="text-danger">
+          {{
+            "common-errors.validation-max-length"
+              | translate
+                : {
+                    value: editBookForm.get("isbn").errors?.maxlength
+                      ?.requiredLength
+                  }
+          }}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notice -->
+    <div class="form-row mb-4">
+      <div class="col-3">
+        <p class="input-label">{{'components.book-edit.notice'| translate}}:</p>
+      </div>
+      <div class="col-4">
+        <textarea
+          #Description
+          formControlName="description"
+          type="text"
+          class="form-control max-hight"
+          (input)="checkLength(Description, 250)"
+          trim="blur"
+        >
+        </textarea>
+        <div
+          *ngIf="editBookForm.get('description').errors?.maxlength"
+          class="validation-error"
+        > <small class="text-danger">
+          {{
+            "common-errors.validation-max-length"
+              | translate
+                : {
+                    value: editBookForm.get("description").errors?.maxlength
+                      ?.requiredLength
+                  }
+          }}</small>
+        </div>
+      </div>
+    </div>
+        <!--<div>
             <div class="form-row mb-4">
                 <div class="col-3">
                     <p class="input-label">{{ 'components.book-edit.booktitle' | translate }}<span class="asterisk"> *</span></p>
                 </div>
                 <div class="col-4">
-                    <!-- Book title -->
+                    <!-- Book title ->
                     <input formControlName="title" type="text" class="form-control" [ngClass]="{
             'is-invalid': submitted && editBookForm.controls.title.errors
-          }" (input)="checkLength('title', $event, 100)" />
-                    <div *ngIf="submitted && editBookForm.controls.title.errors" class="invalid-feedback">
+          }" (input)="checkLength('title', $event, 150)" />
+                    <div *ngIf="submitted && editBookForm.controls.title.errors" class="validation-error">
                         <div *ngIf="editBookForm.controls.title.errors.required">
                             {{ 'components.book-edit.fieldrequaired' | translate }}
                         </div>
+                        <div *ngIf="editBookForm.controls.title.errors?.maxlength" class="validation-error">
+                          {{ "common-errors.validation-max-length" | translate : { value: editBookForm.controls.isbn.errors?.maxlength ?.requiredLength } }}
+                      </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Author -->
+            <!-- Author ->
             <div class="form-row mb-4">
                 <div class="col-3">
                     <p class="input-label">{{ 'components.book-edit.author' | translate }}:<span class="asterisk"> *</span></p>
@@ -122,12 +464,12 @@
     </mat-autocomplete>
 
 
-    <!-- Category -->
+    <!-- Category ->
     <div class="form-row mb-4">
       <div class="col-3">
         <p class="input-label">{{ 'components.book-edit.category' | translate }}:<span class="asterisk"> *</span></p>
       </div>
-      <!-- Select multiple genres -->
+      <!-- Select multiple genres ->
       <div class="col-4">
         <mat-select
           formControlName="genres"
@@ -158,7 +500,7 @@
             </span>
           </mat-select-trigger>
           <mat-option *ngFor="let genre of genres" [value]="genre.id">
-            <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+            <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse] = "uk">
               {{genre?.name}}
             </ng-template>
             <ng-template #uk>
@@ -177,7 +519,7 @@
       </div>
     </div>
 
-    <!-- Language -->
+    <!-- Language ->
     <div class="form-row mb-4">
       <div class="col-3">
         <p class="input-label">{{ 'components.book-edit.language' | translate }}:<span class="asterisk"> *</span></p>
@@ -206,7 +548,7 @@
       </div>
     </div>
 
-    <!-- Publisher -->
+    <!-- Publisher ->
     <div class="form-row mb-4">
       <div class="col-3">
         <p class="input-label">{{ 'components.book-edit.publishinghouse' | translate }}:</p>
@@ -220,7 +562,7 @@
       </div>
     </div>
 
-    <!-- ISBN -->
+    <!-- ISBN ->
     <div class="form-row mb-4">
       <div class="col-3">
         <p class="input-label">ISBN:</p>
@@ -230,6 +572,7 @@
           formControlName="isbn"
           type="text"
           class="form-control"
+          pattern="(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+"
           (input)="checkLength('isbn', $event, 17)"/>
       </div>
       <div
@@ -249,7 +592,7 @@
         </div>
     </div>
 
-    <!-- Notice -->
+    <!-- Notice ->
     <div class="form-row mb-4">
       <div class="col-3">
         <p class="input-label">{{ 'components.book-edit.notice' | translate }}:</p>
@@ -262,7 +605,7 @@
           (input)="checkLength('description', $event, 250)"
         ></textarea>
       </div>
-    </div>
+    </div>-->
 
     <div *ngIf="isAdmin" class="form-row mb-4">
       <div class="col-3">

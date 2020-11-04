@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 export class CurrentlyOwnedBooksComponent extends BooksComponent {
 
     tooltip = this.translate.instant('components.books.likeTooltip');
+    booksPageName = 'common.currentlyOwned';
     booksPage = booksPage.CurrentOwned;
 
     public getBooks(params: BookQueryParams): void {
@@ -29,7 +30,7 @@ export class CurrentlyOwnedBooksComponent extends BooksComponent {
             },
             error: err => {
               this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+                .instant('components.common-errors.error-message'), 'X');
             }
           });
       }

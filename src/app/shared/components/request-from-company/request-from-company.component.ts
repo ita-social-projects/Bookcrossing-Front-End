@@ -21,8 +21,6 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
     this.genres = [];
     this.authors = [];
     this.selectedFile = null;
-    const genre: IGenre = { id: 1, name: 'Unknown', nameUk: 'Невідомий' };
-    this.genres.push(genre);
     const names = book.author.fullName.split(' ');
     if (names.length === 1) {
       names.push(' ');
@@ -79,7 +77,7 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
   public addBook() {
     this.bookService.postBook(this.getFormData(this.newBook)).subscribe((b) => {
       this.notificationService.success(
-        this.translate.instant('Book is successfully requested from company!'),
+        this.translate.instant('components.books.message.succesfully-requested-fromcompany'),
         'X'
       );
       this.wishListService.addToWishList(b.id).subscribe(() => {

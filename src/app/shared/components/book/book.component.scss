@@ -139,6 +139,19 @@ table {
 
 .fontsize {
     font-size: 16px;
+    word-break: break-all;
+}
+
+table tr th {
+    width: 30%;
+}
+
+table tr td {
+    width: 70%;
+}
+
+.min-width {
+    min-width: 200px;
 }
 
 .contact {
@@ -148,4 +161,9 @@ table {
 
 .bluetext {
     color: rgb(6, 173, 250);
+
+}
+
+.nameSize {
+    word-break: break-all;
 }

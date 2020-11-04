@@ -180,7 +180,7 @@
               </span>
             </mat-select-trigger>
             <mat-option *ngFor="let genre of genres" [value]="genre.id">
-              <ng-template [ngIf]="isEn()" [ngIfElse] = "uk">
+              <ng-template [ngIf]="getCategoriesLanguage()" [ngIfElse] = "uk">
                 {{genre?.name}}
               </ng-template>
               <ng-template #uk>
@@ -275,8 +275,17 @@
             type="text"
             class="form-control"
             (input)="checkLength(ISBN, 17)"
+            pattern="(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+"
             trim="blur"
           />
+          <div
+          *ngIf="addBookForm.get('isbn').errors?.pattern"
+          class="validation-error"
+          >
+          <small class="text-danger">
+          {{'common-errors.validation-pattern'| translate}}
+          </small>
+          </div>
           <div
             *ngIf="addBookForm.get('isbn').errors?.maxlength"
             class="validation-error"
@@ -293,6 +302,7 @@
         </div>
       </div>
 
+      <!-- Notice -->
       <div class="form-row mb-4">
         <div class="col-3">
           <p class="input-label">{{'components.book-edit.notice'| translate}}:</p>
@@ -337,7 +347,7 @@
         <div class="col-4">
           <input
             #searchTerm
-            formControlName="isbn"
+            formControlName="title"
             class="form-control"
             trim="blur"
             type="text"
@@ -345,14 +355,14 @@
           />
 
           <div
-            *ngIf="addBookForm.get('isbn').errors?.maxlength"
+            *ngIf="addBookForm.get('title').errors?.maxlength"
             class="validation-error"
           >
             {{
               "common-errors.validation-max-length"
                 | translate
                   : {
-                      value: addBookForm.get("isbn").errors?.maxlength
+                      value: addBookForm.get("title").errors?.maxlength
                         ?.requiredLength
                     }
             }}

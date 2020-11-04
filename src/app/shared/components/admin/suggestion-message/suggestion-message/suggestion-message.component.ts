@@ -76,7 +76,7 @@ export class SuggestionMessageComponent implements OnInit {
       this.queryParams = this.queryParams.mapFromQuery(params);
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField
         ? this.queryParams.sort.orderByField
-        : 'id';
+        : '';
 
       this.searchText = this.queryParams?.filters[1]?.value;
       this.queryParams.page =
