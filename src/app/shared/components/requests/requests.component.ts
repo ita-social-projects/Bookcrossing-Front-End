@@ -29,6 +29,7 @@ export class RequestsComponent implements OnInit {
   disabledButton = false;
   viewMode: string;
   requests: IRequest[];
+  booksPageName = 'common.requested';
   booksPage: booksPage = booksPage.Requested;
   books: IBook[];
   totalSize: number;
@@ -67,6 +68,9 @@ export class RequestsComponent implements OnInit {
         this.route =  this.router.url;
       }
     });
+    this.translate.get(this.booksPageName).subscribe(name => {
+      this.booksPageName = name;
+    });
   }
 
   isAuthenticated() {
@@ -102,7 +106,7 @@ export class RequestsComponent implements OnInit {
   async cancelRequest(bookId: number) {
     this.dialogService
       .openConfirmDialog(
-        await this.translate.get('Do you want to cancel request? Current owner will be notified about your cancellation.').toPromise()
+        await this.translate.get('components.books.confirmation.cancel-request').toPromise()
       )
       .afterClosed()
       .subscribe(async res => {
@@ -113,11 +117,11 @@ export class RequestsComponent implements OnInit {
             this.disabledButton = false;
             this.ngOnInit();
             this.notificationService.success(this.translate
-                .instant('Request is cancelled.'), 'X');
+                .instant('components.books.message.request-canceled'), 'X');
             }, err => {
             this.disabledButton = false;
             this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+                .instant('components.common-errors.error-message'), 'X');
             });
         }
       });
@@ -214,5 +218,9 @@ export class RequestsComponent implements OnInit {
 
   public onLocationFilterChange(filter: ILocationFilter) {
     this.selectedLocations = filter.locationIds;
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }

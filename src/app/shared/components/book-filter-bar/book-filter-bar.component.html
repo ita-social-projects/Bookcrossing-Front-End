@@ -30,8 +30,14 @@
             </mat-select>
             <div class="input-group-append">
                 <div class="input-group-text btn-light" [ngClass]="{'m-0 p-0' : !orderByField}">
-                    <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-amount-up fa-lg sign" (click)="onOrderByAscendingChange()"></i>
-                    <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-amount-down-alt fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                    <ng-template [ngIf]="orderByField !== 'Name'" [ngIfElse]="alph">
+                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-desc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-asc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                    </ng-template>
+                    <ng-template #alph>
+                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-alpha-asc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-alpha-desc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                    </ng-template>
                     <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
                 </div>
             </div>

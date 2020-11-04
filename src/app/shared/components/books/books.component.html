@@ -1,7 +1,7 @@
 <div class="container my-4">
     <div>
         <mdb-breadcrumb>
-            <mdb-breadcrumb-item class="active">{{booksPage | BreadcrumbValue}}</mdb-breadcrumb-item>
+            <mdb-breadcrumb-item class="active">{{booksPageName}}</mdb-breadcrumb-item>
         </mdb-breadcrumb>
     </div>
     <app-book-filter-bar [(selectedGenres)]="selectedGenres" [(selectedStates)]="selectedStates" [(selectedLanguages)]="selectedLanguages" [(orderByField)]="queryParams.orderByField" [(orderByFieldAscending)]="queryParams.orderByAscending" [(selectedLocations)]="selectedLocations"
@@ -65,13 +65,13 @@
                                                 <div class="col-lg-8 m2">
                                                     <div class="card-block m-2 px-2">
                                                         <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
-                                                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                                                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong>
                                                                 </h4>
                                                             </a>
                                                         </ng-template>
                                                         <ng-template #bookTitleElse>
-                                                            <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                                                            <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                                                 <h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
                                                                 </h4>
                                                             </a>
@@ -91,7 +91,7 @@
                                                                 <ng-template [ngIf]="book.authors.length==1" [ngIfElse]="manyAuthors">
                                                                     {{ 'components.books.author' | translate }}:
                                                                 </ng-template>
-                                                                <ng-template #manyAuthors>Authors:</ng-template>
+                                                                <ng-template #manyAuthors>{{ 'components.books.authors' | translate}}:</ng-template>
                                                                 <ng-template let-lineLength="aVariable" [ngTemplateOutletContext]="{ aVariable: 23 }" [ngTemplateOutlet]="length" #length>
                                                                     <ng-template [ngIf]="book.authors.length == 1 || book.authors.length == 2 &&
                                                         book.authors[0].firstName.length + book.authors[0].lastName.length + book.authors[1].firstName.length + book.authors[1].lastName.length < lineLength" [ngIfElse]="manyAuthorsEllipsis">
@@ -114,9 +114,11 @@
                                                                     </strong>
                                                                 </ng-template>
                                                             </ng-template>
-                                                            <br>
-                                                            <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
-                                                            <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                                                            <ng-template [ngIf]="book.genres.length!=0">
+                                                                <br>
+                                                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                                                                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                                                            </ng-template>
 
                                                             <ng-template [ngIf]="book.genres.length<=3" [ngIfElse]="manyGenresEllipsis">
                                                                 <strong *ngFor="let genre of book.genres;let i = index">
@@ -150,10 +152,12 @@
                                                             <span>
                                     {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                                   </span>
-                                                            <br>
-                                                            <span>
+                                                            <ng-template [ngIf]="hasLocation(book?.state) && book.location != null">
+                                                                <br>
+                                                                <span>
                                     {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                                   </span>
+                                                            </ng-template>
                                                             <br>
                                                             <span>
                                     {{ 'components.books.status' | translate }}:
@@ -223,9 +227,21 @@
                 <div class="col m-2">
                     <div class="card-block px-2">
                         <div class="row ml-2">
-                            <a [routerLink]="['/book/', book.id]" [state]="{ booksPage: booksPage, previousRoute: route}">
+                            <!-- <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4>
-                            </a>
+                            </a> -->
+                            <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
+                                <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                                    <h4 class="card-title mb-0"><strong>{{book.name}}</strong>
+                                    </h4>
+                                </a>
+                            </ng-template>
+                            <ng-template #bookTitleElse>
+                                <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                                    <h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
+                                    </h4>
+                                </a>
+                            </ng-template>
                             <div *ngIf="book?.predictedRating > 0" class="btnCustom m-1 p-0 d-inline" [ngClass]="{ 'scoreLow' : book?.predictedRating < 2, 'scoreMedium' : book?.predictedRating >= 2 && book?.predictedRating < 4, 'scoreHigh' : book?.predictedRating >= 4}">
                                 <div class="m-0 p-0 ai-label">
                                     <i class="fa fa-star fa-lg m-0 p-1" aria-hidden="true"></i>
@@ -263,10 +279,11 @@
                   </strong>
                                 </ng-template>
                             </ng-template>
-                            <br>
-                            <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
-                            <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
-
+                            <ng-template [ngIf]="book.genres.length!=0">
+                                <br>
+                                <ng-template [ngIf]="book.genres.length==1" [ngIfElse]="manyGenres">{{ 'components.books.category' | translate }}:</ng-template>
+                                <ng-template #manyGenres>{{ 'components.books.categories' | translate }}:</ng-template>
+                            </ng-template>
                             <ng-template [ngIf]="book.genres.length<=7" [ngIfElse]="manyGenresEllipsis">
                                 <span *ngFor="let genre of book.genres;let i = index">
                     <ng-template [ngIf]="i!=0">,</ng-template>
@@ -299,10 +316,12 @@
                             <span>
                   {{ 'components.books.language' | translate }}: {{ book?.language?.name }}
                 </span>
-                            <br>
-                            <span>
+                            <ng-template [ngIf]="hasLocation(book?.state) && book.location != null">
+                                <br>
+                                <span>
                   {{ 'components.books.location' | translate }}: {{ book?.location?.location?.city + " " + book?.location?.location?.officeName }}
                 </span>
+                            </ng-template>
                             <br>
                             <span>{{ 'components.books.status' | translate }}:</span>
                             <span [ngSwitch]="book?.state">
@@ -331,6 +350,6 @@
     </ng-template>
     </ng-template>
 
-    <app-pagination *ngIf="books && totalSize > 8 " [arraySize]="totalSize" [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
+    <app-pagination *ngIf="books && totalSize > 8 && books.length !== 0" [arraySize]="totalSize" [pageSize]="queryParams.pageSize" [selectedPage]="queryParams.page" (PageChange)="pageChanged($event)">
     </app-pagination>
 </div>
