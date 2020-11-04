@@ -137,7 +137,7 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public formatDate(date: Date): string {
-    var language = 'uk-Uk';
+    let language = 'uk-Uk';
     TimeAgo.addLocale(uk);
     if (this.isEn()) {
     TimeAgo.addLocale(en);
