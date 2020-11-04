@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NotifyAction } from 'src/app/core/models/notifyAction.enum';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import uk from 'javascript-time-ago/locale/uk';
 import { bookState } from 'src/app/core/models/bookState.enum';
 import { INotification } from 'src/app/core/models/notification';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
@@ -136,10 +137,15 @@ export class NotificationBellComponent implements OnInit {
   }
 
   public formatDate(date: Date): string {
+    var language = 'uk-Uk';
+    TimeAgo.addLocale(uk);
+    if (this.isEn()) {
     TimeAgo.addLocale(en);
+    language = 'en-Us';
+    }
     const d = new Date(date);
     d.setHours(d.getHours() + 3);
-    const timeAgo = new TimeAgo('en-US');
+    const timeAgo = new TimeAgo(language);
     return timeAgo.format(d);
   }
 

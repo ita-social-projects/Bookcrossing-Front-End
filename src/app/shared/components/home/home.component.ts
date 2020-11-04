@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import { AphorismService } from 'src/app/core/services/aphorism/aphorism.service';
 import { IAphorism } from 'src/app/core/models/aphorism';
-import { ActivatedRoute, Params } from '@angular/router';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
