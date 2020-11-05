@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Renderer2, HostListener, ViewChildren, QueryLi
 import {CommentService} from 'src/app/core/services/commment/comment.service';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import uk from 'javascript-time-ago/locale/uk';
 import {IUserInfo} from '../../../core/models/userInfo';
 import {AuthenticationService} from '../../../core/services/authentication/authentication.service';
 import {UserService} from '../../../core/services/user/user.service';
@@ -115,10 +116,16 @@ export class CommentComponent implements OnInit {
     return owner.id === this.user.id;
   }
 
-  public formatDate(date): string {
+  public formatDate(date: Date): string {
+    let language = 'uk-Uk';
+    TimeAgo.addLocale(uk);
+    if (this.isEn()) {
     TimeAgo.addLocale(en);
+    language = 'en-Us';
+    }
     const d = new Date(date);
-    const timeAgo = new TimeAgo('en-US');
+    d.setHours(d.getHours() + 3);
+    const timeAgo = new TimeAgo(language);
     return timeAgo.format(d);
   }
 
@@ -267,5 +274,9 @@ export class CommentComponent implements OnInit {
 
   login() {
     this.authenticationService.redirectToLogin();
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }
