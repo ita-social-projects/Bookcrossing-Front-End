@@ -140,7 +140,7 @@
                                 <mat-label>
                                     {{ 'components.statistics.to' | translate }}
                                 </mat-label>
-                                <input [(ngModel)]="readingTo" matInput [matDatepicker]="picker2" (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
+                                <input formControlName="DateValidator" [(ngModel)]="readingTo" matInput [matDatepicker]="picker2" (dateChange)="readingFiltersChanged = true; onReadingStatisticsFilterChange(false)">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                                 <mat-datepicker #picker2></mat-datepicker>
                             </mat-form-field>

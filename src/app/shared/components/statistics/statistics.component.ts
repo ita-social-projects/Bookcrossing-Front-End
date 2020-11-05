@@ -27,6 +27,7 @@ enum DateRangeEnum {
   styleUrls: ['./statistics.component.scss']
 })
 export class StatisticsComponent implements OnInit {
+
   public countersData: ICountersSet;
   public donatedPieData: IPieChartData;
   public readPieData: IPieChartData;
@@ -87,6 +88,7 @@ export class StatisticsComponent implements OnInit {
         this.generateReadingChart();
       }
     );
+    this
   }
 
   public getCategoriesLanguage(): boolean {
@@ -143,6 +145,7 @@ export class StatisticsComponent implements OnInit {
       .toPromise()
       .then(data => {
           this.donatedPieData = data;
+          console.log(data);
         }
       );
   }
