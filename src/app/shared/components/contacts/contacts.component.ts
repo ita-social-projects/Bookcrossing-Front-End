@@ -130,8 +130,9 @@ export class ContactsComponent implements OnInit {
           window.history.back();
         }
       });
-    }
+    } else {
     window.history.back();
+    }
   }
 
   public isEn(): boolean {
