@@ -458,7 +458,7 @@ constructor(
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
-    return words.length >= 2 || words.length <=20;
+    return words.length >= 2 || words.length <= 20;
   }
 /*
   checkLength(fieldName: string, event: any, maxLength: number) {

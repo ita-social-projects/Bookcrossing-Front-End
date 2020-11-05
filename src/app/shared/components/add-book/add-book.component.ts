@@ -473,7 +473,7 @@ export class AddBookComponent implements OnInit {
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
-    return words.length >= 2 || words.length <=20;
+    return words.length >= 2 || words.length <= 20;
   }
 
   public checkLength(element: HTMLElement, maxLength: number): void {
