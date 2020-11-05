@@ -123,7 +123,6 @@ export class BookFilterBarComponent implements OnInit {
   setbookStates() {
     this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 'Inactive');
     this.selectedStates = new Array<bookState>();
-    this.onStatesChange(false);
   }
 
   onStatesChange(isOpened: boolean) {

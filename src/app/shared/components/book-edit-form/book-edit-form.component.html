@@ -48,7 +48,7 @@
               [matAutocomplete]="FirstNameAuto"
               (focus)="authorFocused = true"
               (blur)="authorFocused = false"
-              (input)="checkLength(firstnameInput, 100)"
+              (input)="checkLength(firstnameInput, 50)"
               [ngClass]="{
                 'ng-invalid':
                   editBookForm.get('authorFirstname').touched &&
