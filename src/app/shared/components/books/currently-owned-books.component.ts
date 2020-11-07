@@ -30,7 +30,7 @@ export class CurrentlyOwnedBooksComponent extends BooksComponent {
             },
             error: err => {
               this.notificationService.error(this.translate
-                .instant('Something went wrong!'), 'X');
+                .instant('components.common-errors.error-message'), 'X');
             }
           });
       }

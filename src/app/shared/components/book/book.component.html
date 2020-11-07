@@ -1,9 +1,9 @@
 <ng-template appRef>
     <!--Add Form-->
 </ng-template>
-<div class="container my-4">
+<div class="container my-4" style="word-break: break-word;">
 
-    <mdb-breadcrumb>
+    <mdb-breadcrumb >
         <mdb-breadcrumb-item class="blue-text" (click)="navigate()">{{previousBooksPageName}}</mdb-breadcrumb-item>
         <mdb-breadcrumb-item class="active">{{book?.name}}</mdb-breadcrumb-item>
     </mdb-breadcrumb>
@@ -29,20 +29,20 @@
                     </div>
                     <div class="text-center text-md-left text-md-right mt-2">
                         <span [ngSwitch]="book?.state">
-                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="requestBook()">
+                  <ng-template ngSwitchCase="0"><button *ngIf="isAuthenticated() && !isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="requestBook()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.request' | translate }}</button></ng-template>
                   <ng-template ngSwitchCase="1">
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border rounded-0" (click)="startReading()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="mt-0 btn blue-gradient btn-lg btn-block border" (click)="startReading()">
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.startreading' | translate }}</button>
-                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0" (click)="cancelRequest()">
+                    <button *ngIf="isRequester" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border" (click)="cancelRequest()">
                       <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.cancelrequest' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="2">
-                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeAvailable()" >
+                    <button *ngIf="isBookOwner" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                   <ng-template ngSwitchCase="4">
-                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border rounded-0"(click)="makeOrderedAvailable()" >
+                    <button *ngIf="isAdmin()" [disabled]="disabledButton" class="btn blue-gradient btn-lg btn-block border"(click)="makeOrderedAvailable()" >
                     <i class="mr-2" aria-hidden="true"></i> {{ 'components.book.makeavailable' | translate }}</button>
                   </ng-template>
                 </span>
@@ -98,7 +98,7 @@
                                     </th>
                                     <td class="align-middle" class="fontsize"><span *ngFor="let author of book?.authors; let i = index"><ng-template [ngIf]="i!=0">, </ng-template>{{author?.firstName}} {{author?.lastName}}</span></td>
                                 </tr>
-                                <tr *ngIf="book?.genres != null">
+                                <tr *ngIf="book?.genres != null && book?.genres.length > 0">
                                     <th scope="row" class="fontsize">
                                         <ng-template [ngIf]="book?.genres.length==1" [ngIfElse]="manyGenres"><strong>{{ 'components.book.category' | translate }}: </strong></ng-template>
                                         <ng-template #manyGenres><strong>{{ 'components.book.categories' | translate }}: </strong></ng-template>
