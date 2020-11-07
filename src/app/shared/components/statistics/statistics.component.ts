@@ -88,7 +88,7 @@ export class StatisticsComponent implements OnInit {
         this.generateReadingChart();
       }
     );
-    this
+
   }
 
   public getCategoriesLanguage(): boolean {
@@ -145,7 +145,6 @@ export class StatisticsComponent implements OnInit {
       .toPromise()
       .then(data => {
           this.donatedPieData = data;
-          console.log(data);
         }
       );
   }
@@ -469,6 +468,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   public async onReadingStatisticsFilterChange(isOpened: boolean) {
+
     if (!isOpened && this.readingFiltersChanged) {
       this.readingFiltersChanged = false;
       let locations = this.locations;

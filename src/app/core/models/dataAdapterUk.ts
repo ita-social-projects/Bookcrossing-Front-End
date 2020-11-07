@@ -1,37 +1,37 @@
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
+import { StringDecoder } from 'string_decoder';
 
 @Injectable()
 export class UkDataAdapter extends NativeDateAdapter {
     getFirstDayOfWeek(): number {
       return this.locale === 'en' ? 0 : 1;
     }
-    parse(value: any): Date | null {
-      if ((this.locale === 'en') && (typeof value === 'string') && (value.indexOf('/') > -1)) {
-        const str = value.split('/');
-        const year = Number(str[0]);
-        const month = Number(str[1]) - 1;
-        const day = Number(str[2]);
+    parse(dateString: string): Date | null {
+      if ((this.locale === 'en') && (dateString.indexOf('/') > -1)) {
+        const splittedDate = dateString.split('/');
+        const year = Number(splittedDate[0]);
+        const month = Number(splittedDate[1]) - 1;
+        const day = Number(splittedDate[2]);
         return new Date(day, month, year);
-      } else if ((this.locale === 'ua') && (typeof value === 'string') && (value.indexOf('.') > -1)) {
-        const str = value.split('.');
-        const year = Number(str[0]);
-        const month = Number(str[1]) - 1;
-        const day = Number(str[2]);
+      } else if ((this.locale === 'ua') && (dateString.indexOf('.') > -1)) {
+        const splittedDate = dateString.split('.');
+        const year = Number(splittedDate[0]);
+        const month = Number(splittedDate[1]) - 1;
+        const day = Number(splittedDate[2]);
         return new Date(day, month, year);
       }
 
-      const timestamp = typeof value === 'number' ? value : Date.parse(value);
+      const timestamp = typeof dateString === 'number' ? dateString : Date.parse(dateString);
       return isNaN(timestamp) ? null : new Date(timestamp);
     }
 
-     format(date: Date, displayFormat: Object): string {
+     format(date: Date, displayFormat): string {
          if (displayFormat === 'input') {
              const day = date.getDate();
              const month = date.getMonth() + 1;
              const year = date.getFullYear();
-             return this.locale === 'en' ? this._to2digit(day) + '/' + this._to2digit(month) + '/' + year : this._to2digit(day) + '.' + this._to2digit(month) + '.' + year;
-             // return year  + '/' + this._to2digit(month) + '/' + this._to2digit(day) ;
+             return this.locale === 'en' ? this.format_en(day, month, year) : this.format_ua(day, month, year);
          } else {
              return date.toDateString();
          }
@@ -40,6 +40,14 @@ export class UkDataAdapter extends NativeDateAdapter {
      private _to2digit(n: number) {
          return ('00' + n).slice(-2);
      }
+
+     private format_en(day: number, month: number, year: number): string {
+       return this._to2digit(day) + '/' + this._to2digit(month) + '/' + year;
+     }
+
+     private format_ua(day: number, month: number, year: number): string {
+      return this._to2digit(day) + '.' + this._to2digit(month) + '.' + year;
+    }
 }
 
 export const MY_DATE_FORMATS = {
