@@ -43,7 +43,6 @@ export class HomeLocationPickerComponent implements OnInit {
   public saveLocation(): void {
     this.locationHomePost.isActive = true;
     this.locationHomeService.submitLocationHomePost(this.locationHomePost);
-    console.log(this.isDialog);
     if (this.isDialog) {
       this.dialogRef.close(true);
     }

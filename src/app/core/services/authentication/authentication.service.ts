@@ -149,7 +149,6 @@ export class AuthenticationService {
 
   public refresh(Token: IToken): Observable<IUserInfo> {
       return this.http.post<IUserInfo>(this.refreshUrl, Token).pipe(tap(user => {
-      console.log('received refresh ', user);
       localStorage.setItem('currentUser', JSON.stringify(user));
       this.currentUserSubject.next(user);
       this.loginEvent.emit();
@@ -178,7 +177,6 @@ export class AuthenticationService {
     if (locationId != null) {
       this.locationHomeService.getLocationHomeById(locationId).subscribe(location => {
         This.isValid = (location?.isActive || userInfo?.userLocation?.location?.isActive);
-        console.log(This.isValid);
         if (This.isValid === false) {
           return this.dialogService.openLocationDialog(userInfo)
             .afterClosed().toPromise();

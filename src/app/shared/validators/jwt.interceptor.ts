@@ -75,7 +75,6 @@ export class JwtInterceptor implements HttpInterceptor {
         filter((token) => token != null),
         take(1),
         switchMap((jwt) => {
-          console.log('wtf');
           return next.handle(this.addToken(request, jwt));
         })
       );

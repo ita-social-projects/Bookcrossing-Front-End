@@ -21,6 +21,8 @@ export class RequestFromCompanyComponent extends FoundBooksComponent {
     this.genres = [];
     this.authors = [];
     this.selectedFile = null;
+    const genre: IGenre = { id: 22, name: 'Other', nameUk: 'Інше' };
+    this.genres.push(genre);
     const names = book.author.fullName.split(' ');
     if (names.length === 1) {
       names.push(' ');

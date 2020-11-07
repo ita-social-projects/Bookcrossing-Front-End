@@ -124,7 +124,6 @@ export class BookComponent implements OnInit {
   public onBookRatingChanged(): void {
     this.bookService.getBookById(this.bookId).subscribe(book => {
       this.book.rating = book?.rating;
-      console.log(this.book.rating);
     });
   }
 
