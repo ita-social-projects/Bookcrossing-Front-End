@@ -116,7 +116,7 @@ export class CommentComponent implements OnInit {
     return owner.id === this.user.id;
   }
 
-  public formatDate(date: Date): string {
+  public formatDate(date) {
     let language = 'uk-Uk';
     TimeAgo.addLocale(uk);
     if (this.isEn()) {
@@ -124,7 +124,7 @@ export class CommentComponent implements OnInit {
     language = 'en-Us';
     }
     const d = new Date(date);
-    d.setHours(d.getHours() + 3);
+    d.setHours(d.getHours());
     const timeAgo = new TimeAgo(language);
     return timeAgo.format(d);
   }

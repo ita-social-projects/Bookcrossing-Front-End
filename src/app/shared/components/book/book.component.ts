@@ -561,7 +561,6 @@ export class BookComponent implements OnInit {
         if (Newmessage !== null && Newmessage !== false) {
             this.notificationBellService
               .addToNotification(
-                'To ' +
                   this.currentOwner.firstName +
                   ' ' +
                   this.currentOwner.lastName +
@@ -612,7 +611,6 @@ export class BookComponent implements OnInit {
                 });
               this.notificationBellService
                 .addToNotification(
-                  'To ' +
                     this.userWhoRequested.firstName +
                     ' ' +
                     this.userWhoRequested.lastName
