@@ -45,7 +45,7 @@
 
         <div class="block col-sm">
             <mat-select [(ngModel)]="selectedStates" placeholder="{{ 'components.booksfilter.state' | translate }}" multiple class="form-control select-dropdown" (openedChange)="onStatesChange($event)">
-                <mat-option *ngFor="let state of bookStates" [value]="stateMap[state]">
+                <mat-option *ngFor="let state of bookStates" [value]="state">
                     <ng-template [ngIf]="state == 4">
                         {{ 'components.book.statuses.unavailable' | translate }}
                     </ng-template>

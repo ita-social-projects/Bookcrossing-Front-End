@@ -51,27 +51,6 @@ export class BookFilterBarComponent implements OnInit {
   @Input() showAvailable = true;
   @Input() orderByField: string;
   @Input() orderByFieldAscending = true;
-  public vals;
-
-  public stateMap: Record<bookState, string> = {
-    0: 'Available',
-    1: 'Requested',
-    2: 'Reading',
-    3: 'Inactive',
-    4: 'Unavailable'
-  };
-
-  // public avState: BookStateType = {
-  //     id: 0, name: 'Available', nameUk: 'Доступна'
-  // };
-
-  // public states: Array<BookStateType> = {
-  //   0: {id: 0, name: 'Available', nameUk: 'Доступна'},
-  //   1: {id: 1, name: 'Requested', nameUk: 'Подано запит'},
-  //   2: {id: 2, name: 'Reading', nameUk: 'Читається'},
-  //   3: {id: 3, name: 'Inactive', nameUk: 'Неактивна'},
-  //   4: {id: 4, name: 'Unavailable', nameUk: 'Недоступна'},
-  // };
 
   constructor(
     private route: ActivatedRoute,
@@ -150,54 +129,19 @@ export class BookFilterBarComponent implements OnInit {
     }
   }
 
-  // States
-  // setbookStates() {
-  //   this.route.queryParams.subscribe(val => {
-  //     if (val.bookStates !== undefined || val.bookStates != null) {
-  //       this.selectedStates = val.bookStates;
-  //       // this.vals = val.bookStates;
-  //       this.selectedStatesChange.emit(this.selectedStates);
-  //     } else {
-  //       this.selectedStates = new Array<bookState>();
-  //     }
-  //     // console.log(val.bookStates);
-  //   });
-  //   // let bookParams;
-  //   this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
-  // }
-
-
-  // onStatesChange(isOpened: boolean) {
-  //   // this.selectedStates = Object.values(this.selectedStates).map(key => this.stateMap[key]);
-  //   if (!isOpened) {
-  //     // console.log(this.vals);
-  //     this.selectedStatesChange.emit(this.selectedStates); // add to query
-  //     // this.subjects.forEach(function(e) { e.id = e.code });
-  //     // console.log(Object.values(this.selectedStates).map(key => this.stateMap[key]));
-  //     this.notifyFilterChange(false);
-  //     // console.log(Object.keys(this.selectedStates).map(key => this.stateMap[key]));
-  //     // console.log(Object.values(this.selectedStates).map(key => this.stateMap[key]));
-  //   }
-  // }
-
-  // onStatesReset() {
-  //   this.selectedStatesChange.emit([]);
-  //   this.notifyFilterChange(true);
-  // }
-
   setbookStates() {
     this.route.queryParams.subscribe(val => {
-      if (val.bookStates !== undefined || val.bookStates != null) {
-        this.selectedStates = val.bookStates;
+      if (val.bookStates) {
+        this.selectedStates = [];
+        val.bookStates.forEach((n) => this.selectedStates.push(Number(n)));
         this.selectedStatesChange.emit(this.selectedStates);
       }
     });
     this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
   }
 
+
   onStatesChange(isOpened: boolean) {
-    console.log(this.selectedStates);
-    this.selectedStates = Object.keys(this.stateMap).map((key, i) => this.selectedStates[i]).filter(el => this.selectedStates.includes(el));
     if (!isOpened) {
       this.selectedStatesChange.emit(this.selectedStates);
       this.notifyFilterChange(false);
