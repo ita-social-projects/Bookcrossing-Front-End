@@ -43,7 +43,6 @@ export class ViewLocationComponent implements OnInit {
   onDeleteLocation(id: number, index: number) {
     this.locationService.deleteLocation(id).subscribe(
       (result) => {
-        console.log(result);
         this.locations.splice(index, 1);
       },
       (error) => {

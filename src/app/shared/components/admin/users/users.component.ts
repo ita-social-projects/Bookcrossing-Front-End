@@ -71,7 +71,6 @@ export class UsersComponent implements OnInit {
       this.queryParams.sort.orderByField = this.queryParams.sort.orderByField
         ? this.queryParams.sort.orderByField
         : 'id';
-      console.log(this.queryParams);
       this.initShowDeleted();
       const searchFilter: FilterParameters = this.queryParams?.filters?.find(
         (queryFilter) => this.fieldsForSearch.includes(queryFilter.propertyName)
@@ -79,7 +78,6 @@ export class UsersComponent implements OnInit {
       this.buildSearchForm(searchFilter?.value);
       this.getUsers(this.queryParams);
     });
-    console.log(this.queryParams);
   }
 
   public search(searchText: string): void {

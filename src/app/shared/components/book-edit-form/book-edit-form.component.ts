@@ -43,6 +43,7 @@ editBookForm: FormGroup;
   newAuthor: IAuthor;
   selectedGenres = [];
   languages: ILanguage[] = [];
+  hideErrorInterval: NodeJS.Timeout;
 
 constructor(
   private translate: TranslateService,
@@ -356,8 +357,18 @@ constructor(
     }
   }
 
-  onFileSelected(event) {
-    this.selectedFile = event.target.files[0];
+  public onFileSelected(event): void {
+    const fileName = event.target.files[0].name;
+    const idxDot = fileName.lastIndexOf('.') + 1;
+    const extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile === 'jpg' || extFile === 'jpeg' || extFile === 'png') {
+      this.selectedFile = event.target.files[0];
+    } else {
+      this.notificationService.info(
+        this.translate.instant('common-errors.file-type-error'),
+        'X'
+      );
+    }
   }
 
   // parses string and returns IAuthor object
@@ -457,12 +468,9 @@ constructor(
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
-    if (words.length < 2) {
-      return false;
-    }
-    return true;
+    return words.length >= 2 || words.length <= 20;
   }
-
+/*
   checkLength(fieldName: string, event: any, maxLength: number) {
     const value = event.target.value;
     if (value.length > maxLength) {
@@ -497,9 +505,47 @@ constructor(
         'X'
       );
     }
+  }*/
+
+  public checkLength(element: HTMLElement, maxLength: number): void {
+    const input =
+      (element as HTMLInputElement) != null
+        ? (element as HTMLInputElement)
+        : (element as HTMLTextAreaElement);
+
+    if (input.value.length > maxLength) {
+      /* tslint:disable:no-string-literal */
+      const fieldName = input.attributes['formControlName']?.value;
+      /* tslint:enable:no-string-literal */
+      input.value = input.value.substr(0, maxLength);
+
+      this.editBookForm.controls[fieldName]?.setErrors({
+        maxlength: { requiredLength: maxLength },
+      });
+      this.editBookForm.controls[fieldName]?.markAsTouched();
+      clearInterval(this.hideErrorInterval);
+      this.hideErrorInterval = setTimeout(() => {
+        this.editBookForm.controls[fieldName]?.setErrors(null);
+        this.editBookForm.controls[fieldName]?.markAsTouched();
+      }, 2000);
+    }
   }
 
+  public isChanged(): boolean {
+    if (this.editBookForm.get('title').value !== this.book.name ||
+    this.editBookForm.get('publisher').value !== this.book.publisher ||
+    this.editBookForm.get('isbn').value !== this.book.isbn ||
+    this.editBookForm.get('description').value !== this.book.notice ||
+    this.editBookForm.get('languageId').value !== this.book.language.id) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
   public async onCancel(): Promise<void> {
+    if (this.isChanged()) {
     this.dialogService
       .openConfirmDialog(
         await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
@@ -510,8 +556,10 @@ constructor(
           this.cancel.emit();
         }
       });
+    } else {
+      this.cancel.emit();
+    }
   }
-
   public isEn(): boolean {
     return this.translate.currentLang === 'en';
   }

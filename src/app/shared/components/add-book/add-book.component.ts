@@ -105,7 +105,6 @@ export class AddBookComponent implements OnInit {
   }
 
   public async autoFill(): Promise<void> {
-    console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
     this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
@@ -123,7 +122,6 @@ export class AddBookComponent implements OnInit {
             this.outerBook.imageUrl.lastIndexOf('/') + 1
           )
         );
-        console.log(this.selectedFile);
       });
   }
 
@@ -404,7 +402,17 @@ export class AddBookComponent implements OnInit {
     this.addBookForm.get('image').setValue('');
   }
 
+  public isFilled(): boolean {
+    if (this.addBookForm.get('title').value !== '' ||
+    this.addBookForm.get('image').value !== '') {
+       return true;
+      } else {
+      return false;
+    }
+  }
+
   public async onCancel(): Promise<void> {
+    if (this.isFilled()) {
     this.submittedValid = true;
     this.dialogService
       .openConfirmDialog(
@@ -416,6 +424,9 @@ export class AddBookComponent implements OnInit {
           this.goToPage('/');
         }
       });
+    } else {
+    this.goToPage('/');
+    }
   }
 
   public filterConfirmedAuthors(): IAuthor[] {
@@ -473,7 +484,7 @@ export class AddBookComponent implements OnInit {
     const delim = /(\s+|,+|;+)/g;
     input = input.replace(delim, ' ').trim();
     const words: string[] = input.split(' ');
-    return words.length >= 2;
+    return words.length >= 2 || words.length <= 20;
   }
 
   public checkLength(element: HTMLElement, maxLength: number): void {

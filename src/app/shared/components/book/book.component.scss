@@ -139,6 +139,7 @@ table {
 
 .fontsize {
     font-size: 16px;
+    word-break: break-all;
 }
 
 table tr th {
@@ -160,4 +161,9 @@ table tr td {
 
 .bluetext {
     color: rgb(6, 173, 250);
+
+}
+
+.nameSize {
+    word-break: break-all;
 }
