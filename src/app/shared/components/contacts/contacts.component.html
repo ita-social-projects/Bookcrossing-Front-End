@@ -29,22 +29,23 @@
       </div>
 
       <form #Formcontrol="ngForm"
-        class="col-lg-6 offset-lg-3" 
+        class="col-lg-6 offset-lg-3"
         [formGroup]="contactsForm"
         (ngSubmit)="onSubmit()"
         >
 
         <div class="form-row">
           <div class="col-lg-12 mb-3">
-            <mat-select 
+            <mat-select
               #select
-              class="form-control" 
+              class="form-control"
               formControlName="summary"
               placeholder="{{ 'components.contact-us.summary' | translate }}"
+              (selectionChange)="onValueChange()"
               >
               <mat-select-filter
                 #MatFilter
-                [array]="summaryStates" 
+                [array]="summaryStates"
                 (filteredReturn)="filteredStates = $event"
                 placeholder="{{ 'components.contact-us.search' | translate }}"></mat-select-filter>
                   <ng-template [ngIf]="isEn()" [ngIfElse]="uk">
@@ -55,7 +56,7 @@
                 </ng-template>
             </mat-select>
             <div *ngIf="contactsForm.get('summary').errors">
-              <div 
+              <div
               *ngIf="contactsForm.get('summary').touched &&
               contactsForm.get('summary').errors?.required"
               class="validation-error">
@@ -68,18 +69,19 @@
 
         <div class="form-row mb-1">
           <div class="col-lg-12 mb-3">
-            <textarea class="form-control" 
+            <textarea class="form-control"
+            (input)="onValueChange()"
             #textarea
             formControlName="description"
-            rows="8" 
-            maxlength="500" 
-            style="resize: none;" 
+            rows="8"
+            maxlength="500"
+            style="resize: none;"
             placeholder="{{'components.contact-us.textMessage' | translate }}"></textarea>
           </div>
         </div>
 
         <div class="form-row justify-content-center mb-3">
-          <button class="btn btn-primary" type="submit" [disabled]="select.value === '' || textarea.value === ''">{{ 'components.contact-us.send' | translate }}</button>
+          <button class="btn btn-primary" type="submit" [ngClass]="{'disabled': !isSelected}">{{ 'components.contact-us.send' | translate }}</button>
           <input type="button" class="btn" (click)="Cancel()" value="{{ 'common.cancel' | translate }}" />
         </div>
 
