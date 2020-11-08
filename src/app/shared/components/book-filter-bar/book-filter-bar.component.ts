@@ -12,6 +12,14 @@ import {BookService} from '../../../core/services/book/book.service';
 import {ILocationFilter} from '../../../core/models/books-map/location-filter';
 import { bookState } from 'src/app/core/models/bookState.enum';
 import { ArrayDataSource } from '@angular/cdk/collections';
+import { isString } from 'lodash';
+import { ActivatedRoute } from '@angular/router';
+
+export interface BookStateType {
+  id: number;
+  name: string;
+  nameUk: string;
+}
 
 @Component({
   selector: 'app-book-filter-bar',
@@ -43,7 +51,9 @@ export class BookFilterBarComponent implements OnInit {
   @Input() showAvailable = true;
   @Input() orderByField: string;
   @Input() orderByFieldAscending = true;
+
   constructor(
+    private route: ActivatedRoute,
     private languageService: LanguageService,
     private genreService: GenreService,
     private bookLanguageService: BookLanguageService,
@@ -119,11 +129,17 @@ export class BookFilterBarComponent implements OnInit {
     }
   }
 
-  // States
   setbookStates() {
-    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 'Inactive');
-    this.selectedStates = new Array<bookState>();
+    this.route.queryParams.subscribe(val => {
+      if (val.bookStates) {
+        this.selectedStates = [];
+        val.bookStates.forEach((n) => this.selectedStates.push(Number(n)));
+        this.selectedStatesChange.emit(this.selectedStates);
+      }
+    });
+    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
   }
+
 
   onStatesChange(isOpened: boolean) {
     if (!isOpened) {
