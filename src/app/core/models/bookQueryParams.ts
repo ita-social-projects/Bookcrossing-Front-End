@@ -62,7 +62,7 @@ export class BookQueryParams extends PageableParameters {
     }
     if (this.bookStates?.length > 0) {
       for (const stateEl of this.bookStates) {
-        params = params.append('bookStates', stateEl);
+        params = params.append('bookStates', stateEl.toString());
       }
     }
     if (this.genres?.length > 0) {

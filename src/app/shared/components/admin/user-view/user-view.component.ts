@@ -58,7 +58,7 @@ export class UserViewComponent implements OnInit {
 
     this.booksService.getCurrentBooksOfUser(this.user.id).subscribe((books) => {
       this.books = books;
-      this.activeBooksExist = this.books.some((book) => book.state !== 'Inactive');
+      this.activeBooksExist = this.books.some((book) => book.state !== 3);
     });
   }
 

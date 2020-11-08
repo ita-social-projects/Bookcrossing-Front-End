@@ -1,7 +1,7 @@
 export enum bookState {
-  available = 'Available',
-  requested = 'Requested',
-  reading = 'Reading',
-  inActive = 'Inactive',
-  requestedFromCompany = 'RequestedFromCompany'
+  available = 0,
+  requested = 1,
+  reading = 2,
+  inActive = 3,
+  requestedFromCompany = 4
 }
