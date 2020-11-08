@@ -10,6 +10,7 @@
              (ngModelChange)="onRadiusChange()"
              min="0.5"
              max="100"
+             oninput="if (this.value.length > 3 && this.value > 100) this.value = this.value.slice(0, 3);"
              type="number"
              class="form-control"
              placeholder="Radius"
