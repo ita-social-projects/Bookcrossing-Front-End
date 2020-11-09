@@ -20,7 +20,7 @@ export class MessageDialogComponent implements OnInit {
   }
 
   public sendMessage(msg: string): void {
-    this.dialogRef.close(msg);
+      this.dialogRef.close(msg);
   }
 
   public async closeDialog(): Promise<void> {

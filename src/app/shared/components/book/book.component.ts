@@ -552,29 +552,37 @@ export class BookComponent implements OnInit {
   }
 
   public sendMessage(): void {
-    this.dialogService
-      .openMessageDialog(
-        this.currentOwner.firstName + ' ' + this.currentOwner.lastName
-      )
-      .afterClosed()
-      .subscribe((Newmessage) => {
-        if (Newmessage !== null && Newmessage !== false) {
+    const currentUser = this.authentication.currentUserValue;
+    if (currentUser.firstName === this.currentOwner.firstName && currentUser.lastName === this.currentOwner.lastName) {
+      this.notificationService.error(
+        this.translate.instant('cannot sent message to yourself'),
+        'X');
+    } else {
+      this.dialogService
+        .openMessageDialog(
+          this.currentOwner.firstName + ' ' + this.currentOwner.lastName
+        )
+        .afterClosed()
+        .subscribe((Newmessage) => {
+          if (Newmessage !== null && Newmessage !== false) {
             this.notificationBellService
               .addToNotification(
                 'To ' +
-                  this.currentOwner.firstName +
-                  ' ' +
-                  this.currentOwner.lastName +
-                  ': ' +
-                  Newmessage
+                this.currentOwner.firstName +
+                ' ' +
+                this.currentOwner.lastName +
+                ': ' +
+                Newmessage
               )
               .subscribe(() => {
-                this.notificationService.success(
-                  this.translate.instant('Message is successfully sent'),
-                  'X'
-                );
+                  this.notificationService.error(
+                    this.translate.instant('cannot sent message to yourself'),
+                    'X');
+                  this.notificationService.success(
+                    this.translate.instant('Message is successfully sent'),
+                    'X'
+                  );
               });
-            const currentUser = this.authentication.currentUserValue;
             Newmessage =
               `${currentUser.firstName} ${currentUser.lastName}: ` + Newmessage;
             const newMessage: IMessage = {
@@ -582,8 +590,9 @@ export class BookComponent implements OnInit {
               userId: this.currentOwner.id,
             };
             this.notificationBellService.addNotification(newMessage).subscribe();
-        }
-      });
+          }
+        });
+    }
   }
 
   public sendMessageRequester(): void {
