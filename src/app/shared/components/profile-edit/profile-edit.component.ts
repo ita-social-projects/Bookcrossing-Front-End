@@ -102,11 +102,11 @@ export class ProfileEditComponent implements OnInit {
     this.editUserForm = new FormGroup({
       firstName: new FormControl(
         { value: this.user.firstName, disabled: false },
-        Validators.required
+        [Validators.required, Validators.pattern('^([a-zA-Z]*|[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*)$')]
       ),
       lastName: new FormControl(
         { value: this.user.lastName, disabled: false },
-        Validators.required
+        [Validators.required, Validators.pattern('^([a-zA-Z]*|[А-ЩЬЮЯҐЄІЇа-щьюяґєії]*)$')]
       ),
       birthDate: new FormControl({
         value: this.user.birthDate,

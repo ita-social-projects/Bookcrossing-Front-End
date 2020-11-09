@@ -7,6 +7,9 @@
             <div *ngIf="editUserForm.get('firstName').errors?.required" class="validation-error">
                 {{'common-errors.validation-required' | translate}}
             </div>
+            <div *ngIf="!editUserForm.get('firstName').errors?.valid" class="validation-error">
+                {{'components.profile.edit.validation-error' | translate}}
+          </div>
         </div>
         <div>
             <div class="form-row mb-4">
@@ -27,6 +30,9 @@
         <div *ngIf="editUserForm.get('lastName').errors && editUserForm.get('lastName').touched">
             <div *ngIf="editUserForm.get('lastName').errors?.required" class="validation-error">
                 {{'common-errors.validation-required' | translate}}
+            </div>
+            <div *ngIf="!editUserForm.get('lastName').errors?.valid" class="validation-error">
+              {{ 'components.profile.edit.validation-error' | translate }}
             </div>
         </div>
         <div class="form-row mb-4">
@@ -94,7 +100,7 @@
                     <div class="form-control mr-1 col-md">
                         <a class="padding-left text-nowrap">{{ locationHome?.city }}, {{ locationHome?.street }}</a>
                     </div>
-                    <button class="btn col-md loc" type="button" (click)="openLocationPickerDialog()"> 
+                    <button class="btn col-md loc" type="button" (click)="openLocationPickerDialog()">
                       <i class="fa fa-map-marker"></i>
                     </button>
                 </div>
@@ -104,7 +110,7 @@
                     <div class="col-sm">
                         <span class="padding-left text-nowrap form-control">{{ 'components.profile.edit.noHomeLocationEditMessage' | translate }}</span>
                     </div>
-                    <button class="btn btn-md btn-md px-3 m-1 col-sm" type="button" (click)="openLocationPickerDialog()"> 
+                    <button class="btn btn-md btn-md px-3 m-1 col-sm" type="button" (click)="openLocationPickerDialog()">
                       <i class="fas fa-map-marker"></i>
                     </button>
                 </div>
@@ -166,7 +172,7 @@
                     <input type="radio" name="options" id="option1"> {{ 'components.profile.edit.usehomelocation' | translate }}
                     </label>
                     <label [ngClass]="{'active': locationHome?.isActive == false}" class="btn btn-info col-md text-nowrap mr-0" (click)="locationHome.isActive = false">
-                    <input type="radio" name="options" id="option2"> {{ 'components.profile.edit.useofficelocation' | translate }} 
+                    <input type="radio" name="options" id="option2"> {{ 'components.profile.edit.useofficelocation' | translate }}
                     </label>
                     <label [ngClass]="{'btn-info active': locationHome?.isActive == false}" class="disabled btn">
                         <i class="fa fa-building icon-pick"></i>
@@ -181,7 +187,7 @@
                 <div class="col-2"></div>
                 <div class="col-3"></div>
                 <div class="col-3">
-                    <button class="btn btn-info" type="submit" name="submit">
+                    <button class="btn btn-info" type="submit" name="submit" [disabled]="!editUserForm.valid">
                         {{ 'common.save' | translate }}
                     </button>
                     <input type="button" class="btn" (click)="Cancel()" value="{{ 'common.cancel' | translate }}" />
