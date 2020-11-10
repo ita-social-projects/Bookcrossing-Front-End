@@ -20,7 +20,7 @@
                                         <span class="time-value pull-right">
                         {{ formatDate(comment.date) }}
                   </span>
-                                        <strong *ngIf="!comment.isDeleted" class="text-success">by {{getUserName(comment.owner)}}</strong>
+                                        <strong *ngIf="!comment.isDeleted" class="text-success">{{'common.by' | translate}} {{getUserName(comment.owner)}}</strong>
 
                                         <a *ngIf="!comment.isDeleted && CanEditCommnet(comment.owner)" [attr.data-target]="'#child_' + root + '_' + i + '_edit'" data-toggle="collapse" role="button" href="#">
                       {{'components.comment.edit' | translate}}

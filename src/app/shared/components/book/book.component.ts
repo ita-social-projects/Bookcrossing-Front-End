@@ -124,7 +124,6 @@ export class BookComponent implements OnInit {
   public onBookRatingChanged(): void {
     this.bookService.getBookById(this.bookId).subscribe(book => {
       this.book.rating = book?.rating;
-      console.log(this.book.rating);
     });
   }
 
@@ -561,7 +560,6 @@ export class BookComponent implements OnInit {
         if (Newmessage !== null && Newmessage !== false) {
             this.notificationBellService
               .addToNotification(
-                'To ' +
                   this.currentOwner.firstName +
                   ' ' +
                   this.currentOwner.lastName +
@@ -612,7 +610,6 @@ export class BookComponent implements OnInit {
                 });
               this.notificationBellService
                 .addToNotification(
-                  'To ' +
                     this.userWhoRequested.firstName +
                     ' ' +
                     this.userWhoRequested.lastName

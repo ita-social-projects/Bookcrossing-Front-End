@@ -28,6 +28,7 @@ export class ContactsComponent implements OnInit {
   public filteredStates: Array<IIssue>;
   public id: number;
   private user: IUserInfo;
+  public isSelected: boolean;
 
   constructor(
     private messageService: SuggestionMessageService,
@@ -90,6 +91,17 @@ export class ContactsComponent implements OnInit {
     );
   }
 
+  onValueChange() {
+    if (this.contactsForm.get('summary').value === ''
+     || this.contactsForm.get('description').value === '') {
+      this.isSelected = false;
+    } else if (this.contactsForm.get('summary').value !== ''
+    && this.contactsForm.get('description').value !== '') {
+      this.isSelected = true;
+    }
+    console.log(this.isSelected);
+  }
+
   public async getUserId(): Promise<number> {
     const promice = new Promise<number>((resolve) => {
       this.authentification.getUserId().subscribe({
@@ -130,8 +142,9 @@ export class ContactsComponent implements OnInit {
           window.history.back();
         }
       });
-    }
+    } else {
     window.history.back();
+    }
   }
 
   public isEn(): boolean {

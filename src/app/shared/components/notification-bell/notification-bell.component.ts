@@ -144,7 +144,7 @@ export class NotificationBellComponent implements OnInit {
     language = 'en-Us';
     }
     const d = new Date(date);
-    d.setHours(d.getHours() + 3);
+    d.setHours(d.getHours() + 2);
     const timeAgo = new TimeAgo(language);
     return timeAgo.format(d);
   }
@@ -316,7 +316,7 @@ export class NotificationBellComponent implements OnInit {
           if (Newmessage !== null && Newmessage !== false) {
               this.notificationBellService
                 .addToNotification(
-                  'To ' + user.firstName + ' ' + user.lastName + ': ' + Newmessage
+                  user.firstName + ' ' + user.lastName + ': ' + Newmessage
                 )
                 .subscribe();
               const currentUser = this.authenticationService.currentUserValue;
