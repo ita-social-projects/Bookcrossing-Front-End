@@ -76,7 +76,7 @@ export class BookFilterBarComponent implements OnInit {
 
   // Categories
   onCategoriesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened &&  typeof this.selectedGenres !== 'undefined') {
       this.selectedGenresChange.emit(this.selectedGenres);
       this.notifyFilterChange(false);
     }
@@ -84,10 +84,10 @@ export class BookFilterBarComponent implements OnInit {
 
   getCategoriesLanguage() {
     if (this.translate.currentLang === 'en') {
-      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      this.genres?.sort((a, b) => (a.name > b.name) ? 1 : -1);
       return true;
     } else {
-      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      this.genres?.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
       return false;
     }
   }
@@ -98,7 +98,7 @@ export class BookFilterBarComponent implements OnInit {
   }
   // Languages
   onLanguagesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened && typeof this.selectedLanguages !== 'undefined') {
       this.selectedLanguagesChange.emit(this.selectedLanguages);
       this.notifyFilterChange(false);
     }
@@ -142,7 +142,7 @@ export class BookFilterBarComponent implements OnInit {
 
 
   onStatesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened && typeof this.selectedStates !== 'undefined') {
       this.selectedStatesChange.emit(this.selectedStates);
       this.notifyFilterChange(false);
     }
