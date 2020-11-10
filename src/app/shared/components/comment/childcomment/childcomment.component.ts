@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, EventEmitter, Output, Renderer2, HostListener, ViewChildren, QueryList} from '@angular/core';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
+import uk from 'javascript-time-ago/locale/uk';
 import {IUserInfo} from '../../../../core/models/userInfo';
 import {CommentService} from '../../../../core/services/commment/comment.service';
 import {IChildDeleteComment} from '../../../../core/models/comments/child-comment/childDelete';
@@ -50,11 +51,16 @@ export class ChildcommentComponent implements OnInit {
 
   }
 
-  formatDate(date) {
-
+  public formatDate(date: Date): string {
+    let language = 'uk-Uk';
+    TimeAgo.addLocale(uk);
+    if (this.isEn()) {
     TimeAgo.addLocale(en);
+    language = 'en-Us';
+    }
     const d = new Date(date);
-    const timeAgo = new TimeAgo('en-US');
+    d.setHours(d.getHours());
+    const timeAgo = new TimeAgo(language);
     return timeAgo.format(d);
   }
 
@@ -202,5 +208,9 @@ export class ChildcommentComponent implements OnInit {
     }
 
     return true;
+  }
+
+  public isEn(): boolean {
+    return this.translate.currentLang === 'en';
   }
 }

@@ -104,7 +104,6 @@ export class IssuesComponent implements OnInit {
   }
 
   public deleteIssue(issue: IIssue): void {
-    console.log(issue.id);
     this.issueService.deleteIssue(issue.id).subscribe({
       next: () => {
         if (this.issues.length === 1 && this.queryParams.page > 1) {

@@ -105,7 +105,6 @@ export class AddBookComponent implements OnInit {
   }
 
   public async autoFill(): Promise<void> {
-    console.log(this.outerBook);
     this.addBookForm.get('title').setValue(this.outerBook.title);
     this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
     this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
@@ -123,7 +122,6 @@ export class AddBookComponent implements OnInit {
             this.outerBook.imageUrl.lastIndexOf('/') + 1
           )
         );
-        console.log(this.selectedFile);
       });
   }
 

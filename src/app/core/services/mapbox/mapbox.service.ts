@@ -122,7 +122,6 @@ export class MapboxService {
 
   public getCoordinatesByAddress(query: string) {
     const apiUrl = this.geocoderApiUrl + `${query}.json?access_token=${this.ACCESS_TOKEN}`;
-    console.log(apiUrl);
     this.http.get(apiUrl).subscribe(
       (result) => {
         console.log(result);

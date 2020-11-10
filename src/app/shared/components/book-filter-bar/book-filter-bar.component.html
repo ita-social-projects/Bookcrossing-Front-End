@@ -46,16 +46,16 @@
         <div class="block col-sm">
             <mat-select [(ngModel)]="selectedStates" placeholder="{{ 'components.booksfilter.state' | translate }}" multiple class="form-control select-dropdown" (openedChange)="onStatesChange($event)">
                 <mat-option *ngFor="let state of bookStates" [value]="state">
-                    <ng-template [ngIf]="state == 'RequestedFromCompany'">
+                    <ng-template [ngIf]="state == 4">
                         {{ 'components.book.statuses.unavailable' | translate }}
                     </ng-template>
-                    <ng-template [ngIf]="state == 'Available'">
+                    <ng-template [ngIf]="state == 0">
                         {{ 'components.book.statuses.available' | translate }}
                     </ng-template>
-                    <ng-template [ngIf]="state == 'Requested'">
+                    <ng-template [ngIf]="state == 1">
                         {{ 'components.book.statuses.requested' | translate }}
                     </ng-template>
-                    <ng-template [ngIf]="state == 'Reading'">
+                    <ng-template [ngIf]="state == 2">
                         {{ 'components.book.statuses.reading' | translate }}
                     </ng-template>
                 </mat-option>

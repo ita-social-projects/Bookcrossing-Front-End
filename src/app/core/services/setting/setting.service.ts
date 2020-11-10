@@ -28,8 +28,6 @@ import { ITimespan } from '../../models/timespans/timespan';
     }
 
     public isRequestGreaterRemind(request: ITimespan, remind: ITimespan): boolean {
-      console.log(request);
-      console.log(remind);
       return request.days > remind.days ||
         request.days === remind.days && request.hours > remind.hours ||
         request.days === remind.days && request.hours === remind.hours && request.minutes > remind.minutes;
