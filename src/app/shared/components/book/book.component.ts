@@ -553,9 +553,9 @@ export class BookComponent implements OnInit {
 
   public sendMessage(): void {
     const currentUser = this.authentication.currentUserValue;
-    if (currentUser.firstName === this.currentOwner.firstName && currentUser.lastName === this.currentOwner.lastName) {
+    if (currentUser.id === this.currentOwner.id) {
       this.notificationService.error(
-        this.translate.instant('cannot sent message to yourself'),
+        this.translate.instant('You cannot send message to yourself'),
         'X');
     } else {
       this.dialogService
