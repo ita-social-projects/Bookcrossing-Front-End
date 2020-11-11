@@ -41,6 +41,7 @@ export class WishListComponent implements OnInit, OnDestroy {
   public disabledButton = false;
   public books: IBook[];
   public totalSize: number;
+  public clickCounter = 0;
   public booksPageName = 'common.wishlist';
   public booksPage: booksPage = booksPage.WishList;
   public queryParams: BookQueryParams = new BookQueryParams();
@@ -223,19 +224,24 @@ export class WishListComponent implements OnInit, OnDestroy {
   }
 
   public removeFromWishList(bookId: number): void {
-    this.wishListService.removeFromWishList(bookId).subscribe(
-      (data) => {
-        this.routeActive.queryParams.subscribe((params: Params) => {
-          this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
-          this.getBooks(this.queryParams);
-        });
-      },
-      () => {
-        this.notificationService.error(
-          this.translate.instant('Something went wrong'),
-          'X'
-        );
-      }
-    );
+    this.clickCounter += 1;
+    if (this.clickCounter <= 1) {
+      this.wishListService.removeFromWishList(bookId).subscribe(
+        (data) => {
+          this.routeActive.queryParams.subscribe((params: Params) => {
+            this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+            this.getBooks(this.queryParams);
+            this.clickCounter = 0;
+          });
+        },
+        () => {
+          this.clickCounter = 0;
+          this.notificationService.error(
+            this.translate.instant('components.common-errors.error-message'),
+            'X'
+          );
+        }
+      );
+    }
   }
 }
