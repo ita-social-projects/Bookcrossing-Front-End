@@ -14,6 +14,7 @@ import {AuthenticationService} from '../../../core/services/authentication/authe
 import { booksPage } from 'src/app/core/models/booksPage.enum';
 import { WishListService } from 'src/app/core/services/wishlist/wishlist.service';
 import {ILocationFilter} from '../../../core/models/books-map/location-filter';
+import { bookState } from 'src/app/core/models/bookState.enum';
 
 @Component({
   selector: 'app-requests',
@@ -36,7 +37,8 @@ export class RequestsComponent implements OnInit {
   queryParams: BookQueryParams = new BookQueryParams();
   selectedGenres: number[];
   selectedLanguages: number[];
-  selectedLocations: number[];
+  selectedLocations: ILocationFilter;
+  selectedStates: bookState[];
   apiUrl: string = environment.apiUrl;
   route = this.router.url;
 
@@ -56,19 +58,17 @@ export class RequestsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.routeActive.queryParams.subscribe(query => {
-      this.filter = query.filter; });
     this.routeActive.queryParams.subscribe((params: Params) => {
-      this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+      this.queryParams = BookQueryParams.mapFromQuery(params);
       this.populateDataFromQuery();
       this.getUserRequests(this.queryParams);
     });
     this.router.events.subscribe((val) => {
-      if ( this.router.url !== '') {
-        this.route =  this.router.url;
+      if (this.router.url !== '') {
+        this.route = this.router.url;
       }
     });
-    this.translate.get(this.booksPageName).subscribe(name => {
+    this.translate.get(this.booksPageName).subscribe((name) => {
       this.booksPageName = name;
     });
   }
@@ -127,10 +127,39 @@ export class RequestsComponent implements OnInit {
       });
   }
 
+  private compareArrays(first: any, second: any): boolean {
+    return JSON.stringify(first) === JSON.stringify(second);
+  }
+
   onFilterChange(filterChanged: boolean) {
+    if (filterChanged === false) {
+      filterChanged =
+        !this.compareArrays(this.queryParams.genres, this.selectedGenres) ||
+        !this.compareArrays(this.queryParams.bookStates, this.selectedStates) ||
+        !this.compareArrays(
+          this.queryParams.languages,
+          this.selectedLanguages
+        ) ||
+        !this.compareArrays(
+          this.queryParams.locations,
+          this.selectedLocations.locationIds
+        ) ||
+        !this.compareArrays(
+          this.queryParams.homeLocations,
+          this.selectedLocations.homeLocationIds
+        );
+    }
     this.queryParams.genres = this.selectedGenres;
+    this.queryParams.bookStates = this.selectedStates;
     this.queryParams.languages = this.selectedLanguages;
-    this.queryParams.locations = this.selectedLocations;
+    this.queryParams.locations =
+      this.selectedLocations?.locationIds?.length > 0
+        ? this.selectedLocations.locationIds
+        : undefined;
+    this.queryParams.homeLocations =
+      this.selectedLocations?.homeLocationIds?.length > 0
+        ? this.selectedLocations.homeLocationIds
+        : undefined;
     if (filterChanged) {
       this.resetPageIndex();
       this.changeUrl();
@@ -143,26 +172,38 @@ export class RequestsComponent implements OnInit {
     if (this.queryParams.searchTerm) {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
-    this.queryParams.showAvailable = false;
+
+    if (this.queryParams.bookStates) {
+      let stateEl: bookState[];
+      if (Array.isArray(this.queryParams.bookStates)) {
+        stateEl = this.queryParams.bookStates.map((s) => s);
+      } else {
+        stateEl = [];
+      }
+      this.selectedStates = stateEl;
+    }
+
     if (this.queryParams.genres) {
       let genres: number[];
       if (Array.isArray(this.queryParams.genres)) {
-       genres = this.queryParams.genres.map(v => +v);
+        genres = this.queryParams.genres.map((v) => +v);
       } else {
-         genres = [+this.queryParams.genres];
-       }
-      this.selectedGenres =  genres;
+        genres = [+this.queryParams.genres];
+      }
+      this.selectedGenres = genres;
     }
+
     if (this.queryParams.languages) {
       let languages: number[];
       if (Array.isArray(this.queryParams.languages)) {
-       languages = this.queryParams.languages.map(v => +v);
+        languages = this.queryParams.languages.map((v) => +v);
       } else {
-         languages = [+this.queryParams.languages];
-       }
-      this.selectedLanguages =  languages;
+        languages = [+this.queryParams.languages];
+      }
+      this.selectedLanguages = languages;
     }
   }
+
   pageChanged(currentPage: number): void {
     this.queryParams.page = currentPage;
     this.queryParams.firstRequest = false;
@@ -216,9 +257,6 @@ export class RequestsComponent implements OnInit {
       }
   }
 
-  public onLocationFilterChange(filter: ILocationFilter) {
-    this.selectedLocations = filter.locationIds;
-  }
 
   public isEn(): boolean {
     return this.translate.currentLang === 'en';

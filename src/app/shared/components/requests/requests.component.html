@@ -5,18 +5,16 @@
     </mdb-breadcrumb>
   </div>
 
-    <app-book-filter-bar
-      [(selectedGenres)]="selectedGenres"
-      [(selectedLanguages)]="selectedLanguages"
-      (selectedLocationsChange)="onLocationFilterChange($event)"
-      [(availableSelected)]="queryParams.showAvailable"
-      [(orderByField)]="queryParams.orderByField"
-      [(orderByFieldAscending)]="queryParams.orderByAscending"
-      [showAvailable]="booksPage!==2"
-      (filterChange)="onFilterChange($event)"
-      (viewMode)="onViewModeChange($event)"
-    >
-    </app-book-filter-bar>
+  <app-book-filter-bar 
+    [(selectedGenres)]="selectedGenres" 
+    [(selectedStates)]="selectedStates" 
+    [(selectedLanguages)]="selectedLanguages" 
+    [(orderByField)]="queryParams.orderByField" 
+    [(orderByFieldAscending)]="queryParams.orderByAscending" 
+    [showAvailable]="booksPage!==2"  
+    (filterChange)="onFilterChange($event)" 
+    (viewMode)="onViewModeChange($event)">
+  </app-book-filter-bar>
 
   <ng-template [ngIf]="books?.length==0" [ngIfElse]="booksExist">
     <div class="container my-5 py-5 z-depth-1">

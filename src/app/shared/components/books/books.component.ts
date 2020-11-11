@@ -67,6 +67,9 @@ export class BooksComponent implements OnInit, OnDestroy {
     protected wishListService: WishListService
   ) {}
 
+  // Set fake data in oninit to see if mat-select is working properly
+  // If it's working ok look in code to find where these params is set
+
   public ngOnInit(): void {
     this.getUserId();
     this.routeActive.queryParams.subscribe((params: Params) => {
@@ -241,17 +244,14 @@ export class BooksComponent implements OnInit, OnDestroy {
     if (this.queryParams.searchTerm) {
       this.searchBarService.changeSearchTerm(this.queryParams.searchTerm);
     }
-    // if (typeof this.queryParams.showAvailable === 'undefined') {
-    //   this.queryParams.showAvailable = true;
-    // }
     if (this.queryParams.bookStates) {
-      let stateEl: bookState[];
+      this.selectedStates = [];
       if (Array.isArray(this.queryParams.bookStates)) {
-        stateEl = this.queryParams.bookStates.map((s) => s);
+        this.queryParams.bookStates.forEach((n) => this.selectedStates.push(Number(n)));
       } else {
-        stateEl = [];
+        this.selectedStates = [Number(this.queryParams.bookStates)];
       }
-      this.selectedStates = stateEl;
+      console.log(this.selectedStates);
     }
     if (this.queryParams.genres) {
       let genres: number[];
