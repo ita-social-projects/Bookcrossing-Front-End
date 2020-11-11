@@ -110,6 +110,9 @@ export class SearchBooksMapComponent implements OnInit {
     if (this.radiusInKm > 100) {
       this.radiusInKm = 100;
     }
+    if (this.radiusInKm < 0) {
+      this.radiusInKm = 0;
+    }
     this.mapboxBookService.changeBoundaryRadius(this.currentLocation, this.radiusInKm);
   }
 

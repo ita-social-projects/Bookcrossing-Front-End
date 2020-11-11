@@ -61,13 +61,16 @@ export class BookFilterBarComponent implements OnInit {
     private translate: TranslateService,
     private bookService: BookService,
     private notificationService: NotificationService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllGenres();
     this.getAllLanguages();
-    this.setbookStates();
     this.getViewMode();
+    if (this.selectedStates) {
+      this.selectedStatesChange.emit(this.selectedStates);
+    }
+    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
   }
 
   notifyFilterChange(isSurelyChanged: boolean) {
@@ -76,7 +79,7 @@ export class BookFilterBarComponent implements OnInit {
 
   // Categories
   onCategoriesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened &&  typeof this.selectedGenres !== 'undefined') {
       this.selectedGenresChange.emit(this.selectedGenres);
       this.notifyFilterChange(false);
     }
@@ -84,10 +87,10 @@ export class BookFilterBarComponent implements OnInit {
 
   getCategoriesLanguage() {
     if (this.translate.currentLang === 'en') {
-      this.genres.sort((a, b) => (a.name > b.name) ? 1 : -1);
+      this.genres?.sort((a, b) => (a.name > b.name) ? 1 : -1);
       return true;
     } else {
-      this.genres.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
+      this.genres?.sort((a, b) => (a.nameUk > b.nameUk) ? 1 : -1);
       return false;
     }
   }
@@ -98,7 +101,7 @@ export class BookFilterBarComponent implements OnInit {
   }
   // Languages
   onLanguagesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened && typeof this.selectedLanguages !== 'undefined') {
       this.selectedLanguagesChange.emit(this.selectedLanguages);
       this.notifyFilterChange(false);
     }
@@ -129,20 +132,8 @@ export class BookFilterBarComponent implements OnInit {
     }
   }
 
-  setbookStates() {
-    this.route.queryParams.subscribe(val => {
-      if (val.bookStates) {
-        this.selectedStates = [];
-        val.bookStates.forEach((n) => this.selectedStates.push(Number(n)));
-        this.selectedStatesChange.emit(this.selectedStates);
-      }
-    });
-    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
-  }
-
-
   onStatesChange(isOpened: boolean) {
-    if (!isOpened) {
+    if (!isOpened && typeof this.selectedStates !== 'undefined') {
       this.selectedStatesChange.emit(this.selectedStates);
       this.notifyFilterChange(false);
     }
