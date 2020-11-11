@@ -61,13 +61,16 @@ export class BookFilterBarComponent implements OnInit {
     private translate: TranslateService,
     private bookService: BookService,
     private notificationService: NotificationService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllGenres();
     this.getAllLanguages();
-    this.setbookStates();
     this.getViewMode();
+    if (this.selectedStates) {
+      this.selectedStatesChange.emit(this.selectedStates);
+    }
+    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
   }
 
   notifyFilterChange(isSurelyChanged: boolean) {
@@ -128,18 +131,6 @@ export class BookFilterBarComponent implements OnInit {
       this.notifyFilterChange(false);
     }
   }
-
-  setbookStates() {
-    this.route.queryParams.subscribe(val => {
-      if (val.bookStates) {
-        this.selectedStates = [];
-        val.bookStates.forEach((n) => this.selectedStates.push(Number(n)));
-        this.selectedStatesChange.emit(this.selectedStates);
-      }
-    });
-    this.bookStates = Object.keys(bookState).map(key => bookState[key]).filter(el => el !== 3 && !isString(el));
-  }
-
 
   onStatesChange(isOpened: boolean) {
     if (!isOpened) {
