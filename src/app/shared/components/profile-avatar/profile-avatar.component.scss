@@ -1,9 +1,25 @@
 #avatar{
     height: 30px;
 }
+
+.wrapper {
+  position: relative;
+  height: 0px;
+  display: flex;
+  align-items: center;
+}
+
 .avatar{
-      padding: 0px;
-      margin: 0px;
+  border: 2px solid rgba(0,0,0,0);
+  border-radius: 50%;
+  -webkit-user-select: none;
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+}
+
+.avatar[aria-expanded="true"]{
+  border: 2px solid white;
 }
 
 .dropdown-unclickable-item{
@@ -11,10 +27,21 @@
   cursor: not-allowed;
 }
 
+.dropdown .dropdown-menu {
+  top: 25px;
+}
+
 @media (max-width: 990px){
-  .avatar{
+  .wrapper .avatar{
       position: relative;
-      padding-top:3px;
+      padding: 0px;
       right: 2px;
+  }
+  .wrapper {
+    height: 100%;
+  }
+  .dropdown .dropdown-menu {
+    right: auto;
+    top: 100%;
   }
 }

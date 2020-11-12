@@ -4,6 +4,13 @@
   border-radius: 5px
 }
 
+.nav-item {
+  margin: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 #box::-webkit-scrollbar
 {
 	width: 10px;
@@ -23,12 +30,10 @@
 }
 
 .notification{
-  padding-top: 20px;
   padding-left: -40px !important;
-  margin: -15px;
   margin-left: -40px !important;
   margin-right: 10px;
-  position: relative;
+  position: absolute;
 }
 
 .number{
@@ -211,4 +216,10 @@
 
 .button {
   margin-left: 15px !important;
+}
+
+@media (max-width: 990px) {
+  .nav-item {
+    margin: 25px 0px 25px 5px;
+  }
 }
