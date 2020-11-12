@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 ###### Note: It's better to use [docker-desktop](https://www.docker.com/products/docker-desktop) if you are on windows
 
 ### Installing
-1. Clone repository from GitHub with $ git clone https://github.com/Lv-492-SoftServe/Bookcrossing-Front-End.git
+1. Clone repository from GitHub with $ git clone https://github.com/ita-social-projects/Bookcrossing-Front-End.git
 2. Move to the Bookcrossing-Front-End and run "docker build -t frontend ."
 3. Next run "docker run -d -p 80:80 --name web frontend"
 4. Go to the [localhost](http://localhost/) in your browser
