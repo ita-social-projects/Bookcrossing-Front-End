@@ -84,7 +84,6 @@ export class SuggestionMessageComponent implements OnInit {
             ? this.totalSize
             : this.queryParams.page;
       this.setMessages(this.queryParams);
-      this.messages.forEach(msg => msg.isChecked = false);
     });
   }
 
@@ -109,9 +108,15 @@ export class SuggestionMessageComponent implements OnInit {
 
   public addStatus(): void {
     this.messagesStatusHtml = [];
-    this.messages.forEach((msg) => {
-      this.messagesStatusHtml.push(this.statusHtml.get(msg.state));
-      });
+    for (let i: number = 0; i < this.messages.length; i++){
+      this.messagesStatusHtml.push(this.statusHtml.get(this.messages[i].state));
+      for(let j: number = 0; j < this.selectedRows.length; j++){
+        if(this.messages[i].id === this.selectedRows[j].id){
+          this.messages[i].isChecked = true;
+          break;
+        }
+      }
+    }
   }
 
   public onStatusChanged(status: MessageStatus, message: ISuggestionMessage) {
@@ -166,9 +171,10 @@ export class SuggestionMessageComponent implements OnInit {
   }
 
   public deleteSelected(): void {
-    const messagesToDelete = this.messages.filter(val => this.selectedRows.includes(val));
-    messagesToDelete.forEach(msg => this.deleteMessage(msg));
-    this.deselectAll();
+    const length = this.selectedRows.length;
+    for(let i: number = 0; i < length; i++){
+      this.deleteMessage(this.selectedRows.pop());
+    }
   }
 
   public deleteMessage(message: ISuggestionMessage): void {
@@ -200,14 +206,19 @@ export class SuggestionMessageComponent implements OnInit {
     });
   }
 
-public onSelectedRowChange(selectedItem: ISuggestionMessage): void {
+public onSelectedRowChange(selectedItem: ISuggestionMessage, index: number): void {
   if (this.selectedRows) {
     this.selectedRows = _.xorBy(
       this.selectedRows,
       [selectedItem],
       this.messageProperties[0]
     );
-    selectedItem.isChecked = true;
+    if(selectedItem.isChecked)
+      document.getElementById('message-' + index).classList.add('isSelected');
+    else
+      document.getElementById('message-' + index).classList.remove('isSelected');
+
+    this.messages[this.messages.indexOf(selectedItem)].isChecked = true;
     this.selectedRowsChange.emit(this.selectedRows);
 
     if (this.selectedRows.length === this.messages.length) {
