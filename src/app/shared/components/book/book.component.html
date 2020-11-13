@@ -219,7 +219,7 @@
 
         </section>
 
-        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="rating !== 0 || !isAuthenticated()">
+        <ngx-star-rating class="rating" [filledColor]="'#FF8800'" [rating]="rating" (rated)="onRatingSet($event)" [readonly]="!isAuthenticated()">
         </ngx-star-rating>
 
         <app-comment [bookId]="bookId" #comment></app-comment>

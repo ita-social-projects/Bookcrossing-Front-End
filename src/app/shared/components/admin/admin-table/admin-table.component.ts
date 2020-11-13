@@ -36,7 +36,7 @@ export class AdminTableComponent implements OnInit {
 
   public onSelectedRowChange(selectedItem: any): void {
     if (this.selectedRows) {
-      this.selectedRows = _.xorBy(
+      this.selectedRows = _.xor(
         this.selectedRows,
         [selectedItem],
         this.dataProperties[0]

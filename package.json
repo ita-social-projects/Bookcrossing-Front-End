@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test --watch=false",
     "lint": "ng lint",
@@ -79,5 +79,17 @@
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "~3.7.5"
-  }
+  },
+  "description": "Platform for book crossing between company employees\r [Website](https://bookcrossing.tech/)",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ita-social-projects/Bookcrossing-Front-End.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ita-social-projects/Bookcrossing-Front-End/issues"
+  },
+  "homepage": "https://github.com/ita-social-projects/Bookcrossing-Front-End#readme"
 }
