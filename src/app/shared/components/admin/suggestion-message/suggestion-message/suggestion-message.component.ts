@@ -108,15 +108,24 @@ export class SuggestionMessageComponent implements OnInit {
 
   public addStatus(): void {
     this.messagesStatusHtml = [];
-    for (let i: number = 0; i < this.messages.length; i++){
-      this.messagesStatusHtml.push(this.statusHtml.get(this.messages[i].state));
-      for(let j: number = 0; j < this.selectedRows.length; j++){
-        if(this.messages[i].id === this.selectedRows[j].id){
-          this.messages[i].isChecked = true;
+    for (const message of this.messages) {
+      this.messagesStatusHtml.push(this.statusHtml.get(message.state));
+      for (const selectedRow of this.selectedRows) {
+        if (message.id === selectedRow.id) {
+          message.isChecked = true;
           break;
         }
       }
     }
+    // for (let i: number = 0; i < this.messages.length; i++){
+    //   this.messagesStatusHtml.push(this.statusHtml.get(this.messages[i].state));
+    //   for(let j: number = 0; j < this.selectedRows.length; j++){
+    //     if(this.messages[i].id === this.selectedRows[j].id){
+    //       this.messages[i].isChecked = true;
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   public onStatusChanged(status: MessageStatus, message: ISuggestionMessage) {
@@ -172,7 +181,7 @@ export class SuggestionMessageComponent implements OnInit {
 
   public deleteSelected(): void {
     const length = this.selectedRows.length;
-    for(let i: number = 0; i < length; i++){
+    for (let i = 0; i < length; i++) {
       this.deleteMessage(this.selectedRows.pop());
     }
   }
@@ -213,10 +222,11 @@ public onSelectedRowChange(selectedItem: ISuggestionMessage, index: number): voi
       [selectedItem],
       this.messageProperties[0]
     );
-    if(selectedItem.isChecked)
+    if (selectedItem.isChecked) {
       document.getElementById('message-' + index).classList.add('isSelected');
-    else
+    } else {
       document.getElementById('message-' + index).classList.remove('isSelected');
+    }
 
     this.messages[this.messages.indexOf(selectedItem)].isChecked = true;
     this.selectedRowsChange.emit(this.selectedRows);
