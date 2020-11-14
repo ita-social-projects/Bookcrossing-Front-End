@@ -230,15 +230,15 @@
                             <!-- <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                 <h4 class="card-title mb-0"><strong>{{book.name}}</strong></h4>
                             </a> -->
-                            <ng-template [ngIf]="book.name.length <= 20" [ngIfElse]="bookTitleElse">
+                            <ng-template [ngIf]="book.name.length <= 40" [ngIfElse]="bookTitleElse">
                                 <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
                                     <h4 class="card-title mb-0"><strong>{{book.name}}</strong>
                                     </h4>
                                 </a>
                             </ng-template>
                             <ng-template #bookTitleElse>
-                                <a matTooltipHideDelay="1000" [matTooltip]="book.name | Ellipsis:'title':0" matTooltipClass="mat-tooltip" matTooltipPosition="right" class="text-primary" [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
-                                    <h4 class="card-title mb-0"><strong>{{book.name.slice(0,20)}}...</strong>
+                                <a [routerLink]="['/book/', book.id]" [state]="{ booksPageName: booksPageName, previousRoute: route}">
+                                    <h4 class="card-title mb-0"><strong>{{book.name.slice(0,40)}}...</strong>
                                     </h4>
                                 </a>
                             </ng-template>
