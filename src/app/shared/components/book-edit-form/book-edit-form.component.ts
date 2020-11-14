@@ -421,35 +421,40 @@ constructor(
   filterConfirmedAuthors() {
     return this.authors.filter((x) => x.isConfirmed === true);
   }
-  isAuthorTyped(authorString: string): boolean {
-    if (/(\s*[a-zA-Z]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
+
+  public isAuthorTyped(authorString: string): boolean {
+    if (/(\s*[а-яА-Яa-zA-Z0-9]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
       return true;
     }
     return false;
   }
 
-  parseAuthors(authorString: string) {
+  public parseAuthors(authorString: string): void {
     const delim = /(\s+|,+|;+)/g;
     authorString = authorString.replace(delim, ' ').trim();
 
     const words: string[] = authorString.split(' ');
     const count = words.length;
-    for (let i = 0; i < count / 2; i++) {
-      if (words[0] && words[1]) {
-        const author: IAuthor = {
-          firstName: words[0] ? words[0] : null,
-          lastName: words[1] ? words[1] : null,
-          isConfirmed: false,
-        };
+    if (words[0].length > 20 || words[1].length > 20) {
+       this.editBookForm.get('authorFirstname').errors.pattern = true;
+    } else {
+      for (let i = 0; i < count / 2; i++) {
+        if (words[0] && words[1]) {
+          const author: IAuthor = {
+            firstName: words[0] ? words[0] : null,
+            lastName: words[1] ? words[1] : null,
+            isConfirmed: false,
+          };
 
-        words.splice(0, 2);
-        if (author.firstName && author.lastName) {
-          this.selectedAuthors.push(author);
+          words.splice(0, 2);
+          if (author.firstName && author.lastName) {
+            this.selectedAuthors.push(author);
+          }
         }
       }
-    }
 
-    this.editBookForm.patchValue({ authorFirstname: ' ' });
+      this.editBookForm.patchValue({ authorFirstname: '' });
+    }
   }
 
   changeAuthorInput() {
@@ -470,42 +475,6 @@ constructor(
     const words: string[] = input.split(' ');
     return words.length >= 2 || words.length <= 20;
   }
-/*
-  checkLength(fieldName: string, event: any, maxLength: number) {
-    const value = event.target.value;
-    if (value.length > maxLength) {
-      switch (fieldName) {
-        case 'title':
-          this.editBookForm.patchValue({
-            title: value.substr(0, maxLength)
-          });
-          break;
-        case 'publisher':
-          this.editBookForm.patchValue({
-            publisher: value.substr(0, maxLength)
-          });
-          break;
-        case 'isbn':
-          this.editBookForm.patchValue({
-            isbn: value.substr(0, maxLength)
-          });
-          break;
-        case 'description':
-          this.editBookForm.patchValue({
-            description: value.substr(0, maxLength)
-          });
-          break;
-      }
-      event.target.classList.add('is-invalid');
-      setTimeout(() => {
-        event.target.classList.remove('is-invalid');
-      }, 3000);
-      this.notificationService.error(
-        this.translate.instant('common-errors.validation-max-length', {value: maxLength}),
-        'X'
-      );
-    }
-  }*/
 
   public checkLength(element: HTMLElement, maxLength: number): void {
     const input =
