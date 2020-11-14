@@ -35,8 +35,8 @@
                         <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-asc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
                     </ng-template>
                     <ng-template #alph>
-                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-alpha-asc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
-                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-alpha-desc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && !orderByFieldAscending)" class="fas fa-sort-alpha-desc  fa-lg sign" (click)="onOrderByAscendingChange()"></i>
+                        <i *ngIf="(orderByField && orderByFieldAscending)" class="fas fa-sort-alpha-asc fa-lg sign" (click)="onOrderByAscendingChange()"></i>
                     </ng-template>
                     <i *ngIf="orderByField" class="fa fa-times cross ml-2 my-auto clear-icon" (click)="onOrderByFieldReset()"></i>
                 </div>
