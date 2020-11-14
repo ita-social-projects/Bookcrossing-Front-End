@@ -45,6 +45,7 @@
               #firstnameInput
               type="text"
               class="form-control"
+              pattern="^\s*\S+(?:\s+\S+){1}\s*"
               [matAutocomplete]="FirstNameAuto"
               (focus)="authorFocused = true"
               (blur)="authorFocused = false"
@@ -61,6 +62,14 @@
                   !withoutAuthorChecked
               }"
             />
+            <div
+              *ngIf="editBookForm.get('authorFirstname').errors?.pattern"
+              class="validation-error"
+              >
+              <small class="text-danger">
+              {{'common-errors.validation-pattern'| translate}}
+              </small>
+              </div>
             <div
               *ngIf="
                 editBookForm.get('authorFirstname').touched &&
@@ -116,7 +125,7 @@
           <ul class="list-group authors-list list-group-horizontal-sm">
             <li
               *ngFor="let author of selectedAuthors"
-              class="list-group-item"
+              class="list-group-item overflow-hidden"
             >
               <span>{{ author.firstName + "  " + author.lastName }}</span>
               <span

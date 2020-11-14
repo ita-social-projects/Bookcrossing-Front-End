@@ -41,6 +41,7 @@
                 #firstnameInput
                 type="text"
                 class="form-control"
+                pattern="^\s*\S+(?:\s+\S+){1}\s*"
                 [matAutocomplete]="FirstNameAuto"
                 (focus)="authorFocused = true"
                 (blur)="authorFocused = false"
@@ -57,6 +58,14 @@
                     !withoutAuthorChecked
                 }"
               />
+              <div
+              *ngIf="addBookForm.get('authorFirstname').errors?.pattern"
+              class="validation-error"
+              >
+              <small class="text-danger">
+              {{'common-errors.validation-pattern'| translate}}
+              </small>
+              </div>
               <div
                 *ngIf="
                   addBookForm.get('authorFirstname').touched &&
