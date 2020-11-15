@@ -67,8 +67,6 @@ export class BooksComponent implements OnInit, OnDestroy {
     protected wishListService: WishListService
   ) {}
 
-  // Set fake data in oninit to see if mat-select is working properly
-  // If it's working ok look in code to find where these params is set
 
   public ngOnInit(): void {
     this.getUserId();
@@ -202,7 +200,7 @@ export class BooksComponent implements OnInit, OnDestroy {
   }
 
   private compareArrays(first: any, second: any): boolean {
-    return JSON.stringify(first) === JSON.stringify(second);
+    return JSON.stringify(first?.toString()) === JSON.stringify(second?.toString());
   }
 
   public onFilterChange(filterChanged: boolean): void {
@@ -216,11 +214,11 @@ export class BooksComponent implements OnInit, OnDestroy {
         ) ||
         !this.compareArrays(
           this.queryParams.locations,
-          this.selectedLocations.locationIds
+          this.selectedLocations?.locationIds
         ) ||
         !this.compareArrays(
           this.queryParams.homeLocations,
-          this.selectedLocations.homeLocationIds
+          this.selectedLocations?.homeLocationIds
         );
     }
     this.queryParams.genres = this.selectedGenres;
@@ -251,7 +249,6 @@ export class BooksComponent implements OnInit, OnDestroy {
       } else {
         this.selectedStates = [Number(this.queryParams.bookStates)];
       }
-      console.log(this.selectedStates);
     }
     if (this.queryParams.genres) {
       let genres: number[];
