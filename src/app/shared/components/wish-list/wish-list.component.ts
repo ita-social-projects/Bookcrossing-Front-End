@@ -47,6 +47,7 @@ export class WishListComponent implements OnInit, OnDestroy {
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
   public route = this.router.url;
+  processedBookIds: Array<number> = new Array();
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -223,25 +224,49 @@ export class WishListComponent implements OnInit, OnDestroy {
     this.searchBarService.changeSearchTerm(null);
   }
 
-  public removeFromWishList(bookId: number): void {
-    this.clickCounter += 1;
-    if (this.clickCounter <= 1) {
-      this.wishListService.removeFromWishList(bookId).subscribe(
-        (data) => {
-          this.routeActive.queryParams.subscribe((params: Params) => {
-            this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
-            this.getBooks(this.queryParams);
-            this.clickCounter = 0;
-          });
-        },
-        () => {
-          this.clickCounter = 0;
-          this.notificationService.error(
-            this.translate.instant('components.common-errors.error-message'),
-            'X'
-          );
-        }
-      );
+  private removeBookIdFromProcessing(bookId:number)
+  {
+    const index = this.processedBookIds.indexOf(bookId, 0);
+    if (index > -1) {
+      this.processedBookIds.splice(index, 1);
     }
+  }
+
+
+  public removeFromWishList(bookId: number): void {
+
+
+   if ( this.processedBookIds.includes(bookId))
+   {
+     return;
+   }
+
+   this.processedBookIds.push(bookId);
+    
+
+    this.wishListService.removeFromWishList(bookId).subscribe(
+      (data) => {
+
+        
+        this.routeActive.queryParams.subscribe((params: Params) => {
+          this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
+          this.getBooks(this.queryParams);
+          this.pageChanged(this.queryParams.page);
+
+          this.removeBookIdFromProcessing(bookId);
+        
+          
+        });
+      },
+      () => {
+        
+        this.removeBookIdFromProcessing(bookId);
+        
+        this.notificationService.error(
+          this.translate.instant('Something went wrong'),
+          'X'
+        );
+      }
+    );
   }
 }
