@@ -41,13 +41,12 @@ export class WishListComponent implements OnInit, OnDestroy {
   public disabledButton = false;
   public books: IBook[];
   public totalSize: number;
-  public clickCounter = 0;
   public booksPageName = 'common.wishlist';
   public booksPage: booksPage = booksPage.WishList;
   public queryParams: BookQueryParams = new BookQueryParams();
   public apiUrl: string = environment.apiUrl;
   public route = this.router.url;
-  processedBookIds: Array<number> = new Array();
+  public processedBookIds: Array<number> = new Array();
 
   constructor(
     private routeActive: ActivatedRoute,
@@ -224,44 +223,29 @@ export class WishListComponent implements OnInit, OnDestroy {
     this.searchBarService.changeSearchTerm(null);
   }
 
-  private removeBookIdFromProcessing(bookId:number)
-  {
+  private removeBookIdFromProcessing(bookId: number) {
     const index = this.processedBookIds.indexOf(bookId, 0);
     if (index > -1) {
       this.processedBookIds.splice(index, 1);
     }
   }
 
-
   public removeFromWishList(bookId: number): void {
-
-
-   if ( this.processedBookIds.includes(bookId))
-   {
+   if ( this.processedBookIds.includes(bookId)) {
      return;
    }
-
-   this.processedBookIds.push(bookId);
-    
-
+    this.processedBookIds.push(bookId);
     this.wishListService.removeFromWishList(bookId).subscribe(
-      (data) => {
-
-        
+      (data) => {        
         this.routeActive.queryParams.subscribe((params: Params) => {
           this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
           this.getBooks(this.queryParams);
           this.pageChanged(this.queryParams.page);
-
-          this.removeBookIdFromProcessing(bookId);
-        
-          
+          this.removeBookIdFromProcessing(bookId);          
         });
       },
-      () => {
-        
-        this.removeBookIdFromProcessing(bookId);
-        
+      () => {        
+        this.removeBookIdFromProcessing(bookId);        
         this.notificationService.error(
           this.translate.instant('Something went wrong'),
           'X'
