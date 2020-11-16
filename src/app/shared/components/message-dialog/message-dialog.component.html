@@ -5,6 +5,9 @@
             <div class="text">
                 <textarea #content name="message" maxlength="500" class="form-control" id="message" cols="80" rows="10" placeholder="{{ ('components.admin.suggestion-message.write-your-message') | translate }}"></textarea>
             </div>
+            <div *ngIf="content.value.trim().length == 0" class="validation-error">
+              <small class="text-danger">{{'components.book.blank-message' | translate}}</small>
+            </div>
             <div class="row">
               <div class="col-sm">
                 <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient button1" (click)="sendMessage(content.value)">{{ 'components.contact-us.send' | translate }}</button>

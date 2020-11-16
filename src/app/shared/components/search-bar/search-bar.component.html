@@ -1,7 +1,7 @@
 <div class="form-inline ml-auto pr-3 align-items-center">
   <div class="form-control form-control-sm ml-3 w-80 search-bar">
     <input class="search-field" type="text" placeholder="{{'components.searchBar.searchPlaceholder' | translate}}" aria-label="Search"
-      [(ngModel)]="searchTerm" (change)="trimInput()" (keyup.enter)="navigateToBooks(searchTerm)" (focusout)="clearInput()">
+      [(ngModel)]="searchTerm" (change)="trimInput()" (keyup.enter)="navigateToBooks(searchTerm)" (focusout)="clearInput()  " maxlength="50">
     <span [ngClass]="{'hidden': !searchTerm}" class="clear-icon" (click)="resertSearch()"  aria-label="Clear"><svg focusable="false"
     viewBox="0 0 24 24">
         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">

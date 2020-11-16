@@ -105,12 +105,12 @@ export class AddBookComponent implements OnInit {
   }
 
   public async autoFill(): Promise<void> {
-    this.addBookForm.get('title').setValue(this.outerBook.title);
-    this.addBookForm.get('publisher').setValue(this.outerBook.publisher);
-    this.addBookForm.get('isbn').setValue(this.outerBook.isbn);
-    this.addBookForm.get('description').setValue(this.outerBook.description);
+    this.addBookForm.get('title').setValue(this.outerBook.title.substring(0, 150));
+    this.addBookForm.get('publisher').setValue(this.outerBook.publisher.substring(0, 150));
+    this.addBookForm.get('isbn').setValue(this.outerBook.isbn.substring(0, 17));
+    this.addBookForm.get('description').setValue(this.outerBook.description.substring(0, 250));
     for (const author of this.outerBook.authors) {
-      const field = (this.addBookForm.get('authorFirstname').value ?? '') + ' ' + author.fullName;
+      const field = (this.addBookForm.get('authorFirstname').value ?? '').substring(0, 20) + ' ' + author.fullName.substring(0, 20);
       this.addBookForm.get('authorFirstname').setValue(field);
     }
     fetch(this.outerBook.imageUrl)
@@ -434,7 +434,7 @@ export class AddBookComponent implements OnInit {
   }
 
   public isAuthorTyped(authorString: string): boolean {
-    if (/(\s*[a-zA-Z]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
+    if (/(\s*[а-яА-Яa-zA-Z0-9]+\s+\w+(\s+|,|;)+)/g.test(authorString)) {
       return true;
     }
     return false;
@@ -446,22 +446,26 @@ export class AddBookComponent implements OnInit {
 
     const words: string[] = authorString.split(' ');
     const count = words.length;
-    for (let i = 0; i < count / 2; i++) {
-      if (words[0] && words[1]) {
-        const author: IAuthor = {
-          firstName: words[0] ? words[0] : null,
-          lastName: words[1] ? words[1] : null,
-          isConfirmed: false,
-        };
+    if (words[0].length > 20 || words[1].length > 20) {
+      this.addBookForm.get('authorFirstname').errors.pattern = true;
+    } else {
+      for (let i = 0; i < count / 2; i++) {
+        if (words[0] && words[1]) {
+          const author: IAuthor = {
+            firstName: words[0] ? words[0] : null,
+            lastName: words[1] ? words[1] : null,
+            isConfirmed: false,
+          };
 
-        words.splice(0, 2);
-        if (author.firstName && author.lastName) {
-          this.selectedAuthors.push(author);
+          words.splice(0, 2);
+          if (author.firstName && author.lastName) {
+            this.selectedAuthors.push(author);
+          }
         }
       }
-    }
 
-    this.addBookForm.patchValue({ authorFirstname: '' });
+      this.addBookForm.patchValue({ authorFirstname: '' });
+    }
   }
 
   public changeAuthorInput(): void {

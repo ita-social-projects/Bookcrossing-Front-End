@@ -1,17 +1,17 @@
 <div class="container my-4">
 
     <ng-template [ngIf]="foundBooks?.page?.length==0" [ngIfElse]="booksExist">
-      <button class="btn" ><a [routerLink]="['/book']">Back</a></button>
+      <button class="btn" ><a [routerLink]="['/book']">{{'components.books.back' | translate}}</a></button>
       <div class="container my-5 py-5 z-depth-1">
         <section class="text-center px-md-5 mx-md-5 dark-grey-text">
-          <h3 class="font-weight-bold">No books found.</h3>
+          <h3 class="font-weight-bold">{{'components.books.nobooksfound' | translate}}</h3>
         </section>
 
       </div>
     </ng-template>
 
     <ng-template #booksExist>
-      <button class="btn" ><a [routerLink]="['/book']">Back</a></button>
+      <button class="btn" ><a [routerLink]="['/book']">{{'components.books.back' | translate}}</a></button>
         <div class="card m-3" *ngFor="let book of foundBooks?.page">
           <div class="row no-gutters">
             <div class="col-auto">
@@ -24,7 +24,7 @@
               <div class="card-block px-2">
                 <h4 class="card-title mb-0"><strong >{{book.title}}</strong></h4>
                 <h5 class="card-title mb-0">{{book.author.fullName}}</h5>
-                <button style="margin-top: 130px ;"ole="button" class="btn blue-gradient ml-0" (click)="autoFill(book.id)" >AutoFill</button>
+                <button style="margin-top: 130px ;"ole="button" class="btn blue-gradient ml-0" (click)="autoFill(book.id)" >{{'common.autofill' | translate}}</button>
               </div>
             </div>
           </div>
