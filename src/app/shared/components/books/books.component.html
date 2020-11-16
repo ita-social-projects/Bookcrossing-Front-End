@@ -1,7 +1,7 @@
 <div class="container my-4">
     <div>
         <mdb-breadcrumb>
-            <mdb-breadcrumb-item class="active">{{booksPageName}}</mdb-breadcrumb-item>
+            <mdb-breadcrumb-item class="active">{{booksPageName | translate}}</mdb-breadcrumb-item>
         </mdb-breadcrumb>
     </div>
     <app-book-filter-bar [(selectedGenres)]="selectedGenres" [(selectedStates)]="selectedStates" [(selectedLanguages)]="selectedLanguages" [(orderByField)]="queryParams.orderByField" [(orderByFieldAscending)]="queryParams.orderByAscending" [(selectedLocations)]="selectedLocations"
