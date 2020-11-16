@@ -10,7 +10,7 @@
                 <button mat-button id="yes-button" class="btn btn-default btn-block blue-gradient button1" (click)="sendMessage(content.value)">{{ 'components.contact-us.send' | translate }}</button>
               </div>
               <div class="col-sm">
-                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button"  (click)="closeDialog()">{{ 'common.cancel' | translate }}</button>
+                <button mat-button id="no-button" class="btn btn-default btn-block blue-gradient button"  (click)="closeDialog(content.value)">{{ 'common.cancel' | translate }}</button>
               </div>
             </div>
           </div>

@@ -16,23 +16,30 @@ export class MessageDialogComponent implements OnInit {
               private translate: TranslateService,
   ) { }
 
+
   public ngOnInit(): void {
   }
 
   public sendMessage(msg: string): void {
+    if (msg.trim().length > 0) {
       this.dialogRef.close(msg);
+    }
   }
 
-  public async closeDialog(): Promise<void> {
-    this.dialogService
-      .openConfirmDialog(
-        await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
-      )
-      .afterClosed()
-      .subscribe(async (res) => {
-        if (res) {
-          this.dialogRef.close(null);
-        }
-      });
-  }
+  public async closeDialog(msg: string): Promise<void> {
+    if (msg.trim().length <= 0) {
+      this.dialogRef.close(null);
+    } else {
+      this.dialogService
+        .openConfirmDialog(
+          await this.translate.get(this.translate.instant('components.profile.edit.cancelDialog')).toPromise()
+        )
+        .afterClosed()
+        .subscribe(async (res) => {
+          if (res) {
+            this.dialogRef.close(null);
+          }
+        });
+    }
+    }
 }

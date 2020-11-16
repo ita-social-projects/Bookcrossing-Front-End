@@ -553,16 +553,19 @@ export class BookComponent implements OnInit {
   public sendMessage(): void {
     const currentUser = this.authentication.currentUserValue;
     if (currentUser.id === this.currentOwner.id) {
-      this.notificationService.error(
+      this.notificationService.warn(
         this.translate.instant('You cannot send message to yourself'),
         'X');
     } else {
-      this.dialogService
+    this.dialogService
         .openMessageDialog(
           this.currentOwner.firstName + ' ' + this.currentOwner.lastName
         )
         .afterClosed()
         .subscribe((Newmessage) => {
+          if (Newmessage === ' ') {
+            alert('empty');
+          }
           if (Newmessage !== null && Newmessage !== false) {
             this.notificationBellService
               .addToNotification(
@@ -574,9 +577,9 @@ export class BookComponent implements OnInit {
                 Newmessage
               )
               .subscribe(() => {
-                  this.notificationService.error(
+                  /*this.notificationService.error(
                     this.translate.instant('cannot sent message to yourself'),
-                    'X');
+                    'X');*/
                   this.notificationService.success(
                     this.translate.instant('Message is successfully sent'),
                     'X'
@@ -590,6 +593,7 @@ export class BookComponent implements OnInit {
             };
             this.notificationBellService.addNotification(newMessage).subscribe();
           }
+
         });
     }
   }
