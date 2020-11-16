@@ -231,11 +231,9 @@ export class WishListComponent implements OnInit, OnDestroy {
   }
 
   public removeFromWishList(bookId: number): void {
-   if ( this.processedBookIds.includes(bookId)) {
-     return;
-    }
-    this.processedBookIds.push(bookId);
-    this.wishListService.removeFromWishList(bookId).subscribe(
+   if ( this.processedBookIds.includes(bookId)) { return; }
+   this.processedBookIds.push(bookId);
+   this.wishListService.removeFromWishList(bookId).subscribe(
       (data) => {
         this.routeActive.queryParams.subscribe((params: Params) => {
           this.queryParams = BookQueryParams.mapFromQuery(params, 1, 8);
