@@ -569,7 +569,8 @@ export class BookComponent implements OnInit {
           if (Newmessage !== null && Newmessage !== false) {
             this.notificationBellService
               .addToNotification(
-                'To ' +
+                this.translate.currentLang === 'en' ?
+                'To ' : 'До ' +
                 this.currentOwner.firstName +
                 ' ' +
                 this.currentOwner.lastName +
